@@ -1,5 +1,7 @@
+import datetime
+
 class cursor:
-    __slots__ = ['id', 'loc', 'stateL', 'stateM', 'stateR']
+    __slots__ = ['id', 'loc', 'stateL', 'stateM', 'stateR', 'downTimeL', 'downTimeR', 'downTimeM']
 
     def __init__(self, x, y):
         self.loc.setX(x)
@@ -46,12 +48,33 @@ class cursor:
 
     def setStateL(self, stateL):
         self.stateL = stateL
+        if(stateL=='Down'):
+            self.downTimeL=datetime.datetime.now()
+            return None
+        else:
+            now = datetime.datetime.now()
+            clickTime = (now-self.downTimeL).total_seconds()
+            return clickTime
 
     def setStateR(self, stateR):
         self.stateR = stateR
+        if(stateR=='Down'):
+            self.downTimeR=datetime.datetime.now()
+            return None
+        else:
+            now = datetime.datetime.now()
+            clickTime = (now-self.downTimeR).total_seconds()
+            return clickTime
 
     def setStateM(self, stateM):
         self.stateM = stateM
+        if(stateM=='Down'):
+            self.downTimeM=datetime.datetime.now()
+            return None
+        else:
+            now = datetime.datetime.now()
+            clickTime = (now-self.downTimeM).total_seconds()
+            return clickTime
 
 class window:
     __slots__ = ['elements', 'loc', 'xsize', 'ysize', 'subwindows', 'name', 'type']

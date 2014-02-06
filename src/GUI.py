@@ -28,9 +28,6 @@ class GUI:
 				added = true
 		self.surfaces[surface].addCursor(cursorNo) #TODO still need to implement
 		return cursorNo
-	
-	def moveCursor(self, cursorNo, xDist, yDist):
-		self.cursors[str(cursorNo)].move(xDist,yDist)
 		
 	def findCursor(self, cursorNo):
 		location = 0
@@ -38,6 +35,9 @@ class GUI:
 			if(self.surfaces[key].containsCur(cusorNo)==True): #TODO still need to implement
 				location = int(key)
 		return location
+	
+	def moveCursor(self, cursorNo, xDist, yDist):
+		self.cursors[str(cursorNo)].move(xDist,yDist) #TODO Handle when moves to different screen
 		
 	def setCursorPos(self, cursorNo, xLoc, yLoc, surface):
 		self.cursors[str(cursorNo)].setLoc(xLoc,yLoc)
@@ -51,3 +51,39 @@ class GUI:
 		surNo = self.findCursor(cursorNo)
 		self.surfaces[str(surNo)].removeCursor(cursorNo)
 		self.cursors.pop(str(cursorNo),None)
+		
+	def leftDown(self, cursorNo):
+		self.cursors[str(cursorNo)].setStateL("Down")
+		xloc = self.cursors[str(cursorNo)].getX()
+		yloc = self.cursors[str(cursorNo)].getY()
+		return (x=xloc,y=yloc)
+
+	def middleDown(self, cursorNo):
+		self.cursors[str(cursorNo)].setStateM("Down")
+		xloc = self.cursors[str(cursorNo)].getX()
+		yloc = self.cursors[str(cursorNo)].getY()
+		return (x=xloc,y=yloc)
+
+	def rightDown(self, cursorNo):
+		self.cursors[str(cursorNo)].setStateR("Down")
+		xloc = self.cursors[str(cursorNo)].getX()
+		yloc = self.cursors[str(cursorNo)].getY()
+		return (x=xloc,y=yloc)
+
+	def leftUp(self, cursorNo):
+		secondsDown = self.cursors[str(cursorNo)].setStateL("Up")
+		xloc = self.cursors[str(cursorNo)].getX()
+		yloc = self.cursors[str(cursorNo)].getY()
+		return (x=xloc,y=yloc,downTime=secondsDown)
+
+	def middleUp(self, cursorNo):
+		secondsDown = self.cursors[str(cursorNo)].setStateM("Up")
+		xloc = self.cursors[str(cursorNo)].getX()
+		yloc = self.cursors[str(cursorNo)].getY()
+		return (x=xloc,y=yloc,downTime=secondsDown)
+
+	def rightUp(self, cursorNo):
+		secondsDown = self.cursors[str(cursorNo)].setStateR("Up")
+		xloc = self.cursors[str(cursorNo)].getX()
+		yloc = self.cursors[str(cursorNo)].getY()
+		return (x=xloc,y=yloc,downTime=secondsDown)
