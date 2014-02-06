@@ -46,35 +46,35 @@ class cursor:
     def getStateM(self):
         return self.stateM
 
-    def setStateL(self, stateL):
-        self.stateL = stateL
-        if(stateL=='Down'):
-            self.downTimeL=datetime.datetime.now()
-            return None
-        else:
-            now = datetime.datetime.now()
-            clickTime = (now-self.downTimeL).total_seconds()
-            return clickTime
+    def setStateLUp(self):
+        self.stateL = "Up"
+        now = datetime.datetime.now()
+        clickTime = (now-self.downTimeL).total_seconds()
+        return clickTime
 
-    def setStateR(self, stateR):
-        self.stateR = stateR
-        if(stateR=='Down'):
-            self.downTimeR=datetime.datetime.now()
-            return None
-        else:
-            now = datetime.datetime.now()
-            clickTime = (now-self.downTimeR).total_seconds()
-            return clickTime
+    def setStateRUp(self):
+        self.stateR = "Up"
+        now = datetime.datetime.now()
+        clickTime = (now-self.downTimeR).total_seconds()
+        return clickTime
 
-    def setStateM(self, stateM):
-        self.stateM = stateM
-        if(stateM=='Down'):
-            self.downTimeM=datetime.datetime.now()
-            return None
-        else:
-            now = datetime.datetime.now()
-            clickTime = (now-self.downTimeM).total_seconds()
-            return clickTime
+    def setStateMUp(self):
+        self.stateM = "Up"
+        now = datetime.datetime.now()
+        clickTime = (now-self.downTimeM).total_seconds()
+        return clickTime
+        
+    def setStateLDown(self):
+        self.downTimeL=datetime.datetime.now()
+        self.stateL = "Down"
+
+    def setStateRDown(self):
+        self.downTimeR=datetime.datetime.now()
+        self.stateR = "Down"
+
+    def setStateMDown(self):
+        self.downTimeM=datetime.datetime.now()
+        self.stateM = "Down"
 
 class window:
     __slots__ = ['elements', 'loc', 'xsize', 'ysize', 'subwindows', 'name', 'type']

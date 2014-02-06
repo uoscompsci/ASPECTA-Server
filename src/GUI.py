@@ -47,43 +47,42 @@ class GUI:
 			surfaces[str(surface)].addCursor(cursorNo)
 			
 	def removeCursor(self,cursorNo):
-		location = 0
 		surNo = self.findCursor(cursorNo)
 		self.surfaces[str(surNo)].removeCursor(cursorNo)
 		self.cursors.pop(str(cursorNo),None)
 		
 	def leftDown(self, cursorNo):
-		self.cursors[str(cursorNo)].setStateL("Down")
+		self.cursors[str(cursorNo)].setStateLDown()
 		xloc = self.cursors[str(cursorNo)].getX()
 		yloc = self.cursors[str(cursorNo)].getY()
 		return (x=xloc,y=yloc)
 
 	def middleDown(self, cursorNo):
-		self.cursors[str(cursorNo)].setStateM("Down")
+		self.cursors[str(cursorNo)].setStateMDown()
 		xloc = self.cursors[str(cursorNo)].getX()
 		yloc = self.cursors[str(cursorNo)].getY()
 		return (x=xloc,y=yloc)
 
 	def rightDown(self, cursorNo):
-		self.cursors[str(cursorNo)].setStateR("Down")
+		self.cursors[str(cursorNo)].setStateRDown()
 		xloc = self.cursors[str(cursorNo)].getX()
 		yloc = self.cursors[str(cursorNo)].getY()
 		return (x=xloc,y=yloc)
 
 	def leftUp(self, cursorNo):
-		secondsDown = self.cursors[str(cursorNo)].setStateL("Up")
+		secondsDown = self.cursors[str(cursorNo)].setStateLUp()
 		xloc = self.cursors[str(cursorNo)].getX()
 		yloc = self.cursors[str(cursorNo)].getY()
 		return (x=xloc,y=yloc,downTime=secondsDown)
 
 	def middleUp(self, cursorNo):
-		secondsDown = self.cursors[str(cursorNo)].setStateM("Up")
+		secondsDown = self.cursors[str(cursorNo)].setStateMUp()
 		xloc = self.cursors[str(cursorNo)].getX()
 		yloc = self.cursors[str(cursorNo)].getY()
 		return (x=xloc,y=yloc,downTime=secondsDown)
 
 	def rightUp(self, cursorNo):
-		secondsDown = self.cursors[str(cursorNo)].setStateR("Up")
+		secondsDown = self.cursors[str(cursorNo)].setStateRUp()
 		xloc = self.cursors[str(cursorNo)].getX()
 		yloc = self.cursors[str(cursorNo)].getY()
 		return (x=xloc,y=yloc,downTime=secondsDown)
