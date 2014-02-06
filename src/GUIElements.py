@@ -1,9 +1,9 @@
 class cursor:
     __slots__ = ['id', 'loc', 'stateL', 'stateM', 'stateR']
 
-    def __init__(self):
-        self.loc.setX(0)
-        self.loc.setY(0)
+    def __init__(self, x, y):
+        self.loc.setX(x)
+        self.loc.setY(y)
         self.stateL = "up"
         self.stateM = "up"
         self.stateR = "up"
