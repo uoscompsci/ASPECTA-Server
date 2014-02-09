@@ -19,22 +19,22 @@ class apiMessageProcessor:
 			print("Cursor Number: " + str(cursorNo))
 		if cmd == 'mouse_l': #Clicks the left mouse button down on the selected cursor
 			loc = self.GUI.leftDown(pieces[1])
-			print "Left mouse down at x = " + loc[0] + " y = " + loc[1] + "\n"
+			print "Left mouse down at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
 		elif cmd == 'mouse_lu': #Depresses the left mouse button on the selected cursor
 			loc = self.GUI.leftUp(pieces[1])
-			print "Left mouse up at x = " + loc[0] + " y = " + loc[1] + " held for " + str(loc[2])  + " seconds\n"
+			print "Left mouse up at x = " + str(loc[0]) + " y = " + str(loc[1]) + " held for " + str(loc[2])  + " seconds\n"
 		elif cmd == 'mouse_m': #Clicks the middle mouse button down on the selected cursor
 			loc = self.GUI.middleDown(pieces[1])
-			print "Middle mouse down at x = " + loc[0] + " y = " + loc[1] + "\n"
+			print "Middle mouse down at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
 		elif cmd == 'mouse_mu': #Depresses the middle mouse button on the selected cursor
 			loc = self.GUI.middleUp(pieces[1])
-			print "Middle mouse up at x = " + loc[0] + " y = " + loc[1] + " held for " + str(loc[2])  + " seconds\n"
+			print "Middle mouse up at x = " + str(loc[0]) + " y = " + str(loc[1]) + " held for " + str(loc[2])  + " seconds\n"
 		elif cmd == 'mouse_r': #Clicks the right mouse button down on the selected cursor
 			loc = self.GUI.rightDown(pieces[1])
-			print "Right mouse down at x = " + loc[0] + " y = " + loc[1] + "\n"
+			print "Right mouse down at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
 		elif cmd == 'mouse_ru': #Depresses the right mouse button on the selected cursor
 			loc = self.GUI.rightUp(pieces[1])
-			print "Right mouse up at x = " + loc[0] + " y = " + loc[1] + " held for " + str(loc[2])  + " seconds\n"
+			print "Right mouse up at x = " + str(loc[0]) + " y = " + str(loc[1]) + " held for " + str(loc[2])  + " seconds\n"
 		elif cmd == 'move_cursor': #Moves cursor by the specified distance
 			self.GUI.moveCursor(pieces[1],pieces[2],pieces[3])
 		elif cmd == 'relocate_cursor': #Moves cursor to the specified position on the specified surface
