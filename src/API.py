@@ -35,10 +35,10 @@ class apiMessageProcessor:
 		elif cmd == 'mouse_ru': #Depresses the right mouse button on the selected cursor
 			loc = self.GUI.rightUp(pieces[1])
 			print "Right mouse up at x = " + loc[0] + " y = " + loc[1] + " held for " + str(loc[2])  + " seconds\n"
-		elif cmd == 'move_cursor':
+		elif cmd == 'move_cursor': #Moves cursor by the specified distance
 			self.GUI.moveCursor(pieces[1],pieces[2],pieces[3])
-		elif cmd == 'relocate_cursor':
+		elif cmd == 'relocate_cursor': #Moves cursor to the specified position on the specified surface
 			self.GUI.setCursorPos(pieces[1],pieces[2],pieces[3],pieces[4])
-		elif cmd == 'get_cursor_pos':
+		elif cmd == 'get_cursor_pos': #gets the position of the cursor
 			loc = self.GUI.getCursorPos(pieces[1])
 			print "Cursor at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
