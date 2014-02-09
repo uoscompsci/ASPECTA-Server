@@ -4,11 +4,11 @@ class cursor:
     __slots__ = ['id', 'loc', 'stateL', 'stateM', 'stateR', 'downTimeL', 'downTimeR', 'downTimeM']
 
     def __init__(self, x, y):
-        self.loc.setX(x)
-        self.loc.setY(y)
+        #self.loc=point2D(x,y)
         self.stateL = "up"
         self.stateM = "up"
         self.stateR = "up"
+        self.loc = point2D(x,y)
 
     def moveX(self, distance):
         self.loc.setX(self.loc.getX()+distance)
@@ -125,10 +125,11 @@ class window:
     #elements and subwindows
 
 class surface(window):
-    __slots__ = ['toLeft', 'toRight', 'above', 'below']
+    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors']
 
     def __init__(self):
         self.type = "surface"
+        self.cursors = []
 
     def setLeft(self, surface):
         self.toLeft = surface
@@ -153,7 +154,22 @@ class surface(window):
 
     def getDown(self):
         return self.below
-
+    
+    def addCursor(self, cursorNo):
+        self.cursors.append(cursorNo)
+        
+    def removeCursor(self, cursorNo):
+        for x in range(0, len(self.cursors)):
+            if(self.cursors[x]==cursorNo):
+                self.cursors.pop(x)
+    
+    def containsCur(self, cursorNo):
+        found = False
+        for x in range(0, len(self.cursors)):
+            if(self.cursors[x]==cursorNo):
+                found = True
+        return found
+        
 class element:
     __slots__ = ['elementType', 'visible']
 
