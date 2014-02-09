@@ -164,10 +164,13 @@ class surface(window):
                 self.cursors.pop(x)
     
     def containsCur(self, cursorNo):
+        print ("Checking " + str(self.cursors) + " for " + str(cursorNo)) 
         found = False
         for x in range(0, len(self.cursors)):
-            if(self.cursors[x]==cursorNo):
+            if(int(self.cursors[x])==int(cursorNo)):
                 found = True
+        if(found == False):
+            print("Not found")
         return found
         
 class element:
