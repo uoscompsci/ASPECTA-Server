@@ -11,21 +11,21 @@ class cursor:
         self.loc = point2D(x,y)
 
     def moveX(self, distance):
-        self.loc.setX(self.loc.getX()+distance)
+        self.loc.setX(self.loc.getX()+int(distance))
 
 
     def moveY(self, distance):
-        self.loc.setY(self.loc.getY()+distance)
+        self.loc.setY(self.loc.getY()+int(distance))
 
     def move(self, xdis, ydis):
         self.moveX(xdis)
         self.moveY(ydis)
 
     def setX(self, loc):
-        self.loc.setX(loc)
+        self.loc.setX(int(loc))
 
     def setY(self, loc):
-        self.loc.setY(loc)
+        self.loc.setY(int(loc))
 
     def setLoc(self, xloc, yloc):
         self.setX(xloc)
@@ -345,8 +345,8 @@ class point2D:
     __slots__ = ['x', 'y']
 
     def __init__(self, x, y):
-        self.x = x
-        self.y = y
+        self.x = int(x)
+        self.y = int(y)
 
     def setX(self, x):
         self.x = x

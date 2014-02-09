@@ -70,9 +70,10 @@ class GUI:
 	def setCursorPos(self, cursorNo, xLoc, yLoc, surface):
 		self.cursors[str(cursorNo)].setLoc(xLoc,yLoc)
 		origSur = self.findCursor(cursorNo)
+		print("Original Surface = " + str(origSur))
 		if(origSur != surface):
-			surfaces[str(origSur)].removeCursor(cursorNo)
-			surfaces[str(surface)].addCursor(cursorNo)
+			self.surfaces[str(origSur)].removeCursor(cursorNo)
+			self.surfaces[str(surface)].addCursor(cursorNo)
 			
 	def removeCursor(self,cursorNo):
 		surNo = self.findCursor(cursorNo)
@@ -114,3 +115,8 @@ class GUI:
 		xloc = self.cursors[str(cursorNo)].getX()
 		yloc = self.cursors[str(cursorNo)].getY()
 		return (xloc,yloc,secondsDown)
+	
+	def getCursorPos(self, cursorNo):
+		xloc = self.cursors[str(cursorNo)].getX()
+		yloc = self.cursors[str(cursorNo)].getY()
+		return (xloc,yloc)
