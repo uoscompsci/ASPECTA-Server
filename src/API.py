@@ -58,7 +58,20 @@ class apiMessageParser:
 			print "Window at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
 		elif cmd == 'get_window_width':
 			width = self.GUI.getWindowWidth(pieces[1])
-			print ("Window width = " + str(width))
+			print "Window width = " + str(width)
 		elif cmd == 'get_window_height':
 			height = self.GUI.getWindowHeight(pieces[1])
-			print ("Window height = " + str(height))
+			print "Window height = " + str(height)
+		elif cmd == 'stretch_window_down':
+			self.GUI.stretchWindowDown(pieces[1],pieces[2])
+		elif cmd == 'stretch_window_up':
+			self.GUI.stretchWindowUp(pieces[1],pieces[2])
+		elif cmd == 'stretch_window_left':
+			self.GUI.stretchWindowLeft(pieces[1],pieces[2])
+		elif cmd == 'stretch_window_right':
+			self.GUI.stretchWindowRight(pieces[1],pieces[2])
+		elif cmd == 'set_window_name':
+			self.GUI.setWindowName(pieces[1],pieces[2])
+		elif cmd == 'get_window_name':
+			name = self.GUI.getWindowName(pieces[1])
+			print "Window name = " + name

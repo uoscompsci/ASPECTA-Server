@@ -86,18 +86,18 @@ class window:
         self.name = name
 
     def stretchLeft(self, distance):
-        self.loc.setX(self.loc.getX()-distance)
-        self.xsize = self.xsize+distance
+        self.loc.setX(self.loc.getX()-int(distance))
+        self.xsize = self.xsize+int(distance)
 
     def stretchRight(self, distance):
-        self.xsize = self.xsize+distance
+        self.xsize = self.xsize+int(distance)
 
     def stretchUp(self, distance):
-        self.loc.setY(self.loc.getY()-distance)
-        self.ysize = self.ysize+distance
+        self.loc.setY(self.loc.getY()-int(distance))
+        self.ysize = self.ysize+int(distance)
 
     def stretchDown(self, distance):
-        self.ysize = self.ysize+distance
+        self.ysize = self.ysize+int(distance)
 
     def dragX(self, xdist):
         self.loc.setX(int(self.loc.getX())+int(xdist))
