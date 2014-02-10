@@ -14,10 +14,10 @@ class apiMessageParser:
 		if cmd == 'new_surface': #Creates a new surface, the ID number for that surface is returned
 			surfaceNo = self.GUI.newSurface()
 			print("Surface Number: " + str(surfaceNo))
-		if cmd == 'new_cursor': #Creates a new cursor given a surface and coordinates, the ID number for that cursor is returned
+		elif cmd == 'new_cursor': #Creates a new cursor given a surface and coordinates, the ID number for that cursor is returned
 			cursorNo = self.GUI.newCursor(pieces[1],pieces[2],pieces[3])
 			print("Cursor Number: " + str(cursorNo))
-		if cmd == 'mouse_l': #Clicks the left mouse button down on the selected cursor
+		elif cmd == 'mouse_l': #Clicks the left mouse button down on the selected cursor
 			loc = self.GUI.leftDown(pieces[1])
 			print "Left mouse down at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
 		elif cmd == 'mouse_lu': #Depresses the left mouse button on the selected cursor
