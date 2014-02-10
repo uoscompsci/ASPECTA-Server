@@ -80,9 +80,7 @@ class window:
     __slots__ = ['elements', 'loc', 'xsize', 'ysize', 'subwindows', 'name', 'type']
 
     def __init__(self, xloc, yloc, xsize, ysize, name):
-        self.type = "window"
-        self.loc.setX(xloc)
-        self.loc.setY(yloc)
+        self.loc = point2D(xloc,yloc)
         self.xsize = xsize
         self.ysize = ysize
         self.name = name
@@ -122,14 +120,30 @@ class window:
         self.setXLoc(xloc)
         self.setYLoc(yloc)
 
-    #elements and subwindows
+    def getX(self):
+        return self.loc.getX()
+    
+    def getY(self):
+        return self.loc.getY()
+    
+    def setWidth(self, width):
+        self.xsize = width
+        
+    def setHeight(self, height):
+        self.ysize = height
+        
+    def getWidth(self):
+        return self.xsize
+    
+    def getHeight(self):
+        return self.ysize
 
-class surface(window):
-    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors']
+class surface():
+    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows']
 
     def __init__(self):
-        self.type = "surface"
         self.cursors = []
+        self.windows = []
 
     def setLeft(self, surface):
         self.toLeft = surface
@@ -167,6 +181,21 @@ class surface(window):
         found = False
         for x in range(0, len(self.cursors)):
             if(int(self.cursors[x])==int(cursorNo)):
+                found = True
+        return found
+    
+    def addWindow(self, windowNo):
+        self.windows.append(windowNo)
+        
+    def removeWindow(self, windowNo):
+        for x in range(0, len(self.windows)):
+            if(self.windows[x]==windowNo):
+                self.windows.pop(x)
+    
+    def containsWin(self, windowNo):
+        found = False
+        for x in range(0, len(self.windows)):
+            if(int(self.windows[x])==int(windowNo)):
                 found = True
         return found
         

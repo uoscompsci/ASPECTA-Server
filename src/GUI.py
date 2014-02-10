@@ -1,16 +1,18 @@
 from GUIElements import *
 
 class GUI:
-	__slots__ = ['surfaces', 'surfaces_lock', 'displays', 'displays_lock', 'cursors', 'cursors_lock', 'lastcur', 'lastsur']
+	__slots__ = ['surfaces', 'surfaces_lock', 'displays', 'displays_lock', 'cursors', 'cursors_lock', 'lastcur', 'lastsur', 'lastwin' 'windows', 'windows_lock']
 	
 	def __init__(self):
 		self.lastcur = 0
 		self.lastsur = 0
+		self.lastwin = 0
 		self.surfaces_lock = False
 		self.displays_lock = False
 		self.cursors_lock = False
 		self.cursors = {}
 		self.surfaces = {}
+		self.windows = {}
 		
 	def newSurface(self):
 		newSur = surface()
@@ -113,3 +115,69 @@ class GUI:
 		xloc = self.cursors[str(cursorNo)].getX()
 		yloc = self.cursors[str(cursorNo)].getY()
 		return (xloc,yloc)
+	
+	def newWindow(self, window, x, y, xWid, yWid, name):
+		newWin = cursor(x,y,xWid,yWid,name)
+		added = False
+		windowNo = 0
+		while(added == False):
+			if(self.windows_lock==False):
+				self.windows_lock = True
+				if (len(self.windows)==0):
+					self.windows[str(1)] = newWin
+					windowNo = 1
+					self.lastwin = 1
+				else:
+					self.lastwin=self.lastwin+1
+					self.windows[str(self.lastwin)] = newWin
+					windowNo = self.lastwin		
+				self.windows_lock = False
+				added = True
+		self.surfaces[str(window)].addWindow(windowNo)
+		return windowNo
+	
+	def findWindow(self, windowNo):
+		location = 0
+		for key in self.surfaces:
+			if(self.surfaces[key].containsWin(windowNo)==True):
+				location = int(key)
+		return location
+	
+	def moveWindow(self, windowNo, xDist, yDist):
+		self.windows[str(windowNo)].drag(xDist,yDist) #TODO Handle when moves to different screen
+		
+	def setWindowPos(self, windowNo, xLoc, yLoc, surface):
+		self.windows[str(windowNo)].setLoc(xLoc,yLoc)
+		origSur = self.findWindow(cursorNo)Right
+		if(origSur != surface):
+			self.surfaces[str(origSur)].removeWindow(windowNo)
+			self.surfaces[str(surface)].addWindow(windowNo)
+			
+	def removeWindow(self,windowNo):Right
+		surNo = self.findWindow(windowNo)
+		self.surfaces[str(surNo)].removeWindow(windowNo)
+		self.windows.pop(str(windowNo),None)
+
+	def setWindowHeight(self,windowNo,height):
+		self.windows[str(windowNo)].setHeight(height)
+		
+	def setWindowWidth(self,windowNo,width):
+		self.windows[str(windowNo)].setWidth(width)
+		
+	def getWindowHeight(self,windowNo):
+		return self.windows[str(windowNo)].getHeight()
+	
+	def getWindowWidth(self,windowNo):
+		return self.windows[str(windowNo)].getWidth()
+	
+	def stretchWindowRight(self,windowNo,dist):
+		self.windows[str(windowNo)].stretchRight(dist)
+		
+	def stretchWindowLeft(self,windowNo,dist):
+		self.windows[str(windowNo)].stretchLeft(dist)
+		
+	def stretchWindowUp(self,windowNo,dist):
+		self.windows[str(windowNo)].stretchUp(dist)
+		
+	def stretchWindowDown(self,windowNo,dist):
+		self.windows[str(windowNo)].stretchDown(dist)
