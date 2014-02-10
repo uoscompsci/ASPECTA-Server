@@ -148,12 +148,12 @@ class GUI:
 		
 	def setWindowPos(self, windowNo, xLoc, yLoc, surface):
 		self.windows[str(windowNo)].setLoc(xLoc,yLoc)
-		origSur = self.findWindow(cursorNo)Right
+		origSur = self.findWindow(cursorNo)
 		if(origSur != surface):
 			self.surfaces[str(origSur)].removeWindow(windowNo)
 			self.surfaces[str(surface)].addWindow(windowNo)
 			
-	def removeWindow(self,windowNo):Right
+	def removeWindow(self,windowNo):
 		surNo = self.findWindow(windowNo)
 		self.surfaces[str(surNo)].removeWindow(windowNo)
 		self.windows.pop(str(windowNo),None)
