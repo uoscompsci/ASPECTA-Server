@@ -98,7 +98,7 @@ class GUI:
 		xloc = self.cursors[str(cursorNo)].getX()
 		yloc = self.cursors[str(cursorNo)].getY()
 		return (xloc,yloc,secondsDown)
-
+	
 	def middleUp(self, cursorNo):
 		secondsDown = self.cursors[str(cursorNo)].setStateMUp()
 		xloc = self.cursors[str(cursorNo)].getX()
@@ -181,3 +181,14 @@ class GUI:
 		
 	def stretchWindowDown(self,windowNo,dist):
 		self.windows[str(windowNo)].stretchDown(dist)
+		
+	def setWindowName(self,windowNo,name):
+		self.windows[str(windowNo)].setName(name)
+		
+	def getWindowName(self,windowNo):
+		return self.windows[str(windowNo)].getName()
+	
+	def getWindowPos(self, windowNo):
+		xloc = self.windows[str(windowNo)].getX()
+		yloc = self.windows[str(windowNo)].getY()
+		return (xloc,yloc)

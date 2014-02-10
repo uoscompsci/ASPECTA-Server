@@ -77,7 +77,7 @@ class cursor:
         self.stateM = "Down"
 
 class window:
-    __slots__ = ['elements', 'loc', 'xsize', 'ysize', 'subwindows', 'name', 'type']
+    __slots__ = ['elements', 'loc', 'xsize', 'ysize', 'subwindows', 'name']
 
     def __init__(self, xloc, yloc, xsize, ysize, name):
         self.loc = point2D(xloc,yloc)
@@ -137,6 +137,12 @@ class window:
     
     def getHeight(self):
         return self.ysize
+    
+    def setName(self,name):
+        self.name=name
+        
+    def getName(self):
+        return self.name
 
 class surface():
     __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows']
