@@ -17,6 +17,9 @@ class apiMessageParser:
 		elif cmd == 'new_cursor': #Creates a new cursor given a surface and coordinates, the ID number for that cursor is returned
 			cursorNo = self.GUI.newCursor(pieces[1],pieces[2],pieces[3])
 			print("Cursor Number: " + str(cursorNo))
+		elif cmd == 'new_window':
+			windowNo = self.GUI.newWindow(pieces[1],pieces[2],pieces[3],pieces[4],pieces[5],pieces[6])
+			print("Window Number: " + str(windowNo))
 		elif cmd == 'mouse_l': #Clicks the left mouse button down on the selected cursor
 			loc = self.GUI.leftDown(pieces[1])
 			print "Left mouse down at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
@@ -42,3 +45,20 @@ class apiMessageParser:
 		elif cmd == 'get_cursor_pos': #gets the position of the cursor
 			loc = self.GUI.getCursorPos(pieces[1])
 			print "Cursor at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
+		elif cmd == 'move_window':
+			self.GUI.moveWindow(pieces[1],pieces[2],pieces[3])
+		elif cmd == 'relocate_window':
+			self.GUI.setWindowPos(pieces[1],pieces[2],pieces[3],pieces[4])
+		elif cmd == 'set_window_width':
+			self.GUI.setWindowWidth(pieces[1],pieces[2])
+		elif cmd == 'set_window_height':
+			self.GUI.setWindowHeight(pieces[1],pieces[2])
+		elif cmd == 'get_window_pos':
+			loc = self.GUI.getWindowPos(pieces[1])
+			print "Window at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
+		elif cmd == 'get_window_width':
+			width = self.GUI.getWindowWidth(pieces[1])
+			print ("Window width = " + str(width))
+		elif cmd == 'get_window_height':
+			height = self.GUI.getWindowHeight(pieces[1])
+			print ("Window height = " + str(height))

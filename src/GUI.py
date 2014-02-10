@@ -10,6 +10,7 @@ class GUI:
 		self.surfaces_lock = False
 		self.displays_lock = False
 		self.cursors_lock = False
+		self.windows_lock = False
 		self.cursors = {}
 		self.surfaces = {}
 		self.windows = {}
@@ -116,8 +117,8 @@ class GUI:
 		yloc = self.cursors[str(cursorNo)].getY()
 		return (xloc,yloc)
 	
-	def newWindow(self, window, x, y, xWid, yWid, name):
-		newWin = cursor(x,y,xWid,yWid,name)
+	def newWindow(self, surface, x, y, xWid, yWid, name):
+		newWin = window(x,y,xWid,yWid,name)
 		added = False
 		windowNo = 0
 		while(added == False):
@@ -133,7 +134,7 @@ class GUI:
 					windowNo = self.lastwin		
 				self.windows_lock = False
 				added = True
-		self.surfaces[str(window)].addWindow(windowNo)
+		self.surfaces[str(surface)].addWindow(windowNo)
 		return windowNo
 	
 	def findWindow(self, windowNo):
@@ -148,7 +149,7 @@ class GUI:
 		
 	def setWindowPos(self, windowNo, xLoc, yLoc, surface):
 		self.windows[str(windowNo)].setLoc(xLoc,yLoc)
-		origSur = self.findWindow(cursorNo)
+		origSur = self.findWindow(windowNo)
 		if(origSur != surface):
 			self.surfaces[str(origSur)].removeWindow(windowNo)
 			self.surfaces[str(surface)].addWindow(windowNo)

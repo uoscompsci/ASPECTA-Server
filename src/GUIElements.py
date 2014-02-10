@@ -81,8 +81,8 @@ class window:
 
     def __init__(self, xloc, yloc, xsize, ysize, name):
         self.loc = point2D(xloc,yloc)
-        self.xsize = xsize
-        self.ysize = ysize
+        self.xsize = int(xsize)
+        self.ysize = int(ysize)
         self.name = name
 
     def stretchLeft(self, distance):
@@ -100,10 +100,10 @@ class window:
         self.ysize = self.ysize+distance
 
     def dragX(self, xdist):
-        self.loc.setX(self.loc.getX()+xdist)
+        self.loc.setX(int(self.loc.getX())+int(xdist))
 
     def dragY(self, ydist):
-        self.loc.setY(self.loc.getY()+ydist)
+        self.loc.setY(int(self.loc.getY())+int(ydist))
 
     def drag(self, xdist, ydist):
         self.dragX(xdist)
