@@ -1,6 +1,6 @@
 from GUI import *
 
-class apiMessageProcessor:
+class apiMessageParser:
 	__slots__ = ['GUI']
 	
 	def __init__(self):

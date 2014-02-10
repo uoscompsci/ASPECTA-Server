@@ -21,15 +21,11 @@ class GUI:
 				self.surfaces_lock = True
 				if (len(self.surfaces)==0):
 					self.surfaces["1"] = newSur
-					print(self.surfaces)
-					print(len(self.surfaces))
 					surfaceNo = 1
 					self.lastsur = 1
 				else:
 					self.lastsur=self.lastsur+1
 					self.surfaces[str(self.lastsur)] = newSur
-					print(self.surfaces)
-					print(len(self.surfaces))
 					surfaceNo = self.lastsur		
 				self.surfaces_lock = False
 				added = True
@@ -42,12 +38,10 @@ class GUI:
 		while(added == False):
 			if(self.cursors_lock==False):
 				self.cursors_lock = True
-				print (self.cursors)
 				if (len(self.cursors)==0):
 					self.cursors[str(1)] = newCur
 					cursorNo = 1
 					self.lastcur = 1
-					print(self.cursors)
 				else:
 					self.lastcur=self.lastcur+1
 					self.cursors[str(self.lastcur)] = newCur
@@ -60,7 +54,7 @@ class GUI:
 	def findCursor(self, cursorNo):
 		location = 0
 		for key in self.surfaces:
-			if(self.surfaces[key].containsCur(cursorNo)==True): #TODO still need to implement
+			if(self.surfaces[key].containsCur(cursorNo)==True):
 				location = int(key)
 		return location
 	
