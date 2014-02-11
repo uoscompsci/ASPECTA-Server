@@ -84,6 +84,7 @@ class window:
         self.xsize = int(xsize)
         self.ysize = int(ysize)
         self.name = name
+        self.elements = []
 
     def stretchLeft(self, distance):
         self.loc.setX(self.loc.getX()-int(distance))
@@ -143,6 +144,21 @@ class window:
         
     def getName(self):
         return self.name
+    
+    def addElement(self,elementNo):
+        self.elements.append(elementNo)
+        
+    def removeElement(self, elementNo):
+        for x in range(0, len(self.elements)):
+            if(self.elements[x]==elementNo):
+                self.elements.pop(x)
+    
+    def containsEle(self, elementNo):
+        found = False
+        for x in range(0, len(self.elements)):
+            if(int(self.elements[x])==int(elementNo)):
+                found = True
+        return found
 
 class surface():
     __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows']
@@ -220,18 +236,28 @@ class element:
 class circle(element):
     __slots__ = ['coord', 'radius', 'lineColor', 'fillColor']
 
-    def __init__(self, coord, radius, lineColor, fillColor):
+    def __init__(self, x, y, radius, lineColor, fillColor):
         self.elementType = "circle"
-        self.coord = coord
+        self.coord = point2D(x,y)
         self.radius = radius
         self.lineColor = lineColor
         self.fillColor = fillColor
 
-    def getCenter(self):
-        return self.coord
+    def getCenterX(self):
+        return self.coord.getX()
+    
+    def getCenterY(self):
+        return self.coord.getY()
+    
+    def setCenterX(self,x):
+        self.coord.setX(x)
+        
+    def setCenterY(self,y):
+        self.coord.setY(y)
 
-    def setCenter(self, coord):
-        self.coord = coord
+    def setCenter(self, x, y):
+        self.setCenterX(x)
+        self.setCenterY(y)
 
     def getRadius(self):
         return self.radius

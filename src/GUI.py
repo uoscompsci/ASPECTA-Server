@@ -193,3 +193,50 @@ class GUI:
 		xloc = self.windows[str(windowNo)].getX()
 		yloc = self.windows[str(windowNo)].getY()
 		return (xloc,yloc)
+	
+	def findElement(self, elementNo):
+		location = 0
+		for key in self.windows:
+			if(self.windows[key].containsEle(elementNo)==True):
+				location = int(key)
+		return location
+	
+	def newCircle(self, windowNo, coord, radius, lineColor, fillColor):
+		newCir = circle(coord, radius, lineColor, fillColor)
+		added = False
+		elementNo = 0
+		while(added == False):
+			if(self.elements_lock==False):
+				self.elements_lock = True
+				if (len(self.elements)==0):
+					self.elements[str(1)] = newCir
+					elementNo = 1
+					self.lastele = 1
+				else:
+					self.lastele=self.lastele+1
+					self.elements[str(self.lastele)] = newCir
+					elementNo = self.lastele		
+				self.elements_lock = False
+				added = True
+		self.windows[str(windowNo)].addElement(elementNo)
+		return elementNo
+		
+	def setCirclePos(self, elementNo, xLoc, yLoc, window):
+		self.elements[str(elementNo)].setCenter(xLoc,yLoc)
+		origWin = self.findElement(elementNo)
+		if(origWin != window):
+			self.windows[str(origWin)].removeElement(elementNo)
+			self.windows[str(window)].addElement(elementNo)
+		
+	def setCircleRad(self, elementNo, radius):
+		self.elements[str(elementNo)].setRadius(radius)
+		
+	def getCircleRad(self, elementNo):
+		rad = self.elements[str(elementNo)].getRadius()
+		return rad
+		
+	def getCirclePos(self, elementNo):
+		xloc = self.elements[str(elementNo)].getCenterX()
+		yloc = self.elements[str(elementNo)].getCenterY()
+		return (xloc,yloc)
+	
