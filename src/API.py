@@ -106,6 +106,31 @@ class apiMessageParser:
 		loc = self.GUI.getCirclePos(pieces[1])
 		print "Circle at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
 		
+	def getElementType(self,pieces):
+		type = self.GUI.getEleType(pieces[1])
+		print "Element type = " + type
+		
+	def setCircleLineColor(self,pieces):
+		self.GUI.setCircleLine(pieces[1],pieces[2])
+		
+	def setCircleFillColor(self,pieces):
+		self.GUI.setCircleFill(pieces[1],pieces[2])
+		
+	def getCircleLineColor(self,pieces):
+		color = self.GUI.getCircleLine(pieces[1])
+		print "Line color = " + color
+		
+	def getCircleFillColor(self,pieces):
+		color = self.GUI.getCircleFill(pieces[1])
+		print "Fill color = " + color
+		
+	def getCircleRadius(self,pieces):
+		radius = self.GUI.getCircleRad(pieces[1])
+		print "Radius = " + radius
+		
+	def setCircleRadius(self,pieces):
+		self.GUI.setCircleRad(pieces[1],pieces[2])
+		
 	messages = {'new_surface' : (newSurface,0), #No parameters
 			'new_cursor' : (newCursor,3), #[1]=SurfaceNo  [2]=x  [3]=y
 			'new_window' : (newWindow,6), #[1]=SurfaceNo  [2]=x  [3]=y  [4]=width  [5]=height  [6]=name
@@ -133,7 +158,14 @@ class apiMessageParser:
 			'set_window_name' : (setWindowName,2), #[1]=WindowNo  [2]=Name
 			'get_window_name' : (getWindowName,1), #[1]=WindowNo
 			'relocate_circle' : (relocateCircle,4), #[1]=ElementNo  [2]=x  [3]=y  [4]=windowNo
-			'get_circle_pos' : (getCirclePosition,1) #[1]=ElementNo
+			'get_circle_pos' : (getCirclePosition,1), #[1]=ElementNo
+			'get_element_type' : (getElementType,1), #[1]=ElementNo
+			'set_circle_line_color' : (setCircleLineColor,2), #[1]=ElementNo  [2]=Color
+			'set_circle_fill_color' : (setCircleFillColor,2), #[1]=ElementNo  [2]=Color
+			'get_circle_line_color' : (getCircleLineColor,1), #[1]=ElementNo
+			'get_circle_fill_color' : (getCircleFillColor,1), #[1]=ElementNo
+			'set_circle_radius' : (setCircleRadius,2), #[1]ElementNo  [2]=Radius
+			'get_circle_radius' : (getCircleRadius,1) #[1]ElementNp
 	}
 	
 	def processMessage(self, msg):

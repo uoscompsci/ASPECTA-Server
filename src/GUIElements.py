@@ -314,6 +314,7 @@ class lineStrip(element):
     __slots__ = ['points', 'color']
 
     def __init__(self, point, color):
+        self.elementType = "lineStrip"
         self.points = [point]
         self.color = color
 
@@ -336,6 +337,7 @@ class polygon(element):
     __slots__ = ['points', 'lineColor', 'fillColor']
 
     def __init__(self, points, lineColor, fillColor):
+        self.elementType = "polygon"
         self.points = points
         self.lineColor = lineColor
         self.fillColor = fillColor

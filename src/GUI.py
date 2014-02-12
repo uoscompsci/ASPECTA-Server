@@ -243,3 +243,17 @@ class GUI:
 		yloc = self.elements[str(elementNo)].getCenterY()
 		return (xloc,yloc)
 	
+	def getEleType(self, elementNo):
+		return self.elements[str(elementNo)].checkType()
+	
+	def setCircleFill(self, elementNo, color):
+		self.elements[str(elementNo)].setFillColor(color)
+		
+	def setCircleLine(self, elementNo, color):
+		self.elements[str(elementNo)].setLineColor(color)
+		
+	def getCircleFill(self, elementNo):
+		return self.elements[str(elementNo)].getFillColor()
+		
+	def getCircleLine(self, elementNo):
+		return self.elements[str(elementNo)].getLineColor()
