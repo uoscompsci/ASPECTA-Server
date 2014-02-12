@@ -1,19 +1,22 @@
 from GUIElements import *
 
 class GUI:
-	__slots__ = ['surfaces', 'surfaces_lock', 'displays', 'displays_lock', 'cursors', 'cursors_lock', 'lastcur', 'lastsur', 'lastwin' 'windows', 'windows_lock']
+	__slots__ = ['surfaces', 'surfaces_lock', 'displays', 'displays_lock', 'cursors', 'cursors_lock', 'lastcur', 'lastsur', 'lastwin', 'lastele' 'windows', 'windows_lock', 'elements', 'elements_lock']
 	
 	def __init__(self):
 		self.lastcur = 0
 		self.lastsur = 0
 		self.lastwin = 0
+		self.lastele = 0
 		self.surfaces_lock = False
 		self.displays_lock = False
 		self.cursors_lock = False
 		self.windows_lock = False
+		self.elements_lock = False
 		self.cursors = {}
 		self.surfaces = {}
 		self.windows = {}
+		self.elements = {}
 		
 	def newSurface(self):
 		newSur = surface()
@@ -201,8 +204,8 @@ class GUI:
 				location = int(key)
 		return location
 	
-	def newCircle(self, windowNo, coord, radius, lineColor, fillColor):
-		newCir = circle(coord, radius, lineColor, fillColor)
+	def newCircle(self, windowNo, x, y, radius, lineColor, fillColor):
+		newCir = circle(x, y, radius, lineColor, fillColor)
 		added = False
 		elementNo = 0
 		while(added == False):

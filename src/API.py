@@ -19,7 +19,8 @@ class apiMessageParser:
 		print("Window Number: " + str(windowNo))
 		
 	def newCircle(self,pieces):
-		elementNo = self.GUI.newCircle(pieces[1],pieces[2],pieces[3],pieces[4],pieces[5])
+		elementNo = self.GUI.newCircle(pieces[1],pieces[2],pieces[3],pieces[4],pieces[5],pieces[6])
+		print("Element Number: " + str(elementNo))
 		
 	def mouseLeftDown(self,pieces):
 		loc = self.GUI.leftDown(pieces[1])
@@ -98,36 +99,51 @@ class apiMessageParser:
 		name = self.GUI.getWindowName(pieces[1])
 		print "Window name = " + name
 		
-	messages = {'new_surface' : newSurface, #No parameters
-			'new_cursor' : newCursor, #[1]=SurfaceNo  [2]=x  [3]=y
-			'new_window' : newWindow, #[1]=SurfaceNo  [2]=x  [3]=y  [4]=width  [5]=height  [6]=name
-			'new_circle' : newCircle, #[1]=WindowNo  [2]=Coordinate  [3]=Radius  [4]=LineColor  [5]=FillColor
-			'mouse_l' : mouseLeftDown, #[1]=CursorNo
-			'mouse_lu' : mouseLeftUp, #[1]=CursorNo
-			'mouse_m' : mouseMiddleDown, #[1]=CursorNo
-			'mouse_mu' : mouseMiddleUp, #[1]=CursorNo
-			'mouse_r' : mouseRightDown, #[1]=CursorNo
-			'mouse_ru' : mouseRightUp, #[1]=CursorNo
-			'move_cursor' : moveCursor, #[1]=CursorNo  [2]=xDistance  [3]=yDistance
-			'relocate_cursor' : relocateCursor, #[1]=CursorNo  [2]=x  [3]=y  [4]=Surface
-			'get_cursor_pos' : getCursorPosition, #[1]=CursorNo
-			'move_window' : moveWindow, #[1]=WindowNo  [2]=xDistance  [3]=yDistance
-			'relocate_window' : relocateWindow,	#[1]=WindowNo  [2]=x  [3]=y  [4]=Surface
-			'set_window_width' : setWindowWidth, #[1]=WindowNo  [2]=Width
-			'set_window_height' : setWindowHeight, #[1]=WindowNo  [2]=Height
-			'get_window_pos' : getWindowPosition, #[1]=WindowNo
-			'get_window_width' : getWindowWidth, #[1]=WindowNo
-			'get_window_height' : getWindowHeight, #[1]=WindowNo
-			'stretch_window_down' : stretchWindowDown, #[1]=WindowNo  [2]=Distance
-			'stretch_window_up' : stretchWindowUp, #[1]=WindowNo  [2]=Distance
-			'stretch_window_left' : stretchWindowLeft, #[1]=WindowNo  [2]=Distance
-			'stretch_window_right' : stretchWindowRight, #[1]=WindowNo  [2]=Distance
-			'set_window_name' : setWindowName, #[1]=WindowNo  [2]=Name
-			'get_window_name' : getWindowName #[1]=WindowNo
+	def relocateCircle(self,pieces):
+		name = self.GUI.setCirclePos(pieces[1],pieces[2],pieces[3],pieces[4])
+		
+	def getCirclePosition(self,pieces):
+		loc = self.GUI.getCirclePos(pieces[1])
+		print "Circle at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
+		
+	messages = {'new_surface' : (newSurface,1), #No parameters
+			'new_cursor' : (newCursor,4), #[1]=SurfaceNo  [2]=x  [3]=y
+			'new_window' : (newWindow,7), #[1]=SurfaceNo  [2]=x  [3]=y  [4]=width  [5]=height  [6]=name
+			'new_circle' : (newCircle,7), #[1]=WindowNo  [2]=x  [3]=y  [4]=Radius  [5]=LineColor  [6]=FillColor
+			'mouse_l' : (mouseLeftDown,2), #[1]=CursorNo
+			'mouse_lu' : (mouseLeftUp,2), #[1]=CursorNo
+			'mouse_m' : (mouseMiddleDown,2), #[1]=CursorNo
+			'mouse_mu' : (mouseMiddleUp,2), #[1]=CursorNo
+			'mouse_r' : (mouseRightDown,2), #[1]=CursorNo
+			'mouse_ru' : (mouseRightUp,2), #[1]=CursorNo
+			'move_cursor' : (moveCursor,4), #[1]=CursorNo  [2]=xDistance  [3]=yDistance
+			'relocate_cursor' : (relocateCursor,5), #[1]=CursorNo  [2]=x  [3]=y  [4]=Surface
+			'get_cursor_pos' : (getCursorPosition,2), #[1]=CursorNo
+			'move_window' : (moveWindow,4), #[1]=WindowNo  [2]=xDistance  [3]=yDistance
+			'relocate_window' : (relocateWindow,5),	#[1]=WindowNo  [2]=x  [3]=y  [4]=Surface
+			'set_window_width' : (setWindowWidth,3), #[1]=WindowNo  [2]=Width
+			'set_window_height' : (setWindowHeight,3), #[1]=WindowNo  [2]=Height
+			'get_window_pos' : (getWindowPosition,2), #[1]=WindowNo
+			'get_window_width' : (getWindowWidth,2), #[1]=WindowNo
+			'get_window_height' : (getWindowHeight,2), #[1]=WindowNo
+			'stretch_window_down' : (stretchWindowDown,3), #[1]=WindowNo  [2]=Distance
+			'stretch_window_up' : (stretchWindowUp,3), #[1]=WindowNo  [2]=Distance
+			'stretch_window_left' : (stretchWindowLeft,3), #[1]=WindowNo  [2]=Distance
+			'stretch_window_right' : (stretchWindowRight,3), #[1]=WindowNo  [2]=Distance
+			'set_window_name' : (setWindowName,3), #[1]=WindowNo  [2]=Name
+			'get_window_name' : (getWindowName,2), #[1]=WindowNo
+			'relocate_circle' : (relocateCircle,5), #[1]=ElementNo  [2]=x  [3]=y  [4]=windowNo
+			'get_circle_pos' : (getCirclePosition,2) #[1]=ElementNo
 	}
 	
 	def processMessage(self, msg):
 		print 'PROCESSING MESSAGE'
 		print 'MESSAGE: ', msg, "\n"
 		pieces = msg.split(',')
-		self.messages[pieces[0]](self,pieces)
+		try:
+			if(len(pieces)==self.messages[pieces[0]][1]):
+				self.messages[pieces[0]][0](self,pieces)
+			else:
+				print "Invalid number of arguments (" + str(len(pieces)-1) + " instead of " + str(self.messages[pieces[0]][1]-1) + ")"
+		except KeyError:
+			print "Invalid API call"
