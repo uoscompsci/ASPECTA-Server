@@ -18,6 +18,9 @@ class apiMessageParser:
 		windowNo = self.GUI.newWindow(pieces[1],pieces[2],pieces[3],pieces[4],pieces[5],pieces[6])
 		print("Window Number: " + str(windowNo))
 		
+	def newCircle(self,pieces):
+		elementNo = self.GUI.newCircle(pieces[1],pieces[2],pieces[3],pieces[4],pieces[5])
+		
 	def mouseLeftDown(self,pieces):
 		loc = self.GUI.leftDown(pieces[1])
 		print "Left mouse down at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
@@ -95,31 +98,32 @@ class apiMessageParser:
 		name = self.GUI.getWindowName(pieces[1])
 		print "Window name = " + name
 		
-	messages = {'new_surface' : newSurface,
-			'new_cursor' : newCursor,
-			'new_window' : newWindow,
-			'mouse_l' : mouseLeftDown,
-			'mouse_lu' : mouseLeftUp,
-			'mouse_m' : mouseMiddleDown,
-			'mouse_mu' : mouseMiddleUp,
-			'mouse_r' : mouseRightDown,
-			'mouse_ru' : mouseRightUp,
-			'move_cursor' : moveCursor,
-			'relocate_cursor' : relocateCursor,
-			'get_cursor_pos' : getCursorPosition,
-			'move_window' : moveWindow,
-			'relocate_window' : relocateWindow,	
-			'set_window_width' : setWindowWidth,
-			'set_window_height' : setWindowHeight,
-			'get_window_pos' : getWindowPosition,
-			'get_window_width' : getWindowWidth,
-			'get_window_height' : getWindowHeight,
-			'stretch_window_down' : stretchWindowDown,
-			'stretch_window_up' : stretchWindowUp,
-			'stretch_window_left' : stretchWindowLeft,
-			'stretch_window_right' : stretchWindowRight,
-			'set_window_name' : setWindowName,
-			'get_window_name' : getWindowName
+	messages = {'new_surface' : newSurface, #No parameters
+			'new_cursor' : newCursor, #[1]=SurfaceNo  [2]=x  [3]=y
+			'new_window' : newWindow, #[1]=SurfaceNo  [2]=x  [3]=y  [4]=width  [5]=height  [6]=name
+			'new_circle' : newCircle, #[1]=WindowNo  [2]=Coordinate  [3]=Radius  [4]=LineColor  [5]=FillColor
+			'mouse_l' : mouseLeftDown, #[1]=CursorNo
+			'mouse_lu' : mouseLeftUp, #[1]=CursorNo
+			'mouse_m' : mouseMiddleDown, #[1]=CursorNo
+			'mouse_mu' : mouseMiddleUp, #[1]=CursorNo
+			'mouse_r' : mouseRightDown, #[1]=CursorNo
+			'mouse_ru' : mouseRightUp, #[1]=CursorNo
+			'move_cursor' : moveCursor, #[1]=CursorNo  [2]=xDistance  [3]=yDistance
+			'relocate_cursor' : relocateCursor, #[1]=CursorNo  [2]=x  [3]=y  [4]=Surface
+			'get_cursor_pos' : getCursorPosition, #[1]=CursorNo
+			'move_window' : moveWindow, #[1]=WindowNo  [2]=xDistance  [3]=yDistance
+			'relocate_window' : relocateWindow,	#[1]=WindowNo  [2]=x  [3]=y  [4]=Surface
+			'set_window_width' : setWindowWidth, #[1]=WindowNo  [2]=Width
+			'set_window_height' : setWindowHeight, #[1]=WindowNo  [2]=Height
+			'get_window_pos' : getWindowPosition, #[1]=WindowNo
+			'get_window_width' : getWindowWidth, #[1]=WindowNo
+			'get_window_height' : getWindowHeight, #[1]=WindowNo
+			'stretch_window_down' : stretchWindowDown, #[1]=WindowNo  [2]=Distance
+			'stretch_window_up' : stretchWindowUp, #[1]=WindowNo  [2]=Distance
+			'stretch_window_left' : stretchWindowLeft, #[1]=WindowNo  [2]=Distance
+			'stretch_window_right' : stretchWindowRight, #[1]=WindowNo  [2]=Distance
+			'set_window_name' : setWindowName, #[1]=WindowNo  [2]=Name
+			'get_window_name' : getWindowName #[1]=WindowNo
 	}
 	
 	def processMessage(self, msg):
