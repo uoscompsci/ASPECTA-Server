@@ -106,34 +106,34 @@ class apiMessageParser:
 		loc = self.GUI.getCirclePos(pieces[1])
 		print "Circle at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
 		
-	messages = {'new_surface' : (newSurface,1), #No parameters
-			'new_cursor' : (newCursor,4), #[1]=SurfaceNo  [2]=x  [3]=y
-			'new_window' : (newWindow,7), #[1]=SurfaceNo  [2]=x  [3]=y  [4]=width  [5]=height  [6]=name
-			'new_circle' : (newCircle,7), #[1]=WindowNo  [2]=x  [3]=y  [4]=Radius  [5]=LineColor  [6]=FillColor
-			'mouse_l' : (mouseLeftDown,2), #[1]=CursorNo
-			'mouse_lu' : (mouseLeftUp,2), #[1]=CursorNo
-			'mouse_m' : (mouseMiddleDown,2), #[1]=CursorNo
-			'mouse_mu' : (mouseMiddleUp,2), #[1]=CursorNo
-			'mouse_r' : (mouseRightDown,2), #[1]=CursorNo
-			'mouse_ru' : (mouseRightUp,2), #[1]=CursorNo
-			'move_cursor' : (moveCursor,4), #[1]=CursorNo  [2]=xDistance  [3]=yDistance
-			'relocate_cursor' : (relocateCursor,5), #[1]=CursorNo  [2]=x  [3]=y  [4]=Surface
-			'get_cursor_pos' : (getCursorPosition,2), #[1]=CursorNo
-			'move_window' : (moveWindow,4), #[1]=WindowNo  [2]=xDistance  [3]=yDistance
-			'relocate_window' : (relocateWindow,5),	#[1]=WindowNo  [2]=x  [3]=y  [4]=Surface
-			'set_window_width' : (setWindowWidth,3), #[1]=WindowNo  [2]=Width
-			'set_window_height' : (setWindowHeight,3), #[1]=WindowNo  [2]=Height
-			'get_window_pos' : (getWindowPosition,2), #[1]=WindowNo
-			'get_window_width' : (getWindowWidth,2), #[1]=WindowNo
-			'get_window_height' : (getWindowHeight,2), #[1]=WindowNo
-			'stretch_window_down' : (stretchWindowDown,3), #[1]=WindowNo  [2]=Distance
-			'stretch_window_up' : (stretchWindowUp,3), #[1]=WindowNo  [2]=Distance
-			'stretch_window_left' : (stretchWindowLeft,3), #[1]=WindowNo  [2]=Distance
-			'stretch_window_right' : (stretchWindowRight,3), #[1]=WindowNo  [2]=Distance
-			'set_window_name' : (setWindowName,3), #[1]=WindowNo  [2]=Name
-			'get_window_name' : (getWindowName,2), #[1]=WindowNo
-			'relocate_circle' : (relocateCircle,5), #[1]=ElementNo  [2]=x  [3]=y  [4]=windowNo
-			'get_circle_pos' : (getCirclePosition,2) #[1]=ElementNo
+	messages = {'new_surface' : (newSurface,0), #No parameters
+			'new_cursor' : (newCursor,3), #[1]=SurfaceNo  [2]=x  [3]=y
+			'new_window' : (newWindow,6), #[1]=SurfaceNo  [2]=x  [3]=y  [4]=width  [5]=height  [6]=name
+			'new_circle' : (newCircle,6), #[1]=WindowNo  [2]=x  [3]=y  [4]=Radius  [5]=LineColor  [6]=FillColor
+			'mouse_l' : (mouseLeftDown,1), #[1]=CursorNo
+			'mouse_lu' : (mouseLeftUp,1), #[1]=CursorNo
+			'mouse_m' : (mouseMiddleDown,1), #[1]=CursorNo
+			'mouse_mu' : (mouseMiddleUp,1), #[1]=CursorNo
+			'mouse_r' : (mouseRightDown,1), #[1]=CursorNo
+			'mouse_ru' : (mouseRightUp,1), #[1]=CursorNo
+			'move_cursor' : (moveCursor,3), #[1]=CursorNo  [2]=xDistance  [3]=yDistance
+			'relocate_cursor' : (relocateCursor,4), #[1]=CursorNo  [2]=x  [3]=y  [4]=Surface
+			'get_cursor_pos' : (getCursorPosition,1), #[1]=CursorNo
+			'move_window' : (moveWindow,3), #[1]=WindowNo  [2]=xDistance  [3]=yDistance
+			'relocate_window' : (relocateWindow,4),	#[1]=WindowNo  [2]=x  [3]=y  [4]=Surface
+			'set_window_width' : (setWindowWidth,2), #[1]=WindowNo  [2]=Width
+			'set_window_height' : (setWindowHeight,2), #[1]=WindowNo  [2]=Height
+			'get_window_pos' : (getWindowPosition,1), #[1]=WindowNo
+			'get_window_width' : (getWindowWidth,1), #[1]=WindowNo
+			'get_window_height' : (getWindowHeight,1), #[1]=WindowNo
+			'stretch_window_down' : (stretchWindowDown,2), #[1]=WindowNo  [2]=Distance
+			'stretch_window_up' : (stretchWindowUp,2), #[1]=WindowNo  [2]=Distance
+			'stretch_window_left' : (stretchWindowLeft,2), #[1]=WindowNo  [2]=Distance
+			'stretch_window_right' : (stretchWindowRight,2), #[1]=WindowNo  [2]=Distance
+			'set_window_name' : (setWindowName,2), #[1]=WindowNo  [2]=Name
+			'get_window_name' : (getWindowName,1), #[1]=WindowNo
+			'relocate_circle' : (relocateCircle,4), #[1]=ElementNo  [2]=x  [3]=y  [4]=windowNo
+			'get_circle_pos' : (getCirclePosition,1) #[1]=ElementNo
 	}
 	
 	def processMessage(self, msg):
@@ -141,9 +141,9 @@ class apiMessageParser:
 		print 'MESSAGE: ', msg, "\n"
 		pieces = msg.split(',')
 		try:
-			if(len(pieces)==self.messages[pieces[0]][1]):
+			if(len(pieces)-1==self.messages[pieces[0]][1]):
 				self.messages[pieces[0]][0](self,pieces)
 			else:
-				print "Invalid number of arguments (" + str(len(pieces)-1) + " instead of " + str(self.messages[pieces[0]][1]-1) + ")"
+				print "Invalid number of arguments (" + str(len(pieces)-1) + " instead of " + str(self.messages[pieces[0]][1]) + ")"
 		except KeyError:
 			print "Invalid API call"
