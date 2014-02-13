@@ -342,12 +342,27 @@ class lineStrip(element):
 class polygon(element):
     __slots__ = ['points', 'lineColor', 'fillColor']
 
-    def __init__(self, points, lineColor, fillColor):
+    def __init__(self, x, y, lineColor, fillColor):
         self.elementType = "polygon"
-        self.points = points
+        self.points = [point2D(x,y)]
         self.lineColor = lineColor
         self.fillColor = fillColor
+        
+    def addPoint(self, x, y):
+        self.points.append(point2D(x,y))
 
+    def getPointX(self, number):
+        return self.points[int(number)-1].getX()
+    
+    def getPointY(self, number):
+        return self.points[int(number)-1].getY()
+
+    def setPoint(self, number, x, y):
+        self.points[number-1].reposition(x, y)
+
+    def getNumPoints(self):
+        return len(self.points)
+    
     def setLineColor(self, color):
         self.lineColor = color
 
@@ -359,15 +374,6 @@ class polygon(element):
 
     def getFillColor(self):
         return self.fillColor
-
-    def getPoint(self, number):
-        return self.points[number-1]
-
-    def setPoint(self, number, x, y):
-        self.points[number-1].reposition(x, y)
-
-    def getNumPoints(self):
-        return len(self.points)
 
 class text(element):
     __slots__ = ['text', 'coord', 'pt', 'font', 'color']

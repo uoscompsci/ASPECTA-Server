@@ -30,6 +30,10 @@ class apiMessageParser:
 		elementNo = self.GUI.newLineStrip(pieces[1],pieces[2],pieces[3],pieces[4])
 		print("Element Number: " + str(elementNo))
 		
+	def newPolygon(self,pieces):
+		elementNo = self.GUI.newPolygon(pieces[1],pieces[2],pieces[3],pieces[4],pieces[5])
+		print("Element Number: " + str(elementNo))
+		
 	def mouseLeftDown(self,pieces):
 		loc = self.GUI.leftDown(pieces[1])
 		print "Left mouse down at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
@@ -181,12 +185,41 @@ class apiMessageParser:
 		count = self.GUI.getLineStripPointsCount(pieces[1])
 		print "Point count = " + str(count)
 		
+	def addPolygonPoint(self,pieces):
+		self.GUI.addPolygonPoint(pieces[1],pieces[2],pieces[3])
+		
+	def getPolygonPoint(self,pieces):
+		loc = self.GUI.getPolygonPoint(pieces[1],pieces[2])
+		print "Point at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
+		
+	def movePolygonPoint(self,pieces):
+		self.GUI.movePolygonPoint(pieces[1],pieces[2],pieces[3],pieces[4])		
+		
+	def getPolygonFillColor(self,pieces):
+		color = self.GUI.getPolygonFillColor(pieces[1])
+		print "Polygon fill color = " + color
+		
+	def setPolygonFillColor(self,pieces):
+		self.GUI.setPolygonFillColor(pieces[1],pieces[2])
+		
+	def getPolygonLineColor(self,pieces):
+		color = self.GUI.getPolygonLineColor(pieces[1])
+		print "Polygon line color = " + color
+		
+	def setPolygonLineColor(self,pieces):
+		self.GUI.setPolygonLineColor(pieces[1],pieces[2])
+		
+	def getPolygonPointCount(self,pieces):
+		count = self.GUI.getPolygonPointsCount(pieces[1])
+		print "Point count = " + str(count)
+		
 	messages = {'new_surface' : (newSurface,0), #No parameters
 			'new_cursor' : (newCursor,3), #[1]=SurfaceNo  [2]=x  [3]=y
 			'new_window' : (newWindow,6), #[1]=SurfaceNo  [2]=x  [3]=y  [4]=width  [5]=height  [6]=name
 			'new_circle' : (newCircle,6), #[1]=WindowNo  [2]=x  [3]=y  [4]=Radius  [5]=LineColor  [6]=FillColor
 			'new_line' : (newLine,6), #[1]=WindowNo  [2]=xStart  [3]=yStart  [4]=xEnd  [5]=yEnd  [6]=Color
 			'new_line_strip' : (newLineStrip,4), #[1]=WindowNo  [2]=x  [3]=y  [4]=Color
+			'new_polygon' : (newPolygon,5), #[1]=WindowNo  [2]=x  [3]=y  [4]=LineColor  [5]=FillColor
 			'mouse_l' : (mouseLeftDown,1), #[1]=CursorNo
 			'mouse_lu' : (mouseLeftUp,1), #[1]=CursorNo
 			'mouse_m' : (mouseMiddleDown,1), #[1]=CursorNo
@@ -229,7 +262,15 @@ class apiMessageParser:
 			'move_line_strip_point' : (moveLineStripPoint,4), #[1]=ElementNo  [2]=PointNo  [3]=x  [4]=y
 			'get_line_strip_color' : (getLineStripColor,1), #[1]=ElementNo
 			'set_line_strip_color' : (setLineStripColor,2), #[1]=ElementNo  [2]=Color
-			'get_line_strip_point_count' : (getLineStripPointsCount,1) #[1]=ElementNo
+			'get_line_strip_point_count' : (getLineStripPointCount,1), #[1]=ElementNo
+			'add_polygon_point' : (addPolygonPoint,3), #[1]=ElementNo  [2]=x  [3]=y
+			'get_polygon_point' : (getPolygonPoint,2), #[1]=ElementNo  [2]=PointNo
+			'move_polygon_point' : (movePolygonPoint,4), #[1]=ElementNo  [2]=PointNo  [3]=x  [4]=y
+			'get_polygon_fill_color' : (getPolygonFillColor,1), #[1]=ElementNo
+			'set_polygon_fill_color' : (setPolygonFillColor,2), #[1]=ElementNo  [2]=Color
+			'get_polygon_line_color' : (getPolygonLineColor,1), #[1]=ElementNo
+			'set_polygon_line_color' : (setPolygonLineColor,2), #[1]=ElementNo  [2]=Color
+			'get_polygon_point_count' : (getPolygonPointCount,1) #[1]=ElementNo
 	}
 	
 	def processMessage(self, msg):
@@ -240,6 +281,6 @@ class apiMessageParser:
 			if(len(pieces)-1==self.messages[pieces[0]][1]):
 				self.messages[pieces[0]][0](self,pieces)
 			else:
-				print "Invalid number of arguments (" + str(len(pieces)-1) + " instead of " + str(self.messages[pieces[0]][1]) + ")"
+				print ('\033[1;31mInvalid number of arguments (' + str(len(pieces)-1) + ' instead of ' + str(self.messages[pieces[0]][1]) + ')\033[1;m')
 		except KeyError:
-			print "Invalid API call"
+			print ('\033[1;31mInvalid API call\033[1;m')

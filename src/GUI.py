@@ -314,3 +314,36 @@ class GUI:
 		
 	def getLineStripPointsCount(self, elementNo):
 		return self.elements[str(elementNo)].getNumPoints()
+	
+	def newPolygon(self, windowNo, x, y, lineColor, fillColor):
+		newPoly = polygon(x, y, lineColor, fillColor)
+		elementNo = self.newElement(newPoly, windowNo)
+		return elementNo
+	
+	def addPolygonPoint(self, elementNo, x, y):
+		self.elements[str(elementNo)].addPoint(x,y)
+		
+	def getPolygonPoint(self, elementNo, pointNo):
+		xloc = self.elements[str(elementNo)].getPointX(pointNo)
+		yloc = self.elements[str(elementNo)].getPointY(pointNo)
+		return (xloc,yloc)
+	
+	def movePolygonPoint(self, elementNo, pointNo, x, y):
+		self.elements[str(elementNo)].setPoint(pointNo, x, y)
+		
+	def getPolygonFillColor(self, elementNo):
+		color = self.elements[str(elementNo)].getFillColor()
+		return color
+	
+	def setPolygonFillColor(self, elementNo, color):
+		self.elements[str(elementNo)].setFillColor(color)
+		
+	def getPolygonLineColor(self, elementNo):
+		color = self.elements[str(elementNo)].getLineColor()
+		return color
+	
+	def setPolygonLineColor(self, elementNo, color):
+		self.elements[str(elementNo)].setLineColor(color)
+		
+	def getPolygonPointsCount(self, elementNo):
+		return self.elements[str(elementNo)].getNumPoints()
