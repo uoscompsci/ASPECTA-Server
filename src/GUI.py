@@ -204,24 +204,28 @@ class GUI:
 				location = int(key)
 		return location
 	
-	def newCircle(self, windowNo, x, y, radius, lineColor, fillColor):
-		newCir = circle(x, y, radius, lineColor, fillColor)
+	def newElement(self,element, windowNo):
 		added = False
 		elementNo = 0
 		while(added == False):
 			if(self.elements_lock==False):
 				self.elements_lock = True
 				if (len(self.elements)==0):
-					self.elements[str(1)] = newCir
+					self.elements[str(1)] = element
 					elementNo = 1
 					self.lastele = 1
 				else:
 					self.lastele=self.lastele+1
-					self.elements[str(self.lastele)] = newCir
+					self.elements[str(self.lastele)] = element
 					elementNo = self.lastele		
 				self.elements_lock = False
 				added = True
 		self.windows[str(windowNo)].addElement(elementNo)
+		return elementNo
+	
+	def newCircle(self, windowNo, x, y, radius, lineColor, fillColor):
+		newCir = circle(x, y, radius, lineColor, fillColor)
+		elementNo = self.newElement(newCir, windowNo)
 		return elementNo
 		
 	def setCirclePos(self, elementNo, xLoc, yLoc, window):
@@ -257,3 +261,56 @@ class GUI:
 		
 	def getCircleLine(self, elementNo):
 		return self.elements[str(elementNo)].getLineColor()
+	
+	def newLine(self, windowNo, x1, y1, x2, y2, color):
+		newLine = line(x1, y1, x2, y2, color)
+		elementNo = self.newElement(newLine, windowNo)
+		return elementNo
+	
+	def setLineStart(self,elementNo,x,y):
+		self.elements[str(elementNo)].setStart(x,y)
+		
+	def setLineEnd(self,elementNo,x,y):
+		self.elements[str(elementNo)].setEnd(x,y)
+		
+	def getLineStart(self,elementNo):
+		xloc = self.elements[str(elementNo)].getStartX()
+		yloc = self.elements[str(elementNo)].getStartY()
+		return (xloc,yloc)
+	
+	def getLineEnd(self,elementNo):
+		xloc = self.elements[str(elementNo)].getEndX()
+		yloc = self.elements[str(elementNo)].getEndY()
+		return (xloc,yloc)
+	
+	def setLineColor(self,elementNo,color):
+		self.elements[str(elementNo)].setColor(color)
+		
+	def getLineColor(self,elementNo):
+		return self.elements[str(elementNo)].getColor()
+	
+	def newLineStrip(self, windowNo, x, y, color):
+		newLineStrip = lineStrip(x, y, color)
+		elementNo = self.newElement(newLineStrip, windowNo)
+		return elementNo
+	
+	def addLineStripPoint(self, elementNo, x, y):
+		self.elements[str(elementNo)].addPoint(x,y)
+		
+	def getLineStripPoint(self, elementNo, pointNo):
+		xloc = self.elements[str(elementNo)].getPointX(pointNo)
+		yloc = self.elements[str(elementNo)].getPointY(pointNo)
+		return (xloc,yloc)
+	
+	def moveLineStripPoint(self, elementNo, pointNo, x, y):
+		self.elements[str(elementNo)].setPoint(pointNo, x, y)
+		
+	def getLineStripColor(self, elementNo):
+		color = self.elements[str(elementNo)].getColor()
+		return color
+	
+	def setLineStripColor(self, elementNo, color):
+		self.elements[str(elementNo)].setColor(color)
+		
+	def getLineStripPointsCount(self, elementNo):
+		return self.elements[str(elementNo)].getNumPoints()

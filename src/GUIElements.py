@@ -280,10 +280,10 @@ class circle(element):
 class line(element):
     __slots__ = ['coord1', 'coord2', 'color']
 
-    def __init__(self, coord1, coord2, color):
+    def __init__(self, x1, y1, x2, y2, color):
         self.elementType = "line"
-        self.coord1 = coord1
-        self.coord2 = coord2
+        self.coord1 = point2D(x1,y1)
+        self.coord2 = point2D(x2,y2)
         self.color = color
 
     def setStart(self, x, y):
@@ -313,25 +313,31 @@ class line(element):
 class lineStrip(element):
     __slots__ = ['points', 'color']
 
-    def __init__(self, point, color):
+    def __init__(self, x, y, color):
         self.elementType = "lineStrip"
-        self.points = [point]
+        self.points = [point2D(x,y)]
         self.color = color
 
-    def addPoint(self, point):
-        self.points.append(point)
+    def addPoint(self, x, y):
+        self.points.append(point2D(x,y))
 
-    def getPoint(self, number):
-        return self.points[number-1]
+    def getPointX(self, number):
+        return self.points[int(number)-1].getX()
+    
+    def getPointY(self, number):
+        return self.points[int(number)-1].getY()
 
     def setPoint(self, number, x, y):
-        self.points[number-1].reposition(x, y)
+        self.points[int(number)-1].reposition(x, y)
 
     def getColor(self):
         return self.color
 
     def setColor(self, color):
         self.color = color
+        
+    def getNumPoints(self):
+        return len(self.points)
 
 class polygon(element):
     __slots__ = ['points', 'lineColor', 'fillColor']

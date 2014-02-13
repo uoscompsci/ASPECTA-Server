@@ -22,6 +22,14 @@ class apiMessageParser:
 		elementNo = self.GUI.newCircle(pieces[1],pieces[2],pieces[3],pieces[4],pieces[5],pieces[6])
 		print("Element Number: " + str(elementNo))
 		
+	def newLine(self,pieces):
+		elementNo = self.GUI.newLine(pieces[1],pieces[2],pieces[3],pieces[4],pieces[5],pieces[6])
+		print("Element Number: " + str(elementNo))
+		
+	def newLineStrip(self,pieces):
+		elementNo = self.GUI.newLineStrip(pieces[1],pieces[2],pieces[3],pieces[4])
+		print("Element Number: " + str(elementNo))
+		
 	def mouseLeftDown(self,pieces):
 		loc = self.GUI.leftDown(pieces[1])
 		print "Left mouse down at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
@@ -131,10 +139,54 @@ class apiMessageParser:
 	def setCircleRadius(self,pieces):
 		self.GUI.setCircleRad(pieces[1],pieces[2])
 		
+	def getLineStart(self,pieces):
+		loc = self.GUI.getLineStart(pieces[1])
+		print "Line start at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
+		
+	def getLineEnd(self,pieces):
+		loc = self.GUI.getLineEnd(pieces[1])
+		print "Line end at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
+		
+	def setLineStart(self,pieces):
+		self.GUI.setLineStart(pieces[1],pieces[2],pieces[3])
+		
+	def setLineEnd(self,pieces):
+		self.GUI.setLineEnd(pieces[1],pieces[2],pieces[3])
+		
+	def setLineColor(self,pieces):
+		self.GUI.setLineColor(pieces[1],pieces[2])
+		
+	def getLineColor(self,pieces):
+		color = self.GUI.getLineColor(pieces[1])
+		print "Line color = " + color
+		
+	def addLineStripPoint(self,pieces):
+		self.GUI.addLineStripPoint(pieces[1],pieces[2],pieces[3])
+		
+	def getLineStripPoint(self,pieces):
+		loc = self.GUI.getLineStripPoint(pieces[1],pieces[2])
+		print "Point at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
+		
+	def moveLineStripPoint(self,pieces):
+		self.GUI.moveLineStripPoint(pieces[1],pieces[2],pieces[3],pieces[4])		
+		
+	def getLineStripColor(self,pieces):
+		color = self.GUI.getLineStripColor(pieces[1])
+		print "Line strip color = " + color
+		
+	def setLineStripColor(self,pieces):
+		self.GUI.setLineStripColor(pieces[1],pieces[2])
+		
+	def getLineStripPointCount(self,pieces):
+		count = self.GUI.getLineStripPointsCount(pieces[1])
+		print "Point count = " + str(count)
+		
 	messages = {'new_surface' : (newSurface,0), #No parameters
 			'new_cursor' : (newCursor,3), #[1]=SurfaceNo  [2]=x  [3]=y
 			'new_window' : (newWindow,6), #[1]=SurfaceNo  [2]=x  [3]=y  [4]=width  [5]=height  [6]=name
 			'new_circle' : (newCircle,6), #[1]=WindowNo  [2]=x  [3]=y  [4]=Radius  [5]=LineColor  [6]=FillColor
+			'new_line' : (newLine,6), #[1]=WindowNo  [2]=xStart  [3]=yStart  [4]=xEnd  [5]=yEnd  [6]=Color
+			'new_line_strip' : (newLineStrip,4), #[1]=WindowNo  [2]=x  [3]=y  [4]=Color
 			'mouse_l' : (mouseLeftDown,1), #[1]=CursorNo
 			'mouse_lu' : (mouseLeftUp,1), #[1]=CursorNo
 			'mouse_m' : (mouseMiddleDown,1), #[1]=CursorNo
@@ -164,8 +216,20 @@ class apiMessageParser:
 			'set_circle_fill_color' : (setCircleFillColor,2), #[1]=ElementNo  [2]=Color
 			'get_circle_line_color' : (getCircleLineColor,1), #[1]=ElementNo
 			'get_circle_fill_color' : (getCircleFillColor,1), #[1]=ElementNo
-			'set_circle_radius' : (setCircleRadius,2), #[1]ElementNo  [2]=Radius
-			'get_circle_radius' : (getCircleRadius,1) #[1]ElementNp
+			'set_circle_radius' : (setCircleRadius,2), #[1]=ElementNo  [2]=Radius
+			'get_circle_radius' : (getCircleRadius,1), #[1]=ElementNo
+			'get_line_start' : (getLineStart,1), # [1]=ElementNo
+			'get_line_end' : (getLineEnd,1), #[1]=ElementNo
+			'set_line_start' : (setLineStart,3), #[1]=ElementNo  [2]=x  [3]=y
+			'set_line_end' : (setLineEnd,3), #[1]=ElementNo  [2]=x  [3]=y
+			'set_line_color' : (setLineColor,2), #[1]=ElementNo  [2]=Color
+			'get_line_color' : (getLineColor,1), #[1]=ElementNo
+			'add_line_strip_point' : (addLineStripPoint,3), #[1]=ElementNo  [2]=x  [3]=y
+			'get_line_strip_point' : (getLineStripPoint,2), #[1]=ElementNo  [2]=PointNo
+			'move_line_strip_point' : (moveLineStripPoint,4), #[1]=ElementNo  [2]=PointNo  [3]=x  [4]=y
+			'get_line_strip_color' : (getLineStripColor,1), #[1]=ElementNo
+			'set_line_strip_color' : (setLineStripColor,2), #[1]=ElementNo  [2]=Color
+			'get_line_strip_point_count' : (getLineStripPointsCount,1) #[1]=ElementNo
 	}
 	
 	def processMessage(self, msg):
