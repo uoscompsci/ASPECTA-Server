@@ -2,15 +2,16 @@ import socket
 import sys
 import time
 from threading import Thread
+from Queue import Queue
 from API import apiMessageParser
 
-queue = []
+queue = Queue([999])
 
 #Continually scans the queue for tasks, and if there are any present processes them in order
 def message_queue_monitor():
 	while(True):
-		if(len(queue)>0):
-			qitem = queue.pop(0)
+		if(queue.empty()!=True):
+			qitem = queue.get()
 			messageParser.processMessage(qitem)
 
 ANY = '0.0.0.0'
@@ -29,7 +30,7 @@ messageParser = apiMessageParser()
 queueMonitor = Thread(target = message_queue_monitor)
 queueMonitor.start()
 
-#Continually checks for recieved api messages and if one is found it is added to the back of the queue
+#Continually checks for received API messages and if one is found it is added to the back of the queue
 while(True):
 	try:
 		msg, addr = sock.recvfrom(1024)
@@ -40,4 +41,4 @@ while(True):
 			print '\033[1;31mShutting down server\033[1;m'
 			sys.exit(0)
 		else:
-			queue.append(msg)
+			queue.put(msg)

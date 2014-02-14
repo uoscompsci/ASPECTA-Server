@@ -346,3 +346,6 @@ class apiMessageParser:
 				print ('\033[1;31mInvalid number of arguments (' + str(len(pieces)-1) + ' instead of ' + str(self.messages[pieces[0]][1]) + ')\033[1;m')
 		except KeyError:
 			print ('\033[1;31mInvalid API call\033[1;m')
+			
+#TODO
+#Check if locking is needed (I don't think API calls can be processed in parallel anyway)
