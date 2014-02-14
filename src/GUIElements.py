@@ -225,10 +225,13 @@ class element:
     __slots__ = ['elementType', 'visible']
 
     def show(self):
-        self.visible = False
+        self.visible = True
 
     def hide(self):
-        self.visible = True
+        self.visible = False
+        
+    def isVisible(self):
+        return self.visible
 
     def checkType(self):
         return self.elementType
@@ -242,6 +245,7 @@ class circle(element):
         self.radius = radius
         self.lineColor = lineColor
         self.fillColor = fillColor
+        self.visible=True
 
     def getCenterX(self):
         return self.coord.getX()
@@ -285,6 +289,7 @@ class line(element):
         self.coord1 = point2D(x1,y1)
         self.coord2 = point2D(x2,y2)
         self.color = color
+        self.visible=True
 
     def setStart(self, x, y):
         self.coord1.reposition(x,y)
@@ -317,6 +322,7 @@ class lineStrip(element):
         self.elementType = "lineStrip"
         self.points = [point2D(x,y)]
         self.color = color
+        self.visible=True
 
     def addPoint(self, x, y):
         self.points.append(point2D(x,y))
@@ -347,6 +353,7 @@ class polygon(element):
         self.points = [point2D(x,y)]
         self.lineColor = lineColor
         self.fillColor = fillColor
+        self.visible=True
         
     def addPoint(self, x, y):
         self.points.append(point2D(x,y))
@@ -375,16 +382,17 @@ class polygon(element):
     def getFillColor(self):
         return self.fillColor
 
-class text(element):
+class textBox(element):
     __slots__ = ['text', 'coord', 'pt', 'font', 'color']
 
-    def __init__(self, text, coord, pt, font, color):
+    def __init__(self, text, x, y, pt, font, color):
         self.elementType = "text"
         self.text = text
-        self.coord = coord
-        self.pt = pt
+        self.coord = point2D(x,y)
+        self.pt = int(pt)
         self.font = font
         self.color = color
+        self.visible=True
 
     def setText(self, text):
         self.text = text
@@ -395,11 +403,14 @@ class text(element):
     def setLocation(self, x, y):
         self.coord.reposition(x,y)
 
-    def getLocation(self):
-        return self.coord
+    def getLocationX(self):
+        return self.coord.getX()
+    
+    def getLocationY(self):
+        return self.coord.getY()
 
     def setPt(self, size):
-        self.pt = size
+        self.pt = int(size)
 
     def getPt(self):
         return self.pt

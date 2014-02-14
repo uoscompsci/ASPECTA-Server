@@ -347,3 +347,54 @@ class GUI:
 		
 	def getPolygonPointsCount(self, elementNo):
 		return self.elements[str(elementNo)].getNumPoints()
+	
+	def newText(self, windowNo, text, x, y, pt, font, color):
+		newText = textBox(text, x, y, pt, font, color)
+		elementNo = self.newElement(newText, windowNo)
+		return elementNo
+	
+	def setText(self, elementNo, text):
+		self.elements[str(elementNo)].setText(text)
+		
+	def getText(self, elementNo):
+		return self.elements[str(elementNo)].getText()
+	
+	def setTextPos(self, elementNo, xLoc, yLoc, window):
+		self.elements[str(elementNo)].setLocation(xLoc,yLoc)
+		origWin = self.findElement(elementNo)
+		if(origWin != window):
+			self.windows[str(origWin)].removeElement(elementNo)
+			self.windows[str(window)].addElement(elementNo)
+			
+	def getTextPos(self, elementNo):
+		xloc = self.elements[str(elementNo)].getLocationX()
+		yloc = self.elements[str(elementNo)].getLocationY()
+		return (xloc,yloc)
+	
+	def setPtSize(self, elementNo, ptSize):
+		self.elements[str(elementNo)].setPt(ptSize)
+		
+	def getPtSize(self, elementNo):
+		return self.elements[str(elementNo)].getPt()
+	
+	def getFont(self, elementNo):
+		return self.elements[str(elementNo)].getFont()
+	
+	def setFont(self,elementNo,font):
+		self.elements[str(elementNo)].setFont(font)
+		
+	def setTextColor(self,elementNo,color):
+		self.elements[str(elementNo)].setColor(color)
+		
+	def getTextColor(self,elementNo):
+		return self.elements[str(elementNo)].getColor()
+	
+	def showElement(self,elementNo):
+		self.elements[str(elementNo)].show()
+		
+	def hideElement(self,elementNo):
+		self.elements[str(elementNo)].hide()
+		
+	def checkElementVisibility(self,elementNo):
+		return self.elements[str(elementNo)].isVisible()
+		

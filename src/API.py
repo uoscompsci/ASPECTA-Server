@@ -34,6 +34,10 @@ class apiMessageParser:
 		elementNo = self.GUI.newPolygon(pieces[1],pieces[2],pieces[3],pieces[4],pieces[5])
 		print("Element Number: " + str(elementNo))
 		
+	def newText(self,pieces):
+		elementNo = self.GUI.newText(pieces[1],pieces[2],pieces[3],pieces[4],pieces[5],pieces[6],pieces[7])
+		print("Element Number: " + str(elementNo))
+		
 	def mouseLeftDown(self,pieces):
 		loc = self.GUI.leftDown(pieces[1])
 		print "Left mouse down at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
@@ -213,6 +217,50 @@ class apiMessageParser:
 		count = self.GUI.getPolygonPointsCount(pieces[1])
 		print "Point count = " + str(count)
 		
+	def setText(self,pieces):
+		self.GUI.setText(pieces[1],pieces[2])
+		
+	def getText(self,pieces):
+		text = self.GUI.getText(pieces[1])
+		
+	def setTextPos(self,pieces):
+		self.GUI.setTextPos(pieces[1],pieces[2],pieces[3],pieces[4])
+		
+	def getTextPos(self,pieces):
+		loc = self.GUI.getTextPos(pieces[1])
+		print "Text at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
+		
+	def setPointSize(self,pieces):
+		self.GUI.setPtSize(pieces[1],pieces[2])
+		
+	def getPointSize(self,pieces):
+		size = self.GUI.getPtSize(pieces[1])
+		print "Point size = " + str(size)
+		
+	def getTextFont(self,pieces):
+		font = self.GUI.getFont(pieces[1])
+		print "Font = " + font
+		
+	def setTextFont(self,pieces):
+		self.GUI.setFont(pieces[1],pieces[2])
+		
+	def getTextColor(self,pieces):
+		color = self.GUI.getTextColor(pieces[1])
+		print "Color = " + color
+		
+	def setTextColor(self,pieces):
+		self.GUI.setTextColor(pieces[1],pieces[2])
+		
+	def showElement(self,pieces):
+		self.GUI.showElement(pieces[1])
+		
+	def hideElement(self,pieces):
+		self.GUI.hideElement(pieces[1])
+		
+	def checkElementVisibility(self,pieces):
+		visible = self.GUI.checkElementVisibility(pieces[1])
+		print "Visible = " + str(visible)
+		
 	messages = {'new_surface' : (newSurface,0), #No parameters
 			'new_cursor' : (newCursor,3), #[1]=SurfaceNo  [2]=x  [3]=y
 			'new_window' : (newWindow,6), #[1]=SurfaceNo  [2]=x  [3]=y  [4]=width  [5]=height  [6]=name
@@ -220,6 +268,7 @@ class apiMessageParser:
 			'new_line' : (newLine,6), #[1]=WindowNo  [2]=xStart  [3]=yStart  [4]=xEnd  [5]=yEnd  [6]=Color
 			'new_line_strip' : (newLineStrip,4), #[1]=WindowNo  [2]=x  [3]=y  [4]=Color
 			'new_polygon' : (newPolygon,5), #[1]=WindowNo  [2]=x  [3]=y  [4]=LineColor  [5]=FillColor
+			'new_text' : (newText,7), #[1]=WindowNo  [2]=text  [3]=x  [4]=y  [5]=PointSize  [6]=Font  [7]=Color
 			'mouse_l' : (mouseLeftDown,1), #[1]=CursorNo
 			'mouse_lu' : (mouseLeftUp,1), #[1]=CursorNo
 			'mouse_m' : (mouseMiddleDown,1), #[1]=CursorNo
@@ -253,24 +302,37 @@ class apiMessageParser:
 			'get_circle_radius' : (getCircleRadius,1), #[1]=ElementNo
 			'get_line_start' : (getLineStart,1), # [1]=ElementNo
 			'get_line_end' : (getLineEnd,1), #[1]=ElementNo
-			'set_line_start' : (setLineStart,3), #[1]=ElementNo  [2]=x  [3]=y
-			'set_line_end' : (setLineEnd,3), #[1]=ElementNo  [2]=x  [3]=y
+			'relocate_line_start' : (setLineStart,3), #[1]=ElementNo  [2]=x  [3]=y
+			'relocate_line_end' : (setLineEnd,3), #[1]=ElementNo  [2]=x  [3]=y
 			'set_line_color' : (setLineColor,2), #[1]=ElementNo  [2]=Color
 			'get_line_color' : (getLineColor,1), #[1]=ElementNo
 			'add_line_strip_point' : (addLineStripPoint,3), #[1]=ElementNo  [2]=x  [3]=y
 			'get_line_strip_point' : (getLineStripPoint,2), #[1]=ElementNo  [2]=PointNo
-			'move_line_strip_point' : (moveLineStripPoint,4), #[1]=ElementNo  [2]=PointNo  [3]=x  [4]=y
+			'relocate_line_strip_point' : (moveLineStripPoint,4), #[1]=ElementNo  [2]=PointNo  [3]=x  [4]=y
 			'get_line_strip_color' : (getLineStripColor,1), #[1]=ElementNo
 			'set_line_strip_color' : (setLineStripColor,2), #[1]=ElementNo  [2]=Color
 			'get_line_strip_point_count' : (getLineStripPointCount,1), #[1]=ElementNo
 			'add_polygon_point' : (addPolygonPoint,3), #[1]=ElementNo  [2]=x  [3]=y
 			'get_polygon_point' : (getPolygonPoint,2), #[1]=ElementNo  [2]=PointNo
-			'move_polygon_point' : (movePolygonPoint,4), #[1]=ElementNo  [2]=PointNo  [3]=x  [4]=y
+			'relocate_polygon_point' : (movePolygonPoint,4), #[1]=ElementNo  [2]=PointNo  [3]=x  [4]=y
 			'get_polygon_fill_color' : (getPolygonFillColor,1), #[1]=ElementNo
 			'set_polygon_fill_color' : (setPolygonFillColor,2), #[1]=ElementNo  [2]=Color
 			'get_polygon_line_color' : (getPolygonLineColor,1), #[1]=ElementNo
 			'set_polygon_line_color' : (setPolygonLineColor,2), #[1]=ElementNo  [2]=Color
-			'get_polygon_point_count' : (getPolygonPointCount,1) #[1]=ElementNo
+			'get_polygon_point_count' : (getPolygonPointCount,1), #[1]=ElementNo
+			'set_text' : (setText,2), #[1]=ElementNo  [2]=String
+			'get_text' : (getText,1), #[1]=ElementNo
+			'relocate_text' : (setTextPos,4), #[1]=ElementNo  [2]=x  [3]=y  [4]=WindowNo
+			'get_text_pos' : (getTextPos,1), #[1]=ElementNo
+			'set_text_point_size' : (setPointSize,2), #[1]=ElementNo  [2]=PointSize
+			'get_text_point_size' : (getPointSize,1), #[1]=ElementNo
+			'get_text_font' : (getTextFont,1), #[1]=ElementNo
+			'set_text_font' : (setTextFont,2), #[1]=ElementNo  [2]=Font
+			'set_text_color' : (setTextColor,2), #[1]=ElementNo  [2]=Color
+			'get_text_color' : (getTextColor,1), #[1]=ElementNo
+			'show_element' : (showElement,1), #[1]=ElementNo
+			'hide_element' : (hideElement,1), #[1]=ElementNo
+			'check_element_visibility' : (checkElementVisibility,1) #[1]=ElementNo
 	}
 	
 	def processMessage(self, msg):
