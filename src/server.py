@@ -1,4 +1,5 @@
 import socket
+import sys
 import time
 from threading import Thread
 from API import apiMessageParser
@@ -35,4 +36,8 @@ while(True):
 	except socket.error, e:
 		pass
 	else:
-		queue.append(msg)
+		if(msg=="quit"):
+			print '\033[1;31mShutting down server\033[1;m'
+			sys.exit(0)
+		else:
+			queue.append(msg)
