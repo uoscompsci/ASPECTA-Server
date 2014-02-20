@@ -1,10 +1,136 @@
 from GUI import *
+from OpenGL.GL import *
+from OpenGL.GLU import *
+import pygame
+from pygame.locals import *
+from threading import Thread
+
+class Texture():
+# simple texture class
+# designed for 32 bit png images (with alpha channel)
+    def __init__(self,fileName):
+        self.texID=0
+        self.LoadTexture(fileName)
+    def LoadTexture(self,fileName): 
+        try:
+            textureSurface = pygame.image.load(fileName)
+            textureData = pygame.image.tostring(textureSurface, "RGBA", 1)
+            
+            self.texID=glGenTextures(1)
+            
+            glBindTexture(GL_TEXTURE_2D, self.texID)
+            glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA,
+                        textureSurface.get_width(), textureSurface.get_height(),
+                        0, GL_RGBA, GL_UNSIGNED_BYTE, textureData )
+            glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR)
+            glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR)
+        except:
+            print "can't open the texture: %s"%(fileName)
+    def __del__(self):
+        glDeleteTextures(self.texID)
 
 class apiMessageParser:
 	__slots__ = ['GUI']
+		
+	def resize(self,(width, height)):
+		if height==0:
+			height=1
+		glViewport(0, 0, width, height)
+		glMatrixMode(GL_PROJECTION)
+		glLoadIdentity()
+		gluOrtho2D(-8.0, 8.0, -6.0, 6.0)
+		glMatrixMode(GL_MODELVIEW)
+		glLoadIdentity()
+
+	def init(self):
+		#set some basic OpenGL settings and control variables
+		glShadeModel(GL_SMOOTH)
+		glClearColor(0.0, 0.0, 0.0, 0.0)
+		glClearDepth(1.0)
+		glDisable(GL_DEPTH_TEST)
+		glDisable(GL_LIGHTING)
+		glDepthFunc(GL_LEQUAL)
+		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
+		glEnable(GL_BLEND)
+		
+		self.tutorial_texture=Texture("cursor.png")
+		
+		self.demandedFps=30.0
+		self.done=False
+		
+		self.x,self.y=0.0 , 0.0
+		
+	def draw(self):
+		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
+		glLoadIdentity()
+		glDisable(GL_LIGHTING)
+		glEnable(GL_TEXTURE_2D)
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+		
+		glPushMatrix()
+		
+		glTranslatef(self.x, self.y, 0.0)
+
+		glColor4f(1.0, 1.0, 1.0,1.0)
+		
+		glBindTexture(GL_TEXTURE_2D,self.tutorial_texture.texID)
+
+		glBegin(GL_QUADS)
+		
+		glTexCoord2f(0.0,1.0)
+		glVertex2f(-0.25, 0.35)
+		
+		glTexCoord2f(1.0,1.0)
+		glVertex2f(0.25, 0.35)
+		
+		glTexCoord2f(1.0,0.0)
+		glVertex2f(0.25, -0.35)
+		
+		glTexCoord2f(0.0,0.0)
+		glVertex2f(-0.25, -0.35)
+		
+		glEnd()
+		
+		glPopMatrix()
+			
+	def checkGUI(self):
+		position = self.GUI.getCursorPos(1)
+		self.x=position[0]
+		self.y=position[1]
+		
+	def display(self):
+		video_flags = OPENGL|DOUBLEBUF
+		
+		pygame.init()
+		pygame.display.set_mode((1024,768), video_flags)
+		
+		pygame.display.set_caption("Display")
+		
+		self.resize((1024,768))
+		self.init()
+
+		
+		clock = pygame.time.Clock()
+		while 1:
+			event = pygame.event.poll()
+			if event.type == QUIT or self.done:
+				pygame.quit () 
+				break
+			
+			self.checkGUI()
+			self.draw()
+			
+			pygame.display.flip()
+			
+			#limit fps
+			clock.tick(self.demandedFps)
 	
 	def __init__(self):
 		self.GUI=GUI()
+		thread = Thread(target = self.display,args = ())
+		thread.start()
+		
+		
 			
 	def newSurface(self,pieces):
 		surfaceNo = self.GUI.newSurface()

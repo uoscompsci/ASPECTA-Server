@@ -2,7 +2,7 @@ from GUIElements import *
 import threading
 
 class GUI:
-	__slots__ = ['surfaces', 'surfaces_lock', 'displays', 'displays_lock', 'cursors', 'cursors_lock', 'lastcur', 'lastsur', 'lastwin', 'lastele' 'windows', 'windows_lock', 'elements', 'elements_lock']
+	__slots__ = ['surfaces', 'surfaces_lock', 'displays', 'displays_lock', 'cursors', 'cursors_lock', 'lastcur', 'lastsur', 'lastwin', 'lastele' 'windows', 'windows_lock', 'elements', 'elements_lock', 'setup_surface_visible']
 	
 	def __init__(self):
 		self.lastcur = 0
@@ -18,6 +18,18 @@ class GUI:
 		self.surfaces = {}
 		self.windows = {}
 		self.elements = {}
+		self.surfaces["0"] = surface()
+		self.setup_surface_visible = True
+		self.newCursor(0, 3, 3)
+		
+	def hideSetupSurface(self):
+		self.setup_surface_visible = False
+		
+	def showSetupSurface(self):
+		self.setup_surface_visible = True
+		
+	def getSetupSurfaceVisibilty(self):
+		return self.setup_surface_visible
 		
 	def newSurface(self):
 		newSur = surface()
