@@ -447,6 +447,7 @@ class apiMessageParser:
         video_flags = OPENGL | DOUBLEBUF
 		
         pygame.init()
+        pygame.display.set_icon(pygame.image.load("icon.png"))
         pygame.display.set_mode((1024, 768), video_flags)
 		
         pygame.display.set_caption("Display")
