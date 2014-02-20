@@ -220,6 +220,9 @@ class surface():
             if(int(self.windows[x])==int(windowNo)):
                 found = True
         return found
+    
+    def getCursors(self):
+        return self.cursors
         
 class element:
     __slots__ = ['elementType', 'visible']

@@ -20,7 +20,7 @@ class GUI:
 		self.elements = {}
 		self.surfaces["0"] = surface()
 		self.setup_surface_visible = True
-		self.newCursor(0, 3, 3)
+		self.newCursor(0, 0, 0)
 		
 	def hideSetupSurface(self):
 		self.setup_surface_visible = False
@@ -390,4 +390,6 @@ class GUI:
 		
 	def checkElementVisibility(self,elementNo):
 		return self.elements[str(elementNo)].isVisible()
-		
+	
+	def getCursors(self,surfaceNo):
+		return self.surfaces[str(surfaceNo)].getCursors()
