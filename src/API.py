@@ -5,6 +5,8 @@ import pygame
 from pygame.locals import *
 from threading import Thread
 
+#Basis for PyOpenGL/PyGame code from http://www.jason.gd/str/pokaz/pygame_pyopengl_2d
+
 class Texture():
 # simple texture class
 # designed for 32 bit png images (with alpha channel)
@@ -374,8 +376,9 @@ class apiMessageParser:
             print ('\033[1;31mInvalid API call\033[1;m')
     
     def checkGUI(self):
-        cursors = self.GUI.getCursors(0)
-        position = self.GUI.getCursorPos(cursors[0])
+        GUIRead = self.GUI
+        cursors = GUIRead.getCursors(0)
+        position = GUIRead.getCursorPos(cursors[0])
         self.x = position[0]
         self.y = position[1]
 		
