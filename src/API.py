@@ -34,6 +34,9 @@ class Texture():
 class apiMessageParser:
     __slots__ = ['GUI']
     
+    winWidth = 1280
+    winHeight = 1024
+    
     def newSurface(self, pieces):
         surfaceNo = self.GUI.newSurface()
         print("Surface Number: " + str(surfaceNo))
@@ -388,7 +391,7 @@ class apiMessageParser:
         glViewport(0, 0, width, height)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        gluOrtho2D(-8.0, 8.0, -6.0, 6.0)
+        gluOrtho2D(0, self.winWidth, 0, self.winHeight)
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
 
@@ -428,16 +431,16 @@ class apiMessageParser:
         glBegin(GL_QUADS)
 		
         glTexCoord2f(0.0, 1.0)
-        glVertex2f(-0.193, 0.306)
+        glVertex2f(0, 0)
 		
         glTexCoord2f(1.0, 1.0)
-        glVertex2f(0.193, 0.306)
+        glVertex2f(29, 0)
 		
         glTexCoord2f(1.0, 0.0)
-        glVertex2f(0.193, -0.306)
+        glVertex2f(29, -46)
 		
         glTexCoord2f(0.0, 0.0)
-        glVertex2f(-0.193, -0.306)
+        glVertex2f(0, -46)
 		
         glEnd()
 		
@@ -448,11 +451,11 @@ class apiMessageParser:
 		
         pygame.init()
         pygame.display.set_icon(pygame.image.load("icon.png"))
-        pygame.display.set_mode((1024, 768), video_flags)
+        pygame.display.set_mode((self.winWidth, self.winHeight), video_flags)
 		
         pygame.display.set_caption("Display")
 		
-        self.resize((1024, 768))
+        self.resize((self.winWidth, self.winHeight))
         self.init()
 
 		
