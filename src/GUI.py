@@ -20,7 +20,7 @@ class GUI:
 		self.elements = {}
 		self.surfaces["0"] = surface()
 		self.setup_surface_visible = True
-		self.newCursor(0, 0, 0)
+		self.newCursor(0, 1280/2, 1024/2)
 		
 	def hideSetupSurface(self):
 		self.setup_surface_visible = False

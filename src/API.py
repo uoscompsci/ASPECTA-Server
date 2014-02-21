@@ -378,7 +378,7 @@ class apiMessageParser:
         except KeyError:
             print ('\033[1;31mInvalid API call\033[1;m')
     
-    def checkGUI(self):
+    def checkSetupGUI(self):
         GUIRead = self.GUI
         cursors = GUIRead.getCursors(0)
         position = GUIRead.getCursorPos(cursors[0])
@@ -466,7 +466,7 @@ class apiMessageParser:
                 pygame.quit () 
                 break
 			
-            self.checkGUI()
+            self.checkSetupGUI()
             self.draw()
 			
             pygame.display.flip()

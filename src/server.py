@@ -1,6 +1,6 @@
 import socket
+import select
 import sys
-import time
 from threading import Thread
 from Queue import Queue
 from API import apiMessageParser
@@ -13,32 +13,69 @@ def message_queue_monitor():
 		if(queue.empty()!=True):
 			qitem = queue.get()
 			messageParser.processMessage(qitem)
-
-ANY = '0.0.0.0'
-MCAST_ADDR = '224.168.2.9'
-MCAST_PORT = 1602
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-sock.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
-sock.bind((ANY,MCAST_PORT))
-sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 255)
-status = sock.setsockopt(socket.IPPROTO_IP,socket.IP_ADD_MEMBERSHIP,socket.inet_aton(MCAST_ADDR) + socket.inet_aton(ANY))
-sock.setblocking(0)
-ts = time.time()
-messageParser = apiMessageParser()
-
-#Start the queue monitor so that it can begin detecting tasks placed in the queue
-queueMonitor = Thread(target = message_queue_monitor)
-queueMonitor.start()
-
-#Continually checks for received API messages and if one is found it is added to the back of the queue
-while(True):
-	try:
-		msg, addr = sock.recvfrom(1024)
-	except socket.error, e:
-		pass
-	else:
-		if(msg=="quit"):
-			print '\033[1;31mShutting down server\033[1;m'
-			sys.exit(0)
-		else:
-			queue.put(msg)
+ 
+#Function to broadcast chat messages to all connected clients
+def reply (sock, message):
+    #Do not send the message to master socket and the client who has send us the message
+    for socket in CONNECTION_LIST:
+        if socket == sock :
+            try :
+                socket.send(message)
+            except :
+                # broken socket connection may be, chat client pressed ctrl+c for example
+                socket.close()
+                CONNECTION_LIST.remove(socket)
+ 
+if __name__ == "__main__":
+     
+    # List to keep track of socket descriptors
+    CONNECTION_LIST = []
+    RECV_BUFFER = 4096 # Advisable to keep it as an exponent of 2
+    PORT = 5000
+     
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # this has no effect, why ?
+    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server_socket.bind(("0.0.0.0", PORT))
+    server_socket.listen(10)
+ 
+    # Add server socket to the list of readable connections
+    CONNECTION_LIST.append(server_socket)
+    
+    print "API server started on port " + str(PORT)
+    
+    messageParser = apiMessageParser()
+    
+    #Start the queue monitor so that it can begin detecting tasks placed in the queue
+    queueMonitor = Thread(target = message_queue_monitor)
+    queueMonitor.start()
+ 
+    while 1:
+        # Get the list sockets which are ready to be read through select
+        read_sockets,write_sockets,error_sockets = select.select(CONNECTION_LIST,[],[])
+ 
+        for sock in read_sockets:
+            #New connection
+            if sock == server_socket:
+                # Handle the case in which there is a new connection recieved through server_socket
+                sockfd, addr = server_socket.accept()
+                CONNECTION_LIST.append(sockfd)
+                print "Client (%s, %s) connected" % addr
+             
+            #Some incoming message from a client
+            else:
+                # Data recieved from client, process it
+                try:
+                    #In Windows, sometimes when a TCP program closes abruptly,
+                    # a "Connection reset by peer" exception will be thrown
+                    data = sock.recv(RECV_BUFFER)
+                    if data:
+                    	queue.put(data)
+                        reply(sock,"Sent") #!!!!!!!!!!!REPLY PROPERLY!!!!!!!!!!!!
+                 
+                except:
+                    print "Client (%s, %s) is offline" % addr
+                    sock.close()
+                    CONNECTION_LIST.remove(sock)
+                    continue
+    server_socket.close()
