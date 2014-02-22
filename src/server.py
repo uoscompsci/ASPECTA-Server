@@ -12,7 +12,7 @@ def message_queue_monitor():
 	while(True):
 		if(queue.empty()!=True):
 			qitem = queue.get()
-			messageParser.processMessage(qitem)
+			reply(qitem[0],messageParser.processMessage(qitem[1]))
  
 #Function to broadcast chat messages to all connected clients
 def reply (sock, message):
@@ -70,7 +70,7 @@ if __name__ == "__main__":
                     # a "Connection reset by peer" exception will be thrown
                     data = sock.recv(RECV_BUFFER)
                     if data:
-                    	queue.put(data)
+                    	queue.put((sock,data))
                         reply(sock,"Sent") #!!!!!!!!!!!REPLY PROPERLY!!!!!!!!!!!!
                  
                 except:

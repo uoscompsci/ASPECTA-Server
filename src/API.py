@@ -39,258 +39,291 @@ class apiMessageParser:
     
     def newSurface(self, pieces):
         surfaceNo = self.GUI.newSurface()
-        print("Surface Number: " + str(surfaceNo))
+        return "Surface Number: " + str(surfaceNo)
         
     def newCursor(self, pieces):
         cursorNo = self.GUI.newCursor(pieces[1], pieces[2], pieces[3])
-        print("Cursor Number: " + str(cursorNo))
+        return "Cursor Number: " + str(cursorNo)
         
     def newWindow(self, pieces):
         windowNo = self.GUI.newWindow(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
-        print("Window Number: " + str(windowNo))
+        return "Window Number: " + str(windowNo)
         
     def newCircle(self, pieces):
         elementNo = self.GUI.newCircle(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
-        print("Element Number: " + str(elementNo))
+        return "Element Number: " + str(elementNo)
         
     def newLine(self, pieces):
         elementNo = self.GUI.newLine(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
-        print("Element Number: " + str(elementNo))
+        return "Element Number: " + str(elementNo)
         
     def newLineStrip(self, pieces):
         elementNo = self.GUI.newLineStrip(pieces[1], pieces[2], pieces[3], pieces[4])
-        print("Element Number: " + str(elementNo))
+        return "Element Number: " + str(elementNo)
         
     def newPolygon(self, pieces):
         elementNo = self.GUI.newPolygon(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5])
-        print("Element Number: " + str(elementNo))
+        return "Element Number: " + str(elementNo)
         
     def newText(self, pieces):
         elementNo = self.GUI.newText(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
-        print("Element Number: " + str(elementNo))
+        return "Element Number: " + str(elementNo)
         
     def mouseLeftDown(self, pieces):
         loc = self.GUI.leftDown(pieces[1])
-        print "Left mouse down at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
+        return "Left mouse down at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
         
     def mouseLeftUp(self, pieces):
         loc = self.GUI.leftUp(pieces[1])
-        print "Left mouse up at x = " + str(loc[0]) + " y = " + str(loc[1]) + " held for " + str(loc[2]) + " seconds\n"
+        return "Left mouse up at x = " + str(loc[0]) + " y = " + str(loc[1]) + " held for " + str(loc[2]) + " seconds\n"
         
     def mouseMiddleDown(self, pieces):
         loc = self.GUI.middleDown(pieces[1])
-        print "Middle mouse down at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
+        return "Middle mouse down at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
         
     def mouseMiddleUp(self, pieces):
         loc = self.GUI.middleUp(pieces[1])
-        print "Middle mouse up at x = " + str(loc[0]) + " y = " + str(loc[1]) + " held for " + str(loc[2]) + " seconds\n"
+        return "Middle mouse up at x = " + str(loc[0]) + " y = " + str(loc[1]) + " held for " + str(loc[2]) + " seconds\n"
         
     def mouseRightDown(self, pieces):
         loc = self.GUI.rightDown(pieces[1])
-        print "Right mouse down at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
+        return "Right mouse down at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
         
     def mouseRightUp(self, pieces):
         loc = self.GUI.rightUp(pieces[1])
-        print "Right mouse up at x = " + str(loc[0]) + " y = " + str(loc[1]) + " held for " + str(loc[2]) + " seconds\n"
+        return "Right mouse up at x = " + str(loc[0]) + " y = " + str(loc[1]) + " held for " + str(loc[2]) + " seconds\n"
         
     def moveCursor(self, pieces):
         self.GUI.moveCursor(pieces[1], pieces[2], pieces[3])
+        return ""
         
     def relocateCursor(self, pieces):
         self.GUI.setCursorPos(pieces[1], pieces[2], pieces[3], pieces[4])
+        return ""
         
     def getCursorPosition(self, pieces):
         loc = self.GUI.getCursorPos(pieces[1])
-        print "Cursor at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
+        return "Cursor at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
         
     def moveWindow(self, pieces):
         self.GUI.moveWindow(pieces[1], pieces[2], pieces[3])
+        return ""
         
     def relocateWindow(self, pieces):
         self.GUI.setWindowPos(pieces[1], pieces[2], pieces[3], pieces[4])
+        return ""
         
     def setWindowWidth(self, pieces):
         self.GUI.setWindowWidth(pieces[1], pieces[2])
+        return ""
         
     def setWindowHeight(self, pieces):
         self.GUI.setWindowHeight(pieces[1], pieces[2])
+        return ""
         
     def getWindowPosition(self, pieces):
         loc = self.GUI.getWindowPos(pieces[1])
-        print "Window at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
+        return "Window at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
         
     def getWindowWidth(self, pieces):
         width = self.GUI.getWindowWidth(pieces[1])
-        print "Window width = " + str(width)
+        return "Window width = " + str(width)
         
     def getWindowHeight(self, pieces):
         height = self.GUI.getWindowHeight(pieces[1])
-        print "Window height = " + str(height)
+        return "Window height = " + str(height)
         
     def stretchWindowDown(self, pieces):
         self.GUI.stretchWindowDown(pieces[1], pieces[2])
+        return ""
         
     def stretchWindowUp(self, pieces):
         self.GUI.stretchWindowUp(pieces[1], pieces[2])
+        return ""
         
     def stretchWindowLeft(self, pieces):    
         self.GUI.stretchWindowLeft(pieces[1], pieces[2])
+        return ""
         
     def stretchWindowRight(self, pieces):
         self.GUI.stretchWindowRight(pieces[1], pieces[2])
+        return ""
         
     def setWindowName(self, pieces):
         self.GUI.setWindowName(pieces[1], pieces[2])
+        return ""
         
     def getWindowName(self, pieces):
         name = self.GUI.getWindowName(pieces[1])
-        print "Window name = " + name
+        return "Window name = " + name
         
     def relocateCircle(self, pieces):
         name = self.GUI.setCirclePos(pieces[1], pieces[2], pieces[3], pieces[4])
+        return ""
         
     def getCirclePosition(self, pieces):
         loc = self.GUI.getCirclePos(pieces[1])
-        print "Circle at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
+        return "Circle at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
         
     def getElementType(self, pieces):
         type = self.GUI.getEleType(pieces[1])
-        print "Element type = " + type
+        return "Element type = " + type
         
     def setCircleLineColor(self, pieces):
         self.GUI.setCircleLine(pieces[1], pieces[2])
+        return ""
         
     def setCircleFillColor(self, pieces):
         self.GUI.setCircleFill(pieces[1], pieces[2])
+        return ""
         
     def getCircleLineColor(self, pieces):
         color = self.GUI.getCircleLine(pieces[1])
-        print "Line color = " + color
+        return "Line color = " + color
         
     def getCircleFillColor(self, pieces):
         color = self.GUI.getCircleFill(pieces[1])
-        print "Fill color = " + color
+        return "Fill color = " + color
         
     def getCircleRadius(self, pieces):
         radius = self.GUI.getCircleRad(pieces[1])
-        print "Radius = " + radius
+        return "Radius = " + radius
         
     def setCircleRadius(self, pieces):
         self.GUI.setCircleRad(pieces[1], pieces[2])
+        return ""
         
     def getLineStart(self, pieces):
         loc = self.GUI.getLineStart(pieces[1])
-        print "Line start at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
+        return "Line start at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
         
     def getLineEnd(self, pieces):
         loc = self.GUI.getLineEnd(pieces[1])
-        print "Line end at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
+        return "Line end at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
         
     def setLineStart(self, pieces):
         self.GUI.setLineStart(pieces[1], pieces[2], pieces[3])
+        return ""
         
     def setLineEnd(self, pieces):
         self.GUI.setLineEnd(pieces[1], pieces[2], pieces[3])
+        return ""
         
     def setLineColor(self, pieces):
         self.GUI.setLineColor(pieces[1], pieces[2])
+        return ""
         
     def getLineColor(self, pieces):
         color = self.GUI.getLineColor(pieces[1])
-        print "Line color = " + color
+        return "Line color = " + color
         
     def addLineStripPoint(self, pieces):
         self.GUI.addLineStripPoint(pieces[1], pieces[2], pieces[3])
+        return ""
         
     def getLineStripPoint(self, pieces):
         loc = self.GUI.getLineStripPoint(pieces[1], pieces[2])
-        print "Point at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
+        return "Point at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
         
     def moveLineStripPoint(self, pieces):
-        self.GUI.moveLineStripPoint(pieces[1], pieces[2], pieces[3], pieces[4])        
+        self.GUI.moveLineStripPoint(pieces[1], pieces[2], pieces[3], pieces[4])    
+        return ""    
         
     def getLineStripColor(self, pieces):
         color = self.GUI.getLineStripColor(pieces[1])
-        print "Line strip color = " + color
+        return "Line strip color = " + color
         
     def setLineStripColor(self, pieces):
         self.GUI.setLineStripColor(pieces[1], pieces[2])
+        return ""
         
     def getLineStripPointCount(self, pieces):
         count = self.GUI.getLineStripPointsCount(pieces[1])
-        print "Point count = " + str(count)
+        return "Point count = " + str(count)
         
     def addPolygonPoint(self, pieces):
         self.GUI.addPolygonPoint(pieces[1], pieces[2], pieces[3])
+        return ""
         
     def getPolygonPoint(self, pieces):
         loc = self.GUI.getPolygonPoint(pieces[1], pieces[2])
-        print "Point at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
+        return "Point at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
         
     def movePolygonPoint(self, pieces):
-        self.GUI.movePolygonPoint(pieces[1], pieces[2], pieces[3], pieces[4])        
+        self.GUI.movePolygonPoint(pieces[1], pieces[2], pieces[3], pieces[4])
+        return ""
         
     def getPolygonFillColor(self, pieces):
         color = self.GUI.getPolygonFillColor(pieces[1])
-        print "Polygon fill color = " + color
+        return "Polygon fill color = " + color
         
     def setPolygonFillColor(self, pieces):
         self.GUI.setPolygonFillColor(pieces[1], pieces[2])
+        return ""
         
     def getPolygonLineColor(self, pieces):
         color = self.GUI.getPolygonLineColor(pieces[1])
-        print "Polygon line color = " + color
+        return "Polygon line color = " + color
         
     def setPolygonLineColor(self, pieces):
         self.GUI.setPolygonLineColor(pieces[1], pieces[2])
+        return ""
         
     def getPolygonPointCount(self, pieces):
         count = self.GUI.getPolygonPointsCount(pieces[1])
-        print "Point count = " + str(count)
+        return "Point count = " + str(count)
         
     def setText(self, pieces):
         self.GUI.setText(pieces[1], pieces[2])
+        return ""
         
     def getText(self, pieces):
         text = self.GUI.getText(pieces[1])
+        return ""
         
     def setTextPos(self, pieces):
         self.GUI.setTextPos(pieces[1], pieces[2], pieces[3], pieces[4])
+        return ""
         
     def getTextPos(self, pieces):
         loc = self.GUI.getTextPos(pieces[1])
-        print "Text at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
+        return "Text at x = " + str(loc[0]) + " y = " + str(loc[1]) + "\n"
         
     def setPointSize(self, pieces):
         self.GUI.setPtSize(pieces[1], pieces[2])
+        return ""
         
     def getPointSize(self, pieces):
         size = self.GUI.getPtSize(pieces[1])
-        print "Point size = " + str(size)
+        return "Point size = " + str(size)
         
     def getTextFont(self, pieces):
         font = self.GUI.getFont(pieces[1])
-        print "Font = " + font
+        return "Font = " + font
         
     def setTextFont(self, pieces):
         self.GUI.setFont(pieces[1], pieces[2])
+        return ""
         
     def getTextColor(self, pieces):
         color = self.GUI.getTextColor(pieces[1])
-        print "Color = " + color
+        return "Color = " + color
         
     def setTextColor(self, pieces):
         self.GUI.setTextColor(pieces[1], pieces[2])
+        return ""
         
     def showElement(self, pieces):
         self.GUI.showElement(pieces[1])
+        return ""
         
     def hideElement(self, pieces):
         self.GUI.hideElement(pieces[1])
+        return ""
         
     def checkElementVisibility(self, pieces):
         visible = self.GUI.checkElementVisibility(pieces[1])
-        print "Visible = " + str(visible)
+        return "Visible = " + str(visible)
         
     messages = {'new_surface' : (newSurface, 0),  # No parameters
             'new_cursor' : (newCursor, 3),  # [1]=SurfaceNo  [2]=x  [3]=y
@@ -370,13 +403,16 @@ class apiMessageParser:
         print 'PROCESSING MESSAGE'
         print 'MESSAGE: ', msg, "\n"
         pieces = msg.split(',')
+        data = ""
         try:
             if(len(pieces) - 1 == self.messages[pieces[0]][1]):
-                self.messages[pieces[0]][0](self, pieces)
+                data = self.messages[pieces[0]][0](self, pieces)
             else:
                 print ('\033[1;31mInvalid number of arguments (' + str(len(pieces) - 1) + ' instead of ' + str(self.messages[pieces[0]][1]) + ')\033[1;m')
         except KeyError:
             print ('\033[1;31mInvalid API call\033[1;m')
+            
+        return data
     
     def checkSetupGUI(self):
         GUIRead = self.GUI
