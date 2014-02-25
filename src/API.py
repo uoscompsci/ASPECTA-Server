@@ -408,9 +408,9 @@ class apiMessageParser:
             if(len(pieces) - 1 == self.messages[pieces[0]][1]):
                 data = self.messages[pieces[0]][0](self, pieces)
             else:
-                data = '\033[1;31mInvalid number of arguments (' + str(len(pieces) - 1) + ' instead of ' + str(self.messages[pieces[0]][1]) + ')\033[1;m'
+                data = {"error" : 2, "1" : str(len(pieces) - 1), "2" : str(self.messages[pieces[0]][1])}
         except KeyError:
-            data = '\033[1;31mInvalid API call\033[1;m'
+            data = {"error" : 1}
         return data
     
     def checkSetupGUI(self):
