@@ -104,6 +104,18 @@ class apiMessageParser:
     def getCursorPosition(self, pieces):
         loc = self.GUI.getCursorPos(pieces[1])
         return {"x" : loc[0], "y" : loc[1]}
+    
+    def rotateCursorClockwise(self,pieces):
+        self.GUI.rotateCursorClockwise(pieces[1],pieces[2])
+        return {}
+        
+    def rotateCursorAnticlockwise(self,pieces):
+        self.GUI.rotateCursorAnticlockwise(pieces[1],pieces[2])
+        return {}
+        
+    def getCursorRotation(self,pieces):
+        rot = self.GUI.getCursorRotation(pieces[1])
+        return {"rotation" : rot}
         
     def moveWindow(self, pieces):
         self.GUI.moveWindow(pieces[1], pieces[2], pieces[3])
@@ -342,6 +354,9 @@ class apiMessageParser:
             'move_cursor' : (moveCursor, 3),  # [1]=CursorNo  [2]=xDistance  [3]=yDistance
             'relocate_cursor' : (relocateCursor, 4),  # [1]=CursorNo  [2]=x  [3]=y  [4]=Surface
             'get_cursor_pos' : (getCursorPosition, 1),  # [1]=CursorNo
+            'rotate_cursor_clockwise' : (rotateCursorClockwise,2), #[1]=CursorNo [2]=Degrees
+            'rotate_cursor_anticlockwise' : (rotateCursorAnticlockwise,2), #[1]=CursorNo [2]=Degrees
+            'get_cursor_rotation' : (getCursorRotation,1), #[1]=CursorNo
             'move_window' : (moveWindow, 3),  # [1]=WindowNo  [2]=xDistance  [3]=yDistance
             'relocate_window' : (relocateWindow, 4),  # [1]=WindowNo  [2]=x  [3]=y  [4]=Surface
             'set_window_width' : (setWindowWidth, 2),  # [1]=WindowNo  [2]=Width
@@ -419,6 +434,7 @@ class apiMessageParser:
         position = GUIRead.getCursorPos(cursors[0])
         self.x = position[0]
         self.y = position[1]
+        self.rotation = GUIRead.getCursorRotation(cursors[0])
 		
     def resize(self, (width, height)):
         if height == 0:
@@ -447,6 +463,7 @@ class apiMessageParser:
         self.done = False
 		
         self.x, self.y = 0.0 , 0.0
+        self.rotation = 0
 		
     def draw(self):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -458,6 +475,7 @@ class apiMessageParser:
         glPushMatrix()
 		
         glTranslatef(self.x, self.y, 0.0)
+        glRotatef(-self.rotation,0.0,0.0,1.0)
 
         glColor4f(1.0, 1.0, 1.0, 1.0)
 		

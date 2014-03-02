@@ -70,6 +70,15 @@ class GUI:
 	def moveCursor(self, cursorNo, xDist, yDist):
 		self.cursors[str(cursorNo)].move(xDist,yDist) #TODO Handle when moves to different screen
 		
+	def rotateCursorClockwise(self,cursorNo,degrees):
+		self.cursors[str(cursorNo)].rotateClockwise(degrees)
+		
+	def rotateCursorAnticlockwise(self,cursorNo,degrees):
+		self.cursors[str(cursorNo)].rotateAnticlockwise(degrees)
+		
+	def getCursorRotation(self,cursorNo):
+		return self.cursors[str(cursorNo)].getRotation()
+		
 	def setCursorPos(self, cursorNo, xLoc, yLoc, surface):
 		self.cursors[str(cursorNo)].setLoc(xLoc,yLoc)
 		origSur = self.findCursor(cursorNo)

@@ -1,7 +1,8 @@
 import datetime
+import math
 
 class cursor:
-    __slots__ = ['id', 'loc', 'stateL', 'stateM', 'stateR', 'downTimeL', 'downTimeR', 'downTimeM']
+    __slots__ = ['id', 'loc', 'stateL', 'stateM', 'stateR', 'downTimeL', 'downTimeR', 'downTimeM', 'rotaton']
 
     def __init__(self, x, y):
         #self.loc=point2D(x,y)
@@ -9,13 +10,75 @@ class cursor:
         self.stateM = "up"
         self.stateR = "up"
         self.loc = point2D(x,y)
+        self.rotation = 0
 
     def moveX(self, distance):
-        self.loc.setX(self.loc.getX()+int(distance))
-
+        if(self.rotation==0):
+            self.loc.setX(self.loc.getX()+int(distance))
+        elif(self.rotation==180):
+            self.loc.setX(self.loc.getX()-int(distance))
+        elif(self.rotation==90):
+            self.loc.setY(self.loc.getY()-int(distance))
+        elif(self.rotation==270):
+            self.loc.setY(self.loc.getY()+int(distance))
+        elif(self.rotation>0 and self.rotation<90):
+            radians = math.radians(self.rotation)
+            ydist = -math.sin(radians)*int(distance)
+            xdist = math.cos(radians)*int(distance)
+            self.loc.setX(self.loc.getX()+xdist)
+            self.loc.setY(self.loc.getY()+ydist)
+        elif(self.rotation>90 and self.rotation<180):
+            radians = math.radians(self.rotation-90)
+            xdist = -math.sin(radians)*int(distance)
+            ydist = -math.cos(radians)*int(distance)
+            self.loc.setX(self.loc.getX()+xdist)
+            self.loc.setY(self.loc.getY()+ydist)
+        elif(self.rotation>180 and self.rotation<270):
+            radians = math.radians(self.rotation-180)
+            ydist = math.sin(radians)*int(distance)
+            xdist = -math.cos(radians)*int(distance)
+            self.loc.setX(self.loc.getX()+xdist)
+            self.loc.setY(self.loc.getY()+ydist)
+        elif(self.rotation>270):
+            radians = math.radians(self.rotation-270)
+            xdist = math.sin(radians)*int(distance)
+            ydist = math.cos(radians)*int(distance)
+            self.loc.setX(self.loc.getX()+xdist)
+            self.loc.setY(self.loc.getY()+ydist)
 
     def moveY(self, distance):
-        self.loc.setY(self.loc.getY()+int(distance))
+        if(self.rotation==0):
+            self.loc.setY(self.loc.getY()+int(distance))
+        elif(self.rotation==180):
+            self.loc.setY(self.loc.getY()-int(distance))
+        elif(self.rotation==90):
+            self.loc.setX(self.loc.getX()+int(distance))
+        elif(self.rotation==270):
+            self.loc.setX(self.loc.getX()-int(distance))
+        elif(self.rotation>0 and self.rotation<90):
+            radians = math.radians(self.rotation)
+            xdist = math.sin(radians)*int(distance)
+            ydist = math.cos(radians)*int(distance)
+            self.loc.setX(self.loc.getX()+xdist)
+            self.loc.setY(self.loc.getY()+ydist)
+        elif(self.rotation>90 and self.rotation<180):
+            radians = math.radians(self.rotation-90)
+            ydist = -math.sin(radians)*int(distance)
+            xdist = math.cos(radians)*int(distance)
+            self.loc.setX(self.loc.getX()+xdist)
+            self.loc.setY(self.loc.getY()+ydist)
+        elif(self.rotation>180 and self.rotation<270):
+            radians = math.radians(self.rotation-180)
+            xdist = -math.sin(radians)*int(distance)
+            ydist = -math.cos(radians)*int(distance)
+            self.loc.setX(self.loc.getX()+xdist)
+            self.loc.setY(self.loc.getY()+ydist)
+        elif(self.rotation>270):
+            radians = math.radians(self.rotation-270)
+            ydist = math.sin(radians)*int(distance)
+            xdist = -math.cos(radians)*int(distance)
+            self.loc.setX(self.loc.getX()+xdist)
+            self.loc.setY(self.loc.getY()+ydist)
 
     def move(self, xdis, ydis):
         self.moveX(xdis)
@@ -75,6 +138,19 @@ class cursor:
     def setStateMDown(self):
         self.downTimeM=datetime.datetime.now()
         self.stateM = "Down"
+        
+    def getRotation(self):
+        return self.rotation
+    
+    def rotateClockwise(self, degrees):
+        self.rotation = self.rotation + int(degrees)
+        if(self.rotation>=360):
+            self.rotation = self.rotation%360
+            
+    def rotateAnticlockwise(self, degrees):
+        self.rotation = self.rotation - int(degrees)
+        if(self.rotation<0):
+            self.rotation = self.rotation%360
 
 class window:
     __slots__ = ['elements', 'loc', 'xsize', 'ysize', 'subwindows', 'name']
@@ -434,8 +510,8 @@ class point2D:
     __slots__ = ['x', 'y']
 
     def __init__(self, x, y):
-        self.x = int(x)
-        self.y = int(y)
+        self.x = float(x)
+        self.y = float(y)
 
     def setX(self, x):
         self.x = x
