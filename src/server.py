@@ -26,7 +26,7 @@ if __name__ == "__main__":
      
     CONNECTION_LIST = []
     RECV_BUFFER = 4096
-    PORT = 5001
+    PORT = 5000
      
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # why is this not working?

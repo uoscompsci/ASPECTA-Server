@@ -192,7 +192,7 @@ class window:
     def setYLoc(self, yloc):
         self.loc.setY(yloc)
 
-    #location of a window is the coordinate of its top-left point on its superwindow
+    #location of a window is the coordinate of its top-left point on its parent window/surface
     def setLoc(self, xloc, yloc):
         self.setXLoc(xloc)
         self.setYLoc(yloc)
