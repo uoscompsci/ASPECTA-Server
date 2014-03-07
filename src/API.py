@@ -36,6 +36,7 @@ class apiMessageParser:
     
     winWidth = 1280
     winHeight = 1024
+    mouseLock = False
     
     def newSurface(self, pieces):
         surfaceNo = self.GUI.newSurface()
@@ -428,7 +429,42 @@ class apiMessageParser:
             data = {"error" : 1}
         return data
     
+    def getInput(self):
+        mpb=pygame.mouse.get_pressed() # mouse pressed buttons
+        kpb=pygame.key.get_pressed() # keyboard pressed buttons
+        pos=pygame.mouse.get_pos() # mouse shift
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key==pygame.K_l:
+                    if (self.mouseLock == True):
+                        self.mouseLock = False
+                        pygame.mouse.set_visible(True)
+                    elif(self.mouseLock == False):
+                        self.mouseLock = True
+                        pygame.mouse.set_visible(False)
+            if(self.mouseLock==True):
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button==4:
+                        self.GUI.rotateCursorClockwise(1,5)
+                    elif event.button==5:
+                        self.GUI.rotateCursorAnticlockwise(1,5)
+                xdist = (1280/2)-pos[0]
+                ydist = (1024/2)-pos[1]
+                pygame.mouse.set_pos([self.winWidth/2,self.winHeight/2])
+                
+                self.GUI.moveCursor(1,-xdist,ydist)
+                virtualpos = self.GUI.getCursorPos(1)
+                if (virtualpos[0]<0):
+                    self.GUI.setCursorX(1,0)
+                elif(virtualpos[0]>self.winWidth):
+                    self.GUI.setCursorX(1,self.winWidth)
+                if(virtualpos[1]<0):
+                    self.GUI.setCursorY(1,0)
+                elif(virtualpos[1]>self.winHeight):
+                    self.GUI.setCursorY(1,self.winHeight)
+    
     def checkSetupGUI(self):
+        self.getInput()
         GUIRead = self.GUI
         cursors = GUIRead.getCursors(0)
         position = GUIRead.getCursorPos(cursors[0])
@@ -457,7 +493,7 @@ class apiMessageParser:
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
         glEnable(GL_BLEND)
 		
-        self.tutorial_texture = Texture("cursor.png")
+        self.mouse_texture = Texture("cursor.png")
 		
         self.demandedFps = 30.0
         self.done = False
@@ -479,7 +515,7 @@ class apiMessageParser:
 
         glColor4f(1.0, 1.0, 1.0, 1.0)
 		
-        glBindTexture(GL_TEXTURE_2D, self.tutorial_texture.texID)
+        glBindTexture(GL_TEXTURE_2D, self.mouse_texture.texID)
 
         glBegin(GL_QUADS)
 		

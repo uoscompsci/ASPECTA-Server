@@ -86,6 +86,12 @@ class GUI:
 			self.surfaces[str(origSur)].removeCursor(cursorNo)
 			self.surfaces[str(surface)].addCursor(cursorNo)
 			
+	def setCursorX(self, cursorNo, pos):
+		self.cursors[str(cursorNo)].setX(pos)
+		
+	def setCursorY(self, cursorNo, pos):
+		self.cursors[str(cursorNo)].setY(pos)
+			
 	def removeCursor(self,cursorNo):
 		surNo = self.findCursor(cursorNo)
 		self.surfaces[str(surNo)].removeCursor(cursorNo)
