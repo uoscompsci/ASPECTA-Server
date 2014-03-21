@@ -432,42 +432,7 @@ class apiMessageParser:
             data = {"error" : 1}
         return data
     
-    def getInput(self):
-        mpb=pygame.mouse.get_pressed() # mouse pressed buttons
-        kpb=pygame.key.get_pressed() # keyboard pressed buttons
-        pos=pygame.mouse.get_pos() # mouse shift
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key==pygame.K_l:
-                    if (self.mouseLock == True):
-                        self.mouseLock = False
-                        pygame.mouse.set_visible(True)
-                    elif(self.mouseLock == False):
-                        self.mouseLock = True
-                        pygame.mouse.set_visible(False)
-            if(self.mouseLock==True):
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button==4:
-                        self.GUI.rotateCursorClockwise(1,10)
-                    elif event.button==5:
-                        self.GUI.rotateCursorAnticlockwise(1,10)
-                xdist = (1280/2)-pos[0]
-                ydist = (1024/2)-pos[1]
-                pygame.mouse.set_pos([self.winWidth/2,self.winHeight/2])
-                
-                self.GUI.moveCursor(1,-xdist,ydist)
-                virtualpos = self.GUI.getCursorPos(1)
-                if (virtualpos[0]<0):
-                    self.GUI.setCursorX(1,0)
-                elif(virtualpos[0]>self.winWidth):
-                    self.GUI.setCursorX(1,self.winWidth)
-                if(virtualpos[1]<0):
-                    self.GUI.setCursorY(1,0)
-                elif(virtualpos[1]>self.winHeight):
-                    self.GUI.setCursorY(1,self.winHeight)
-    
     def checkSetupGUI(self):
-        self.getInput()
         GUIRead = self.GUI
         cursors = GUIRead.getCursors(0)
         position = GUIRead.getCursorPos(cursors[0])
