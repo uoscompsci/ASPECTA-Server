@@ -45,6 +45,36 @@ class cursor:
             ydist = math.cos(radians)*int(distance)
             self.loc.setX(self.loc.getX()+xdist)
             self.loc.setY(self.loc.getY()+ydist)
+            
+    def testMoveX(self, distance):
+        if(self.rotation==0):
+            return (int(distance),0)
+        elif(self.rotation==180):
+            return (-int(distance),0)
+        elif(self.rotation==90):
+            return (0,-int(distance))
+        elif(self.rotation==270):
+            return (0,int(distance))
+        elif(self.rotation>0 and self.rotation<90):
+            radians = math.radians(self.rotation)
+            ydist = -math.sin(radians)*int(distance)
+            xdist = math.cos(radians)*int(distance)
+            return (xdist, ydist)
+        elif(self.rotation>90 and self.rotation<180):
+            radians = math.radians(self.rotation-90)
+            xdist = -math.sin(radians)*int(distance)
+            ydist = -math.cos(radians)*int(distance)
+            return (xdist,ydist)
+        elif(self.rotation>180 and self.rotation<270):
+            radians = math.radians(self.rotation-180)
+            ydist = math.sin(radians)*int(distance)
+            xdist = -math.cos(radians)*int(distance)
+            return (xdist,ydist)
+        elif(self.rotation>270):
+            radians = math.radians(self.rotation-270)
+            xdist = math.sin(radians)*int(distance)
+            ydist = math.cos(radians)*int(distance)
+            return (xdist,ydist)
 
     def moveY(self, distance):
         if(self.rotation==0):
@@ -79,10 +109,51 @@ class cursor:
             xdist = -math.cos(radians)*int(distance)
             self.loc.setX(self.loc.getX()+xdist)
             self.loc.setY(self.loc.getY()+ydist)
+            
+    def testMoveY(self, distance):
+        if(self.rotation==0):
+            return (0,int(distance))
+        elif(self.rotation==180):
+            return (0,-int(distance))
+        elif(self.rotation==90):
+            return (int(distance),0)
+        elif(self.rotation==270):
+            return (-int(distance),0)
+        elif(self.rotation>0 and self.rotation<90):
+            radians = math.radians(self.rotation)
+            xdist = math.sin(radians)*int(distance)
+            ydist = math.cos(radians)*int(distance)
+            return (xdist,ydist)
+        elif(self.rotation>90 and self.rotation<180):
+            radians = math.radians(self.rotation-90)
+            ydist = -math.sin(radians)*int(distance)
+            xdist = math.cos(radians)*int(distance)
+            return (xdist,ydist)
+        elif(self.rotation>180 and self.rotation<270):
+            radians = math.radians(self.rotation-180)
+            xdist = -math.sin(radians)*int(distance)
+            ydist = -math.cos(radians)*int(distance)
+            return (xdist,ydist)
+        elif(self.rotation>270):
+            radians = math.radians(self.rotation-270)
+            ydist = math.sin(radians)*int(distance)
+            xdist = -math.cos(radians)*int(distance)
+            return (xdist,ydist)
 
-    def move(self, xdis, ydis):
-        self.moveX(xdis)
-        self.moveY(ydis)
+    def move(self, xdist, ydist):
+        self.moveX(xdist)
+        self.moveY(ydist)
+        
+    def getX(self):
+        return self.loc.getX()
+
+    def getY(self):
+        return self.loc.getY()
+        
+    def testMove(self, xdist, ydist):
+        dists1 = self.testMoveX(xdist)
+        dists2 = self.testMoveY(ydist)
+        return (self.getX()+dists1[0]+dists2[0],self.getY()+dists1[1]+dists2[1])
 
     def setX(self, loc):
         self.loc.setX(float(loc))
@@ -93,12 +164,6 @@ class cursor:
     def setLoc(self, xloc, yloc):
         self.setX(xloc)
         self.setY(yloc)
-
-    def getX(self):
-        return self.loc.getX()
-
-    def getY(self):
-        return self.loc.getY()
 
     def getStateL(self):
         return self.stateL

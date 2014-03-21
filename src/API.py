@@ -97,6 +97,10 @@ class apiMessageParser:
     def moveCursor(self, pieces):
         self.GUI.moveCursor(pieces[1], pieces[2], pieces[3])
         return {}
+    
+    def testMoveCursor(self, pieces):
+        loc = self.GUI.testMoveCursor(pieces[1], pieces[2], pieces[3])
+        return {'x' : loc[0], 'y' : loc[1]}
         
     def relocateCursor(self, pieces):
         self.GUI.setCursorPos(pieces[1], pieces[2], pieces[3], pieces[4])
@@ -353,6 +357,7 @@ class apiMessageParser:
             'mouse_r' : (mouseRightDown, 1),  # [1]=CursorNo
             'mouse_ru' : (mouseRightUp, 1),  # [1]=CursorNo
             'move_cursor' : (moveCursor, 3),  # [1]=CursorNo  [2]=xDistance  [3]=yDistance
+            'test_move_cursor' : (testMoveCursor, 3),  # [1]=CursorNo  [2]=xDistance  [3]=yDistance
             'relocate_cursor' : (relocateCursor, 4),  # [1]=CursorNo  [2]=x  [3]=y  [4]=Surface
             'get_cursor_pos' : (getCursorPosition, 1),  # [1]=CursorNo
             'rotate_cursor_clockwise' : (rotateCursorClockwise,2), #[1]=CursorNo [2]=Degrees
