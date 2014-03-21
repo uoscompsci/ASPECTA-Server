@@ -416,8 +416,6 @@ class apiMessageParser:
     }
     
     def processMessage(self, msg):
-        print 'PROCESSING MESSAGE'
-        print 'MESSAGE: ', msg, "\n"
         pieces = msg.split(',')
         data = ""
         try:
@@ -445,9 +443,9 @@ class apiMessageParser:
             if(self.mouseLock==True):
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button==4:
-                        self.GUI.rotateCursorClockwise(1,5)
+                        self.GUI.rotateCursorClockwise(1,10)
                     elif event.button==5:
-                        self.GUI.rotateCursorAnticlockwise(1,5)
+                        self.GUI.rotateCursorAnticlockwise(1,10)
                 xdist = (1280/2)-pos[0]
                 ydist = (1024/2)-pos[1]
                 pygame.mouse.set_pos([self.winWidth/2,self.winHeight/2])
@@ -494,6 +492,7 @@ class apiMessageParser:
         glEnable(GL_BLEND)
 		
         self.mouse_texture = Texture("cursor.png")
+        self.cross_texture = Texture("cursorcross.png")
 		
         self.demandedFps = 30.0
         self.done = False
@@ -531,6 +530,24 @@ class apiMessageParser:
         glTexCoord2f(0.0, 0.0)
         glVertex2f(0, -46)
 		
+        glEnd()
+        
+        glBindTexture(GL_TEXTURE_2D, self.cross_texture.texID)
+
+        glBegin(GL_QUADS)
+        
+        glTexCoord2f(0.0, 1.0)
+        glVertex2f(-20, 20)
+        
+        glTexCoord2f(1.0, 1.0)
+        glVertex2f(20, 20)
+        
+        glTexCoord2f(1.0, 0.0)
+        glVertex2f(20, -20)
+        
+        glTexCoord2f(0.0, 0.0)
+        glVertex2f(-20, -20)
+        
         glEnd()
 		
         glPopMatrix()

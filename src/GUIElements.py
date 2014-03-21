@@ -85,10 +85,10 @@ class cursor:
         self.moveY(ydis)
 
     def setX(self, loc):
-        self.loc.setX(int(loc))
+        self.loc.setX(float(loc))
 
     def setY(self, loc):
-        self.loc.setY(int(loc))
+        self.loc.setY(float(loc))
 
     def setLoc(self, xloc, yloc):
         self.setX(xloc)
