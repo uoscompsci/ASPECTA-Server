@@ -19,8 +19,7 @@ class GUI:
 		self.windows = {}
 		self.elements = {}
 		self.surfaces["0"] = surface()
-		self.setup_surface_visible = True
-		self.newCursor(0, 1280/2, 1024/2)
+		self.setup_surface_visible = False
 		
 	def hideSetupSurface(self):
 		self.setup_surface_visible = False
@@ -411,3 +410,9 @@ class GUI:
 	
 	def getCursors(self,surfaceNo):
 		return self.surfaces[str(surfaceNo)].getCursors()
+	
+	def getWindows(self, surfaceNo):
+		return self.surfaces[str(surfaceNo)].getWindows()
+	
+	def getElements(self, windowNo):
+		return self.windows[str(windowNo)].getElements()

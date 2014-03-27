@@ -4,6 +4,7 @@ from OpenGL.GLU import *
 import pygame
 from pygame.locals import *
 from threading import Thread
+from math import *
 
 #Basis for PyOpenGL/PyGame code from http://www.jason.gd/str/pokaz/pygame_pyopengl_2d
 
@@ -341,6 +342,16 @@ class apiMessageParser:
     def checkElementVisibility(self, pieces):
         visible = self.GUI.checkElementVisibility(pieces[1])
         return {"visible" : visible}
+    
+    def hideSetupSurface(self,pieces):
+        self.GUI.hideSetupSurface()
+        
+    def showSetupSurface(self,pieces):
+        self.GUI.showSetupSurface()
+        
+    def getSetupSurfaceVisibility(self,pieces):
+        visible = self.GUI.getSetupSurfaceVisibilty()
+        return {"visible" : visible}
         
     messages = {'new_surface' : (newSurface, 0),  # No parameters
             'new_cursor' : (newCursor, 3),  # [1]=SurfaceNo  [2]=x  [3]=y
@@ -417,7 +428,10 @@ class apiMessageParser:
             'get_text_color' : (getTextColor, 1),  # [1]=ElementNo
             'show_element' : (showElement, 1),  # [1]=ElementNo
             'hide_element' : (hideElement, 1),  # [1]=ElementNo
-            'check_element_visibility' : (checkElementVisibility, 1)  # [1]=ElementNo
+            'check_element_visibility' : (checkElementVisibility, 1),  # [1]=ElementNo
+            'hide_setup_surface' : (hideSetupSurface,0),
+            'show_setup_surface' : (showSetupSurface,0),
+            'get_setup_surface_visibility' : (getSetupSurfaceVisibility,0)
     }
     
     def processMessage(self, msg):
@@ -425,20 +439,145 @@ class apiMessageParser:
         data = ""
         try:
             if(len(pieces) - 1 == self.messages[pieces[0]][1]):
-                data = self.messages[pieces[0]][0](self, pieces)
+                data = self.messages[str(pieces[0])][0](self, pieces)
             else:
                 data = {"error" : 2, "1" : str(len(pieces) - 1), "2" : str(self.messages[pieces[0]][1])}
-        except KeyError:
+        except KeyError, e:
             data = {"error" : 1}
         return data
     
+    def drawCursor(self,x,y,rotation):
+        glDisable(GL_LIGHTING)
+        glEnable(GL_TEXTURE_2D)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        
+        glPushMatrix()
+        
+        glTranslatef(x, y, 0.0)
+        glRotatef(-rotation,0.0,0.0,1.0)
+
+        glColor4f(1.0, 1.0, 1.0, 1.0)
+        
+        glBindTexture(GL_TEXTURE_2D, self.mouse_texture.texID)
+
+        glBegin(GL_QUADS)
+        
+        glTexCoord2f(0.0, 1.0)
+        glVertex2f(0, 0)
+        
+        glTexCoord2f(1.0, 1.0)
+        glVertex2f(29, 0)
+        
+        glTexCoord2f(1.0, 0.0)
+        glVertex2f(29, -46)
+        
+        glTexCoord2f(0.0, 0.0)
+        glVertex2f(0, -46)
+        
+        glEnd()
+        
+        glBindTexture(GL_TEXTURE_2D, self.cross_texture.texID)
+
+        glBegin(GL_QUADS)
+        
+        glTexCoord2f(0.0, 1.0)
+        glVertex2f(-20, 20)
+        
+        glTexCoord2f(1.0, 1.0)
+        glVertex2f(20, 20)
+        
+        glTexCoord2f(1.0, 0.0)
+        glVertex2f(20, -20)
+        
+        glTexCoord2f(0.0, 0.0)
+        glVertex2f(-20, -20)
+        
+        glEnd()
+        
+        glPopMatrix()
+        
+    def drawCross(self,x,y): #EXISTS FOR GUI DATA STRUCTURE TESTING PURPOSES
+        glDisable(GL_LIGHTING)
+        glEnable(GL_TEXTURE_2D)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        
+        glPushMatrix()
+        
+        glTranslatef(x, y, 0.0)
+
+        glColor4f(1.0, 1.0, 1.0, 1.0)
+        
+        glBindTexture(GL_TEXTURE_2D, self.cross_texture.texID)
+
+        glBegin(GL_QUADS)
+        
+        glTexCoord2f(0.0, 1.0)
+        glVertex2f(-20, 20)
+        
+        glTexCoord2f(1.0, 1.0)
+        glVertex2f(20, 20)
+        
+        glTexCoord2f(1.0, 0.0)
+        glVertex2f(20, -20)
+        
+        glTexCoord2f(0.0, 0.0)
+        glVertex2f(-20, -20)
+        
+        glEnd()
+        
+        glPopMatrix()
+        
+    def drawCircle(self,x,y,rad):
+        glDisable(GL_LIGHTING)
+        glDisable(GL_TEXTURE_2D)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        
+        glPushMatrix()
+        
+        glTranslatef(x, y, 0.0)
+        sides = 32        
+        
+        glColor4f(1.0, 1.0, 1.0, 1.0)
+        
+        glBegin(GL_POLYGON)
+        
+        for i in range(sides):
+            cosine = float(rad) * cos(i*2*pi/sides)
+            sine = float(rad) * sin(i*2*pi/sides)
+            glVertex2f(cosine,sine)
+        
+        glEnd()
+        
+        glPopMatrix()
+        
+    def displayWindow(self, windowNo, GUIRead):
+        winPos = GUIRead.getWindowPos(windowNo)
+        width = GUIRead.getWindowWidth(windowNo)
+        height = GUIRead.getWindowHeight(windowNo)
+        elements = GUIRead.getElements(windowNo)
+        for z in range(0,len(elements)):
+            type = GUIRead.getEleType(elements[z])
+            if(type=="circle"):
+                cirPos = GUIRead.getCirclePos(elements[z])
+                rad = GUIRead.getCircleRad(elements[z])
+                drawPos = (winPos[0]+cirPos[0],winPos[1]-height+cirPos[1])
+                self.drawCircle(drawPos[0],drawPos[1],rad)
+    
     def checkSetupGUI(self):
-        GUIRead = self.GUI
-        cursors = GUIRead.getCursors(0)
-        position = GUIRead.getCursorPos(cursors[0])
-        self.x = position[0]
-        self.y = position[1]
-        self.rotation = GUIRead.getCursorRotation(cursors[0])
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glLoadIdentity()
+        if(self.GUI.getSetupSurfaceVisibilty()==True):
+            GUIRead = self.GUI
+            cursors = GUIRead.getCursors(0)
+            for z in range(0,len(cursors)):
+                position = GUIRead.getCursorPos(cursors[z])
+                x = position[0]
+                y = position[1]
+                rotation = GUIRead.getCursorRotation(cursors[z])
+                self.drawCursor(x,y,rotation)
+            windows = GUIRead.getWindows(0)
+            for z in range(0,len(windows)):
+                self.displayWindow(windows[z],GUIRead)
 		
     def resize(self, (width, height)):
         if height == 0:
@@ -470,58 +609,6 @@ class apiMessageParser:
         self.x, self.y = 0.0 , 0.0
         self.rotation = 0
 		
-    def draw(self):
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        glLoadIdentity()
-        glDisable(GL_LIGHTING)
-        glEnable(GL_TEXTURE_2D)
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-		
-        glPushMatrix()
-		
-        glTranslatef(self.x, self.y, 0.0)
-        glRotatef(-self.rotation,0.0,0.0,1.0)
-
-        glColor4f(1.0, 1.0, 1.0, 1.0)
-		
-        glBindTexture(GL_TEXTURE_2D, self.mouse_texture.texID)
-
-        glBegin(GL_QUADS)
-		
-        glTexCoord2f(0.0, 1.0)
-        glVertex2f(0, 0)
-		
-        glTexCoord2f(1.0, 1.0)
-        glVertex2f(29, 0)
-		
-        glTexCoord2f(1.0, 0.0)
-        glVertex2f(29, -46)
-		
-        glTexCoord2f(0.0, 0.0)
-        glVertex2f(0, -46)
-		
-        glEnd()
-        
-        glBindTexture(GL_TEXTURE_2D, self.cross_texture.texID)
-
-        glBegin(GL_QUADS)
-        
-        glTexCoord2f(0.0, 1.0)
-        glVertex2f(-20, 20)
-        
-        glTexCoord2f(1.0, 1.0)
-        glVertex2f(20, 20)
-        
-        glTexCoord2f(1.0, 0.0)
-        glVertex2f(20, -20)
-        
-        glTexCoord2f(0.0, 0.0)
-        glVertex2f(-20, -20)
-        
-        glEnd()
-		
-        glPopMatrix()
-		
     def display(self):
         video_flags = OPENGL | DOUBLEBUF
 		
@@ -541,9 +628,8 @@ class apiMessageParser:
             if event.type == QUIT or self.done:
                 pygame.quit () 
                 break
-			
+
             self.checkSetupGUI()
-            self.draw()
 			
             pygame.display.flip()
 			

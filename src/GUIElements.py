@@ -300,6 +300,9 @@ class window:
             if(int(self.elements[x])==int(elementNo)):
                 found = True
         return found
+    
+    def getElements(self):
+        return self.elements
 
 class surface():
     __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows']
@@ -364,6 +367,9 @@ class surface():
     
     def getCursors(self):
         return self.cursors
+    
+    def getWindows(self):
+        return self.windows
         
 class element:
     __slots__ = ['elementType', 'visible']
