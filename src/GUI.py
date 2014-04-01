@@ -1,5 +1,6 @@
 from GUIElements import *
 import threading
+from math import *
 
 class GUI:
 	__slots__ = ['surfaces', 'surfaces_lock', 'displays', 'displays_lock', 'cursors', 'cursors_lock', 'lastcur', 'lastsur', 'lastwin', 'lastele' 'windows', 'windows_lock', 'elements', 'elements_lock', 'setup_surface_visible']
@@ -307,6 +308,9 @@ class GUI:
 	def addLineStripPoint(self, elementNo, x, y):
 		self.elements[str(elementNo)].addPoint(x,y)
 		
+	def addLineStripPointAt(self, elementNo, x, y, index):
+		self.elements[str(elementNo)].addPointAt(x,y,index)
+		
 	def getLineStripPoint(self, elementNo, pointNo):
 		xloc = self.elements[str(elementNo)].getPointX(pointNo)
 		yloc = self.elements[str(elementNo)].getPointY(pointNo)
@@ -416,3 +420,23 @@ class GUI:
 	
 	def getElements(self, windowNo):
 		return self.windows[str(windowNo)].getElements()
+	
+	def getClickedElements(self, surfaceNo, x, y):
+		windows = self.getWindows(surfaceNo)
+		hits = []
+		for windowNo in windows:
+			elements = self.getElements(windowNo)
+			for elementNo in elements:
+				if(self.getEleType(elementNo) == "circle"):
+					pos = self.getCirclePos(elementNo)
+					rad = float(self.getCircleRad(elementNo))
+					dist = None
+					if(x!=pos[0] and y!=pos[1]):
+						dist=sqrt(pow(abs(float(pos[0])-float(x)),2)+pow(abs(float(pos[1])-float(y)),2))
+					elif(x==pos[0]):
+						dist=abs(float(pos[1])-float(y))
+					elif(y==pos[1]):
+						dist=abs(float(pos[0])-float(x))
+					if(dist<=rad):
+						hits.append(elementNo)
+		return hits

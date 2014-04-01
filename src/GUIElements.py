@@ -290,9 +290,12 @@ class window:
         self.elements.append(elementNo)
         
     def removeElement(self, elementNo):
+        popped = False
         for x in range(0, len(self.elements)):
-            if(self.elements[x]==elementNo):
-                self.elements.pop(x)
+            if(popped==False):
+                if(self.elements[x]==elementNo):
+                    self.elements.pop(x)
+                    popped=True
     
     def containsEle(self, elementNo):
         found = False
@@ -476,6 +479,9 @@ class lineStrip(element):
 
     def addPoint(self, x, y):
         self.points.append(point2D(x,y))
+        
+    def addPointAt(self, x, y, index):
+        self.points.insert(index, point2D(x,y))
 
     def getPointX(self, number):
         return self.points[int(number)-1].getX()

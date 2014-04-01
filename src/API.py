@@ -6,11 +6,8 @@ from pygame.locals import *
 from threading import Thread
 from math import *
 
-#Basis for PyOpenGL/PyGame code from http://www.jason.gd/str/pokaz/pygame_pyopengl_2d
-
+#Texture loading class from http://www.jason.gd/str/pokaz/pygame_pyopengl_2d
 class Texture():
-# simple texture class
-# designed for 32 bit png images (with alpha channel)
     def __init__(self, fileName):
         self.texID = 0
         self.LoadTexture(fileName)
@@ -32,6 +29,7 @@ class Texture():
     def __del__(self):
         glDeleteTextures(self.texID)
 
+#A class which is used to parse API messages and call the relevant actions
 class apiMessageParser:
     __slots__ = ['GUI']
     
@@ -238,6 +236,10 @@ class apiMessageParser:
     def addLineStripPoint(self, pieces):
         self.GUI.addLineStripPoint(pieces[1], pieces[2], pieces[3])
         return {}
+    
+    def addLineStripPointAt(self, pieces):
+        self.GUI.addLineStripPointAt(pieces[1], pieces[2], pieces[3], pieces[4])
+        return {}
         
     def getLineStripPoint(self, pieces):
         loc = self.GUI.getLineStripPoint(pieces[1], pieces[2])
@@ -352,7 +354,15 @@ class apiMessageParser:
     def getSetupSurfaceVisibility(self,pieces):
         visible = self.GUI.getSetupSurfaceVisibilty()
         return {"visible" : visible}
-        
+    
+    def getClickedElements(self,pieces):
+        elements = self.GUI.getClickedElements(pieces[1],pieces[2],pieces[3])
+        dict = {}
+        for x in range(0,len(elements)):
+            dict[str(x)]=elements[x]
+        return dict
+    
+    #A dict used so that the program can check which function to call for each API command, and to tell the program how many arguments should be expected
     messages = {'new_surface' : (newSurface, 0),  # No parameters
             'new_cursor' : (newCursor, 3),  # [1]=SurfaceNo  [2]=x  [3]=y
             'new_window' : (newWindow, 6),  # [1]=SurfaceNo  [2]=x  [3]=y  [4]=width  [5]=height  [6]=name
@@ -403,6 +413,7 @@ class apiMessageParser:
             'set_line_color' : (setLineColor, 2),  # [1]=ElementNo  [2]=Color
             'get_line_color' : (getLineColor, 1),  # [1]=ElementNo
             'add_line_strip_point' : (addLineStripPoint, 3),  # [1]=ElementNo  [2]=x  [3]=y
+            'add_line_strip_point_at' : (addLineStripPointAt, 4), # [1]=ElementNo [2]=x [3]=y [4]=index
             'get_line_strip_point' : (getLineStripPoint, 2),  # [1]=ElementNo  [2]=PointNo
             'relocate_line_strip_point' : (moveLineStripPoint, 4),  # [1]=ElementNo  [2]=PointNo  [3]=x  [4]=y
             'get_line_strip_color' : (getLineStripColor, 1),  # [1]=ElementNo
@@ -431,12 +442,20 @@ class apiMessageParser:
             'check_element_visibility' : (checkElementVisibility, 1),  # [1]=ElementNo
             'hide_setup_surface' : (hideSetupSurface,0),
             'show_setup_surface' : (showSetupSurface,0),
-            'get_setup_surface_visibility' : (getSetupSurfaceVisibility,0)
+            'get_setup_surface_visibility' : (getSetupSurfaceVisibility,0),
+            'get_clicked_elements' : (getClickedElements,3)
     }
     
+    '''
+    Takes a recieved API message and processes it
+    INPUT
+    msg = The API message string
+    OUTPUT
+    data = A dict containing all returned information
+    '''
     def processMessage(self, msg):
-        pieces = msg.split(',')
-        data = ""
+        pieces = msg.split(',') #Splits the message up into sections
+        data = None #Creates an empty variable to hold the message reply
         try:
             if(len(pieces) - 1 == self.messages[pieces[0]][1]):
                 data = self.messages[str(pieces[0])][0](self, pieces)
@@ -446,6 +465,13 @@ class apiMessageParser:
             data = {"error" : 1}
         return data
     
+    '''
+    Draws a cursor at the requested location and rotated as required
+    INPUT
+    x = The x coordinate of the cursor
+    y = The y coordinate of the cursor
+    rotation = The degrees by which the cursor is to be rotated
+    '''
     def drawCursor(self,x,y,rotation):
         glDisable(GL_LIGHTING)
         glEnable(GL_TEXTURE_2D)
@@ -453,80 +479,100 @@ class apiMessageParser:
         
         glPushMatrix()
         
-        glTranslatef(x, y, 0.0)
-        glRotatef(-rotation,0.0,0.0,1.0)
+        glTranslatef(x, y, 0.0) #Translates the drawing area so that the cross is drawn in the correct place
+        glRotatef(-rotation,0.0,0.0,1.0) #Rotates the drawing area so that the cross is drawn with the correct rotation
 
         glColor4f(1.0, 1.0, 1.0, 1.0)
         
-        glBindTexture(GL_TEXTURE_2D, self.mouse_texture.texID)
+        glBindTexture(GL_TEXTURE_2D, self.mouse_texture.texID) #Selects the cursor texture to be used
 
         glBegin(GL_QUADS)
         
+        #Creates the top left vertex and attaches the top left of the texture
         glTexCoord2f(0.0, 1.0)
         glVertex2f(0, 0)
         
+        #Creates the top right vertex and attaches the top right of the texture
         glTexCoord2f(1.0, 1.0)
         glVertex2f(29, 0)
         
+        #Creates the bottom right vertex and attaches the bottom right of the texture
         glTexCoord2f(1.0, 0.0)
         glVertex2f(29, -46)
         
+        #Creates the bottom left vertex and attaches the bottom left of the texture
         glTexCoord2f(0.0, 0.0)
         glVertex2f(0, -46)
         
-        glEnd()
+        glEnd() #Finalises the quad so that it is displayed
         
-        glBindTexture(GL_TEXTURE_2D, self.cross_texture.texID)
+        glBindTexture(GL_TEXTURE_2D, self.cross_texture.texID) #Selects the cross texture to be used
 
         glBegin(GL_QUADS)
         
+        #Creates the top left vertex and attaches the top left of the texture
         glTexCoord2f(0.0, 1.0)
         glVertex2f(-20, 20)
         
+        #Creates the top right vertex and attaches the top right of the texture
         glTexCoord2f(1.0, 1.0)
         glVertex2f(20, 20)
         
+        #Creates the bottom right vertex and attaches the bottom right of the texture
         glTexCoord2f(1.0, 0.0)
         glVertex2f(20, -20)
         
+        #Creates the bottom left vertex and attaches the bottom left of the texture
         glTexCoord2f(0.0, 0.0)
         glVertex2f(-20, -20)
         
-        glEnd()
+        glEnd() #Finalises the quad so that it is displayed
         
         glPopMatrix()
         
-    def drawCross(self,x,y): #EXISTS FOR GUI DATA STRUCTURE TESTING PURPOSES
+    '''
+    Draws a cross at the requested location
+    INPUT
+    x = The x coordinate of the cursor
+    y = The y coordinate of the cursor
+    '''
+    #Draws a cross at the desired location. This mainly exists for testing of the display code
+    def drawCross(self,x,y):
         glDisable(GL_LIGHTING)
         glEnable(GL_TEXTURE_2D)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         
         glPushMatrix()
         
-        glTranslatef(x, y, 0.0)
+        glTranslatef(x, y, 0.0) #Translates the drawing area so that the cross is drawn in the correct place
 
         glColor4f(1.0, 1.0, 1.0, 1.0)
         
-        glBindTexture(GL_TEXTURE_2D, self.cross_texture.texID)
+        glBindTexture(GL_TEXTURE_2D, self.cross_texture.texID) #Sets the cross texture to be used
 
         glBegin(GL_QUADS)
         
+        #Creates the top left vertex and attaches the top left of the texture
         glTexCoord2f(0.0, 1.0)
         glVertex2f(-20, 20)
         
+        #Creates the top right vertex and attaches the top right of the texture
         glTexCoord2f(1.0, 1.0)
         glVertex2f(20, 20)
         
+        #Creates the bottom right vertex and attaches the bottom right of the texture
         glTexCoord2f(1.0, 0.0)
         glVertex2f(20, -20)
         
+        #Creates the bottom left vertex and attaches the bottom left of the texture
         glTexCoord2f(0.0, 0.0)
         glVertex2f(-20, -20)
         
-        glEnd()
+        glEnd() #Finalises the quad so that it is displayed
         
         glPopMatrix()
         
+    #Draws a circle at the desired location and with the desired radius
     def drawCircle(self,x,y,rad):
         glDisable(GL_LIGHTING)
         glDisable(GL_TEXTURE_2D)
@@ -535,50 +581,97 @@ class apiMessageParser:
         glPushMatrix()
         
         glTranslatef(x, y, 0.0)
-        sides = 32        
+        sides = 32 #Sets the number of rendered sides to 32
         
         glColor4f(1.0, 1.0, 1.0, 1.0)
         
         glBegin(GL_POLYGON)
         
+        #Loops from 0 to the number of sides to be drawn in the circle
         for i in range(sides):
-            cosine = float(rad) * cos(i*2*pi/sides)
-            sine = float(rad) * sin(i*2*pi/sides)
-            glVertex2f(cosine,sine)
+            cosine = float(rad) * cos(i*2*pi/sides) #Calculates the x position of the current point on the circle
+            sine = float(rad) * sin(i*2*pi/sides) #Calculates the y position of the current point on the circle
+            glVertex2f(cosine,sine) #Creates a vertex for the current point on the circle
         
-        glEnd()
+        glEnd() #Finalises the polygon so that it is rendered
+        
+        glPopMatrix()
+    
+    #When passed a list of coordinates uses them to draw a line strip
+    def drawLineStrip(self,strip):
+        glDisable(GL_LIGHTING)
+        glDisable(GL_TEXTURE_2D)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        
+        glPushMatrix()
+        
+        glColor4f(1.0, 1.0, 1.0, 1.0) #Sets the drawing color to white (THIS WILL BE CHANGED)
+        glLineWidth(5.0)
+        
+        glBegin(GL_LINE_STRIP)
+        
+        #Loops through the points in the line strip
+        for i in range(0,len(strip)):
+            glVertex2f(strip[i][0],strip[i][1]) #Creates a vertex at the current line strip point
+        
+        glEnd() #Finalises the line strip so that it is rendered
         
         glPopMatrix()
         
+    #Processes the GUI data for the desired window and calls functions to draw the elements contained within it
     def displayWindow(self, windowNo, GUIRead):
-        winPos = GUIRead.getWindowPos(windowNo)
-        width = GUIRead.getWindowWidth(windowNo)
-        height = GUIRead.getWindowHeight(windowNo)
-        elements = GUIRead.getElements(windowNo)
+        winPos = GUIRead.getWindowPos(windowNo) #Fetches the position of the upper left corner of the window
+        width = GUIRead.getWindowWidth(windowNo) #Fetches the width of the window
+        height = GUIRead.getWindowHeight(windowNo) #Fetches the height of the window
+        elements = GUIRead.getElements(windowNo) #Gathers the list of elements in the window
+        
+        #Loops through the elements in the window
         for z in range(0,len(elements)):
-            type = GUIRead.getEleType(elements[z])
-            if(type=="circle"):
-                cirPos = GUIRead.getCirclePos(elements[z])
-                rad = GUIRead.getCircleRad(elements[z])
-                drawPos = (winPos[0]+cirPos[0],winPos[1]-height+cirPos[1])
-                self.drawCircle(drawPos[0],drawPos[1],rad)
-    
+            type = GUIRead.getEleType(elements[z]) #Gets the type of the current element
+            
+            if(type=="circle"): #Runs if the current element is a circle
+                cirPos = GUIRead.getCirclePos(elements[z]) #Gets the position of the circle
+                rad = GUIRead.getCircleRad(elements[z]) #Gets the radius of the circle
+                drawPos = (winPos[0]+float(cirPos[0]),winPos[1]-height+float(cirPos[1])) #Calculates the screen position the circle is to be drawn at based on the location of the window
+                self.drawCircle(drawPos[0],drawPos[1],rad) #Draws a circle at the correct screen position
+            elif(type=="lineStrip"): #Runs if the current element is a line strip
+                noPoints = GUIRead.getLineStripPointsCount(elements[z]) #Gets the number of points in the line strip
+                
+                #Runs if there is more than one point in the line strip (otherwise the line strip wont be shown)
+                if(noPoints>1):
+                    strip = [] #Creates an empty list to hold the line strip points
+                    
+                    #Loops through the points in the line strip
+                    for point in range(0,noPoints):
+                        pos = GUIRead.getLineStripPoint(elements[z],point) #Gets the position of the current point
+                        drawPos = (winPos[0] + pos[0], winPos[1] - height + pos[1]) #Converts the position of the point based on the window location
+                        strip.append(drawPos) #Adds the calculated position to the point list
+                    self.drawLineStrip(strip) #Draws a strip based on the point list
+                
+    #Checks the setuo GUI and displays any required windows and cursors on it by calling the relevant functions
     def checkSetupGUI(self):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
+        
+        #Runs if the setup surface is meant to be visible
         if(self.GUI.getSetupSurfaceVisibilty()==True):
-            GUIRead = self.GUI
-            cursors = GUIRead.getCursors(0)
-            for z in range(0,len(cursors)):
-                position = GUIRead.getCursorPos(cursors[z])
-                x = position[0]
-                y = position[1]
-                rotation = GUIRead.getCursorRotation(cursors[z])
-                self.drawCursor(x,y,rotation)
-            windows = GUIRead.getWindows(0)
+            GUIRead = self.GUI # Makes a copy of the GUI so that changes during rendering don't cause problems
+
+            windows = GUIRead.getWindows(0) #Gathers the list of windows on the setup surface
+            
+            #Loops through all the windows on the setup surface
             for z in range(0,len(windows)):
-                self.displayWindow(windows[z],GUIRead)
-		
+                self.displayWindow(windows[z],GUIRead) #Renders the current window in the list
+            
+            cursors = GUIRead.getCursors(0) #Gathers the list of cursors on the setup surface
+            
+            #Loops through all the cursors on the setup surface
+            for z in range(0,len(cursors)):
+                position = GUIRead.getCursorPos(cursors[z]) #Gets the position of the current cursor
+                rotation = GUIRead.getCursorRotation(cursors[z]) #Gets the rotation of the current cursor
+                self.drawCursor(position[0],position[1],rotation) #Draws the cursor at the correct position with the correct rotation
+	
+    #Resizes the window to the desired width and height
     def resize(self, (width, height)):
         if height == 0:
             height = 1
@@ -589,6 +682,7 @@ class apiMessageParser:
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
 
+    #Prepares the opengl code 
     def init(self):
         # set some basic OpenGL settings and control variables
         glShadeModel(GL_SMOOTH)
@@ -600,15 +694,13 @@ class apiMessageParser:
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
         glEnable(GL_BLEND)
 		
+        #Loads the cursor and cross textures into memory
         self.mouse_texture = Texture("cursor.png")
         self.cross_texture = Texture("cursorcross.png")
 		
-        self.demandedFps = 30.0
-        self.done = False
+        self.demandedFps = 30.0 #Indicates the number of desired frames per second
 		
-        self.x, self.y = 0.0 , 0.0
-        self.rotation = 0
-		
+    #Starts the pygame window and runs the rendering loop
     def display(self):
         video_flags = OPENGL | DOUBLEBUF
 		
@@ -616,30 +708,30 @@ class apiMessageParser:
         pygame.display.set_icon(pygame.image.load("icon.png"))
         pygame.display.set_mode((self.winWidth, self.winHeight), video_flags)
 		
-        pygame.display.set_caption("Display")
+        pygame.display.set_caption("Display") #Sets the window name
 		
-        self.resize((self.winWidth, self.winHeight))
-        self.init()
-
+        self.resize((self.winWidth, self.winHeight)) #Resizes winding
+        self.init() #Initialises OpenGL
 		
-        clock = pygame.time.Clock()
+        clock = pygame.time.Clock() #Creates a clock to enable FPS control
+        
+        #The rendering loop
         while 1:
-            event = pygame.event.poll()
-            if event.type == QUIT or self.done:
+            event = pygame.event.poll() # Polls for events
+            
+            #If a quit event has been received the program is closed
+            if event.type == QUIT:
                 pygame.quit () 
                 break
 
-            self.checkSetupGUI()
+            self.checkSetupGUI() #The setup GUI is rendered if it is meant to be visible
 			
-            pygame.display.flip()
+            pygame.display.flip() #Displays the display surface on the screen
 			
-			# limit fps
-            clock.tick(self.demandedFps)
+            clock.tick(self.demandedFps) #Sets the maximum FPS allowed
 	
+    #Creates a GUI object and starts a thread to display its contents
     def __init__(self):
-        self.GUI = GUI()
-        thread = Thread(target=self.display, args=())
-        thread.start()
-			
-# TODO
-# Check if locking is needed (I don't think API calls can be processed in parallel anyway)
+        self.GUI = GUI() #Creates the GUI
+        thread = Thread(target=self.display, args=()) #Creates the display thread
+        thread.start() #Starts the display thread
