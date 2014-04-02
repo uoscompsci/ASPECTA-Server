@@ -440,3 +440,19 @@ class GUI:
 					if(dist<=rad):
 						hits.append(elementNo)
 		return hits
+	
+	#Based on code from https://developer.coronalabs.com/code/checking-if-point-inside-rotated-rectangle
+	def isPointInsideRectangle(self, rectRot, rectTlX, rectTlY, rectHeight, rectWidth, x, y):
+		c = cos(-rectRot*pi/180)
+		s = sin(-rectRot*pi/180)
+		
+		#Unrotate point according to rectangle rotation
+		rotX = rectTlX + c * (x - rectTlX) - s * (y - rectTlY)
+		rotY = rectTlY + s * (x - rectTlX) + c * (y - rectTlY)
+		
+		#Calculate bounds of unrotated rectangle
+		leftX = rectTlX
+		rightX = rectTlX + rectWidth
+		topY = rectTlY
+		bottomY = rectTlY + rectHeight
+		return leftX <= rotX and rotX <= rightX and topY <= rotY and rotY<= bottomY
