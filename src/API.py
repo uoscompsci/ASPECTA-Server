@@ -64,7 +64,11 @@ class apiMessageParser:
     def newPolygon(self, pieces):
         elementNo = self.GUI.newPolygon(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5])
         return {"elementNo" : elementNo}
-        
+    
+    def newRectangle(self,pieces):
+        elementNo = self.GUI.newRectangle(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
+        return {"elementNo" : elementNo}
+            
     def newText(self, pieces):
         elementNo = self.GUI.newText(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
         return {"elementNo" : elementNo}
@@ -292,7 +296,59 @@ class apiMessageParser:
     def getPolygonPointCount(self, pieces):
         count = self.GUI.getPolygonPointsCount(pieces[1])
         return {"count" : count}
+    
+    def setRectangleTopLeft(self, pieces):
+        count = self.GUI.setRectangleTopLeft(pieces[1], pieces[2], pieces[3])
+        return {}
+    
+    def getRectangleTopLeft(self, pieces):
+        loc = self.GUI.getRectangleTopLeft(pieces[1])
+        return {'x' : loc[0], 'y' : loc[1]}
+    
+    def getRectangleTopRight(self, pieces):
+        loc = self.GUI.getRectangleTopRight(pieces[1])
+        return {'x' : loc[0], 'y' : loc[1]}
+    
+    def getRectangleBottomRight(self, pieces):
+        loc = self.GUI.getRectangleBottomRight(pieces[1])
+        return {'x' : loc[0], 'y' : loc[1]}
+    
+    def getRectangleBottomLeft(self, pieces):
+        loc = self.GUI.getRectangleBottomLeft(pieces[1])
+        return {'x' : loc[0], 'y' : loc[1]}
+    
+    def setRectangleWidth(self, pieces):
+        self.GUI.setRectangleWidth(pieces[1], pieces[2])
+        return {}
         
+    def getRectangleWidth(self, pieces):
+        width = self.GUI.getRectangleWidth(pieces[1])
+        return {'width' : width}
+    
+    def setRectangleHeight(self, pieces):
+        self.GUI.setRectangleHeight(pieces[1], pieces[2])
+        return {}
+        
+    def getRectangleHeight(self, pieces):
+        width = self.GUI.getRectangleHeight(pieces[1])
+        return {'width' : width}
+
+    def getRectangleFillColor(self, pieces):
+        color = self.GUI.getRectangleFillColor(pieces[1])
+        return {'color' : color}
+    
+    def setRectangleFillColor(self, pieces):
+        self.GUI.setRectangleFillColor(pieces[1], pieces[2])
+        return {}
+    
+    def getRectangleLineColor(self, pieces):
+        color = self.GUI.getRectangleLineColor(pieces[1])
+        return {'color' : color}
+    
+    def setRectangleLineColor(self, pieces):
+        self.GUI.setRectangleLineColor(pieces[1], pieces[2])
+        return {}
+
     def setText(self, pieces):
         self.GUI.setText(pieces[1], pieces[2])
         return {}
@@ -370,6 +426,7 @@ class apiMessageParser:
             'new_line' : (newLine, 6),  # [1]=WindowNo  [2]=xStart  [3]=yStart  [4]=xEnd  [5]=yEnd  [6]=Color
             'new_line_strip' : (newLineStrip, 4),  # [1]=WindowNo  [2]=x  [3]=y  [4]=Color
             'new_polygon' : (newPolygon, 5),  # [1]=WindowNo  [2]=x  [3]=y  [4]=LineColor  [5]=FillColor
+            'new_rectangle' : (newRectangle,7),
             'new_text' : (newText, 7),  # [1]=WindowNo  [2]=text  [3]=x  [4]=y  [5]=PointSize  [6]=Font  [7]=Color
             'mouse_l' : (mouseLeftDown, 1),  # [1]=CursorNo
             'mouse_lu' : (mouseLeftUp, 1),  # [1]=CursorNo
@@ -427,6 +484,19 @@ class apiMessageParser:
             'get_polygon_line_color' : (getPolygonLineColor, 1),  # [1]=ElementNo
             'set_polygon_line_color' : (setPolygonLineColor, 2),  # [1]=ElementNo  [2]=Color
             'get_polygon_point_count' : (getPolygonPointCount, 1),  # [1]=ElementNo
+            'set_rectangle_top_left' : (setRectangleTopLeft, 3),
+            'get_rectangle_top_left' : (getRectangleTopLeft,1),
+            'get_rectangle_top_right' : (getRectangleTopRight,1),
+            'get_rectangle_bottom_right' : (getRectangleBottomRight,1),
+            'get_rectangle_bottom_left' : (getRectangleBottomLeft,1),
+            'set_rectangle_width' : (setRectangleWidth,2),
+            'get_rectangle_width' : (getRectangleWidth,1),
+            'set_rectangle_height' : (setRectangleHeight,2),
+            'get_rectangle_height' : (getRectangleHeight,1),
+            'get_rectangle_fill_color' : (getRectangleFillColor,1),
+            'set_rectangle_fill_color' : (setRectangleFillColor,2),
+            'get_rectangle_line_color' : (getRectangleLineColor,1),
+            'set_rectangle_line_color' : (setRectangleLineColor,2),
             'set_text' : (setText, 2),  # [1]=ElementNo  [2]=String
             'get_text' : (getText, 1),  # [1]=ElementNo
             'relocate_text' : (setTextPos, 4),  # [1]=ElementNo  [2]=x  [3]=y  [4]=WindowNo
@@ -446,13 +516,7 @@ class apiMessageParser:
             'get_clicked_elements' : (getClickedElements,3)
     }
     
-    '''
-    Takes a recieved API message and processes it
-    INPUT
-    msg = The API message string
-    OUTPUT
-    data = A dict containing all returned information
-    '''
+    #Takes a recieved API message and processes it
     def processMessage(self, msg):
         pieces = msg.split(',') #Splits the message up into sections
         data = None #Creates an empty variable to hold the message reply
@@ -465,13 +529,7 @@ class apiMessageParser:
             data = {"error" : 1}
         return data
     
-    '''
-    Draws a cursor at the requested location and rotated as required
-    INPUT
-    x = The x coordinate of the cursor
-    y = The y coordinate of the cursor
-    rotation = The degrees by which the cursor is to be rotated
-    '''
+    #Draws a cursor at the requested location and rotated as required
     def drawCursor(self,x,y,rotation):
         glDisable(GL_LIGHTING)
         glEnable(GL_TEXTURE_2D)
@@ -530,12 +588,6 @@ class apiMessageParser:
         
         glPopMatrix()
         
-    '''
-    Draws a cross at the requested location
-    INPUT
-    x = The x coordinate of the cursor
-    y = The y coordinate of the cursor
-    '''
     #Draws a cross at the desired location. This mainly exists for testing of the display code
     def drawCross(self,x,y):
         glDisable(GL_LIGHTING)

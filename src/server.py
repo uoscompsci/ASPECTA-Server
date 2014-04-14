@@ -7,12 +7,14 @@ from API import apiMessageParser
 
 queue = Queue([999])
 
+#Constantly monitors the queue for received messages
 def message_queue_monitor():
 	while(True):
 		if(queue.empty()!=True):
 			qitem = queue.get()
 			reply(qitem[0],str(messageParser.processMessage(qitem[1])))
- 
+
+#Sends a reply to the client that the last message was received from 
 def reply (sock, message):
     for socket in CONNECTION_LIST:
         if socket == sock :
@@ -37,31 +39,35 @@ if __name__ == "__main__":
     
     print "API server started on port " + str(PORT)
     
-    messageParser = apiMessageParser()
+    messageParser = apiMessageParser() #Create a parser for API messages which are received
     
+    #Create and start a thread which will monitor the queue of received API messages
     queueMonitor = Thread(target = message_queue_monitor)
     queueMonitor.start()
- 
-    while 1:
+    
+    loop = True
+    
+    #Loop until the looping flag changes
+    while(loop==True):
         try:
-        	read_sockets,write_sockets,error_sockets = select.select(CONNECTION_LIST,[],[])
+        	read_sockets,write_sockets,error_sockets = select.select(CONNECTION_LIST,[],[]) #Wait until ready for IO
         except:
-       		continue
+       		continue #Start loop again
  
+ 	    #Loop through all the read sockets
         for sock in read_sockets:
-            if sock == server_socket:
+            if sock == server_socket: #If a new client is connecting add it to the connection list
                 sockfd, addr = server_socket.accept()
                 CONNECTION_LIST.append(sockfd)
                 print "Client (%s, %s) connected" % addr
             else:
-                try:
+                try: #Try to receive data and process it
                     data = sock.recv(RECV_BUFFER)
                     if data:
-                    	if(data == "quit"):
+                    	if(data == "quit"): #If the received data is a quit command close the socket and exit
 							print '\033[1;31mShutting down server\033[1;m'
-							server_socket.close()
-							sys.exit(0)
-                    	else:
+							loop=False
+                    	else: #If the message isn't a quit command puts the received API message onto the queue to be processed
                     		queue.put((sock,data))
                  
                 except:

@@ -537,7 +537,69 @@ class polygon(element):
 
     def getFillColor(self):
         return self.fillColor
+    
+class rectangle(element):
+    __slots__ = ['topLeft', 'width', 'height', 'lineColor', 'fillColor']
+    
+    def __init__(self, tlx, tly, width, height, lineColor, fillColor):
+        self.elementType = "rectangle"
+        self.topLeft = point2D(tlx,tly)
+        self.width = width
+        self.height = height
+        self.lineColor = lineColor
+        self.fillColor = fillColor
+        
+    def getTopLeftX(self):
+        return self.topLeft.getX()
+    
+    def getTopLeftY(self):
+        return self.topLeft.getY()
+    
+    def setTopLeft(self,x,y):
+        return self.topLeft.reposition(x,y)
+    
+    def getTopRightX(self):
+        return self.topLeft.getX()+int(width)
+    
+    def getTopRightY(self):
+        return self.topLeft.getY()
+    
+    def getBottomRightX(self):
+        return self.topLeft.getX()+int(width)
+    
+    def getBottomRightY(self):
+        return self.topLeft.getY()+int(height)
+    
+    def getBottomLeftX(self):
+        return self.topLeft.getX()
+    
+    def getBottomLeftY(self):
+        return self.topLeft.getY()+int(height)
+    
+    def setWidth(self, width):
+        self.width = width
+    
+    def getWidth(self):
+        return self.width
+    
+    def setHeight(self, height):
+        self.height = height
+    
+    def getHeight(self):
+        return self.height
+    
+    def setLineColor(self, color):
+        self.lineColor = color
 
+    def getLineColor(self):
+        return self.lineColor
+
+    def setFillColor(self, color):
+        self.fillColor = color
+
+    def getFillColor(self):
+        return self.fillColor
+    
 class textBox(element):
     __slots__ = ['text', 'coord', 'pt', 'font', 'color']
 

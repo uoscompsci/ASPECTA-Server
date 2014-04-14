@@ -362,6 +362,60 @@ class GUI:
 	def getPolygonPointsCount(self, elementNo):
 		return self.elements[str(elementNo)].getNumPoints()
 	
+	def newRectangle(self, windowNo, x, y, width, height, lineColor, fillColor):
+		newRect = rectangle(x, y, width, height, lineColor, fillColor)
+		elementNo = self.newElement(newRect, windowNo)
+		return elementNo
+	
+	def setRectangleTopLeft(self, elementNo, x, y):
+		self.elements[str(elementNo)].setTopLeft(x,y)
+		
+	def getRectangleTopLeft(self, elementNo):
+		xloc = self.elements[str(elementNo)].getTopLeftX()
+		yloc = self.elements[str(elementNo)].getTopLeftY()
+		return (xloc,yloc)
+	
+	def getRectangleTopRight(self, elementNo):
+		xloc = self.elements[str(elementNo)].getTopRightX()
+		yloc = self.elements[str(elementNo)].getTopRightY()
+		return (xloc,yloc)
+	
+	def getRectangleBottomRight(self, elementNo):
+		xloc = self.elements[str(elementNo)].getBottomRightX()
+		yloc = self.elements[str(elementNo)].getBottomRightY()
+		return (xloc,yloc)
+
+	def getRectangleBottomLeft(self, elementNo):
+		xloc = self.elements[str(elementNo)].getBottomLeftX()
+		yloc = self.elements[str(elementNo)].getBottomLeftY()
+		return (xloc,yloc)
+	
+	def setRectangleWidth(self, elementNo, width):
+		self.elements[str(elementNo)].setWidth(width)
+		
+	def getRectangleWidth(self, elementNo):
+		return int(self.elements[str(elementNo)].getWidth())
+		
+	def setRectangleHeight(self, elementNo, height):
+		self.elements[str(elementNo)].setHeight(height)
+		
+	def getRectangleHeight(self, elementNo):
+		return int(self.elements[str(elementNo)].getHeight())
+		
+	def getRectangleFillColor(self, elementNo):
+		color = self.elements[str(elementNo)].getFillColor()
+		return color
+	
+	def setRectangleFillColor(self, elementNo, color):
+		self.elements[str(elementNo)].setFillColor(color)
+		
+	def getRectangleLineColor(self, elementNo):
+		color = self.elements[str(elementNo)].getLineColor()
+		return color
+	
+	def setRectangleLineColor(self, elementNo, color):
+		self.elements[str(elementNo)].setLineColor(color)
+	
 	def newText(self, windowNo, text, x, y, pt, font, color):
 		newText = textBox(text, x, y, pt, font, color)
 		elementNo = self.newElement(newText, windowNo)
