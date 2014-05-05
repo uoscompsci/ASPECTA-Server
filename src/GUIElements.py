@@ -218,7 +218,7 @@ class cursor:
             self.rotation = self.rotation%360
 
 class window:
-    __slots__ = ['elements', 'loc', 'xsize', 'ysize', 'subwindows', 'name']
+    __slots__ = ['elements', 'loc', 'xsize', 'ysize', 'subwindows', 'name', 'windowID']
 
     def __init__(self, xloc, yloc, xsize, ysize, name):
         self.loc = point2D(xloc,yloc)
@@ -226,6 +226,12 @@ class window:
         self.ysize = int(ysize)
         self.name = name
         self.elements = []
+        
+    def getID(self):
+        return self.windowID
+    
+    def setID(self, ID):
+        self.windowID = ID
 
     def stretchLeft(self, distance):
         self.loc.setX(self.loc.getX()-int(distance))
@@ -308,11 +314,17 @@ class window:
         return self.elements
 
 class surface():
-    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows']
+    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows', 'surfaceID']
 
     def __init__(self):
         self.cursors = []
         self.windows = []
+        
+    def getID(self):
+        return self.surfaceID
+    
+    def setID(self, ID):
+        self.surfaceID = ID
 
     def setLeft(self, surface):
         self.toLeft = surface
@@ -375,7 +387,7 @@ class surface():
         return self.windows
         
 class element:
-    __slots__ = ['elementType', 'visible']
+    __slots__ = ['elementType', 'visible', 'elementID']
 
     def show(self):
         self.visible = True
@@ -388,6 +400,12 @@ class element:
 
     def checkType(self):
         return self.elementType
+    
+    def getID(self):
+        return self.elementID
+    
+    def setID(self, ID):
+        self.elementID = ID
 
 class circle(element):
     __slots__ = ['coord', 'radius', 'lineColor', 'fillColor']

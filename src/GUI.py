@@ -44,6 +44,17 @@ class GUI:
 				self.surfaces[str(self.lastsur)] = newSur
 				surfaceNo = self.lastsur		
 		return surfaceNo
+	
+	def newSurfaceWithID(self, ID):
+		surfaceNo = self.newSurface()
+		self.surfaces[set(surfaceNo)].setID(ID)
+		return surfaceNo
+	
+	def getSurfaceID(self, surfaceNo):
+		return self.surfaces[str(surfaceNo)].getID()
+	
+	def setSurfaceID(self, surfaceNo, ID):
+		self.surfaces[str(surfaceNo)].setID(ID)
 
 	def newCursor(self, surface, x, y):
 		newCur = cursor(x,y)
@@ -58,6 +69,11 @@ class GUI:
 				self.cursors[str(self.lastcur)] = newCur
 				cursorNo = self.lastcur		
 		self.surfaces[str(surface)].addCursor(cursorNo)
+		return cursorNo
+	
+	def newCursorWithID(self, ID):
+		cursorNo = self.newCursor()
+		self.cursors[set(cursorNo)].setID(ID)
 		return cursorNo
 		
 	def findCursor(self, cursorNo):
@@ -156,6 +172,17 @@ class GUI:
 		self.surfaces[str(surface)].addWindow(windowNo)
 		return windowNo
 	
+	def newWindowWithID(self, ID, surface, x, y, xWid, yWid, name):
+		windowNo = self.newWindow(surface, x, y, xWid, yWid, name)
+		self.windows[set(windowNo)].setID(ID)
+		return windowNo
+	
+	def getWindowID(self, windowNo):
+		return self.windows[str(windowNo)].getID()
+	
+	def setWindowID(self, windowNo, ID):
+		self.windows[str(windowNo)].setID(ID)
+	
 	def findWindow(self, windowNo):
 		location = 0
 		for key in self.surfaces:
@@ -238,6 +265,11 @@ class GUI:
 		newCir = circle(x, y, radius, lineColor, fillColor)
 		elementNo = self.newElement(newCir, windowNo)
 		return elementNo
+	
+	def newCircleWithID(self, ID, windowNo, x, y, radius, lineColor, fillColor):
+		elementNo = self.newCircle(windowNo, x, y, radius, lineColor, fillColor)
+		self.elements[set(elementNo)].setID(ID)
+		return elementNo
 		
 	def setCirclePos(self, elementNo, xLoc, yLoc, window):
 		self.elements[str(elementNo)].setCenter(xLoc,yLoc)
@@ -278,6 +310,11 @@ class GUI:
 		elementNo = self.newElement(newLine, windowNo)
 		return elementNo
 	
+	def newLineWithID(self, ID, windowNo, x1, y1, x2, y2, color):
+		elementNo = self.newLine(windowNo, x1, y1, x2, y2, color)
+		self.elements[set(elementNo)].setID(ID)
+		return elementNo
+	
 	def setLineStart(self,elementNo,x,y):
 		self.elements[str(elementNo)].setStart(x,y)
 		
@@ -303,6 +340,11 @@ class GUI:
 	def newLineStrip(self, windowNo, x, y, color):
 		newLineStrip = lineStrip(x, y, color)
 		elementNo = self.newElement(newLineStrip, windowNo)
+		return elementNo
+	
+	def newLineStripWithID(self, ID, windowNo, x, y, color):
+		elementNo = self.newLineStrip(windowNo, x, y, color)
+		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
 	def addLineStripPoint(self, elementNo, x, y):
@@ -332,6 +374,11 @@ class GUI:
 	def newPolygon(self, windowNo, x, y, lineColor, fillColor):
 		newPoly = polygon(x, y, lineColor, fillColor)
 		elementNo = self.newElement(newPoly, windowNo)
+		return elementNo
+	
+	def newPolygonWithID(self, ID, windowNo, x, y, lineColor, fillColor):
+		elementNo = self.newPolygon(windowNo, x, y, lineColor, fillColor)
+		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
 	def addPolygonPoint(self, elementNo, x, y):
@@ -365,6 +412,11 @@ class GUI:
 	def newRectangle(self, windowNo, x, y, width, height, lineColor, fillColor):
 		newRect = rectangle(x, y, width, height, lineColor, fillColor)
 		elementNo = self.newElement(newRect, windowNo)
+		return elementNo
+	
+	def newRectangleWithID(self, ID, windowNo, x, y, width, height, lineColor, fillColor):
+		elementNo = self.newRectangle(windowNo, x, y, width, height, lineColor, fillColor)
+		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
 	def setRectangleTopLeft(self, elementNo, x, y):
@@ -421,6 +473,11 @@ class GUI:
 		elementNo = self.newElement(newText, windowNo)
 		return elementNo
 	
+	def newTextWithID(self, ID, windowNo, text, x, y, pt, font, color):
+		elementNo = self.newText(windowNo, text, x, y, pt, font, color)
+		self.elements[set(elementNo)].setID(ID)
+		return elementNo
+	
 	def setText(self, elementNo, text):
 		self.elements[str(elementNo)].setText(text)
 		
@@ -465,6 +522,12 @@ class GUI:
 		
 	def checkElementVisibility(self,elementNo):
 		return self.elements[str(elementNo)].isVisible()
+	
+	def getElementID(self, elementNo):
+		return self.elements[str(elementNo)].getID()
+	
+	def setElementID(self, elementNo, ID):
+		self.elements[str(elementNo)].setID(ID)
 	
 	def getCursors(self,surfaceNo):
 		return self.surfaces[str(surfaceNo)].getCursors()

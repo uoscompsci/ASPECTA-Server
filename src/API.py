@@ -40,38 +40,98 @@ class apiMessageParser:
     def newSurface(self, pieces):
         surfaceNo = self.GUI.newSurface()
         return {'surfaceNo' : surfaceNo}
+    
+    def newSurfaceWithID(self, peices):
+        surfaceNo = self.GUI.newSurfaceWithID(pieces[1])
+        return {'surfaceNo' : surfaceNo}
         
     def newCursor(self, pieces):
         cursorNo = self.GUI.newCursor(pieces[1], pieces[2], pieces[3])
+        return {"cursorNo" : cursorNo}
+    
+    def newCursorWithID(self, pieces):
+        cursorNo = self.GUI.newCursorWithID(pieces[1], pieces[2], pieces[3], pieces[4])
         return {"cursorNo" : cursorNo}
         
     def newWindow(self, pieces):
         windowNo = self.GUI.newWindow(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
         return {"windowNo" : windowNo}
+    
+    def newWindowWithID(self, pieces):
+        windowNo = self.GUI.newWindowWithID(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
+        return {"windowNo" : windowNo}
         
     def newCircle(self, pieces):
         elementNo = self.GUI.newCircle(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
+        return {"elementNo" : elementNo}
+    
+    def newCircleWithID(self, pieces):
+        elementNo = self.GUI.newCircleWithID(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
         return {"elementNo" : elementNo}
         
     def newLine(self, pieces):
         elementNo = self.GUI.newLine(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
         return {"elementNo" : elementNo}
+    
+    def newLineWithID(self, pieces):
+        elementNo = self.GUI.newLineWithID(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
+        return {"elementNo" : elementNo}
         
     def newLineStrip(self, pieces):
         elementNo = self.GUI.newLineStrip(pieces[1], pieces[2], pieces[3], pieces[4])
+        return {"elementNo" : elementNo}
+    
+    def newLineStripWithID(self, pieces):
+        elementNo = self.GUI.newLineStripWithID(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5])
         return {"elementNo" : elementNo}
         
     def newPolygon(self, pieces):
         elementNo = self.GUI.newPolygon(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5])
         return {"elementNo" : elementNo}
     
+    def newPolygonWithID(self, pieces):
+        elementNo = self.GUI.newPolygonWithID(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
+        return {"elementNo" : elementNo}
+    
     def newRectangle(self,pieces):
         elementNo = self.GUI.newRectangle(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
+        return {"elementNo" : elementNo}
+    
+    def newRectangleWithID(self,pieces):
+        elementNo = self.GUI.newRectangleWithID(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
         return {"elementNo" : elementNo}
             
     def newText(self, pieces):
         elementNo = self.GUI.newText(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
         return {"elementNo" : elementNo}
+    
+    def newTextWithID(self, pieces):
+        elementNo = self.GUI.newTextWithID(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
+        return {"elementNo" : elementNo}
+    
+    def getSurfaceID(self, pieces):
+        ID = self.GUI.getSurfaceID(pieces[1])
+        return {"ID" : ID}
+    
+    def setSurfaceID(self, pieces):
+        self.GUI.setSurfaceID(pieces[1],pieces[2])
+        return {}
+    
+    def getWindowID(self, pieces):
+        ID = self.GUI.getWindowID(pieces[1])
+        return {"ID" : ID}
+    
+    def setWindowID(self, pieces):
+        self.GUI.setWindowID(pieces[1],pieces[2])
+        return {}
+    
+    def getElementID(self, pieces):
+        ID = self.GUI.getElementID(pieces[1])
+        return {"ID" : ID}
+    
+    def setElementID(self, pieces):
+        self.GUI.setElementID(pieces[1],pieces[2])
+        return {}
         
     def mouseLeftDown(self, pieces):
         loc = self.GUI.leftDown(pieces[1])
@@ -420,14 +480,29 @@ class apiMessageParser:
     
     #A dict used so that the program can check which function to call for each API command, and to tell the program how many arguments should be expected
     messages = {'new_surface' : (newSurface, 0),  # No parameters
+            'new_surface_with_ID' : (newSurfaceWithID, 1),
             'new_cursor' : (newCursor, 3),  # [1]=SurfaceNo  [2]=x  [3]=y
+            'new_cursor_with_ID' : (newCursorWithID, 4), # [1]=ID [2]=SurfaceNo  [3]=x  [4]=y
             'new_window' : (newWindow, 6),  # [1]=SurfaceNo  [2]=x  [3]=y  [4]=width  [5]=height  [6]=name
+            'new_window_with_ID' : (newWindowWithID, 7),
             'new_circle' : (newCircle, 6),  # [1]=WindowNo  [2]=x  [3]=y  [4]=Radius  [5]=LineColor  [6]=FillColor
+            'new_circle_with_ID' : (newCircleWithID, 7),
             'new_line' : (newLine, 6),  # [1]=WindowNo  [2]=xStart  [3]=yStart  [4]=xEnd  [5]=yEnd  [6]=Color
+            'new_line_with_ID' : (newLineWithID, 7),
             'new_line_strip' : (newLineStrip, 4),  # [1]=WindowNo  [2]=x  [3]=y  [4]=Color
+            'new_line_strip_with_ID' : (newLineStripWithID, 5),
             'new_polygon' : (newPolygon, 5),  # [1]=WindowNo  [2]=x  [3]=y  [4]=LineColor  [5]=FillColor
+            'new_polygon_with_ID' : (newPolygonWithID, 6),
             'new_rectangle' : (newRectangle,7),
+            'new_rectangle_with_ID' : (newRectangleWithID, 8),
             'new_text' : (newText, 7),  # [1]=WindowNo  [2]=text  [3]=x  [4]=y  [5]=PointSize  [6]=Font  [7]=Color
+            'new_text_with_ID' : (newTextWithID, 8),
+            'get_surface_ID' : (getSurfaceID, 1),
+            'set_surface_ID' : (setSurfaceID, 2),
+            'get_window_ID' : (getWindowID, 1),
+            'set_window_ID' : (setWindowID, 2),
+            'get_element_ID' : (getElementID, 1),
+            'set_element_ID' : (setElementID, 2),
             'mouse_l' : (mouseLeftDown, 1),  # [1]=CursorNo
             'mouse_lu' : (mouseLeftUp, 1),  # [1]=CursorNo
             'mouse_m' : (mouseMiddleDown, 1),  # [1]=CursorNo
