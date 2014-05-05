@@ -250,7 +250,7 @@ class apiMessageParser:
         return {"x" : loc[0], "y" : loc[1]}
         
     def moveLineStripPoint(self, pieces):
-        self.GUI.moveLineStripPoint(pieces[1], pieces[2], pieces[3], pieces[4])    
+        self.GUI.moveLineStripPoint(int(pieces[1]), int(pieces[2]), float(pieces[3]), float(pieces[4]))    
         return {}    
         
     def getLineStripColor(self, pieces):
