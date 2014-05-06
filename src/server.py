@@ -6,6 +6,8 @@ from Queue import Queue
 from API import apiMessageParser
 
 queue = Queue([999])
+usr2sock = {}
+sock2usr = {}
 
 #Constantly monitors the queue for received messages
 def message_queue_monitor():
@@ -68,8 +70,10 @@ if __name__ == "__main__":
 							print '\033[1;31mShutting down server\033[1;m'
 							loop=False
                     	else: #If the message isn't a quit command puts the received API message onto the queue to be processed
-                    		queue.put((sock,data))
-                 
+                    		if(sock2usr.has_key(sock)):
+                    		 	queue.put((sock,data))
+                    		else:
+                 	    		reply(sock,str({'error' : 3}))
                 except:
                     print "Client (%s, %s) is offline" % addr
                     sock.close()
