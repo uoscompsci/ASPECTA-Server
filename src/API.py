@@ -38,11 +38,11 @@ class apiMessageParser:
     mouseLock = False
     
     def newSurface(self, pieces):
-        surfaceNo = self.GUI.newSurface()
+        surfaceNo = self.GUI.newSurface(pieces[1])
         return {'surfaceNo' : surfaceNo}
     
     def newSurfaceWithID(self, peices):
-        surfaceNo = self.GUI.newSurfaceWithID(pieces[1])
+        surfaceNo = self.GUI.newSurfaceWithID(pieces[2], pieces[1])
         return {'surfaceNo' : surfaceNo}
         
     def newCursor(self, pieces):
@@ -54,59 +54,59 @@ class apiMessageParser:
         return {"cursorNo" : cursorNo}
         
     def newWindow(self, pieces):
-        windowNo = self.GUI.newWindow(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
+        windowNo = self.GUI.newWindow(pieces[7], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
         return {"windowNo" : windowNo}
     
     def newWindowWithID(self, pieces):
-        windowNo = self.GUI.newWindowWithID(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
+        windowNo = self.GUI.newWindowWithID(pieces[8], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
         return {"windowNo" : windowNo}
         
     def newCircle(self, pieces):
-        elementNo = self.GUI.newCircle(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
+        elementNo = self.GUI.newCircle(pieces[7], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
         return {"elementNo" : elementNo}
     
     def newCircleWithID(self, pieces):
-        elementNo = self.GUI.newCircleWithID(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
+        elementNo = self.GUI.newCircleWithID(pieces[8], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
         return {"elementNo" : elementNo}
         
     def newLine(self, pieces):
-        elementNo = self.GUI.newLine(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
+        elementNo = self.GUI.newLine(pieces[7], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
         return {"elementNo" : elementNo}
     
     def newLineWithID(self, pieces):
-        elementNo = self.GUI.newLineWithID(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
+        elementNo = self.GUI.newLineWithID(pieces[8], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
         return {"elementNo" : elementNo}
         
     def newLineStrip(self, pieces):
-        elementNo = self.GUI.newLineStrip(pieces[1], pieces[2], pieces[3], pieces[4])
+        elementNo = self.GUI.newLineStrip(pieces[5], pieces[1], pieces[2], pieces[3], pieces[4])
         return {"elementNo" : elementNo}
     
     def newLineStripWithID(self, pieces):
-        elementNo = self.GUI.newLineStripWithID(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5])
+        elementNo = self.GUI.newLineStripWithID(pieces[6], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5])
         return {"elementNo" : elementNo}
         
     def newPolygon(self, pieces):
-        elementNo = self.GUI.newPolygon(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5])
+        elementNo = self.GUI.newPolygon(pieces[6], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5])
         return {"elementNo" : elementNo}
     
     def newPolygonWithID(self, pieces):
-        elementNo = self.GUI.newPolygonWithID(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
+        elementNo = self.GUI.newPolygonWithID(pieces[7], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
         return {"elementNo" : elementNo}
     
     def newRectangle(self,pieces):
-        elementNo = self.GUI.newRectangle(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
+        elementNo = self.GUI.newRectangle(pieces[8], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
         return {"elementNo" : elementNo}
     
     def newRectangleWithID(self,pieces):
-        elementNo = self.GUI.newRectangleWithID(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
+        elementNo = self.GUI.newRectangleWithID(pieces[9], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
         return {"elementNo" : elementNo}
             
     def newText(self, pieces):
-        elementNo = self.GUI.newText(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
+        elementNo = self.GUI.newText(pieces[8], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
         return {"elementNo" : elementNo}
     
     def newTextWithID(self, pieces):
-        elementNo = self.GUI.newTextWithID(pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
+        elementNo = self.GUI.newTextWithID(pieces[9], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
         return {"elementNo" : elementNo}
     
     def getSurfaceID(self, pieces):
@@ -596,7 +596,7 @@ class apiMessageParser:
         pieces = msg.split(',') #Splits the message up into sections
         data = None #Creates an empty variable to hold the message reply
         try:
-            if(len(pieces) - 1 == self.messages[pieces[0]][1]):
+            if(len(pieces) - 2 == self.messages[pieces[0]][1]):
                 data = self.messages[str(pieces[0])][0](self, pieces)
             else:
                 data = {"error" : 2, "1" : str(len(pieces) - 1), "2" : str(self.messages[pieces[0]][1])}
