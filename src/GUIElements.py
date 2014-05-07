@@ -233,6 +233,9 @@ class window:
     
     def setID(self, ID):
         self.windowID = ID
+        
+    def getOwner(self):
+        return self.owner
 
     def stretchLeft(self, distance):
         self.loc.setX(self.loc.getX()-int(distance))
@@ -327,6 +330,9 @@ class surface():
     
     def setID(self, ID):
         self.surfaceID = ID
+        
+    def getOwner(self):
+        return self.owner
 
     def setLeft(self, surface):
         self.toLeft = surface
@@ -408,6 +414,9 @@ class element:
     
     def setID(self, ID):
         self.elementID = ID
+        
+    def getOwner(self):
+        return self.owner
 
 class circle(element):
     __slots__ = ['coord', 'radius', 'lineColor', 'fillColor']

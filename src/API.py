@@ -117,6 +117,10 @@ class apiMessageParser:
         self.GUI.setSurfaceID(pieces[1],pieces[2])
         return {}
     
+    def getSurfaceOwner(self, pieces):
+        owner = self.GUI.getSurfaceOwner(pieces[1])
+        return {"owner" : owner}
+    
     def getWindowID(self, pieces):
         ID = self.GUI.getWindowID(pieces[1])
         return {"ID" : ID}
@@ -125,6 +129,10 @@ class apiMessageParser:
         self.GUI.setWindowID(pieces[1],pieces[2])
         return {}
     
+    def getWindowOwner(self, pieces):
+        owner = self.GUI.getWindowOwner(pieces[1])
+        return {"owner" : owner}
+    
     def getElementID(self, pieces):
         ID = self.GUI.getElementID(pieces[1])
         return {"ID" : ID}
@@ -132,6 +140,10 @@ class apiMessageParser:
     def setElementID(self, pieces):
         self.GUI.setElementID(pieces[1],pieces[2])
         return {}
+    
+    def getElementOwner(self, pieces):
+        owner = self.GUI.getElementOwner(pieces[1])
+        return {"owner" : owner}
         
     def mouseLeftDown(self, pieces):
         loc = self.GUI.leftDown(pieces[1])
@@ -499,10 +511,13 @@ class apiMessageParser:
             'new_text_with_ID' : (newTextWithID, 8),
             'get_surface_ID' : (getSurfaceID, 1),
             'set_surface_ID' : (setSurfaceID, 2),
+            'get_surface_owner' : (getSurfaceOwner, 1),
             'get_window_ID' : (getWindowID, 1),
             'set_window_ID' : (setWindowID, 2),
+            'get_window_owner' : (getWindowOwner, 1),
             'get_element_ID' : (getElementID, 1),
             'set_element_ID' : (setElementID, 2),
+            'get_element_owner' : (getElementOwner, 1),
             'mouse_l' : (mouseLeftDown, 1),  # [1]=CursorNo
             'mouse_lu' : (mouseLeftUp, 1),  # [1]=CursorNo
             'mouse_m' : (mouseMiddleDown, 1),  # [1]=CursorNo
