@@ -74,8 +74,8 @@ class GUI:
 		self.surfaces[str(surface)].addCursor(cursorNo)
 		return cursorNo
 	
-	def newCursorWithID(self, ID):
-		cursorNo = self.newCursor()
+	def newCursorWithID(self, ID, surface, x, y):
+		cursorNo = self.newCursor(surface, x, y)
 		self.cursors[set(cursorNo)].setID(ID)
 		return cursorNo
 		
