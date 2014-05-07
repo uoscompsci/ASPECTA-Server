@@ -75,6 +75,7 @@ if __name__ == "__main__":
 								if(sock2usr.has_key(sock)==False):
 									usr2sock[pieces[1]] = sock
 									sock2usr[sock] = pieces[1]
+									reply(sock,str({}))
 								else:
 									reply(sock,str({'error' : 5}))
 							else:

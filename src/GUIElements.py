@@ -11,7 +11,6 @@ class cursor:
         self.stateR = "up"
         self.loc = point2D(x,y)
         self.rotation = 0
-        self.owner = owner
 
     def moveX(self, distance):
         if(self.rotation==0):
