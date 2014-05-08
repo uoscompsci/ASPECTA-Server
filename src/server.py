@@ -6,8 +6,9 @@ from Queue import Queue
 from API import apiMessageParser
 
 queue = Queue([999])
-usr2sock = {}
 sock2usr = {}
+app2sock = {}
+sock2app = {}
 
 #Constantly monitors the queue for received messages
 def message_queue_monitor():
@@ -71,20 +72,32 @@ if __name__ == "__main__":
 							loop=False
 						elif(data.startswith("login,")):
 							pieces = data.split(',')
-							if(usr2sock.has_key(pieces[1])==False):
-								if(sock2usr.has_key(sock)==False):
-									usr2sock[pieces[1]] = sock
-									sock2usr[sock] = pieces[1]
-									reply(sock,str({}))
-								else:
-									reply(sock,str({'error' : 5}))
+							if(sock2usr.has_key(sock)==False):
+								sock2usr[sock] = pieces[1]
+								reply(sock,str({}))
 							else:
 								reply(sock,str({'error' : 4}))
+						elif(data.startswith("setapp,")):
+							if(sock2app.has_key(sock)):
+								reply(sock,str({'error' : 5}))
+							else:
+								pieces = data.split(',')
+								count = 0
+								added = False
+								while(added==False):
+									if(app2sock.has_key(pieces[1] + "," + str(count))==False):
+										app2sock[pieces[1] + "," + str(count)] = sock
+										sock2app[sock] = pieces[1] + "," + str(count)
+										reply(sock,str({}))
+										added = True
 						else: #If the message isn't a quit command puts the received API message onto the queue to be processed
-							if(sock2usr.has_key(sock)):
+							if(sock2usr.has_key(sock) and sock2app.has_key(sock)):
 							 	queue.put((sock,data))
 							else:
-				 				reply(sock,str({'error' : 3}))
+								if(sock2usr.has_key(sock)==False):
+									reply(sock,str({'error' : 3}))
+								else:
+									reply(sock,str({'error' : 6}))
 				except:
 					print "Client (%s, %s) is offline" % addr
 					sock.close()
