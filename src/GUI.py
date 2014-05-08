@@ -19,7 +19,7 @@ class GUI:
 		self.surfaces = {}
 		self.windows = {}
 		self.elements = {}
-		self.surfaces["0"] = surface("server")
+		self.surfaces["0"] = surface("server", "server", "0")
 		self.setup_surface_visible = False
 		
 	def hideSetupSurface(self):
@@ -31,8 +31,8 @@ class GUI:
 	def getSetupSurfaceVisibilty(self):
 		return self.setup_surface_visible
 		
-	def newSurface(self, owner):
-		newSur = surface(owner)
+	def newSurface(self, owner, app, appno):
+		newSur = surface(owner, app, appno)
 		surfaceNo = 0
 		with self.surfaces_lock:
 			if (len(self.surfaces)==0):
@@ -45,8 +45,8 @@ class GUI:
 				surfaceNo = self.lastsur		
 		return surfaceNo
 	
-	def newSurfaceWithID(self, owner, ID):
-		surfaceNo = self.newSurface(owner)
+	def newSurfaceWithID(self, owner, app, appno, ID):
+		surfaceNo = self.newSurface(owner, app, appno)
 		self.surfaces[set(surfaceNo)].setID(ID)
 		return surfaceNo
 	
@@ -160,8 +160,8 @@ class GUI:
 		yloc = self.cursors[str(cursorNo)].getY()
 		return (xloc,yloc)
 	
-	def newWindow(self, owner, surface, x, y, xWid, yWid, name):
-		newWin = window(owner,x,y,xWid,yWid,name)
+	def newWindow(self, owner, app, appno, surface, x, y, xWid, yWid, name):
+		newWin = window(owner,app,appno,x,y,xWid,yWid,name)
 		windowNo = 0
 		with self.windows_lock:
 			if (len(self.windows)==0):
@@ -175,8 +175,8 @@ class GUI:
 		self.surfaces[str(surface)].addWindow(windowNo)
 		return windowNo
 	
-	def newWindowWithID(self, owner, ID, surface, x, y, xWid, yWid, name):
-		windowNo = self.newWindow(owner, surface, x, y, xWid, yWid, name)
+	def newWindowWithID(self, owner, app, appno, ID, surface, x, y, xWid, yWid, name):
+		windowNo = self.newWindow(owner, app, appno, surface, x, y, xWid, yWid, name)
 		self.windows[set(windowNo)].setID(ID)
 		return windowNo
 	
@@ -267,13 +267,13 @@ class GUI:
 		self.windows[str(windowNo)].addElement(elementNo)
 		return elementNo
 	
-	def newCircle(self, owner, windowNo, x, y, radius, lineColor, fillColor):
-		newCir = circle(owner, x, y, radius, lineColor, fillColor)
+	def newCircle(self, owner, app, appno, windowNo, x, y, radius, lineColor, fillColor):
+		newCir = circle(owner, app, appno, x, y, radius, lineColor, fillColor)
 		elementNo = self.newElement(newCir, windowNo)
 		return elementNo
 	
-	def newCircleWithID(self, owner, ID, windowNo, x, y, radius, lineColor, fillColor):
-		elementNo = self.newCircle(owner, windowNo, x, y, radius, lineColor, fillColor)
+	def newCircleWithID(self, owner, app, appno, ID, windowNo, x, y, radius, lineColor, fillColor):
+		elementNo = self.newCircle(owner, app, appno, windowNo, x, y, radius, lineColor, fillColor)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 		
@@ -311,13 +311,13 @@ class GUI:
 	def getCircleLine(self, elementNo):
 		return self.elements[str(elementNo)].getLineColor()
 	
-	def newLine(self, owner, windowNo, x1, y1, x2, y2, color):
-		newLine = line(owner, x1, y1, x2, y2, color)
+	def newLine(self, owner, app, appno, windowNo, x1, y1, x2, y2, color):
+		newLine = line(owner, app, appno, x1, y1, x2, y2, color)
 		elementNo = self.newElement(newLine, windowNo)
 		return elementNo
 	
-	def newLineWithID(self, owner, ID, windowNo, x1, y1, x2, y2, color):
-		elementNo = self.newLine(owner, windowNo, x1, y1, x2, y2, color)
+	def newLineWithID(self, owner, app, appno, ID, windowNo, x1, y1, x2, y2, color):
+		elementNo = self.newLine(owner, app, appno, windowNo, x1, y1, x2, y2, color)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
@@ -343,13 +343,13 @@ class GUI:
 	def getLineColor(self,elementNo):
 		return self.elements[str(elementNo)].getColor()
 	
-	def newLineStrip(self, owner, windowNo, x, y, color):
-		newLineStrip = lineStrip(owner, x, y, color)
+	def newLineStrip(self, owner, app, appno, windowNo, x, y, color):
+		newLineStrip = lineStrip(owner, app, appno, x, y, color)
 		elementNo = self.newElement(newLineStrip, windowNo)
 		return elementNo
 	
-	def newLineStripWithID(self, owner, ID, windowNo, x, y, color):
-		elementNo = self.newLineStrip(owner, windowNo, x, y, color)
+	def newLineStripWithID(self, owner, app, appno, ID, windowNo, x, y, color):
+		elementNo = self.newLineStrip(owner, app, appno, windowNo, x, y, color)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
@@ -377,13 +377,13 @@ class GUI:
 	def getLineStripPointsCount(self, elementNo):
 		return self.elements[str(elementNo)].getNumPoints()
 	
-	def newPolygon(self, owner, windowNo, x, y, lineColor, fillColor):
-		newPoly = polygon(owner, x, y, lineColor, fillColor)
+	def newPolygon(self, owner, app, appno, windowNo, x, y, lineColor, fillColor):
+		newPoly = polygon(owner, app, appno, x, y, lineColor, fillColor)
 		elementNo = self.newElement(newPoly, windowNo)
 		return elementNo
 	
-	def newPolygonWithID(self, owner, ID, windowNo, x, y, lineColor, fillColor):
-		elementNo = self.newPolygon(owner, windowNo, x, y, lineColor, fillColor)
+	def newPolygonWithID(self, owner, app, appno, ID, windowNo, x, y, lineColor, fillColor):
+		elementNo = self.newPolygon(owner, app, appno, windowNo, x, y, lineColor, fillColor)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
@@ -415,13 +415,13 @@ class GUI:
 	def getPolygonPointsCount(self, elementNo):
 		return self.elements[str(elementNo)].getNumPoints()
 	
-	def newRectangle(self, owner, windowNo, x, y, width, height, lineColor, fillColor):
-		newRect = rectangle(owner, x, y, width, height, lineColor, fillColor)
+	def newRectangle(self, owner, app, appno, windowNo, x, y, width, height, lineColor, fillColor):
+		newRect = rectangle(owner, app, appno, x, y, width, height, lineColor, fillColor)
 		elementNo = self.newElement(newRect, windowNo)
 		return elementNo
 	
-	def newRectangleWithID(self, owner, ID, windowNo, x, y, width, height, lineColor, fillColor):
-		elementNo = self.newRectangle(owner, windowNo, x, y, width, height, lineColor, fillColor)
+	def newRectangleWithID(self, owner, app, appno, ID, windowNo, x, y, width, height, lineColor, fillColor):
+		elementNo = self.newRectangle(owner, app, appno, windowNo, x, y, width, height, lineColor, fillColor)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
@@ -474,13 +474,13 @@ class GUI:
 	def setRectangleLineColor(self, elementNo, color):
 		self.elements[str(elementNo)].setLineColor(color)
 	
-	def newText(self, owner, windowNo, text, x, y, pt, font, color):
-		newText = textBox(owner, text, x, y, pt, font, color)
+	def newText(self, owner, app, appno, windowNo, text, x, y, pt, font, color):
+		newText = textBox(owner, app, appno, text, x, y, pt, font, color)
 		elementNo = self.newElement(newText, windowNo)
 		return elementNo
 	
-	def newTextWithID(self, owner, ID, windowNo, text, x, y, pt, font, color):
-		elementNo = self.newText(owner, windowNo, text, x, y, pt, font, color)
+	def newTextWithID(self, owner, app, appno, ID, windowNo, text, x, y, pt, font, color):
+		elementNo = self.newText(owner, app, appno, windowNo, text, x, y, pt, font, color)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	

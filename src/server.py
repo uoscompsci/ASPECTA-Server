@@ -15,8 +15,7 @@ def message_queue_monitor():
 	while(True):
 		if(queue.empty()!=True):
 			qitem = queue.get()
-			reply(qitem[0],str(messageParser.processMessage(qitem[1] + "," + sock2usr[qitem[0]])))
-
+			reply(qitem[0],str(messageParser.processMessage(qitem[1] + "," + sock2usr[qitem[0]] + "," + sock2app[qitem[0]])))
 #Sends a reply to the client that the last message was received from 
 def reply (sock, message):
 	for socket in CONNECTION_LIST:

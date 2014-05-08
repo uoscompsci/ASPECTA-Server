@@ -218,15 +218,17 @@ class cursor:
             self.rotation = self.rotation%360
 
 class window:
-    __slots__ = ['elements', 'loc', 'xsize', 'ysize', 'subwindows', 'name', 'windowID', 'owner']
+    __slots__ = ['elements', 'loc', 'xsize', 'ysize', 'subwindows', 'name', 'windowID', 'owner', 'app', 'appno']
 
-    def __init__(self, owner, xloc, yloc, xsize, ysize, name):
+    def __init__(self, owner, app, appno, xloc, yloc, xsize, ysize, name):
         self.loc = point2D(xloc,yloc)
         self.xsize = int(xsize)
         self.ysize = int(ysize)
         self.name = name
         self.elements = []
         self.owner = owner
+        self.app = app
+        self.appno = appno
         
     def getID(self):
         return self.windowID
@@ -318,12 +320,14 @@ class window:
         return self.elements
 
 class surface():
-    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows', 'surfaceID', 'owner']
+    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows', 'surfaceID', 'owner', 'app', 'appno']
 
-    def __init__(self, owner):
+    def __init__(self, owner, app, appno):
         self.cursors = []
         self.windows = []
         self.owner = owner
+        self.app = app
+        self.appno = appno
         
     def getID(self):
         return self.surfaceID
@@ -395,7 +399,7 @@ class surface():
         return self.windows
         
 class element:
-    __slots__ = ['elementType', 'visible', 'elementID', 'owner']
+    __slots__ = ['elementType', 'visible', 'elementID', 'owner', 'app', 'appno']
 
     def show(self):
         self.visible = True
@@ -421,7 +425,7 @@ class element:
 class circle(element):
     __slots__ = ['coord', 'radius', 'lineColor', 'fillColor']
 
-    def __init__(self, owner, x, y, radius, lineColor, fillColor):
+    def __init__(self, owner, app, appno, x, y, radius, lineColor, fillColor):
         self.elementType = "circle"
         self.coord = point2D(x,y)
         self.radius = radius
@@ -429,6 +433,8 @@ class circle(element):
         self.fillColor = fillColor
         self.visible=True
         self.owner = owner
+        self.app = app
+        self.appno = appno
 
     def getCenterX(self):
         return self.coord.getX()
@@ -467,13 +473,15 @@ class circle(element):
 class line(element):
     __slots__ = ['coord1', 'coord2', 'color']
 
-    def __init__(self, owner, x1, y1, x2, y2, color):
+    def __init__(self, owner, app, appno, x1, y1, x2, y2, color):
         self.elementType = "line"
         self.coord1 = point2D(x1,y1)
         self.coord2 = point2D(x2,y2)
         self.color = color
         self.visible=True
         self.owner = owner
+        self.app = app
+        self.appno = appno
 
     def setStart(self, x, y):
         self.coord1.reposition(x,y)
@@ -502,12 +510,14 @@ class line(element):
 class lineStrip(element):
     __slots__ = ['points', 'color']
 
-    def __init__(self, owner, x, y, color):
+    def __init__(self, owner, app, appno, x, y, color):
         self.elementType = "lineStrip"
         self.points = [point2D(x,y)]
         self.color = color
         self.visible=True
         self.owner = owner
+        self.app = app
+        self.appno = appno
 
     def addPoint(self, x, y):
         self.points.append(point2D(x,y))
@@ -536,13 +546,15 @@ class lineStrip(element):
 class polygon(element):
     __slots__ = ['points', 'lineColor', 'fillColor']
 
-    def __init__(self, owner, x, y, lineColor, fillColor):
+    def __init__(self, owner, app, appno, x, y, lineColor, fillColor):
         self.elementType = "polygon"
         self.points = [point2D(x,y)]
         self.lineColor = lineColor
         self.fillColor = fillColor
         self.visible=True
         self.owner = owner
+        self.app = app
+        self.appno = appno
         
     def addPoint(self, x, y):
         self.points.append(point2D(x,y))
@@ -574,7 +586,7 @@ class polygon(element):
 class rectangle(element):
     __slots__ = ['topLeft', 'width', 'height', 'lineColor', 'fillColor']
     
-    def __init__(self, owner, tlx, tly, width, height, lineColor, fillColor):
+    def __init__(self, owner, app, appno, tlx, tly, width, height, lineColor, fillColor):
         self.elementType = "rectangle"
         self.topLeft = point2D(tlx,tly)
         self.width = width
@@ -582,6 +594,8 @@ class rectangle(element):
         self.lineColor = lineColor
         self.fillColor = fillColor
         self.owner = owner
+        self.app = app
+        self.appno = appno
         
     def getTopLeftX(self):
         return self.topLeft.getX()
@@ -637,7 +651,7 @@ class rectangle(element):
 class textBox(element):
     __slots__ = ['text', 'coord', 'pt', 'font', 'color']
 
-    def __init__(self, owner, text, x, y, pt, font, color):
+    def __init__(self, owner, app, appno, text, x, y, pt, font, color):
         self.elementType = "text"
         self.text = text
         self.coord = point2D(x,y)
@@ -646,6 +660,8 @@ class textBox(element):
         self.color = color
         self.visible=True
         self.owner = owner
+        self.app = app
+        self.appno = appno
 
     def setText(self, text):
         self.text = text
