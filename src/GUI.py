@@ -58,6 +58,9 @@ class GUI:
 		
 	def getSurfaceOwner(self, surfaceNo):
 		return self.surfaces[str(surfaceNo)].getOwner()
+	
+	def getSurfaceAppDetails(self, surfaceNo):
+		return self.surfaces[str(surfaceNo)].getAppDetails()
 
 	def newCursor(self, surface, x, y):
 		newCur = cursor(x,y)
@@ -188,6 +191,9 @@ class GUI:
 		
 	def getWindowOwner(self, windowNo):
 		return self.windows[str(windowNo)].getOwner()
+	
+	def getWindowAppDetails(self, windowNo):
+		return self.windows[str(windowNo)].getAppDetails()
 	
 	def findWindow(self, windowNo):
 		location = 0
@@ -537,6 +543,9 @@ class GUI:
 		
 	def getElementOwner(self, elementNo):
 		return self.elements[str(elementNo)].getOwner()
+	
+	def getElementAppDetails(self, elementNo):
+		return self.elements[str(elementNo)].getAppDetails()
 	
 	def getCursors(self,surfaceNo):
 		return self.surfaces[str(surfaceNo)].getCursors()

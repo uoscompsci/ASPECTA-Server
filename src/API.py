@@ -121,6 +121,10 @@ class apiMessageParser:
         owner = self.GUI.getSurfaceOwner(pieces[1])
         return {"owner" : owner}
     
+    def getSurfaceAppDetails(self, pieces):
+        app = self.GUI.getSurfaceAppDetails(pieces[1])
+        return {"app" : app[0], "instance" : app[1]}
+    
     def getWindowID(self, pieces):
         ID = self.GUI.getWindowID(pieces[1])
         return {"ID" : ID}
@@ -133,6 +137,10 @@ class apiMessageParser:
         owner = self.GUI.getWindowOwner(pieces[1])
         return {"owner" : owner}
     
+    def getWindowAppDetails(self, pieces):
+        app = self.GUI.getWindowAppDetails(pieces[1])
+        return {"app" : app[0], "instance" : app[1]}
+    
     def getElementID(self, pieces):
         ID = self.GUI.getElementID(pieces[1])
         return {"ID" : ID}
@@ -144,6 +152,10 @@ class apiMessageParser:
     def getElementOwner(self, pieces):
         owner = self.GUI.getElementOwner(pieces[1])
         return {"owner" : owner}
+    
+    def getElementAppDetails(self, pieces):
+        app = self.GUI.getElementAppDetails(pieces[1])
+        return {"app" : app[0], "instance" : app[1]}
         
     def mouseLeftDown(self, pieces):
         loc = self.GUI.leftDown(pieces[1])
@@ -512,12 +524,15 @@ class apiMessageParser:
             'get_surface_ID' : (getSurfaceID, 1),
             'set_surface_ID' : (setSurfaceID, 2),
             'get_surface_owner' : (getSurfaceOwner, 1),
+            'get_surface_app_details' : (getSurfaceAppDetails, 1),
             'get_window_ID' : (getWindowID, 1),
             'set_window_ID' : (setWindowID, 2),
             'get_window_owner' : (getWindowOwner, 1),
+            'get_window_app_details' : (getWindowAppDetails, 1),
             'get_element_ID' : (getElementID, 1),
             'set_element_ID' : (setElementID, 2),
             'get_element_owner' : (getElementOwner, 1),
+            'get_element_app_details' : (getElementAppDetails, 1),
             'mouse_l' : (mouseLeftDown, 1),  # [1]=CursorNo
             'mouse_lu' : (mouseLeftUp, 1),  # [1]=CursorNo
             'mouse_m' : (mouseMiddleDown, 1),  # [1]=CursorNo

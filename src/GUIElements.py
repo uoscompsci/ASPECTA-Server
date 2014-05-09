@@ -238,6 +238,9 @@ class window:
         
     def getOwner(self):
         return self.owner
+    
+    def getAppDetails(self):
+        return (self.app,self.appno)
 
     def stretchLeft(self, distance):
         self.loc.setX(self.loc.getX()-int(distance))
@@ -337,6 +340,9 @@ class surface():
         
     def getOwner(self):
         return self.owner
+    
+    def getAppDetails(self):
+        return (self.app,self.appno)
 
     def setLeft(self, surface):
         self.toLeft = surface
@@ -421,6 +427,9 @@ class element:
         
     def getOwner(self):
         return self.owner
+    
+    def getAppDetails(self):
+        return (self.app,self.appno)
 
 class circle(element):
     __slots__ = ['coord', 'radius', 'lineColor', 'fillColor']
