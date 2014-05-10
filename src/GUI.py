@@ -61,6 +61,35 @@ class GUI:
 	
 	def getSurfaceAppDetails(self, surfaceNo):
 		return self.surfaces[str(surfaceNo)].getAppDetails()
+	
+	def getSurfacesByID(self, ID):
+		found = []
+		for x in range(0,len(self.surfaces)):
+			if(self.surfaces[x].getID()==ID):
+				found.append(x)
+		return found
+	
+	def getSurfacesByOwner(self, owner):
+		found = []
+		for x in range(0,len(self.surfaces)):
+			if(self.surfaces[x].getOwner()==owner):
+				found.append(x)
+		return found
+	
+	def getSurfacesByAppName(self, app):
+		found = []
+		for x in range(0,len(self.surfaces)):
+			if(self.surfaces[x].getAppDetails()[0]==app):
+				found.append(x)
+		return found
+	
+	def getSurfacesByAppDetails(self, app, appno):
+		found = []
+		for x in range(0,len(self.surfaces)):
+			details = self.surfaces[x].getAppDetails()
+			if(details[0]==app and details[1]==appno):
+				found.append(x)
+		return found
 
 	def newCursor(self, surface, x, y):
 		newCur = cursor(x,y)
@@ -194,6 +223,35 @@ class GUI:
 	
 	def getWindowAppDetails(self, windowNo):
 		return self.windows[str(windowNo)].getAppDetails()
+	
+	def getWindowsByID(self, ID):
+		found = []
+		for x in range(0,len(self.windows)):
+			if(self.windows[x].getID()==ID):
+				found.append(x)
+		return found
+	
+	def getWindowsByOwner(self, owner):
+		found = []
+		for x in range(0,len(self.windows)):
+			if(self.windows[x].getOwner()==owner):
+				found.append(x)
+		return found
+	
+	def getWindowsByAppName(self, app):
+		found = []
+		for x in range(0,len(self.windows)):
+			if(self.windows[x].getAppDetails()[0]==app):
+				found.append(x)
+		return found
+	
+	def getWindowsByAppDetails(self, app, appno):
+		found = []
+		for x in range(0,len(self.windows)):
+			details = self.windows[x].getAppDetails()
+			if(details[0]==app and details[1]==appno):
+				found.append(x)
+		return found
 	
 	def findWindow(self, windowNo):
 		location = 0
@@ -546,6 +604,35 @@ class GUI:
 	
 	def getElementAppDetails(self, elementNo):
 		return self.elements[str(elementNo)].getAppDetails()
+	
+	def getElementsByID(self, ID):
+		found = []
+		for x in range(0,len(self.elements)):
+			if(self.elements[x].getID()==ID):
+				found.append(x)
+		return found
+	
+	def getElementsByOwner(self, owner):
+		found = []
+		for x in range(0,len(self.elements)):
+			if(self.elements[x].getOwner()==owner):
+				found.append(x)
+		return found
+	
+	def getElementsByAppName(self, app):
+		found = []
+		for x in range(0,len(self.elements)):
+			if(self.elements[x].getAppDetails()[0]==app):
+				found.append(x)
+		return found
+	
+	def getElementsByAppDetails(self, app, appno):
+		found = []
+		for x in range(0,len(self.elements)):
+			details = self.elements[x].getAppDetails()
+			if(details[0]==app and details[1]==appno):
+				found.append(x)
+		return found
 	
 	def getCursors(self,surfaceNo):
 		return self.surfaces[str(surfaceNo)].getCursors()

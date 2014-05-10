@@ -125,6 +125,38 @@ class apiMessageParser:
         app = self.GUI.getSurfaceAppDetails(pieces[1])
         return {"app" : app[0], "instance" : app[1]}
     
+    def getSurfacesByID(self, pieces):
+        found = self.GUI.getSurfacesByID(pieces[1])
+        dict = {}
+        dict["count"] = len(found)
+        for x in range(0,len(found)):
+            dict[x] = found[x]
+        return dict
+    
+    def getSurfacesByOwner(self, pieces):
+        found = self.GUI.getSurfacesByOwner(pieces[1])
+        dict = {}
+        dict["count"] = len(found)
+        for x in range(0,len(found)):
+            dict[x] = found[x]
+        return dict
+    
+    def getSurfacesByAppName(self, pieces):
+        found = self.GUI.getSurfacesByAppName(pieces[1])
+        dict = {}
+        dict["count"] = len(found)
+        for x in range(0,len(found)):
+            dict[x] = found[x]
+        return dict
+    
+    def getSurfacesByAppDetails(self, pieces):
+        found = self.GUI.getSurfacesByAppDetails(pieces[1], pieces[2])
+        dict = {}
+        dict["count"] = len(found)
+        for x in range(0,len(found)):
+            dict[x] = found[x]
+        return dict
+    
     def getWindowID(self, pieces):
         ID = self.GUI.getWindowID(pieces[1])
         return {"ID" : ID}
@@ -141,6 +173,38 @@ class apiMessageParser:
         app = self.GUI.getWindowAppDetails(pieces[1])
         return {"app" : app[0], "instance" : app[1]}
     
+    def getWindowsByID(self, pieces):
+        found = self.GUI.getWindowsByID(pieces[1])
+        dict = {}
+        dict["count"] = len(found)
+        for x in range(0,len(found)):
+            dict[x] = found[x]
+        return dict
+    
+    def getWindowsByOwner(self, pieces):
+        found = self.GUI.getWindowsByOwner(pieces[1])
+        dict = {}
+        dict["count"] = len(found)
+        for x in range(0,len(found)):
+            dict[x] = found[x]
+        return dict
+    
+    def getWindowsByAppName(self, pieces):
+        found = self.GUI.getWindowsByAppName(pieces[1])
+        dict = {}
+        dict["count"] = len(found)
+        for x in range(0,len(found)):
+            dict[x] = found[x]
+        return dict
+    
+    def getWindowsByAppDetails(self, pieces):
+        found = self.GUI.getWindowsByAppDetails(pieces[1], pieces[2])
+        dict = {}
+        dict["count"] = len(found)
+        for x in range(0,len(found)):
+            dict[x] = found[x]
+        return dict
+    
     def getElementID(self, pieces):
         ID = self.GUI.getElementID(pieces[1])
         return {"ID" : ID}
@@ -156,6 +220,38 @@ class apiMessageParser:
     def getElementAppDetails(self, pieces):
         app = self.GUI.getElementAppDetails(pieces[1])
         return {"app" : app[0], "instance" : app[1]}
+    
+    def getElementsByID(self, pieces):
+        found = self.GUI.getElementsByID(pieces[1])
+        dict = {}
+        dict["count"] = len(found)
+        for x in range(0,len(found)):
+            dict[x] = found[x]
+        return dict
+    
+    def getElementsByOwner(self, pieces):
+        found = self.GUI.getElementsByOwner(pieces[1])
+        dict = {}
+        dict["count"] = len(found)
+        for x in range(0,len(found)):
+            dict[x] = found[x]
+        return dict
+    
+    def getElementsByAppName(self, pieces):
+        found = self.GUI.getElementsByAppName(pieces[1])
+        dict = {}
+        dict["count"] = len(found)
+        for x in range(0,len(found)):
+            dict[x] = found[x]
+        return dict
+    
+    def getElementsByAppDetails(self, pieces):
+        found = self.GUI.getElementsByAppDetails(pieces[1], pieces[2])
+        dict = {}
+        dict["count"] = len(found)
+        for x in range(0,len(found)):
+            dict[x] = found[x]
+        return dict
         
     def mouseLeftDown(self, pieces):
         loc = self.GUI.leftDown(pieces[1])
@@ -525,14 +621,26 @@ class apiMessageParser:
             'set_surface_ID' : (setSurfaceID, 2),
             'get_surface_owner' : (getSurfaceOwner, 1),
             'get_surface_app_details' : (getSurfaceAppDetails, 1),
+            'get_surfaces_by_ID' : (getSurfacesByID,1),
+            'get_surfaces_by_owner' : (getSurfacesByOwner,1),
+            'get_surfaces_by_app_name' : (getSurfacesByAppName,1),
+            'get_surfaces_by_app_details' : (getSurfacesByAppDetails,2),
             'get_window_ID' : (getWindowID, 1),
             'set_window_ID' : (setWindowID, 2),
             'get_window_owner' : (getWindowOwner, 1),
             'get_window_app_details' : (getWindowAppDetails, 1),
+            'get_windows_by_ID' : (getWindowsByID,1),
+            'get_windows_by_owner' : (getWindowsByOwner,1),
+            'get_windows_by_app_name' : (getWindowsByAppName,1),
+            'get_windows_by_app_details' : (getWindowsByAppDetails,2),
             'get_element_ID' : (getElementID, 1),
             'set_element_ID' : (setElementID, 2),
             'get_element_owner' : (getElementOwner, 1),
             'get_element_app_details' : (getElementAppDetails, 1),
+            'get_elements_by_ID' : (getElementsByID,1),
+            'get_elements_by_owner' : (getElementsByOwner,1),
+            'get_elements_by_app_name' : (getElementsByAppName,1),
+            'get_elements_by_app_details' : (getElementsByAppDetails,2),
             'mouse_l' : (mouseLeftDown, 1),  # [1]=CursorNo
             'mouse_lu' : (mouseLeftUp, 1),  # [1]=CursorNo
             'mouse_m' : (mouseMiddleDown, 1),  # [1]=CursorNo
