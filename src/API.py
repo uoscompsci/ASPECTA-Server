@@ -109,6 +109,9 @@ class apiMessageParser:
         elementNo = self.GUI.newTextWithID(pieces[9], pieces[10], pieces[11], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
         return {"elementNo" : elementNo}
     
+    def subscribeToSurface(self, pieces):
+        self.GUI.subscribeToSurface(pieces[3] + "," + pieces[4], pieces[1])
+    
     def getSurfaceID(self, pieces):
         ID = self.GUI.getSurfaceID(pieces[1])
         return {"ID" : ID}
@@ -156,6 +159,9 @@ class apiMessageParser:
         for x in range(0,len(found)):
             dict[x] = found[x]
         return dict
+
+    def subscribeToWindow(self, pieces):
+        self.GUI.subscribeToWindow(pieces[3] + "," + pieces[4], pieces[1])
     
     def getWindowID(self, pieces):
         ID = self.GUI.getWindowID(pieces[1])
@@ -204,6 +210,9 @@ class apiMessageParser:
         for x in range(0,len(found)):
             dict[x] = found[x]
         return dict
+    
+    def subscribeToElement(self, pieces):
+        self.GUI.subscribeToElement(pieces[3] + "," + pieces[4], pieces[1])
     
     def getElementID(self, pieces):
         ID = self.GUI.getElementID(pieces[1])
@@ -617,6 +626,7 @@ class apiMessageParser:
             'new_rectangle_with_ID' : (newRectangleWithID, 8),
             'new_text' : (newText, 7),  # [1]=WindowNo  [2]=text  [3]=x  [4]=y  [5]=PointSize  [6]=Font  [7]=Color
             'new_text_with_ID' : (newTextWithID, 8),
+            'subscribe_to_surface' : (subscribeToSurface, 1),
             'get_surface_ID' : (getSurfaceID, 1),
             'set_surface_ID' : (setSurfaceID, 2),
             'get_surface_owner' : (getSurfaceOwner, 1),
@@ -625,6 +635,7 @@ class apiMessageParser:
             'get_surfaces_by_owner' : (getSurfacesByOwner,1),
             'get_surfaces_by_app_name' : (getSurfacesByAppName,1),
             'get_surfaces_by_app_details' : (getSurfacesByAppDetails,2),
+            'subscribe_to_window' : (subscribeToWindow, 1),
             'get_window_ID' : (getWindowID, 1),
             'set_window_ID' : (setWindowID, 2),
             'get_window_owner' : (getWindowOwner, 1),
@@ -633,6 +644,7 @@ class apiMessageParser:
             'get_windows_by_owner' : (getWindowsByOwner,1),
             'get_windows_by_app_name' : (getWindowsByAppName,1),
             'get_windows_by_app_details' : (getWindowsByAppDetails,2),
+            'subscribe_to_element' : (subscribeToElement, 1),
             'get_element_ID' : (getElementID, 1),
             'set_element_ID' : (setElementID, 2),
             'get_element_owner' : (getElementOwner, 1),

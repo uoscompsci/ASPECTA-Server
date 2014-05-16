@@ -218,7 +218,7 @@ class cursor:
             self.rotation = self.rotation%360
 
 class window:
-    __slots__ = ['elements', 'loc', 'xsize', 'ysize', 'subwindows', 'name', 'windowID', 'owner', 'app', 'appno']
+    __slots__ = ['elements', 'loc', 'xsize', 'ysize', 'subwindows', 'name', 'windowID', 'owner', 'app', 'appno', 'subscribers']
 
     def __init__(self, owner, app, appno, xloc, yloc, xsize, ysize, name):
         self.loc = point2D(xloc,yloc)
@@ -229,6 +229,10 @@ class window:
         self.owner = owner
         self.app = app
         self.appno = appno
+        self.subscribers = [owner]
+        
+    def subscribe(self, app):
+        self.subscribers.append(app)
         
     def getID(self):
         return self.windowID
@@ -323,7 +327,7 @@ class window:
         return self.elements
 
 class surface():
-    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows', 'surfaceID', 'owner', 'app', 'appno']
+    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows', 'surfaceID', 'owner', 'app', 'appno', 'subscribers']
 
     def __init__(self, owner, app, appno):
         self.cursors = []
@@ -331,6 +335,10 @@ class surface():
         self.owner = owner
         self.app = app
         self.appno = appno
+        self.subscribers = []
+        
+    def subscribe(self, app):
+        self.subscribers.append(app)
         
     def getID(self):
         return self.surfaceID
@@ -405,8 +413,11 @@ class surface():
         return self.windows
         
 class element:
-    __slots__ = ['elementType', 'visible', 'elementID', 'owner', 'app', 'appno']
+    __slots__ = ['elementType', 'visible', 'elementID', 'owner', 'app', 'appno', 'subscribers']
 
+    def subscribe(self, app):
+        self.subscribers.append(app)
+    
     def show(self):
         self.visible = True
 
@@ -444,6 +455,7 @@ class circle(element):
         self.owner = owner
         self.app = app
         self.appno = appno
+        self.subscribers = []
 
     def getCenterX(self):
         return self.coord.getX()
@@ -491,6 +503,7 @@ class line(element):
         self.owner = owner
         self.app = app
         self.appno = appno
+        self.subscribers = []
 
     def setStart(self, x, y):
         self.coord1.reposition(x,y)
@@ -527,6 +540,7 @@ class lineStrip(element):
         self.owner = owner
         self.app = app
         self.appno = appno
+        self.subscribers = []
 
     def addPoint(self, x, y):
         self.points.append(point2D(x,y))
@@ -564,6 +578,7 @@ class polygon(element):
         self.owner = owner
         self.app = app
         self.appno = appno
+        self.subscribers = []
         
     def addPoint(self, x, y):
         self.points.append(point2D(x,y))
@@ -605,6 +620,7 @@ class rectangle(element):
         self.owner = owner
         self.app = app
         self.appno = appno
+        self.subscribers = []
         
     def getTopLeftX(self):
         return self.topLeft.getX()
@@ -671,6 +687,7 @@ class textBox(element):
         self.owner = owner
         self.app = app
         self.appno = appno
+        self.subscribers = []
 
     def setText(self, text):
         self.text = text

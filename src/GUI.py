@@ -50,6 +50,9 @@ class GUI:
 		self.surfaces[set(surfaceNo)].setID(ID)
 		return surfaceNo
 	
+	def subscribeToSurface(self, app, surfaceNo):
+		self.surfaces[str(surfaceNo)].subscribe(app)
+	
 	def getSurfaceID(self, surfaceNo):
 		return self.surfaces[str(surfaceNo)].getID()
 	
@@ -211,6 +214,9 @@ class GUI:
 		windowNo = self.newWindow(owner, app, appno, surface, x, y, xWid, yWid, name)
 		self.windows[set(windowNo)].setID(ID)
 		return windowNo
+	
+	def subscribeToWindow(self, app, windowNo):
+		self.windows[str(windowNo)].subscribe(app)
 	
 	def getWindowID(self, windowNo):
 		return self.windows[str(windowNo)].getID()
@@ -592,6 +598,9 @@ class GUI:
 		
 	def checkElementVisibility(self,elementNo):
 		return self.elements[str(elementNo)].isVisible()
+	
+	def subscribeToElement(self, app, elementNo):
+		self.elements[str(elementNo)].subscribe(app)
 	
 	def getElementID(self, elementNo):
 		return self.elements[str(elementNo)].getID()
