@@ -111,6 +111,7 @@ class apiMessageParser:
     
     def subscribeToSurface(self, pieces):
         self.GUI.subscribeToSurface(pieces[3] + "," + pieces[4], pieces[1])
+        return {}
     
     def getSurfaceID(self, pieces):
         ID = self.GUI.getSurfaceID(pieces[1])
@@ -162,6 +163,7 @@ class apiMessageParser:
 
     def subscribeToWindow(self, pieces):
         self.GUI.subscribeToWindow(pieces[3] + "," + pieces[4], pieces[1])
+        return {}
     
     def getWindowID(self, pieces):
         ID = self.GUI.getWindowID(pieces[1])
@@ -213,6 +215,7 @@ class apiMessageParser:
     
     def subscribeToElement(self, pieces):
         self.GUI.subscribeToElement(pieces[3] + "," + pieces[4], pieces[1])
+        return {}
     
     def getElementID(self, pieces):
         ID = self.GUI.getElementID(pieces[1])
