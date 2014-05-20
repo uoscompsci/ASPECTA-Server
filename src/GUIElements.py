@@ -218,7 +218,7 @@ class cursor:
             self.rotation = self.rotation%360
 
 class window:
-    __slots__ = ['elements', 'loc', 'xsize', 'ysize', 'subwindows', 'name', 'windowID', 'owner', 'app', 'appno', 'subscribers']
+    __slots__ = ['elements', 'loc', 'xsize', 'ysize', 'subwindows', 'name', 'windowID', 'owner', 'app', 'appno', 'subscribers', 'adminMode']
 
     def __init__(self, owner, app, appno, xloc, yloc, xsize, ysize, name):
         self.loc = point2D(xloc,yloc)
@@ -230,6 +230,7 @@ class window:
         self.app = app
         self.appno = appno
         self.subscribers = [owner]
+        self.adminMode = False
         
     def subscribe(self, app):
         self.subscribers.append(app)
@@ -325,9 +326,23 @@ class window:
     
     def getElements(self):
         return self.elements
+    
+    def becomeAdmin(self, app):
+        if(app==self.owner):
+            self.adminMode = True
+            return True
+        else:
+            return False
+        
+    def stopBeingAdmin(self, app):
+        if(app==self.owner):
+            self.adminMode = False
+            return True
+        else:
+            return False
 
 class surface():
-    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows', 'surfaceID', 'owner', 'app', 'appno', 'subscribers']
+    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows', 'surfaceID', 'owner', 'app', 'appno', 'subscribers', 'adminMode']
 
     def __init__(self, owner, app, appno):
         self.cursors = []
@@ -336,6 +351,7 @@ class surface():
         self.app = app
         self.appno = appno
         self.subscribers = []
+        self.adminMode = False
         
     def subscribe(self, app):
         self.subscribers.append(app)
@@ -411,9 +427,23 @@ class surface():
     
     def getWindows(self):
         return self.windows
+    
+    def becomeAdmin(self, app):
+        if(app==self.owner):
+            self.adminMode = True
+            return True
+        else:
+            return False
+        
+    def stopBeingAdmin(self, app):
+        if(app==self.owner):
+            self.adminMode = False
+            return True
+        else:
+            return False
         
 class element:
-    __slots__ = ['elementType', 'visible', 'elementID', 'owner', 'app', 'appno', 'subscribers']
+    __slots__ = ['elementType', 'visible', 'elementID', 'owner', 'app', 'appno', 'subscribers', 'adminMode']
 
     def subscribe(self, app):
         self.subscribers.append(app)
@@ -441,6 +471,20 @@ class element:
     
     def getAppDetails(self):
         return (self.app,self.appno)
+    
+    def becomeAdmin(self, app):
+        if(app==self.owner):
+            self.adminMode = True
+            return True
+        else:
+            return False
+        
+    def stopBeingAdmin(self, app):
+        if(app==self.owner):
+            self.adminMode = False
+            return True
+        else:
+            return False
 
 class circle(element):
     __slots__ = ['coord', 'radius', 'lineColor', 'fillColor']
@@ -456,6 +500,7 @@ class circle(element):
         self.app = app
         self.appno = appno
         self.subscribers = []
+        self.adminMode = False
 
     def getCenterX(self):
         return self.coord.getX()
@@ -504,6 +549,7 @@ class line(element):
         self.app = app
         self.appno = appno
         self.subscribers = []
+        self.adminMode = False
 
     def setStart(self, x, y):
         self.coord1.reposition(x,y)
@@ -541,6 +587,7 @@ class lineStrip(element):
         self.app = app
         self.appno = appno
         self.subscribers = []
+        self.adminMode = False
 
     def addPoint(self, x, y):
         self.points.append(point2D(x,y))
@@ -579,6 +626,7 @@ class polygon(element):
         self.app = app
         self.appno = appno
         self.subscribers = []
+        self.adminMode = False
         
     def addPoint(self, x, y):
         self.points.append(point2D(x,y))
@@ -621,6 +669,7 @@ class rectangle(element):
         self.app = app
         self.appno = appno
         self.subscribers = []
+        self.adminMode = False
         
     def getTopLeftX(self):
         return self.topLeft.getX()
@@ -688,6 +737,7 @@ class textBox(element):
         self.app = app
         self.appno = appno
         self.subscribers = []
+        self.adminMode = False
 
     def setText(self, text):
         self.text = text

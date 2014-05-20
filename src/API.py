@@ -160,6 +160,20 @@ class apiMessageParser:
         for x in range(0,len(found)):
             dict[x] = found[x]
         return dict
+    
+    def becomeSurfaceAdmin(self, pieces):
+        test = self.GUI.becomeSurfaceAdmin(pieces[1], pieces[3])
+        if(test==True):
+            return {}
+        else:
+            return {"error" : 7}
+        
+    def stopBeingSurfaceAdmin(self, pieces):
+        test = self.GUI.stopBeingSurfaceAdmin(pieces[1], pieces[3])
+        if(test==True):
+            return {}
+        else:
+            return {"error" : 7}
 
     def subscribeToWindow(self, pieces):
         self.GUI.subscribeToWindow(pieces[3] + "," + pieces[4], pieces[1])
@@ -213,6 +227,20 @@ class apiMessageParser:
             dict[x] = found[x]
         return dict
     
+    def becomeWindowAdmin(self, pieces):
+        test = self.GUI.becomeWindowAdmin(pieces[1], pieces[3])
+        if(test==True):
+            return {}
+        else:
+            return {"error" : 7}
+        
+    def stopBeingWindowAdmin(self, pieces):
+        test = self.GUI.stopBeingWindowAdmin(pieces[1], pieces[3])
+        if(test==True):
+            return {}
+        else:
+            return {"error" : 7}
+    
     def subscribeToElement(self, pieces):
         self.GUI.subscribeToElement(pieces[3] + "," + pieces[4], pieces[1])
         return {}
@@ -264,6 +292,20 @@ class apiMessageParser:
         for x in range(0,len(found)):
             dict[x] = found[x]
         return dict
+    
+    def becomeElementAdmin(self, pieces):
+        test = self.GUI.becomeElementAdmin(pieces[1], pieces[3])
+        if(test==True):
+            return {}
+        else:
+            return {"error" : 7}
+        
+    def stopBeingElementAdmin(self, pieces):
+        test = self.GUI.stopBeingElementAdmin(pieces[1], pieces[3])
+        if(test==True):
+            return {}
+        else:
+            return {"error" : 7}
         
     def mouseLeftDown(self, pieces):
         loc = self.GUI.leftDown(pieces[1])
@@ -634,28 +676,34 @@ class apiMessageParser:
             'set_surface_ID' : (setSurfaceID, 2),
             'get_surface_owner' : (getSurfaceOwner, 1),
             'get_surface_app_details' : (getSurfaceAppDetails, 1),
-            'get_surfaces_by_ID' : (getSurfacesByID,1),
-            'get_surfaces_by_owner' : (getSurfacesByOwner,1),
-            'get_surfaces_by_app_name' : (getSurfacesByAppName,1),
-            'get_surfaces_by_app_details' : (getSurfacesByAppDetails,2),
+            'get_surfaces_by_ID' : (getSurfacesByID, 1),
+            'get_surfaces_by_owner' : (getSurfacesByOwner, 1),
+            'get_surfaces_by_app_name' : (getSurfacesByAppName, 1),
+            'get_surfaces_by_app_details' : (getSurfacesByAppDetails, 2),
+            'become_surface_admin' : (becomeSurfaceAdmin, 1),
+            'stop_being_surface_admin' : (stopBeingSurfaceAdmin, 1),
             'subscribe_to_window' : (subscribeToWindow, 1),
             'get_window_ID' : (getWindowID, 1),
             'set_window_ID' : (setWindowID, 2),
             'get_window_owner' : (getWindowOwner, 1),
             'get_window_app_details' : (getWindowAppDetails, 1),
-            'get_windows_by_ID' : (getWindowsByID,1),
-            'get_windows_by_owner' : (getWindowsByOwner,1),
-            'get_windows_by_app_name' : (getWindowsByAppName,1),
-            'get_windows_by_app_details' : (getWindowsByAppDetails,2),
+            'get_windows_by_ID' : (getWindowsByID, 1),
+            'get_windows_by_owner' : (getWindowsByOwner, 1),
+            'get_windows_by_app_name' : (getWindowsByAppName, 1),
+            'get_windows_by_app_details' : (getWindowsByAppDetails, 2),
+            'become_window_admin' : (becomeWindowAdmin, 1),
+            'stop_being_window_admin' : (stopBeingWindowAdmin, 1),
             'subscribe_to_element' : (subscribeToElement, 1),
             'get_element_ID' : (getElementID, 1),
             'set_element_ID' : (setElementID, 2),
             'get_element_owner' : (getElementOwner, 1),
             'get_element_app_details' : (getElementAppDetails, 1),
-            'get_elements_by_ID' : (getElementsByID,1),
-            'get_elements_by_owner' : (getElementsByOwner,1),
-            'get_elements_by_app_name' : (getElementsByAppName,1),
-            'get_elements_by_app_details' : (getElementsByAppDetails,2),
+            'get_elements_by_ID' : (getElementsByID, 1),
+            'get_elements_by_owner' : (getElementsByOwner, 1),
+            'get_elements_by_app_name' : (getElementsByAppName, 1),
+            'get_elements_by_app_details' : (getElementsByAppDetails, 2),
+            'become_element_admin' : (becomeElementAdmin, 1),
+            'stop_being_element_admin' : (stopBeingElementAdmin, 1),
             'mouse_l' : (mouseLeftDown, 1),  # [1]=CursorNo
             'mouse_lu' : (mouseLeftUp, 1),  # [1]=CursorNo
             'mouse_m' : (mouseMiddleDown, 1),  # [1]=CursorNo
