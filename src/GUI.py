@@ -94,11 +94,11 @@ class GUI:
 				found.append(x)
 		return found
 	
-	def becomeSurfaceAdmin(self, surfaceNo, app):
-		self.surfaces[str(surfaceNo)].becomeAdmin(app)
+	def becomeSurfaceAdmin(self, surfaceNo, app, appno):
+		return self.surfaces[str(surfaceNo)].becomeAdmin(app, appno)
 		
-	def stopBeingSurfaceAdmin(self, surfaceNo, app):
-		self.surfaces[str(surfaceNo)].stopBeingAdmin(app)
+	def stopBeingSurfaceAdmin(self, surfaceNo, app, appno):
+		return self.surfaces[str(surfaceNo)].stopBeingAdmin(app, appno)
 
 	def newCursor(self, surface, x, y):
 		newCur = cursor(x,y)
@@ -322,11 +322,11 @@ class GUI:
 		yloc = self.windows[str(windowNo)].getY()
 		return (xloc,yloc)
 	
-	def becomeWindowAdmin(self, windowNo, app):
-		self.windows[str(windowNo)].becomeAdmin(app)
+	def becomeWindowAdmin(self, windowNo, app, appno):
+		return self.windows[str(windowNo)].becomeAdmin(app, appno)
 		
-	def stopBeingWindowAdmin(self, windowNo, app):
-		self.windows[str(windowNo)].stopBeingAdmin(app)
+	def stopBeingWindowAdmin(self, windowNo, app, appno):
+		return self.windows[str(windowNo)].stopBeingAdmin(app, appno)
 	
 	def findElement(self, elementNo):
 		location = 0
@@ -655,11 +655,11 @@ class GUI:
 				found.append(x)
 		return found
 	
-	def becomeElementAdmin(self, elementNo, app):
-		return self.elements[str(elementNo)].becomeAdmin(app)
+	def becomeElementAdmin(self, elementNo, app, appno):
+		return self.elements[str(elementNo)].becomeAdmin(app, appno)
 		
-	def stopBeingElementAdmin(self, elementNo, app):
-		return self.elements[str(elementNo)].stopBeingAdmin(app)
+	def stopBeingElementAdmin(self, elementNo, app, appno):
+		return self.elements[str(elementNo)].stopBeingAdmin(app, appno)
 	
 	def getCursors(self,surfaceNo):
 		return self.surfaces[str(surfaceNo)].getCursors()

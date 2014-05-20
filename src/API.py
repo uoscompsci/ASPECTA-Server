@@ -162,14 +162,14 @@ class apiMessageParser:
         return dict
     
     def becomeSurfaceAdmin(self, pieces):
-        test = self.GUI.becomeSurfaceAdmin(pieces[1], pieces[3])
+        test = self.GUI.becomeSurfaceAdmin(pieces[1], pieces[3], pieces[4])
         if(test==True):
             return {}
         else:
             return {"error" : 7}
         
     def stopBeingSurfaceAdmin(self, pieces):
-        test = self.GUI.stopBeingSurfaceAdmin(pieces[1], pieces[3])
+        test = self.GUI.stopBeingSurfaceAdmin(pieces[1], pieces[3], pieces[4])
         if(test==True):
             return {}
         else:
@@ -228,14 +228,14 @@ class apiMessageParser:
         return dict
     
     def becomeWindowAdmin(self, pieces):
-        test = self.GUI.becomeWindowAdmin(pieces[1], pieces[3])
+        test = self.GUI.becomeWindowAdmin(pieces[1], pieces[3], pieces[4])
         if(test==True):
             return {}
         else:
             return {"error" : 7}
         
     def stopBeingWindowAdmin(self, pieces):
-        test = self.GUI.stopBeingWindowAdmin(pieces[1], pieces[3])
+        test = self.GUI.stopBeingWindowAdmin(pieces[1], pieces[3], pieces[4])
         if(test==True):
             return {}
         else:
@@ -294,14 +294,14 @@ class apiMessageParser:
         return dict
     
     def becomeElementAdmin(self, pieces):
-        test = self.GUI.becomeElementAdmin(pieces[1], pieces[3])
+        test = self.GUI.becomeElementAdmin(pieces[1], pieces[3], pieces[4])
         if(test==True):
             return {}
         else:
             return {"error" : 7}
         
     def stopBeingElementAdmin(self, pieces):
-        test = self.GUI.stopBeingElementAdmin(pieces[1], pieces[3])
+        test = self.GUI.stopBeingElementAdmin(pieces[1], pieces[3], pieces[4])
         if(test==True):
             return {}
         else:

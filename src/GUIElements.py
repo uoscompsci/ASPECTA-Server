@@ -327,15 +327,15 @@ class window:
     def getElements(self):
         return self.elements
     
-    def becomeAdmin(self, app):
-        if(app==self.owner):
+    def becomeAdmin(self, app, appno):
+        if(app==self.app and str(appno)==str(self.appno)):
             self.adminMode = True
             return True
         else:
             return False
         
-    def stopBeingAdmin(self, app):
-        if(app==self.owner):
+    def stopBeingAdmin(self, app, appno):
+        if(app==self.app and str(appno)==str(self.appno)):
             self.adminMode = False
             return True
         else:
@@ -428,15 +428,15 @@ class surface():
     def getWindows(self):
         return self.windows
     
-    def becomeAdmin(self, app):
-        if(app==self.owner):
+    def becomeAdmin(self, app, appno):
+        if(app==self.app and str(appno)==str(self.appno)):
             self.adminMode = True
             return True
         else:
             return False
         
-    def stopBeingAdmin(self, app):
-        if(app==self.owner):
+    def stopBeingAdmin(self, app, appno):
+        if(app==self.app and str(appno)==str(self.appno)):
             self.adminMode = False
             return True
         else:
@@ -472,15 +472,15 @@ class element:
     def getAppDetails(self):
         return (self.app,self.appno)
     
-    def becomeAdmin(self, app):
-        if(app==self.owner):
+    def becomeAdmin(self, app, appno):
+        if(app==self.app and str(appno)==str(self.appno)):
             self.adminMode = True
             return True
         else:
             return False
         
-    def stopBeingAdmin(self, app):
-        if(app==self.owner):
+    def stopBeingAdmin(self, app, appno):
+        if(app==self.app and str(appno)==str(self.appno)):
             self.adminMode = False
             return True
         else:
