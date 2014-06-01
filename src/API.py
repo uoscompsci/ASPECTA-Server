@@ -946,6 +946,27 @@ class apiMessageParser:
         
         glPopMatrix()
         
+    def drawPolygon(self,polygon):
+        glDisable(GL_LIGHTING)
+        glDisable(GL_TEXTURE_2D)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        
+        glPushMatrix()
+        
+        glColor4f(1.0, 1.0, 1.0, 1.0) #Sets the drawing color to white (THIS WILL BE CHANGED)
+        glLineWidth(5.0)
+        
+        glBegin(GL_POLYGON)
+        
+        #Loops through the points in the polygon
+        for i in range(0,len(polygon)):
+            glVertex2f(polygon[i][0],polygon[i][1]) #Creates a vertex at the current line strip point
+        
+        glEnd() #Finalises the polygon so that it is rendered
+        
+        glPopMatrix()
+        
+        
     #Processes the GUI data for the desired window and calls functions to draw the elements contained within it
     def displayWindow(self, windowNo, GUIRead):
         winPos = GUIRead.getWindowPos(windowNo) #Fetches the position of the upper left corner of the window
@@ -975,6 +996,43 @@ class apiMessageParser:
                         drawPos = (winPos[0] + pos[0], winPos[1] - height + pos[1]) #Converts the position of the point based on the window location
                         strip.append(drawPos) #Adds the calculated position to the point list
                     self.drawLineStrip(strip) #Draws a strip based on the point list
+            elif(type=="polygon"): #Runs if the current element is a line strip
+                noPoints = GUIRead.getPolygonPointsCount(elements[z]) #Gets the number of points in the polygon
+                
+                #Runs if there is more than two points in the polygon (otherwise the polygon wont be shown)
+                if(noPoints>2):
+                    points = [] #Creates an empty list to hold the polygon points
+                    
+                    #Loops through the points in the polygon
+                    for point in range(0,noPoints):
+                        pos = GUIRead.getPolygonPoint(elements[z],point) #Gets the position of the current point
+                        drawPos = (winPos[0] + pos[0], winPos[1] - height + pos[1]) #Converts the position of the point based on the window location
+                        points.append(drawPos) #Adds the calculated position to the point list
+                    self.drawPolygon(points) #Draws a strip based on the point list
+            elif(type=="rectangle"): #Runs if the current element is a line strip
+                points = [] #Creates an empty list to hold the polygon points
+                
+                points.append(GUIRead.getRectangleTopLeft(elements[z]))
+                points.append(GUIRead.getRectangleTopRight(elements[z]))
+                points.append(GUIRead.getRectangleBottomRight(elements[z]))
+                points.append(GUIRead.getRectangleBottomLeft(elements[z]))
+                
+                #Loops through the points in the polygon and corrects them
+                for point in range(0,4):
+                    points[point][0] = points[point][0] + winPos[0]
+                    points[point][1] = points[point][1] + winPos[1]
+                self.drawPolygon(points) #Draws a strip based on the point list
+            elif(type=="line"):
+                points = [] #Creates an empty list to hold the line points
+                
+                points.append(GUIRead.getLineStart(elements[z]))
+                points.append(GUIRead.getLineEnd(elements[z]))
+                
+                #Loops through the points in the line and corrects them
+                for point in range(0,2):
+                    points[point][0] = points[point][0] + winPos[0]
+                    points[point][1] = points[point][1] + winPos[1]
+                self.drawLineStrip(points) #Draws a line based on the points
                 
     #Checks the setuo GUI and displays any required windows and cursors on it by calling the relevant functions
     def checkSetupGUI(self):

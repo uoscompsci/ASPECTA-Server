@@ -233,7 +233,8 @@ class window:
         self.adminMode = False
         
     def subscribe(self, app):
-        self.subscribers.append(app)
+        if(app in self.subscribers==False):
+            self.subscribers.append(app)
         
     def getID(self):
         return self.windowID
@@ -354,7 +355,8 @@ class surface():
         self.adminMode = False
         
     def subscribe(self, app):
-        self.subscribers.append(app)
+        if(app in self.subscribers==False):
+            self.subscribers.append(app)
         
     def getID(self):
         return self.surfaceID
@@ -446,7 +448,8 @@ class element:
     __slots__ = ['elementType', 'visible', 'elementID', 'owner', 'app', 'appno', 'subscribers', 'adminMode']
 
     def subscribe(self, app):
-        self.subscribers.append(app)
+        if(app in self.subscribers==False):
+            self.subscribers.append(app)
     
     def show(self):
         self.visible = True
