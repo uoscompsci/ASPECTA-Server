@@ -5,6 +5,8 @@ import pygame
 from pygame.locals import *
 from threading import Thread
 from math import *
+from coons import coonsCalc
+import FTGL
 
 #Texture loading class from http://www.jason.gd/str/pokaz/pygame_pyopengl_2d
 class Texture():
