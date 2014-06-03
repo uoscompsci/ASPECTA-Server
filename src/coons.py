@@ -39,13 +39,21 @@ class coonsCalc:
         return(x,y)
     
     def getQCurve0Pt(self,v):
-        return (1-(v%1))*self.Q0pts[math.floor(v)]+(v%1)*self.Q0pts[math.ceil(v)]
+        x = (1-(v%1))*self.Q0pts[math.floor(v)][0]+(v%1)*self.Q0pts[math.ceil(v)][0]
+        y = (1-(v%1))*self.Q0pts[math.floor(v)][1]+(v%1)*self.Q0pts[math.ceil(v)][1]
+        return (x,y)
         
     def getQCurve1Pt(self,v):
-        return (1-(v%1))*self.Q1pts[math.floor(v)]+(v%1)*self.Q1pts[math.ceil(v)]
+        x = (1-(v%1))*self.Q1pts[math.floor(v)][0]+(v%1)*self.Q1pts[math.ceil(v)][0]
+        y = (1-(v%1))*self.Q1pts[math.floor(v)][1]+(v%1)*self.Q1pts[math.ceil(v)][1]
+        return (x,y)
         
     def getPCurve0Pt(self,u):
-        return (1-(u%1))*self.P0pts[math.floor(u)]+(u%1)*self.P0pts[math.ceil(u)]
+        x = (1-(u%1))*self.P0pts[math.floor(u)][0]+(u%1)*self.P0pts[math.ceil(u)][0]
+        y = (1-(u%1))*self.P0pts[math.floor(u)][1]+(u%1)*self.P0pts[math.ceil(u)][1]
+        return (x,y)
         
     def getPCurve1Pt(self,u):
-        return (1-(u%1))*self.P1pts[math.floor(u)]+(u%1)*self.P1pts[math.ceil(u)]
+        x = (1-(u%1))*self.P1pts[math.floor(u)][0]+(u%1)*self.P1pts[math.ceil(u)][0]
+        y = (1-(u%1))*self.P1pts[math.floor(u)][1]+(u%1)*self.P1pts[math.ceil(u)][1]
+        return (x,y)
