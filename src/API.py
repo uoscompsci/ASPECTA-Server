@@ -39,6 +39,15 @@ class apiMessageParser:
     winHeight = 1024
     mouseLock = False
     
+    fonts = {"Times New Roman" : "FreeSerif",
+         "Free Serif" : "FreeSerif",
+         "Arial" : "arial",
+         "Free Mono" : "FreeMono",
+         "Courier New": "FreeMono",
+         "Arial" : "FreeSans",
+         "Free Sans" : "FreeSans"
+         }
+    
     def newSurface(self, pieces):
         surfaceNo = self.GUI.newSurface(pieces[1], pieces[2], pieces[3])
         return {'surfaceNo' : surfaceNo}
@@ -926,6 +935,24 @@ class apiMessageParser:
         glEnd() #Finalises the polygon so that it is rendered
         
         glPopMatrix()
+        
+    #Draws a circle at the desired location and with the desired radius
+    def drawText(self,x,y,text,size,font):
+        glDisable(GL_LIGHTING)
+        glDisable(GL_TEXTURE_2D)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        
+        glPushMatrix()
+        
+        glTranslatef(x, y, 0.0)
+                
+        glColor4f(1.0, 1.0, 1.0, 1.0)
+        
+        font = FTGL.PolygonFont(font)
+        font.FaceSize(size)
+        font.Render(text)
+        
+        glPopMatrix()
     
     #When passed a list of coordinates uses them to draw a line strip
     def drawLineStrip(self,strip):
@@ -1035,6 +1062,16 @@ class apiMessageParser:
                     points[point][0] = points[point][0] + winPos[0]
                     points[point][1] = points[point][1] + winPos[1]
                 self.drawLineStrip(points) #Draws a line based on the points
+            elif(type=="text"):
+                font=GUIRead.getFont(elements[z])
+                pos=GUIRead.getTextPos(elements[z])
+                size=GUIRead.getPtSize(elements[z])
+                text=GUIRead.getText(elements[z])
+                
+                if(self.fonts.has_key(font)):
+                    font = self.fonts[font]
+                
+                self.drawText(pos[0], pos[1], text, size, font + ".ttf")
                 
     #Checks the setuo GUI and displays any required windows and cursors on it by calling the relevant functions
     def checkSetupGUI(self):
