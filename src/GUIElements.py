@@ -597,15 +597,15 @@ class lineStrip(element):
         
     def addPointAt(self, x, y, index):
         self.points.insert(index, point2D(x,y))
-
+        
     def getPointX(self, number):
-        return self.points[int(number)-1].getX()
+        return self.points[int(number)].getX()
     
     def getPointY(self, number):
-        return self.points[int(number)-1].getY()
+        return self.points[int(number)].getY()
 
     def setPoint(self, number, x, y):
-        self.points[int(number)-1].reposition(x, y)
+        self.points[int(number)].reposition(x, y)
 
     def getColor(self):
         return self.color
@@ -777,6 +777,12 @@ class textBox(element):
 
 class point2D:
     __slots__ = ['x', 'y']
+    
+    def __str__(self):
+        return "(" + str(self.x) + "," + str(self.y) + ")"
+    
+    def __repr__(self):
+        return "(" + str(self.x) + "," + str(self.y) + ")"
 
     def __init__(self, x, y):
         self.x = float(x)

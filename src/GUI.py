@@ -439,7 +439,7 @@ class GUI:
 		self.elements[str(elementNo)].addPoint(x,y)
 		
 	def addLineStripPointAt(self, elementNo, x, y, index):
-		self.elements[str(elementNo)].addPointAt(x,y,index)
+		self.elements[str(elementNo)].addPointAt(int(x),int(y),int(index))
 		
 	def getLineStripPoint(self, elementNo, pointNo):
 		xloc = self.elements[str(elementNo)].getPointX(pointNo)
