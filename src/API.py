@@ -940,7 +940,7 @@ class apiMessageParser:
         glPopMatrix()
         
     #Draws a circle at the desired location and with the desired radius
-    def drawCircle(self,x,y,rad,sides):
+    def drawCircle(self,x,y,rad,sides,colors):
         glDisable(GL_LIGHTING)
         glDisable(GL_TEXTURE_2D)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -949,7 +949,7 @@ class apiMessageParser:
         
         glTranslatef(x, y, 0.0)
         
-        glColor4f(1.0, 1.0, 1.0, 1.0)
+        glColor4f(float(colors[0]), float(colors[1]), float(colors[2]), float(colors[3]))
         
         glBegin(GL_POLYGON)
         
@@ -964,7 +964,7 @@ class apiMessageParser:
         glPopMatrix()
         
     #Draws a circle at the desired location and with the desired radius
-    def drawText(self,x,y,text,size,font):
+    def drawText(self,x,y,text,size,font,colors):
         glDisable(GL_LIGHTING)
         glDisable(GL_TEXTURE_2D)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -973,7 +973,7 @@ class apiMessageParser:
         
         glTranslatef(x, y, 0.0)
                 
-        glColor4f(1.0, 1.0, 1.0, 1.0)
+        glColor4f(float(colors[0]), float(colors[1]), float(colors[2]), float(colors[3]))
         
         font = FTGL.PolygonFont(font)
         font.FaceSize(size)
@@ -982,14 +982,14 @@ class apiMessageParser:
         glPopMatrix()
     
     #When passed a list of coordinates uses them to draw a line strip
-    def drawLineStrip(self,strip,width):
+    def drawLineStrip(self,strip,width,color):
         glDisable(GL_LIGHTING)
         glDisable(GL_TEXTURE_2D)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         
         glPushMatrix()
         
-        glColor4f(1.0, 1.0, 1.0, 1.0) #Sets the drawing color to white (THIS WILL BE CHANGED)
+        glColor4f(float(color[0]), float(color[1]), float(color[2]), float(color[3])) #Sets the drawing color to white (THIS WILL BE CHANGED)
         glLineWidth(float(width))
         
         glBegin(GL_LINE_STRIP)
@@ -1038,8 +1038,10 @@ class apiMessageParser:
                 cirPos = GUIRead.getCirclePos(elements[z]) #Gets the position of the circle
                 rad = GUIRead.getCircleRad(elements[z]) #Gets the radius of the circle
                 sides = GUIRead.getCircleSides(elements[z])
+                color = GUIRead.getCircleFill(elements[z])
+                colors = color.split(":")
                 drawPos = (winPos[0]+float(cirPos[0]),winPos[1]-height+float(cirPos[1])) #Calculates the screen position the circle is to be drawn at based on the location of the window
-                self.drawCircle(drawPos[0],drawPos[1],rad,sides) #Draws a circle at the correct screen position
+                self.drawCircle(drawPos[0],drawPos[1],rad,sides,(colors[0],colors[1],colors[2],colors[3])) #Draws a circle at the correct screen position
             elif(type=="lineStrip"): #Runs if the current element is a line strip
                 noPoints = GUIRead.getLineStripPointsCount(elements[z]) #Gets the number of points in the line strip
                 
@@ -1052,7 +1054,9 @@ class apiMessageParser:
                         pos = GUIRead.getLineStripPoint(elements[z],point) #Gets the position of the current point
                         drawPos = (winPos[0] + pos[0], winPos[1] - height + pos[1]) #Converts the position of the point based on the window location
                         strip.append(drawPos) #Adds the calculated position to the point list
-                    self.drawLineStrip(strip,GUIRead.getLineStripWidth(elements[z])) #Draws a strip based on the point list
+                    color = GUIRead.getLineStripColor(elements[z])
+                    colors = color.split(":")
+                    self.drawLineStrip(strip,GUIRead.getLineStripWidth(elements[z]),(colors[0],colors[1],colors[2],colors[3])) #Draws a strip based on the point list
             elif(type=="polygon"): #Runs if the current element is a line strip
                 noPoints = GUIRead.getPolygonPointsCount(elements[z]) #Gets the number of points in the polygon
                 
@@ -1089,7 +1093,9 @@ class apiMessageParser:
                 for point in range(0,2):
                     points[point][0] = points[point][0] + winPos[0]
                     points[point][1] = points[point][1] + winPos[1]
-                self.drawLineStrip(points,GUIRead.getLineWidth(elements[z])) #Draws a line based on the points
+                color = GUIRead.getLineColor(elements[z])
+                colors = color.split(":")
+                self.drawLineStrip(points,GUIRead.getLineWidth(elements[z]),(colors[0],colors[1],colors[2],colors[3])) #Draws a line based on the points
             elif(type=="text"):
                 font=GUIRead.getFont(elements[z])
                 pos=GUIRead.getTextPos(elements[z])
@@ -1098,8 +1104,9 @@ class apiMessageParser:
                 
                 if(self.fonts.has_key(font)):
                     font = self.fonts[font]
-                
-                self.drawText(pos[0], pos[1], text, size, font + ".ttf")
+                color = GUIRead.getTextColor(elements[z])
+                colors = color.split(":")
+                self.drawText(pos[0], pos[1], text, size, font + ".ttf",(colors[0],colors[1],colors[2],colors[3]))
                 
     #Checks the setuo GUI and displays any required windows and cursors on it by calling the relevant functions
     def checkSetupGUI(self):
