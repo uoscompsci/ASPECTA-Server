@@ -349,13 +349,13 @@ class GUI:
 		self.windows[str(windowNo)].addElement(elementNo)
 		return elementNo
 	
-	def newCircle(self, owner, app, appno, windowNo, x, y, radius, lineColor, fillColor):
-		newCir = circle(owner, app, appno, x, y, radius, lineColor, fillColor)
+	def newCircle(self, owner, app, appno, windowNo, x, y, radius, lineColor, fillColor, sides):
+		newCir = circle(owner, app, appno, x, y, radius, lineColor, fillColor, sides)
 		elementNo = self.newElement(newCir, windowNo)
 		return elementNo
 	
-	def newCircleWithID(self, owner, app, appno, ID, windowNo, x, y, radius, lineColor, fillColor):
-		elementNo = self.newCircle(owner, app, appno, windowNo, x, y, radius, lineColor, fillColor)
+	def newCircleWithID(self, owner, app, appno, ID, windowNo, x, y, radius, lineColor, fillColor, sides):
+		elementNo = self.newCircle(owner, app, appno, windowNo, x, y, radius, lineColor, fillColor, sides)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 		
@@ -378,6 +378,13 @@ class GUI:
 		yloc = self.elements[str(elementNo)].getCenterY()
 		return (xloc,yloc)
 	
+	def getCircleSides(self, elementNo):
+		sides = self.elements[str(elementNo)].getSides()
+		return sides
+	
+	def setCircleSides(self, elementNo, sides):
+		self.elements[str(elementNo)].setSides(sides)
+	
 	def getEleType(self, elementNo):
 		return self.elements[str(elementNo)].checkType()
 	
@@ -393,13 +400,13 @@ class GUI:
 	def getCircleLine(self, elementNo):
 		return self.elements[str(elementNo)].getLineColor()
 	
-	def newLine(self, owner, app, appno, windowNo, x1, y1, x2, y2, color):
-		newLine = line(owner, app, appno, x1, y1, x2, y2, color)
+	def newLine(self, owner, app, appno, windowNo, x1, y1, x2, y2, color, width):
+		newLine = line(owner, app, appno, x1, y1, x2, y2, color, width)
 		elementNo = self.newElement(newLine, windowNo)
 		return elementNo
 	
-	def newLineWithID(self, owner, app, appno, ID, windowNo, x1, y1, x2, y2, color):
-		elementNo = self.newLine(owner, app, appno, windowNo, x1, y1, x2, y2, color)
+	def newLineWithID(self, owner, app, appno, ID, windowNo, x1, y1, x2, y2, color, width):
+		elementNo = self.newLine(owner, app, appno, windowNo, x1, y1, x2, y2, color, width)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
@@ -425,13 +432,20 @@ class GUI:
 	def getLineColor(self,elementNo):
 		return self.elements[str(elementNo)].getColor()
 	
-	def newLineStrip(self, owner, app, appno, windowNo, x, y, color):
-		newLineStrip = lineStrip(owner, app, appno, x, y, color)
+	def getLineWidth(self, elementNo):
+		width = self.elements[str(elementNo)].getWidth()
+		return width
+	
+	def setLineWidth(self, elementNo, width):
+		self.elements[str(elementNo)].setWidth(width)
+	
+	def newLineStrip(self, owner, app, appno, windowNo, x, y, color, width):
+		newLineStrip = lineStrip(owner, app, appno, x, y, color, width)
 		elementNo = self.newElement(newLineStrip, windowNo)
 		return elementNo
 	
-	def newLineStripWithID(self, owner, app, appno, ID, windowNo, x, y, color):
-		elementNo = self.newLineStrip(owner, app, appno, windowNo, x, y, color)
+	def newLineStripWithID(self, owner, app, appno, ID, windowNo, x, y, color, width):
+		elementNo = self.newLineStrip(owner, app, appno, windowNo, x, y, color, width)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
@@ -455,6 +469,13 @@ class GUI:
 	
 	def setLineStripColor(self, elementNo, color):
 		self.elements[str(elementNo)].setColor(color)
+		
+	def getLineStripWidth(self, elementNo):
+		width = self.elements[str(elementNo)].getWidth()
+		return width
+	
+	def setLineStripWidth(self, elementNo, width):
+		self.elements[str(elementNo)].setWidth(width)
 		
 	def getLineStripPointsCount(self, elementNo):
 		return self.elements[str(elementNo)].getNumPoints()

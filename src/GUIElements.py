@@ -490,9 +490,9 @@ class element:
             return False
 
 class circle(element):
-    __slots__ = ['coord', 'radius', 'lineColor', 'fillColor']
+    __slots__ = ['coord', 'radius', 'lineColor', 'fillColor', 'sides']
 
-    def __init__(self, owner, app, appno, x, y, radius, lineColor, fillColor):
+    def __init__(self, owner, app, appno, x, y, radius, lineColor, fillColor, sides):
         self.elementType = "circle"
         self.coord = point2D(x,y)
         self.radius = radius
@@ -504,6 +504,7 @@ class circle(element):
         self.appno = appno
         self.subscribers = []
         self.adminMode = False
+        self.sides = int(sides)
 
     def getCenterX(self):
         return self.coord.getX()
@@ -538,11 +539,17 @@ class circle(element):
 
     def getFillColor(self):
         return self.fillColor
+    
+    def getSides(self):
+        return self.sides
+    
+    def setSides(self, sides):
+        self.sides = int(sides)
 
 class line(element):
-    __slots__ = ['coord1', 'coord2', 'color']
+    __slots__ = ['coord1', 'coord2', 'color', 'width']
 
-    def __init__(self, owner, app, appno, x1, y1, x2, y2, color):
+    def __init__(self, owner, app, appno, x1, y1, x2, y2, color, width):
         self.elementType = "line"
         self.coord1 = point2D(x1,y1)
         self.coord2 = point2D(x2,y2)
@@ -553,6 +560,7 @@ class line(element):
         self.appno = appno
         self.subscribers = []
         self.adminMode = False
+        self.width = width
 
     def setStart(self, x, y):
         self.coord1.reposition(x,y)
@@ -577,11 +585,17 @@ class line(element):
 
     def getColor(self):
         return self.color
+    
+    def getWidth(self):
+        return self.width
+    
+    def setWidth(self, width):
+        self.width = width
 
 class lineStrip(element):
-    __slots__ = ['points', 'color']
+    __slots__ = ['points', 'color', 'width']
 
-    def __init__(self, owner, app, appno, x, y, color):
+    def __init__(self, owner, app, appno, x, y, color, width):
         self.elementType = "lineStrip"
         self.points = [point2D(x,y)]
         self.color = color
@@ -591,6 +605,7 @@ class lineStrip(element):
         self.appno = appno
         self.subscribers = []
         self.adminMode = False
+        self.width = width
 
     def addPoint(self, x, y):
         self.points.append(point2D(x,y))
@@ -612,6 +627,12 @@ class lineStrip(element):
 
     def setColor(self, color):
         self.color = color
+        
+    def getWidth(self):
+        return self.width
+    
+    def setWidth(self, width):
+        self.width = width
         
     def getNumPoints(self):
         return len(self.points)

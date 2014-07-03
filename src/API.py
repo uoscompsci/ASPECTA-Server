@@ -73,27 +73,27 @@ class apiMessageParser:
         return {"windowNo" : windowNo}
         
     def newCircle(self, pieces):
-        elementNo = self.GUI.newCircle(pieces[7], pieces[8], pieces[9], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
+        elementNo = self.GUI.newCircle(pieces[7], pieces[8], pieces[9], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
         return {"elementNo" : elementNo}
     
     def newCircleWithID(self, pieces):
-        elementNo = self.GUI.newCircleWithID(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
+        elementNo = self.GUI.newCircleWithID(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
         return {"elementNo" : elementNo}
         
     def newLine(self, pieces):
-        elementNo = self.GUI.newLine(pieces[7], pieces[8], pieces[9],  pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
+        elementNo = self.GUI.newLine(pieces[7], pieces[8], pieces[9],  pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
         return {"elementNo" : elementNo}
     
     def newLineWithID(self, pieces):
-        elementNo = self.GUI.newLineWithID(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
+        elementNo = self.GUI.newLineWithID(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
         return {"elementNo" : elementNo}
         
     def newLineStrip(self, pieces):
-        elementNo = self.GUI.newLineStrip(pieces[5], pieces[6], pieces[7], pieces[1], pieces[2], pieces[3], pieces[4])
+        elementNo = self.GUI.newLineStrip(pieces[5], pieces[6], pieces[7], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5])
         return {"elementNo" : elementNo}
     
     def newLineStripWithID(self, pieces):
-        elementNo = self.GUI.newLineStripWithID(pieces[6], pieces[7], pieces[8], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5])
+        elementNo = self.GUI.newLineStripWithID(pieces[6], pieces[7], pieces[8], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
         return {"elementNo" : elementNo}
         
     def newPolygon(self, pieces):
@@ -457,6 +457,14 @@ class apiMessageParser:
     def setCircleRadius(self, pieces):
         self.GUI.setCircleRad(pieces[1], pieces[2])
         return {}
+    
+    def getCircleSides(self, pieces):
+        sides = self.GUI.getCircleSides(pieces[1])
+        return {"sides" : sides}
+    
+    def setCircleSides(self, pieces):
+        self.GUI.setCircleSides(pieces[1], pieces[2])
+        return {}
         
     def getLineStart(self, pieces):
         loc = self.GUI.getLineStart(pieces[1])
@@ -481,6 +489,13 @@ class apiMessageParser:
     def getLineColor(self, pieces):
         color = self.GUI.getLineColor(pieces[1])
         return {"color" : color}
+    
+    def getLineWidth(self, pieces):
+        width = self.GUI.getLineWidth(pieces[1])
+        return {"width" : width}
+    
+    def setLineWidth(self, pieces):
+        self.GUI.setLineWidth(pieces[1], pieces[2])
         
     def addLineStripPoint(self, pieces):
         self.GUI.addLineStripPoint(pieces[1], pieces[2], pieces[3])
@@ -505,6 +520,13 @@ class apiMessageParser:
     def setLineStripColor(self, pieces):
         self.GUI.setLineStripColor(pieces[1], pieces[2])
         return {}
+    
+    def getLineStripWidth(self, pieces):
+        width = self.GUI.getLineStripWidth(pieces[1])
+        return {"width" : width}
+    
+    def setLineStripWidth(self, pieces):
+        self.GUI.setLineStripWidth(pieces[1], pieces[2])
         
     def getLineStripPointCount(self, pieces):
         count = self.GUI.getLineStripPointsCount(pieces[1])
@@ -670,12 +692,12 @@ class apiMessageParser:
             'new_cursor_with_ID' : (newCursorWithID, 4), # [1]=ID [2]=SurfaceNo  [3]=x  [4]=y
             'new_window' : (newWindow, 6),  # [1]=SurfaceNo  [2]=x  [3]=y  [4]=width  [5]=height  [6]=name
             'new_window_with_ID' : (newWindowWithID, 7),
-            'new_circle' : (newCircle, 6),  # [1]=WindowNo  [2]=x  [3]=y  [4]=Radius  [5]=LineColor  [6]=FillColor
-            'new_circle_with_ID' : (newCircleWithID, 7),
-            'new_line' : (newLine, 6),  # [1]=WindowNo  [2]=xStart  [3]=yStart  [4]=xEnd  [5]=yEnd  [6]=Color
-            'new_line_with_ID' : (newLineWithID, 7),
-            'new_line_strip' : (newLineStrip, 4),  # [1]=WindowNo  [2]=x  [3]=y  [4]=Color
-            'new_line_strip_with_ID' : (newLineStripWithID, 5),
+            'new_circle' : (newCircle, 7),  # [1]=WindowNo  [2]=x  [3]=y  [4]=Radius  [5]=LineColor  [6]=FillColor
+            'new_circle_with_ID' : (newCircleWithID, 8),
+            'new_line' : (newLine, 7),  # [1]=WindowNo  [2]=xStart  [3]=yStart  [4]=xEnd  [5]=yEnd  [6]=Color
+            'new_line_with_ID' : (newLineWithID, 8),
+            'new_line_strip' : (newLineStrip, 5),  # [1]=WindowNo  [2]=x  [3]=y  [4]=Color
+            'new_line_strip_with_ID' : (newLineStripWithID, 6),
             'new_polygon' : (newPolygon, 5),  # [1]=WindowNo  [2]=x  [3]=y  [4]=LineColor  [5]=FillColor
             'new_polygon_with_ID' : (newPolygonWithID, 6),
             'new_rectangle' : (newRectangle,7),
@@ -750,18 +772,24 @@ class apiMessageParser:
             'get_circle_fill_color' : (getCircleFillColor, 1),  # [1]=ElementNo
             'set_circle_radius' : (setCircleRadius, 2),  # [1]=ElementNo  [2]=Radius
             'get_circle_radius' : (getCircleRadius, 1),  # [1]=ElementNo
+            'set_circle_sides' : (setCircleSides, 2),
+            'get_circle_sides' : (getCircleSides, 1),
             'get_line_start' : (getLineStart, 1),  # [1]=ElementNo
             'get_line_end' : (getLineEnd, 1),  # [1]=ElementNo
             'relocate_line_start' : (setLineStart, 3),  # [1]=ElementNo  [2]=x  [3]=y
             'relocate_line_end' : (setLineEnd, 3),  # [1]=ElementNo  [2]=x  [3]=y
             'set_line_color' : (setLineColor, 2),  # [1]=ElementNo  [2]=Color
             'get_line_color' : (getLineColor, 1),  # [1]=ElementNo
+            'set_line_width' : (setLineWidth, 2),
+            'get_line_width' : (getLineWidth, 1),
             'add_line_strip_point' : (addLineStripPoint, 3),  # [1]=ElementNo  [2]=x  [3]=y
             'add_line_strip_point_at' : (addLineStripPointAt, 4), # [1]=ElementNo [2]=x [3]=y [4]=index
             'get_line_strip_point' : (getLineStripPoint, 2),  # [1]=ElementNo  [2]=PointNo
             'relocate_line_strip_point' : (moveLineStripPoint, 4),  # [1]=ElementNo  [2]=PointNo  [3]=x  [4]=y
             'get_line_strip_color' : (getLineStripColor, 1),  # [1]=ElementNo
             'set_line_strip_color' : (setLineStripColor, 2),  # [1]=ElementNo  [2]=Color
+            'get_line_strip_width' : (getLineStripWidth, 1),
+            'set_line_strip_width' : (getLineStripWidth, 2),
             'get_line_strip_point_count' : (getLineStripPointCount, 1),  # [1]=ElementNo
             'add_polygon_point' : (addPolygonPoint, 3),  # [1]=ElementNo  [2]=x  [3]=y
             'get_polygon_point' : (getPolygonPoint, 2),  # [1]=ElementNo  [2]=PointNo
@@ -912,7 +940,7 @@ class apiMessageParser:
         glPopMatrix()
         
     #Draws a circle at the desired location and with the desired radius
-    def drawCircle(self,x,y,rad):
+    def drawCircle(self,x,y,rad,sides):
         glDisable(GL_LIGHTING)
         glDisable(GL_TEXTURE_2D)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -920,7 +948,6 @@ class apiMessageParser:
         glPushMatrix()
         
         glTranslatef(x, y, 0.0)
-        sides = 32 #Sets the number of rendered sides to 32
         
         glColor4f(1.0, 1.0, 1.0, 1.0)
         
@@ -955,7 +982,7 @@ class apiMessageParser:
         glPopMatrix()
     
     #When passed a list of coordinates uses them to draw a line strip
-    def drawLineStrip(self,strip):
+    def drawLineStrip(self,strip,width):
         glDisable(GL_LIGHTING)
         glDisable(GL_TEXTURE_2D)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -963,7 +990,7 @@ class apiMessageParser:
         glPushMatrix()
         
         glColor4f(1.0, 1.0, 1.0, 1.0) #Sets the drawing color to white (THIS WILL BE CHANGED)
-        glLineWidth(5.0)
+        glLineWidth(float(width))
         
         glBegin(GL_LINE_STRIP)
         
@@ -1010,8 +1037,9 @@ class apiMessageParser:
             if(type=="circle"): #Runs if the current element is a circle
                 cirPos = GUIRead.getCirclePos(elements[z]) #Gets the position of the circle
                 rad = GUIRead.getCircleRad(elements[z]) #Gets the radius of the circle
+                sides = GUIRead.getCircleSides(elements[z])
                 drawPos = (winPos[0]+float(cirPos[0]),winPos[1]-height+float(cirPos[1])) #Calculates the screen position the circle is to be drawn at based on the location of the window
-                self.drawCircle(drawPos[0],drawPos[1],rad) #Draws a circle at the correct screen position
+                self.drawCircle(drawPos[0],drawPos[1],rad,sides) #Draws a circle at the correct screen position
             elif(type=="lineStrip"): #Runs if the current element is a line strip
                 noPoints = GUIRead.getLineStripPointsCount(elements[z]) #Gets the number of points in the line strip
                 
@@ -1024,7 +1052,7 @@ class apiMessageParser:
                         pos = GUIRead.getLineStripPoint(elements[z],point) #Gets the position of the current point
                         drawPos = (winPos[0] + pos[0], winPos[1] - height + pos[1]) #Converts the position of the point based on the window location
                         strip.append(drawPos) #Adds the calculated position to the point list
-                    self.drawLineStrip(strip) #Draws a strip based on the point list
+                    self.drawLineStrip(strip,GUIRead.getLineStripWidth(elements[z])) #Draws a strip based on the point list
             elif(type=="polygon"): #Runs if the current element is a line strip
                 noPoints = GUIRead.getPolygonPointsCount(elements[z]) #Gets the number of points in the polygon
                 
@@ -1061,7 +1089,7 @@ class apiMessageParser:
                 for point in range(0,2):
                     points[point][0] = points[point][0] + winPos[0]
                     points[point][1] = points[point][1] + winPos[1]
-                self.drawLineStrip(points) #Draws a line based on the points
+                self.drawLineStrip(points,GUIRead.getLineWidth(elements[z])) #Draws a line based on the points
             elif(type=="text"):
                 font=GUIRead.getFont(elements[z])
                 pos=GUIRead.getTextPos(elements[z])
