@@ -4,17 +4,19 @@ import sys
 from threading import Thread
 from Queue import Queue
 from API import apiMessageParser
+from collections import deque
 
-queue = Queue([999])
+queue = deque([])
 sock2usr = {}
 app2sock = {}
 sock2app = {}
 
 #Constantly monitors the queue for received messages
 def message_queue_monitor():
+	counter = 0
 	while(True):
-		if(queue.empty()!=True):
-			qitem = queue.get()
+		if(len(queue)!=0):
+			qitem = queue.pop()
 			reply(qitem[0],str(messageParser.processMessage(qitem[1] + "," + sock2usr[qitem[0]] + "," + sock2app[qitem[0]])))
 #Sends a reply to the client that the last message was received from 
 def reply (sock, message):
@@ -91,7 +93,7 @@ if __name__ == "__main__":
 										added = True
 						else: #If the message isn't a quit command puts the received API message onto the queue to be processed
 							if(sock2usr.has_key(sock) and sock2app.has_key(sock)):
-							 	queue.put((sock,data))
+							 	queue.appendleft((sock,data))
 							else:
 								if(sock2usr.has_key(sock)==False):
 									reply(sock,str({'error' : 3}))

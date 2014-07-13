@@ -480,6 +480,9 @@ class GUI:
 	def getLineStripPointsCount(self, elementNo):
 		return self.elements[str(elementNo)].getNumPoints()
 	
+	def setLineStripContent(self, elementNo, content):
+		self.elements[str(elementNo)].setContent(content)
+	
 	def newPolygon(self, owner, app, appno, windowNo, x, y, lineColor, fillColor):
 		newPoly = polygon(owner, app, appno, x, y, lineColor, fillColor)
 		elementNo = self.newElement(newPoly, windowNo)

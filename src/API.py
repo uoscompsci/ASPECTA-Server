@@ -531,6 +531,10 @@ class apiMessageParser:
     def getLineStripPointCount(self, pieces):
         count = self.GUI.getLineStripPointsCount(pieces[1])
         return {"count" : count}
+    
+    def setLineStripContent(self, pieces):
+        self.GUI.setLineStripContent(pieces[1], pieces[2])
+        return {}
         
     def addPolygonPoint(self, pieces):
         self.GUI.addPolygonPoint(pieces[1], pieces[2], pieces[3])
@@ -622,7 +626,7 @@ class apiMessageParser:
         
     def getText(self, pieces):
         text = self.GUI.getText(pieces[1])
-        return {}
+        return {'text' : text}
         
     def setTextPos(self, pieces):
         self.GUI.setTextPos(pieces[1], pieces[2], pieces[3], pieces[4])
@@ -681,6 +685,7 @@ class apiMessageParser:
     def getClickedElements(self,pieces):
         elements = self.GUI.getClickedElements(pieces[1],pieces[2],pieces[3])
         dict = {}
+        dict["count"] = len(elements)
         for x in range(0,len(elements)):
             dict[str(x)]=elements[x]
         return dict
@@ -791,6 +796,7 @@ class apiMessageParser:
             'get_line_strip_width' : (getLineStripWidth, 1),
             'set_line_strip_width' : (getLineStripWidth, 2),
             'get_line_strip_point_count' : (getLineStripPointCount, 1),  # [1]=ElementNo
+            'set_line_strip_content' : (setLineStripContent, 2),
             'add_polygon_point' : (addPolygonPoint, 3),  # [1]=ElementNo  [2]=x  [3]=y
             'get_polygon_point' : (getPolygonPoint, 2),  # [1]=ElementNo  [2]=PointNo
             'relocate_polygon_point' : (movePolygonPoint, 4),  # [1]=ElementNo  [2]=PointNo  [3]=x  [4]=y
@@ -1002,14 +1008,14 @@ class apiMessageParser:
         
         glPopMatrix()
         
-    def drawPolygon(self,polygon):
+    def drawPolygon(self,polygon,color):
         glDisable(GL_LIGHTING)
         glDisable(GL_TEXTURE_2D)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         
         glPushMatrix()
         
-        glColor4f(1.0, 1.0, 1.0, 1.0) #Sets the drawing color to white (THIS WILL BE CHANGED)
+        glColor4f(float(color[0]), float(color[1]), float(color[2]), float(color[3])) #Sets the drawing color to white (THIS WILL BE CHANGED)
         glLineWidth(5.0)
         
         glBegin(GL_POLYGON)
@@ -1069,7 +1075,9 @@ class apiMessageParser:
                         pos = GUIRead.getPolygonPoint(elements[z],point) #Gets the position of the current point
                         drawPos = (winPos[0] + pos[0], winPos[1] - height + pos[1]) #Converts the position of the point based on the window location
                         points.append(drawPos) #Adds the calculated position to the point list
-                    self.drawPolygon(points) #Draws a strip based on the point list
+                    color = GUIRead.getPolygonFillColor(elements[z])
+                    colors = color.split(":")
+                    self.drawPolygon(points,(colors[0],colors[1],colors[2],colors[3])) #Draws a strip based on the point list
             elif(type=="rectangle"): #Runs if the current element is a line strip
                 points = [] #Creates an empty list to hold the polygon points
                 
@@ -1082,7 +1090,9 @@ class apiMessageParser:
                 for point in range(0,4):
                     points[point][0] = points[point][0] + winPos[0]
                     points[point][1] = points[point][1] + winPos[1]
-                self.drawPolygon(points) #Draws a strip based on the point list
+                color = GUIRead.getRectangleFillColor(elements[z])
+                colors = color.split(":")
+                self.drawPolygon(points,(colors[0],colors[1],colors[2],colors[3])) #Draws a strip based on the point list
             elif(type=="line"):
                 points = [] #Creates an empty list to hold the line points
                 

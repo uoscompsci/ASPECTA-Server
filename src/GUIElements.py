@@ -636,6 +636,13 @@ class lineStrip(element):
         
     def getNumPoints(self):
         return len(self.points)
+    
+    def setContent(self, content):
+        self.points = []
+        split1 = content.split(";")
+        for x in range(0,len(split1)):
+            split2 = split1[x].split(":")
+            self.points.append(point2D(split2[0],split2[1]))
 
 class polygon(element):
     __slots__ = ['points', 'lineColor', 'fillColor']
