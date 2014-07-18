@@ -33,8 +33,8 @@ if __name__ == "__main__":
 	
 	parser = SafeConfigParser()
 	parser.read("config.ini")
-	RECV_BUFFER = int(parser.get('connection','RecieveBuffer'))
-	PORT = int(parser.get('connection','port'))
+	RECV_BUFFER = parser.getint('connection','RecieveBuffer')
+	PORT = parser.getint('connection','port')
 	 
 	CONNECTION_LIST = []
 	 
