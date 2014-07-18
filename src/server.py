@@ -5,6 +5,7 @@ from threading import Thread
 from Queue import Queue
 from API import apiMessageParser
 from collections import deque
+from ConfigParser import SafeConfigParser
 
 queue = deque([])
 sock2usr = {}
@@ -29,10 +30,13 @@ def reply (sock, message):
 				CONNECTION_LIST.remove(socket)
  
 if __name__ == "__main__":
+	
+	parser = SafeConfigParser()
+	parser.read("config.ini")
+	RECV_BUFFER = int(parser.get('connection','RecieveBuffer'))
+	PORT = int(parser.get('connection','port'))
 	 
 	CONNECTION_LIST = []
-	RECV_BUFFER = 4096
-	PORT = 5000
 	 
 	server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # why is this not working?
