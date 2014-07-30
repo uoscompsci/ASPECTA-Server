@@ -1,5 +1,8 @@
 import datetime
 import math
+from ConfigParser import SafeConfigParser
+from bezier import *
+from straightcoons import *
 
 class cursor:
     __slots__ = ['id', 'loc', 'stateL', 'stateM', 'stateR', 'downTimeL', 'downTimeR', 'downTimeM', 'rotaton']
@@ -343,7 +346,7 @@ class window:
             return False
 
 class surface():
-    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows', 'surfaceID', 'owner', 'app', 'appno', 'subscribers', 'adminMode']
+    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows', 'surfaceID', 'owner', 'app', 'appno', 'subscribers', 'adminMode', 'curveResolution', 'meshPoints', 'defined']
 
     def __init__(self, owner, app, appno):
         self.cursors = []
@@ -353,6 +356,15 @@ class surface():
         self.appno = appno
         self.subscribers = []
         self.adminMode = False
+        self.defined = False
+        
+    def setPoints(self, topPoints, bottomPoints, leftPoints, rightPoints):
+        parser = SafeConfigParser()
+        parser.read("config.ini")
+        self.curveResolution = parser.getint('surfaces','curveResolution')
+        ccalc = coonsCalc(topPoints[0],topPoints[len(topPoints)-1],bottomPoints[len(bottomPoints)-1],bottomPoints[0],topPoints,bottomPoints,leftPoints,rightPoints)
+        self.meshPoints = ccalc.getCoonsPoints(self.curveResolution,self.curveResolution)
+        self.defined = True
         
     def subscribe(self, app):
         if(app in self.subscribers==False):
@@ -443,6 +455,12 @@ class surface():
             return True
         else:
             return False
+        
+    def isDefined(self):
+        return self.defined
+    
+    def undefine(self):
+        self.defined = False
         
 class element:
     __slots__ = ['elementType', 'visible', 'elementID', 'owner', 'app', 'appno', 'subscribers', 'adminMode']

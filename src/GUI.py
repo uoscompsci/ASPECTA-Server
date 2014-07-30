@@ -50,6 +50,9 @@ class GUI:
 		self.surfaces[set(surfaceNo)].setID(ID)
 		return surfaceNo
 	
+	def setSurfacePoints(self, surfaceNo, topPoints, bottomPoints, leftPoints, rightPoints):
+		self.surfaces[str(surfaceNo)].setPoints(topPoints, bottomPoints, leftPoints, rightPoints)
+	
 	def subscribeToSurface(self, app, surfaceNo):
 		self.surfaces[str(surfaceNo)].subscribe(app)
 	
@@ -99,7 +102,13 @@ class GUI:
 		
 	def stopBeingSurfaceAdmin(self, surfaceNo, app, appno):
 		return self.surfaces[str(surfaceNo)].stopBeingAdmin(app, appno)
-
+	
+	def isSurfaceDefined(self, surfaceNo):
+		return self.surfaces[str(surfaceNo)].isDefined()
+	
+	def undefineSurface(self, surfaceNo):
+		self.surfaces[str(surfaceNo)].undefine()
+	
 	def newCursor(self, surface, x, y):
 		newCur = cursor(x,y)
 		cursorNo = 0
