@@ -1,7 +1,6 @@
 import datetime
 import math
 from ConfigParser import SafeConfigParser
-from bezier import *
 from straightcoons import *
 
 class cursor:
@@ -362,7 +361,27 @@ class surface():
         parser = SafeConfigParser()
         parser.read("config.ini")
         self.curveResolution = parser.getint('surfaces','curveResolution')
-        ccalc = coonsCalc(topPoints[0],topPoints[len(topPoints)-1],bottomPoints[len(bottomPoints)-1],bottomPoints[0],topPoints,bottomPoints,leftPoints,rightPoints)
+        topSplit = topPoints.split(";")
+        bottomSplit = bottomPoints.split(";")
+        leftSplit = leftPoints.split(";")
+        rightSplit = rightPoints.split(";")
+        topArray = []
+        for x in range(0,len(topSplit)):
+            coordinates = topSplit[x].split(":")
+            topArray.append([float(coordinates[0]),float(coordinates[1])])
+        bottomArray = []
+        for x in range(0,len(bottomSplit)):
+            coordinates = bottomSplit[x].split(":")
+            bottomArray.append([float(coordinates[0]),float(coordinates[1])])
+        leftArray = []
+        for x in range(0,len(leftSplit)):
+            coordinates = leftSplit[x].split(":")
+            leftArray.append([float(coordinates[0]),float(coordinates[1])])
+        rightArray = []
+        for x in range(0,len(rightSplit)):
+            coordinates = rightSplit[x].split(":")
+            rightArray.append([float(coordinates[0]),float(coordinates[1])])
+        ccalc = coonsCalc(topArray[0],topArray[len(topArray)-1],bottomArray[len(bottomArray)-1],bottomArray[0],topArray,bottomArray,leftArray,rightArray)
         self.meshPoints = ccalc.getCoonsPoints(self.curveResolution,self.curveResolution)
         self.defined = True
         

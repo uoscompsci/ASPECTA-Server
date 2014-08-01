@@ -185,6 +185,14 @@ class apiMessageParser:
             return {}
         else:
             return {"error" : 7}
+        
+    def setSurfaceEdges(self, pieces):
+        self.GUI.setSurfacePoints(pieces[1],pieces[2],pieces[3],pieces[4],pieces[5])
+        return {}
+        
+    def undefineSurface(self, pieces):
+        self.GUI.undefineSurface(pieces[1])
+        return {}
 
     def subscribeToWindow(self, pieces):
         self.GUI.subscribeToWindow(pieces[3] + "," + pieces[4], pieces[1])
@@ -720,6 +728,8 @@ class apiMessageParser:
             'get_surfaces_by_app_details' : (getSurfacesByAppDetails, 2),
             'become_surface_admin' : (becomeSurfaceAdmin, 1),
             'stop_being_surface_admin' : (stopBeingSurfaceAdmin, 1),
+            'set_surface_edges' : (setSurfaceEdges, 5),
+            'undefine_surface' : (undefineSurface, 1),
             'subscribe_to_window' : (subscribeToWindow, 1),
             'get_window_ID' : (getWindowID, 1),
             'set_window_ID' : (setWindowID, 2),
