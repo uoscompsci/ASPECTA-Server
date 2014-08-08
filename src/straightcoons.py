@@ -24,25 +24,26 @@ class coonsCalc:
         self.Q0control.append(self.getMidPoints(self.Q0pts[0],self.Q0pts[1]))
         for z in range(1,len(self.Q0pts)):
             self.Q0control.append(self.oppControl(self.Q0pts[z],self.Q0control[z-1]))
+            
         self.Q1control=[]
         self.Q1control.append(self.getMidPoints(self.Q1pts[0],self.Q1pts[1]))
         for z in range(1,len(self.Q1pts)):
             self.Q1control.append(self.oppControl(self.Q1pts[z],self.Q1control[z-1]))
+            
         self.P0control=[]
         self.P0control.append(self.getMidPoints(self.P0pts[0],self.P0pts[1]))
         for z in range(1,len(self.P0pts)):
             self.P0control.append(self.oppControl(self.P0pts[z],self.P0control[z-1]))
+            
         self.P1control=[]
         self.P1control.append(self.getMidPoints(self.P1pts[0],self.P1pts[1]))
         for z in range(1,len(self.P1pts)):
             self.P1control.append(self.oppControl(self.P1pts[z],self.P1control[z-1]))
+            
         self.calc = bezierCalc()
         
     def getMidPoints(self, point1, point2):
         return ((point1[0]+point2[0])/float(2), (point1[1]+point2[1])/float(2))
-    
-    def getThirdPoints(self, point1, point2):
-        return ((point1[0]+point2[0])/float(3), (point1[1]+point2[1])/float(3))
     
     def oppControl(self, point, control):
         return (point[0]+(point[0]-control[0]),point[1]+(point[1]-control[1]))

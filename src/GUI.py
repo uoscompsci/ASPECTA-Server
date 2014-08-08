@@ -68,6 +68,19 @@ class GUI:
 	def getSurfaceAppDetails(self, surfaceNo):
 		return self.surfaces[str(surfaceNo)].getAppDetails()
 	
+	def getSurfaces(self):
+		found = []
+		for x in range(1,len(self.surfaces)):
+			found.append(x)
+		return found
+	
+	def getDefinedSurfaces(self):
+		found = []
+		for x in range(1,len(self.surfaces)):
+			if(self.surfaces[str(x)].isDefined()==True):
+				found.append(x)
+		return found
+	
 	def getSurfacesByID(self, ID):
 		found = []
 		for x in range(0,len(self.surfaces)):
@@ -105,6 +118,9 @@ class GUI:
 	
 	def isSurfaceDefined(self, surfaceNo):
 		return self.surfaces[str(surfaceNo)].isDefined()
+	
+	def getSurfacePoints(self, surfaceNo):
+		return self.surfaces[str(surfaceNo)].getPoints()
 	
 	def undefineSurface(self, surfaceNo):
 		self.surfaces[str(surfaceNo)].undefine()

@@ -1130,8 +1130,6 @@ class apiMessageParser:
                 
     #Checks the setuo GUI and displays any required windows and cursors on it by calling the relevant functions
     def checkSetupGUI(self):
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        glLoadIdentity()
         
         #Runs if the setup surface is meant to be visible
         if(self.GUI.getSetupSurfaceVisibilty()==True):
@@ -1203,7 +1201,24 @@ class apiMessageParser:
             if event.type == QUIT:
                 pygame.quit () 
                 break
+            
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+            glLoadIdentity()
 
+            surfaceList = self.GUI.getDefinedSurfaces()
+            if(len(surfaceList)>0):
+                for z in range(0,len(surfaceList)):
+                    mesh = self.GUI.getSurfacePoints(z+1)
+                    #print str(mesh)
+                    for x in range(0,50):
+                        vstrip = []
+                        hstrip = []
+                        for y in range(0,50):
+                            vstrip.append(mesh[str(x) + "," + str(y)])
+                            hstrip.append(mesh[str(y) + "," + str(x)])
+                        self.drawLineStrip(vstrip, 1, (1,0,1,1))
+                        self.drawLineStrip(hstrip, 1, (1,0,1,1))
+                    
             self.checkSetupGUI() #The setup GUI is rendered if it is meant to be visible
 			
             pygame.display.flip() #Displays the display surface on the screen
