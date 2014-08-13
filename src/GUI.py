@@ -122,6 +122,9 @@ class GUI:
 	def getSurfacePoints(self, surfaceNo):
 		return self.surfaces[str(surfaceNo)].getPoints()
 	
+	def checkSurfaceRenderUpdate(self, surfaceNo):
+		return self.surfaces[str(surfaceNo)].checkRenderUpdate()
+	
 	def undefineSurface(self, surfaceNo):
 		self.surfaces[str(surfaceNo)].undefine()
 	
@@ -376,7 +379,13 @@ class GUI:
 	
 	def newCircle(self, owner, app, appno, windowNo, x, y, radius, lineColor, fillColor, sides):
 		newCir = circle(owner, app, appno, x, y, radius, lineColor, fillColor, sides)
+		#print "New circle = eleNo " + str(newCir)
+		#print "Window 1 elements before = " + str(self.getElements(1))
+		#print "Window 2 elements before = " + str(self.getElements(2))
 		elementNo = self.newElement(newCir, windowNo)
+		#print "Window 1 elements after = " + str(self.getElements(1))
+		#print "Window 2 elements after = " + str(self.getElements(2))
+		self.getElements(2)
 		return elementNo
 	
 	def newCircleWithID(self, owner, app, appno, ID, windowNo, x, y, radius, lineColor, fillColor, sides):
@@ -384,12 +393,12 @@ class GUI:
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 		
-	def setCirclePos(self, elementNo, xLoc, yLoc, window):
+	def setCirclePos(self, elementNo, xLoc, yLoc):
 		self.elements[str(elementNo)].setCenter(xLoc,yLoc)
 		origWin = self.findElement(elementNo)
 		if(origWin != window):
 			self.windows[str(origWin)].removeElement(elementNo)
-			self.windows[str(window)].addElement(elementNo)
+			self.windows[str(origWin)].addElement(elementNo)
 		
 	def setCircleRad(self, elementNo, radius):
 		self.elements[str(elementNo)].setRadius(radius)
@@ -714,9 +723,17 @@ class GUI:
 		return self.surfaces[str(surfaceNo)].getCursors()
 	
 	def getWindows(self, surfaceNo):
+		#print "Scanning surface " + str(surfaceNo) + " windows"
 		return self.surfaces[str(surfaceNo)].getWindows()
 	
 	def getElements(self, windowNo):
+		#print "**getElements(" + str(windowNo) + ")***"
+		#print "Scanning window " + str(windowNo) + " elements"
+		#one = self.windows['1'].getElements()
+		#two = self.windows['2'].getElements()
+		#print "Window 1 elements = " + str(one)
+		#print "Window 2 elements = " + str(two)
+		#print "******"
 		return self.windows[str(windowNo)].getElements()
 	
 	def getClickedElements(self, surfaceNo, x, y):

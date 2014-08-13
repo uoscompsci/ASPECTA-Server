@@ -7,6 +7,14 @@ from threading import Thread
 from math import *
 from coons import coonsCalc
 import FTGL
+import time
+import numpy
+
+from OpenGL.GL.ARB.framebuffer_object import *
+from OpenGL.GL.EXT.framebuffer_object import *
+from buffers import *
+
+from ctypes import *
 
 #Texture loading class from http://www.jason.gd/str/pokaz/pygame_pyopengl_2d
 class Texture():
@@ -33,7 +41,7 @@ class Texture():
 
 #A class which is used to parse API messages and call the relevant actions
 class apiMessageParser:
-    __slots__ = ['GUI']
+    __slots__ = ['GUI','meshBuffer','renderOrder']
     
     winWidth = 1280
     winHeight = 1024
@@ -73,27 +81,31 @@ class apiMessageParser:
         return {"windowNo" : windowNo}
         
     def newCircle(self, pieces):
-        elementNo = self.GUI.newCircle(pieces[7], pieces[8], pieces[9], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
+        #print str(pieces)
+        #print "sending - " + pieces[8] + "," + pieces[9] + "," + pieces[10] + "," + pieces[1] + "," + pieces[2] + "," + pieces[3] + "," + pieces[4] + "," + pieces[5] + "," + pieces[6] + "," + pieces[7]
+        elementNo = self.GUI.newCircle(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
         return {"elementNo" : elementNo}
     
     def newCircleWithID(self, pieces):
-        elementNo = self.GUI.newCircleWithID(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
+        print str(pieces)
+        print "sending = " + pieces[8] + "," + pieces[9] + "," + pieces[10] + "," + pieces[1] + "," + pieces[2] + "," + pieces[3] + "," + pieces[4] + "," + pieces[5] + "," + pieces[6] + "," + pieces[7] + "," + pieces[8]
+        elementNo = self.GUI.newCircleWithID(pieces[9], pieces[10], pieces[11], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
         return {"elementNo" : elementNo}
         
     def newLine(self, pieces):
-        elementNo = self.GUI.newLine(pieces[7], pieces[8], pieces[9],  pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
+        elementNo = self.GUI.newLine(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
         return {"elementNo" : elementNo}
     
     def newLineWithID(self, pieces):
-        elementNo = self.GUI.newLineWithID(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
+        elementNo = self.GUI.newLineWithID(pieces[9], pieces[10], pieces[11], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
         return {"elementNo" : elementNo}
         
     def newLineStrip(self, pieces):
-        elementNo = self.GUI.newLineStrip(pieces[5], pieces[6], pieces[7], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5])
+        elementNo = self.GUI.newLineStrip(pieces[6], pieces[7], pieces[8], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5])
         return {"elementNo" : elementNo}
     
     def newLineStripWithID(self, pieces):
-        elementNo = self.GUI.newLineStripWithID(pieces[6], pieces[7], pieces[8], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
+        elementNo = self.GUI.newLineStripWithID(pieces[7], pieces[8], pieces[9], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
         return {"elementNo" : elementNo}
         
     def newPolygon(self, pieces):
@@ -312,6 +324,14 @@ class apiMessageParser:
             dict[x] = found[x]
         return dict
     
+    def getElementsOnWindow(self, pieces):
+        found = self.GUI.getElements(pieces[1])
+        dict = {}
+        dict["count"] = len(found)
+        for x in range(0,len(found)):
+            dict[x] = found[x]
+        return dict
+    
     def becomeElementAdmin(self, pieces):
         test = self.GUI.becomeElementAdmin(pieces[1], pieces[3], pieces[4])
         if(test==True):
@@ -431,7 +451,7 @@ class apiMessageParser:
         return {"name" : name}
         
     def relocateCircle(self, pieces):
-        name = self.GUI.setCirclePos(pieces[1], pieces[2], pieces[3], pieces[4])
+        name = self.GUI.setCirclePos(pieces[1], pieces[2], pieces[3])
         return {}
         
     def getCirclePosition(self, pieces):
@@ -750,6 +770,7 @@ class apiMessageParser:
             'get_elements_by_owner' : (getElementsByOwner, 1),
             'get_elements_by_app_name' : (getElementsByAppName, 1),
             'get_elements_by_app_details' : (getElementsByAppDetails, 2),
+            'get_elements_on_window' : (getElementsOnWindow, 1),
             'become_element_admin' : (becomeElementAdmin, 1),
             'stop_being_element_admin' : (stopBeingElementAdmin, 1),
             'mouse_l' : (mouseLeftDown, 1),  # [1]=CursorNo
@@ -778,7 +799,7 @@ class apiMessageParser:
             'stretch_window_right' : (stretchWindowRight, 2),  # [1]=WindowNo  [2]=Distance
             'set_window_name' : (setWindowName, 2),  # [1]=WindowNo  [2]=Name
             'get_window_name' : (getWindowName, 1),  # [1]=WindowNo
-            'relocate_circle' : (relocateCircle, 4),  # [1]=ElementNo  [2]=x  [3]=y  [4]=windowNo
+            'relocate_circle' : (relocateCircle, 3),  # [1]=ElementNo  [2]=x  [3]=y
             'get_circle_pos' : (getCirclePosition, 1),  # [1]=ElementNo
             'get_element_type' : (getElementType, 1),  # [1]=ElementNo
             'set_circle_line_color' : (setCircleLineColor, 2),  # [1]=ElementNo  [2]=Color
@@ -955,6 +976,91 @@ class apiMessageParser:
         
         glPopMatrix()
         
+    def createTexture(self,width,height,surfaceNo):
+        glMatrixMode(GL_PROJECTION)
+        glLoadIdentity()
+        gluOrtho2D(0,width,0,height)
+        glMatrixMode(GL_MODELVIEW)
+        rendertarget = glGenTextures(1)
+        glBindTexture(GL_TEXTURE_2D, rendertarget);
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE)
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
+                     GL_UNSIGNED_INT, None)
+        fbo = c_uint(1)
+        glGenFramebuffers(1)
+        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo)
+        glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,
+                                  GL_TEXTURE_2D, rendertarget, 0)
+        glPushAttrib(GL_VIEWPORT_BIT)
+        glViewport(0, 0, width, height)
+        
+        self.renderSurfaceTex(surfaceNo)
+        
+        glPopAttrib()
+        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0)
+        glEnable(GL_TEXTURE_2D)
+        self.resize((self.winWidth, self.winHeight))#glViewport(0,0,self.winWidth,self.winHeight)
+        return (rendertarget,fbo)
+    
+    def renderSurfaceTex(self, surfaceNo):
+        windows = self.GUI.getWindows(surfaceNo) #Gathers the list of windows on the surface
+        for x in range(0,len(windows)):
+            self.renderWindowContents(windows[x], self.GUI)
+        #self.drawCircle(0, 0, 100, 50, (1,1,0,1))
+        
+    def drawSurface(self,surfaceNo):
+        mesh = self.GUI.getSurfacePoints(surfaceNo)
+        glDisable(GL_LIGHTING)
+        glEnable(GL_TEXTURE_2D)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        
+        glPushMatrix()
+
+        glColor4f(1.0, 1.0, 1.0, 1.0)
+        
+        (rendertarget,fbo) = self.createTexture(512,512,surfaceNo)
+        
+        glBindTexture(GL_TEXTURE_2D, rendertarget) #Sets the cross texture to be used
+
+        for y in range(0,50-1):
+            glBegin(GL_TRIANGLE_STRIP)
+            for x in range(0,50):
+                coor1 = mesh[str(x) + "," + str(y)]
+                coor2 = mesh[str(x) + "," + str(y+1)]
+                glTexCoord2f(1.0/(50-1) * x,1.0/(50-1) * y)
+                glVertex2f(coor1[0],coor1[1])
+                glTexCoord2f(1.0/(50-1) * x,1.0/(50-1) * (y+1))
+                glVertex2f(coor2[0],coor2[1])
+            glEnd()
+        
+        glPopMatrix()
+        
+    def drawMesh(self, surfaceNo):
+        glDisable(GL_LIGHTING)
+        glEnable(GL_TEXTURE_2D)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        
+        glPushMatrix()
+
+        glColor4f(1.0, 1.0, 1.0, 1.0)
+        
+        (rendertarget,fbo) = self.createTexture(512,512,surfaceNo)
+        
+        glBindTexture(GL_TEXTURE_2D, rendertarget) #Sets the cross texture to be used
+        self.meshBuffer[0].bind_vertexes(2, GL_FLOAT)
+        self.meshBuffer[1].bind_texcoords(2, GL_FLOAT)
+        
+        glEnableClientState(GL_VERTEX_ARRAY)
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY)
+        for x in range(0,len(self.renderOrder)):
+            glDrawElementsui(GL_TRIANGLE_STRIP, self.renderOrder[x])
+            
+        glPopMatrix()
+        
     #Draws a circle at the desired location and with the desired radius
     def drawCircle(self,x,y,rad,sides,colors):
         glDisable(GL_LIGHTING)
@@ -1038,13 +1144,98 @@ class apiMessageParser:
         
         glPopMatrix()
         
+    def renderWindowContents(self, windowNo, GUIRead):
+        elements = GUIRead.getElements(int(windowNo)) #Gathers the list of elements in the window
+        
+        #Loops through the elements in the window
+        for z in range(0,len(elements)):
+            type = GUIRead.getEleType(elements[z]) #Gets the type of the current element
+            
+            if(type=="circle"): #Runs if the current element is a circle
+                cirPos = GUIRead.getCirclePos(elements[z]) #Gets the position of the circle
+                rad = GUIRead.getCircleRad(elements[z]) #Gets the radius of the circle
+                sides = GUIRead.getCircleSides(elements[z])
+                color = GUIRead.getCircleFill(elements[z])
+                colors = color.split(":")
+                drawPos = (float(cirPos[0]),float(cirPos[1])) #Calculates the screen position the circle is to be drawn at based on the location of the window
+                self.drawCircle(drawPos[0],drawPos[1],rad,sides,(colors[0],colors[1],colors[2],colors[3])) #Draws a circle at the correct screen position
+            elif(type=="lineStrip"): #Runs if the current element is a line strip
+                noPoints = GUIRead.getLineStripPointsCount(elements[z]) #Gets the number of points in the line strip
+                
+                #Runs if there is more than one point in the line strip (otherwise the line strip wont be shown)
+                if(noPoints>1):
+                    strip = [] #Creates an empty list to hold the line strip points
+                    
+                    #Loops through the points in the line strip
+                    for point in range(0,noPoints):
+                        pos = GUIRead.getLineStripPoint(elements[z],point) #Gets the position of the current point
+                        drawPos = (pos[0], pos[1]) #Converts the position of the point based on the window location
+                        strip.append(drawPos) #Adds the calculated position to the point list
+                    color = GUIRead.getLineStripColor(elements[z])
+                    colors = color.split(":")
+                    self.drawLineStrip(strip,GUIRead.getLineStripWidth(elements[z]),(colors[0],colors[1],colors[2],colors[3])) #Draws a strip based on the point list
+            elif(type=="polygon"): #Runs if the current element is a line strip
+                noPoints = GUIRead.getPolygonPointsCount(elements[z]) #Gets the number of points in the polygon
+                
+                #Runs if there is more than two points in the polygon (otherwise the polygon wont be shown)
+                if(noPoints>2):
+                    points = [] #Creates an empty list to hold the polygon points
+                    
+                    #Loops through the points in the polygon
+                    for point in range(0,noPoints):
+                        pos = GUIRead.getPolygonPoint(elements[z],point) #Gets the position of the current point
+                        drawPos = (pos[0], pos[1]) #Converts the position of the point based on the window location
+                        points.append(drawPos) #Adds the calculated position to the point list
+                    color = GUIRead.getPolygonFillColor(elements[z])
+                    colors = color.split(":")
+                    self.drawPolygon(points,(colors[0],colors[1],colors[2],colors[3])) #Draws a strip based on the point list
+            elif(type=="rectangle"): #Runs if the current element is a line strip
+                points = [] #Creates an empty list to hold the polygon points
+                
+                points.append(GUIRead.getRectangleTopLeft(elements[z]))
+                points.append(GUIRead.getRectangleTopRight(elements[z]))
+                points.append(GUIRead.getRectangleBottomRight(elements[z]))
+                points.append(GUIRead.getRectangleBottomLeft(elements[z]))
+                
+                #Loops through the points in the polygon and corrects them
+                for point in range(0,4):
+                    points[point][0] = points[point][0]
+                    points[point][1] = points[point][1]
+                color = GUIRead.getRectangleFillColor(elements[z])
+                colors = color.split(":")
+                self.drawPolygon(points,(colors[0],colors[1],colors[2],colors[3])) #Draws a strip based on the point list
+            elif(type=="line"):
+                points = [] #Creates an empty list to hold the line points
+                
+                points.append(GUIRead.getLineStart(elements[z]))
+                points.append(GUIRead.getLineEnd(elements[z]))
+                
+                #Loops through the points in the line and corrects them
+                for point in range(0,2):
+                    points[point][0] = points[point][0]
+                    points[point][1] = points[point][1]
+                color = GUIRead.getLineColor(elements[z])
+                colors = color.split(":")
+                self.drawLineStrip(points,GUIRead.getLineWidth(elements[z]),(colors[0],colors[1],colors[2],colors[3])) #Draws a line based on the points
+            elif(type=="text"):
+                font=GUIRead.getFont(elements[z])
+                pos=GUIRead.getTextPos(elements[z])
+                size=GUIRead.getPtSize(elements[z])
+                text=GUIRead.getText(elements[z])
+                
+                if(self.fonts.has_key(font)):
+                    font = self.fonts[font]
+                color = GUIRead.getTextColor(elements[z])
+                colors = color.split(":")
+                self.drawText(pos[0], pos[1], text, size, font + ".ttf",(colors[0],colors[1],colors[2],colors[3]))
+        
         
     #Processes the GUI data for the desired window and calls functions to draw the elements contained within it
     def displayWindow(self, windowNo, GUIRead):
         winPos = GUIRead.getWindowPos(windowNo) #Fetches the position of the upper left corner of the window
         width = GUIRead.getWindowWidth(windowNo) #Fetches the width of the window
         height = GUIRead.getWindowHeight(windowNo) #Fetches the height of the window
-        elements = GUIRead.getElements(windowNo) #Gathers the list of elements in the window
+        elements = GUIRead.getElements(int(windowNo)) #Gathers the list of elements in the window
         
         #Loops through the elements in the window
         for z in range(0,len(elements)):
@@ -1136,6 +1327,8 @@ class apiMessageParser:
             GUIRead = self.GUI # Makes a copy of the GUI so that changes during rendering don't cause problems
 
             windows = GUIRead.getWindows(0) #Gathers the list of windows on the setup surface
+
+            #print str(len(windows))
             
             #Loops through all the windows on the setup surface
             for z in range(0,len(windows)):
@@ -1156,6 +1349,7 @@ class apiMessageParser:
         glViewport(0, 0, width, height)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
+        #glOrtho(0, width, height, 0, 0, 1)
         gluOrtho2D(0, self.winWidth, 0, self.winHeight)
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
@@ -1163,7 +1357,8 @@ class apiMessageParser:
     #Prepares the opengl code 
     def init(self):
         # set some basic OpenGL settings and control variables
-        glShadeModel(GL_SMOOTH)
+        #glShadeModel(GL_SMOOTH)
+        
         glClearColor(0.0, 0.0, 0.0, 0.0)
         glClearDepth(1.0)
         glDisable(GL_DEPTH_TEST)
@@ -1171,12 +1366,22 @@ class apiMessageParser:
         glDepthFunc(GL_LEQUAL)
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
         glEnable(GL_BLEND)
+        glEnable(GL_ALPHA_TEST)
 		
         #Loads the cursor and cross textures into memory
         self.mouse_texture = Texture("cursor.png")
         self.cross_texture = Texture("cursorcross.png")
 		
         self.demandedFps = 30.0 #Indicates the number of desired frames per second
+        
+        self.renderOrder = []
+        for y in range(0,49):
+            orderStrip = []
+            for x in range(0,50):
+                orderStrip.append(50*y + x)
+                orderStrip.append(50*(y+1) + x)
+            self.renderOrder.append(orderStrip)
+        print str(self.renderOrder)
 		
     #Starts the pygame window and runs the rendering loop
     def display(self):
@@ -1208,16 +1413,33 @@ class apiMessageParser:
             surfaceList = self.GUI.getDefinedSurfaces()
             if(len(surfaceList)>0):
                 for z in range(0,len(surfaceList)):
-                    mesh = self.GUI.getSurfacePoints(z+1)
-                    #print str(mesh)
-                    for x in range(0,50):
+                    if(self.GUI.checkSurfaceRenderUpdate(z+1)):   
+                        mesh = self.GUI.getSurfacePoints(z+1)
+                        
+                        verts = []
+                        tex = []
+                        for y in range(0,50):
+                            for x in range(0,50):
+                                meshloc = mesh[str(x) + "," + str(y)]
+                                print str(meshloc)
+                                verts.append([meshloc[0],meshloc[1]])
+                                texloc = [(1.0/50.0)*x,(1.0/50.0)*y]
+                                print str(texloc)
+                                tex.append([(1.0/50.0)*x,(1.0/50.0)*y])
+                        
+                        numpy_verts = numpy.array(verts, dtype=numpy.float32)
+                        numpy_tex = numpy.array(tex, dtype=numpy.float32)
+                        self.meshBuffer = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(numpy_tex, GL_STATIC_DRAW))
+                    self.drawMesh(z+1)
+                    #self.drawSurface(z+1)
+                    '''for x in range(0,50):
                         vstrip = []
                         hstrip = []
                         for y in range(0,50):
                             vstrip.append(mesh[str(x) + "," + str(y)])
                             hstrip.append(mesh[str(y) + "," + str(x)])
                         self.drawLineStrip(vstrip, 1, (1,0,1,1))
-                        self.drawLineStrip(hstrip, 1, (1,0,1,1))
+                        self.drawLineStrip(hstrip, 1, (1,0,1,1))'''
                     
             self.checkSetupGUI() #The setup GUI is rendered if it is meant to be visible
 			

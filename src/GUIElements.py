@@ -13,6 +13,7 @@ class cursor:
         self.stateR = "up"
         self.loc = point2D(x,y)
         self.rotation = 0
+        
 
     def moveX(self, distance):
         if(self.rotation==0):
@@ -310,7 +311,7 @@ class window:
         return self.name
     
     def addElement(self,elementNo):
-        self.elements.append(elementNo)
+        self.elements.append(str(elementNo))
         
     def removeElement(self, elementNo):
         popped = False
@@ -345,7 +346,7 @@ class window:
             return False
 
 class surface():
-    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows', 'surfaceID', 'owner', 'app', 'appno', 'subscribers', 'adminMode', 'curveResolution', 'meshPoints', 'defined']
+    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows', 'surfaceID', 'owner', 'app', 'appno', 'subscribers', 'adminMode', 'curveResolution', 'meshPoints', 'defined', 'renderUpdate']
 
     def __init__(self, owner, app, appno):
         self.cursors = []
@@ -356,6 +357,7 @@ class surface():
         self.subscribers = []
         self.adminMode = False
         self.defined = False
+        self.renderUpdate = False
         
     def setPoints(self, topPoints, bottomPoints, leftPoints, rightPoints):
         parser = SafeConfigParser()
@@ -392,6 +394,7 @@ class surface():
         ccalc = coonsCalc(bottomArray[0],bottomArray[len(bottomArray)-1],topArray[len(topArray)-1],topArray[0],topArray,bottomArray,leftArray,rightArray)
         self.meshPoints = ccalc.getCoonsPoints(self.curveResolution,self.curveResolution)
         self.defined = True
+        self.renderUpdate = True
         
         '''print str(bottomArray)
         for y in range(0,50):
@@ -402,6 +405,11 @@ class surface():
         print str(topArray)'''
         
         #print str(self.meshPoints)
+        
+    def checkRenderUpdate(self):
+        temp = self.renderUpdate
+        self.renderUpdate = False
+        return temp
         
     def getPoints(self):
         return self.meshPoints
