@@ -1381,6 +1381,12 @@ class apiMessageParser:
                 orderStrip.append(50*y + x)
                 orderStrip.append(50*(y+1) + x)
             self.renderOrder.append(orderStrip)
+            
+        tex = []
+        for y in range(0,50):
+            for x in range(0,50):
+                tex.append([(1.0/50.0)*x,(1.0/50.0)*y])
+        self.numpy_tex = numpy.array(tex, dtype=numpy.float32)
         print str(self.renderOrder)
 		
     #Starts the pygame window and runs the rendering loop
@@ -1421,15 +1427,9 @@ class apiMessageParser:
                         for y in range(0,50):
                             for x in range(0,50):
                                 meshloc = mesh[str(x) + "," + str(y)]
-                                print str(meshloc)
                                 verts.append([meshloc[0],meshloc[1]])
-                                texloc = [(1.0/50.0)*x,(1.0/50.0)*y]
-                                print str(texloc)
-                                tex.append([(1.0/50.0)*x,(1.0/50.0)*y])
-                        
                         numpy_verts = numpy.array(verts, dtype=numpy.float32)
-                        numpy_tex = numpy.array(tex, dtype=numpy.float32)
-                        self.meshBuffer = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(numpy_tex, GL_STATIC_DRAW))
+                        self.meshBuffer = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
                     self.drawMesh(z+1)
                     #self.drawSurface(z+1)
                     '''for x in range(0,50):
