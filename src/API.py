@@ -1397,8 +1397,9 @@ class apiMessageParser:
         tex = []
         for y in range(0,self.pps):
             for x in range(0,self.pps):
-                tex.append([(1.0/self.pps)*x,(1.0/self.pps)*y])
+                tex.append([(1.0/(self.pps-1))*x,(1.0/(self.pps-1))*y])
         self.numpy_tex = numpy.array(tex, dtype=numpy.float32)
+
 		
     #Starts the pygame window and runs the rendering loop
     def display(self):
