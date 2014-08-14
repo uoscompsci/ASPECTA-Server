@@ -1055,8 +1055,7 @@ class apiMessageParser:
         
         glEnableClientState(GL_VERTEX_ARRAY)
         glEnableClientState(GL_TEXTURE_COORD_ARRAY)
-        for x in range(0,len(self.renderOrder)):
-            glDrawElementsui(GL_TRIANGLE_STRIP, self.renderOrder[x])
+        glDrawElementsui(GL_TRIANGLE_STRIP, self.renderOrder)
             
         glPopMatrix()
         
@@ -1382,19 +1381,24 @@ class apiMessageParser:
         self.meshBuffer = {}
         
         self.renderOrder = []
+        lTOr = True
         for y in range(0,self.pps-1):
             orderStrip = []
-            for x in range(0,self.pps):
-                orderStrip.append(self.pps*y + x)
-                orderStrip.append(self.pps*(y+1) + x)
-            self.renderOrder.append(orderStrip)
-            
+            if(lTOr == True):
+                for x in range(0,self.pps):
+                    self.renderOrder.append(self.pps*y + x)
+                    self.renderOrder.append(self.pps*(y+1) + x)
+                lTOr = False
+            else:
+                for x in range(0,self.pps):
+                    self.renderOrder.append(self.pps*y + self.pps-1-x)
+                    self.renderOrder.append(self.pps*(y+1) + self.pps-1-x)
+                lTOr = True
         tex = []
         for y in range(0,self.pps):
             for x in range(0,self.pps):
                 tex.append([(1.0/self.pps)*x,(1.0/self.pps)*y])
         self.numpy_tex = numpy.array(tex, dtype=numpy.float32)
-        print str(self.renderOrder)
 		
     #Starts the pygame window and runs the rendering loop
     def display(self):
@@ -1439,10 +1443,10 @@ class apiMessageParser:
                         self.meshBuffer[str(z+1)] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
                     self.drawMesh(z+1)
                     #self.drawSurface(z+1)
-                    '''for x in range(0,50):
+                    '''for x in range(0,self.pps):
                         vstrip = []
                         hstrip = []
-                        for y in range(0,50):
+                        for y in range(0,self.pps):
                             vstrip.append(mesh[str(x) + "," + str(y)])
                             hstrip.append(mesh[str(y) + "," + str(x)])
                         self.drawLineStrip(vstrip, 1, (1,0,1,1))
