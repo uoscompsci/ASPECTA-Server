@@ -371,40 +371,22 @@ class surface():
         for x in range(0,len(topSplit)):
             coordinates = topSplit[x].split(":")
             topArray.append([float(coordinates[0]),float(coordinates[1])])
-        #print "top = " + str(topArray)
         bottomArray = []
         for x in range(0,len(bottomSplit)):
             coordinates = bottomSplit[x].split(":")
             bottomArray.append([float(coordinates[0]),float(coordinates[1])])
-        #print "bottom = " + str(bottomArray)
         leftArray = []
         for x in range(0,len(leftSplit)):
             coordinates = leftSplit[x].split(":")
             leftArray.append([float(coordinates[0]),float(coordinates[1])])
-        #print "left = " + str(leftArray)
         rightArray = []
         for x in range(0,len(rightSplit)):
             coordinates = rightSplit[x].split(":")
             rightArray.append([float(coordinates[0]),float(coordinates[1])])
-        #print "right = " + str(rightArray)
-        #print "tl = " + str(topArray[0])
-        #print "tr = " + str(topArray[len(topArray)-1])
-        #print "bl = " + str(bottomArray[0])
-        #print "br = " + str(bottomArray[len(bottomArray)-1])
         ccalc = coonsCalc(bottomArray[0],bottomArray[len(bottomArray)-1],topArray[len(topArray)-1],topArray[0],topArray,bottomArray,leftArray,rightArray)
         self.meshPoints = ccalc.getCoonsPoints(self.curveResolution,self.curveResolution)
         self.defined = True
         self.renderUpdate = True
-        
-        '''print str(bottomArray)
-        for y in range(0,50):
-            row = "{" + str(self.meshPoints["0," + str(y)])
-            for x in range(1,50):
-                row += "," + str(self.meshPoints[str(x) + "," + str(y)])
-            print row
-        print str(topArray)'''
-        
-        #print str(self.meshPoints)
         
     def checkRenderUpdate(self):
         temp = self.renderUpdate

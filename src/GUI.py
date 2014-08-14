@@ -379,12 +379,7 @@ class GUI:
 	
 	def newCircle(self, owner, app, appno, windowNo, x, y, radius, lineColor, fillColor, sides):
 		newCir = circle(owner, app, appno, x, y, radius, lineColor, fillColor, sides)
-		#print "New circle = eleNo " + str(newCir)
-		#print "Window 1 elements before = " + str(self.getElements(1))
-		#print "Window 2 elements before = " + str(self.getElements(2))
 		elementNo = self.newElement(newCir, windowNo)
-		#print "Window 1 elements after = " + str(self.getElements(1))
-		#print "Window 2 elements after = " + str(self.getElements(2))
 		self.getElements(2)
 		return elementNo
 	
@@ -723,17 +718,9 @@ class GUI:
 		return self.surfaces[str(surfaceNo)].getCursors()
 	
 	def getWindows(self, surfaceNo):
-		#print "Scanning surface " + str(surfaceNo) + " windows"
 		return self.surfaces[str(surfaceNo)].getWindows()
 	
 	def getElements(self, windowNo):
-		#print "**getElements(" + str(windowNo) + ")***"
-		#print "Scanning window " + str(windowNo) + " elements"
-		#one = self.windows['1'].getElements()
-		#two = self.windows['2'].getElements()
-		#print "Window 1 elements = " + str(one)
-		#print "Window 2 elements = " + str(two)
-		#print "******"
 		return self.windows[str(windowNo)].getElements()
 	
 	def getClickedElements(self, surfaceNo, x, y):

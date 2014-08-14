@@ -1010,9 +1010,8 @@ class apiMessageParser:
         windows = self.GUI.getWindows(surfaceNo) #Gathers the list of windows on the surface
         for x in range(0,len(windows)):
             self.renderWindowContents(windows[x], self.GUI)
-        #self.drawCircle(0, 0, 100, 50, (1,1,0,1))
         
-    def drawSurface(self,surfaceNo):
+    '''def drawSurface(self,surfaceNo):
         mesh = self.GUI.getSurfacePoints(surfaceNo)
         glDisable(GL_LIGHTING)
         glEnable(GL_TEXTURE_2D)
@@ -1037,7 +1036,7 @@ class apiMessageParser:
                 glVertex2f(coor2[0],coor2[1])
             glEnd()
         
-        glPopMatrix()
+        glPopMatrix()'''
         
     def drawMesh(self, surfaceNo):
         glDisable(GL_LIGHTING)
@@ -1046,13 +1045,13 @@ class apiMessageParser:
         
         glPushMatrix()
 
-        glColor4f(1.0, 1.0, 1.0, 1.0)
+        #glColor4f(1.0, 1.0, 1.0, 1.0)
         
         (rendertarget,fbo) = self.createTexture(512,512,surfaceNo)
         
         glBindTexture(GL_TEXTURE_2D, rendertarget) #Sets the cross texture to be used
-        self.meshBuffer[0].bind_vertexes(2, GL_FLOAT)
-        self.meshBuffer[1].bind_texcoords(2, GL_FLOAT)
+        self.meshBuffer[str(surfaceNo)][0].bind_vertexes(2, GL_FLOAT)
+        self.meshBuffer[str(surfaceNo)][1].bind_texcoords(2, GL_FLOAT)
         
         glEnableClientState(GL_VERTEX_ARRAY)
         glEnableClientState(GL_TEXTURE_COORD_ARRAY)
@@ -1361,6 +1360,9 @@ class apiMessageParser:
     def init(self):
         # set some basic OpenGL settings and control variables
         #glShadeModel(GL_SMOOTH)
+        parser = SafeConfigParser()
+        parser.read("config.ini")
+        self.pps = parser.getint('surfaces','curveResolution')
         
         glClearColor(0.0, 0.0, 0.0, 0.0)
         glClearDepth(1.0)
@@ -1377,18 +1379,20 @@ class apiMessageParser:
 		
         self.demandedFps = 30.0 #Indicates the number of desired frames per second
         
+        self.meshBuffer = {}
+        
         self.renderOrder = []
-        for y in range(0,49):
+        for y in range(0,self.pps-1):
             orderStrip = []
-            for x in range(0,50):
-                orderStrip.append(50*y + x)
-                orderStrip.append(50*(y+1) + x)
+            for x in range(0,self.pps):
+                orderStrip.append(self.pps*y + x)
+                orderStrip.append(self.pps*(y+1) + x)
             self.renderOrder.append(orderStrip)
             
         tex = []
-        for y in range(0,50):
-            for x in range(0,50):
-                tex.append([(1.0/50.0)*x,(1.0/50.0)*y])
+        for y in range(0,self.pps):
+            for x in range(0,self.pps):
+                tex.append([(1.0/self.pps)*x,(1.0/self.pps)*y])
         self.numpy_tex = numpy.array(tex, dtype=numpy.float32)
         print str(self.renderOrder)
 		
@@ -1427,12 +1431,12 @@ class apiMessageParser:
                         
                         verts = []
                         tex = []
-                        for y in range(0,50):
-                            for x in range(0,50):
+                        for y in range(0,self.pps):
+                            for x in range(0,self.pps):
                                 meshloc = mesh[str(x) + "," + str(y)]
                                 verts.append([meshloc[0],meshloc[1]])
                         numpy_verts = numpy.array(verts, dtype=numpy.float32)
-                        self.meshBuffer = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
+                        self.meshBuffer[str(z+1)] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
                     self.drawMesh(z+1)
                     #self.drawSurface(z+1)
                     '''for x in range(0,50):
