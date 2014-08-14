@@ -1061,6 +1061,9 @@ class apiMessageParser:
             
         glPopMatrix()
         
+        glDeleteTextures(rendertarget)
+        glDeleteFramebuffers(1, fbo)
+        
     #Draws a circle at the desired location and with the desired radius
     def drawCircle(self,x,y,rad,sides,colors):
         glDisable(GL_LIGHTING)
