@@ -1044,8 +1044,6 @@ class apiMessageParser:
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         
         glPushMatrix()
-
-        #glColor4f(1.0, 1.0, 1.0, 1.0)
         
         (rendertarget,fbo) = self.createTexture(512,512,surfaceNo)
         
@@ -1071,6 +1069,8 @@ class apiMessageParser:
         glPushMatrix()
         
         glTranslatef(x, y, 0.0)
+        
+        print "Drawing a circle with color - " + str(colors)
         
         glColor4f(float(colors[0]), float(colors[1]), float(colors[2]), float(colors[3]))
         
@@ -1132,7 +1132,7 @@ class apiMessageParser:
         
         glPushMatrix()
         
-        glColor4f(float(color[0]), float(color[1]), float(color[2]), float(color[3])) #Sets the drawing color to white (THIS WILL BE CHANGED)
+        glColor4f(float(color[0]), float(color[1]), float(color[2]), float(color[3]))
         glLineWidth(5.0)
         
         glBegin(GL_POLYGON)
@@ -1153,10 +1153,13 @@ class apiMessageParser:
             type = GUIRead.getEleType(elements[z]) #Gets the type of the current element
             
             if(type=="circle"): #Runs if the current element is a circle
+                print "Showing circle with element number " + str(z)
                 cirPos = GUIRead.getCirclePos(elements[z]) #Gets the position of the circle
                 rad = GUIRead.getCircleRad(elements[z]) #Gets the radius of the circle
                 sides = GUIRead.getCircleSides(elements[z])
                 color = GUIRead.getCircleFill(elements[z])
+                print "Color = " + str(color)
+                print "Position = " + str(cirPos)
                 colors = color.split(":")
                 drawPos = (float(cirPos[0]),float(cirPos[1])) #Calculates the screen position the circle is to be drawn at based on the location of the window
                 self.drawCircle(drawPos[0],drawPos[1],rad,sides,(colors[0],colors[1],colors[2],colors[3])) #Draws a circle at the correct screen position

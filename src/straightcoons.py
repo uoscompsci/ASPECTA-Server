@@ -24,23 +24,42 @@ class coonsCalc:
         self.Q0control.append(self.getMidPoints(self.Q0pts[0],self.Q0pts[1]))
         for z in range(1,len(self.Q0pts)):
             self.Q0control.append(self.oppControl(self.Q0pts[z],self.Q0control[z-1]))
+        for z in range(0,len(self.Q0control)):
+            self.Q0control[z] = self.findThird(self.Q0pts[z],self.Q0control[z])
             
         self.Q1control=[]
         self.Q1control.append(self.getMidPoints(self.Q1pts[0],self.Q1pts[1]))
         for z in range(1,len(self.Q1pts)):
             self.Q1control.append(self.oppControl(self.Q1pts[z],self.Q1control[z-1]))
+        for z in range(0,len(self.Q1control)):
+            self.Q1control[z] = self.findThird(self.Q1pts[z],self.Q1control[z])
             
         self.P0control=[]
         self.P0control.append(self.getMidPoints(self.P0pts[0],self.P0pts[1]))
         for z in range(1,len(self.P0pts)):
             self.P0control.append(self.oppControl(self.P0pts[z],self.P0control[z-1]))
+        for z in range(0,len(self.P0control)):
+            self.P0control[z] = self.findThird(self.P0pts[z],self.P0control[z])
             
         self.P1control=[]
         self.P1control.append(self.getMidPoints(self.P1pts[0],self.P1pts[1]))
         for z in range(1,len(self.P1pts)):
             self.P1control.append(self.oppControl(self.P1pts[z],self.P1control[z-1]))
+        for z in range(0,len(self.P1control)):
+            self.P1control[z] = self.findThird(self.P1pts[z],self.P1control[z])
             
         self.calc = bezierCalc()
+        
+    def findThird(self, point1, point2):
+        xdiff = float(point2[0] - point1[0])
+        ydiff = float(point2[1] - point1[1])
+        csq = pow(xdiff,2) + pow(ydiff,2)
+        c = math.sqrt(csq)
+        xdiff = xdiff/c
+        ydiff = ydiff/c
+        xdiff = xdiff * (c/3*2)
+        ydiff = ydiff * (c/3*2)
+        return(point1[0]+xdiff,point1[1]+ydiff)
         
     def getMidPoints(self, point1, point2):
         return ((point1[0]+point2[0])/float(2), (point1[1]+point2[1])/float(2))
