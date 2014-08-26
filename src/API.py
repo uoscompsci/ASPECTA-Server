@@ -1070,8 +1070,6 @@ class apiMessageParser:
         
         glTranslatef(x, y, 0.0)
         
-        print "Drawing a circle with color - " + str(colors)
-        
         glColor4f(float(colors[0]), float(colors[1]), float(colors[2]), float(colors[3]))
         
         glBegin(GL_POLYGON)
@@ -1100,8 +1098,8 @@ class apiMessageParser:
         
         font = FTGL.PolygonFont(font)
         font.FaceSize(size)
+        font.UseDisplayList(True)
         font.Render(text)
-        
         glPopMatrix()
     
     #When passed a list of coordinates uses them to draw a line strip
@@ -1147,19 +1145,15 @@ class apiMessageParser:
         
     def renderWindowContents(self, windowNo, GUIRead):
         elements = GUIRead.getElements(int(windowNo)) #Gathers the list of elements in the window
-        
         #Loops through the elements in the window
         for z in range(0,len(elements)):
             type = GUIRead.getEleType(elements[z]) #Gets the type of the current element
             
             if(type=="circle"): #Runs if the current element is a circle
-                print "Showing circle with element number " + str(z)
                 cirPos = GUIRead.getCirclePos(elements[z]) #Gets the position of the circle
                 rad = GUIRead.getCircleRad(elements[z]) #Gets the radius of the circle
                 sides = GUIRead.getCircleSides(elements[z])
                 color = GUIRead.getCircleFill(elements[z])
-                print "Color = " + str(color)
-                print "Position = " + str(cirPos)
                 colors = color.split(":")
                 drawPos = (float(cirPos[0]),float(cirPos[1])) #Calculates the screen position the circle is to be drawn at based on the location of the window
                 self.drawCircle(drawPos[0],drawPos[1],rad,sides,(colors[0],colors[1],colors[2],colors[3])) #Draws a circle at the correct screen position
@@ -1214,10 +1208,6 @@ class apiMessageParser:
                 points.append(GUIRead.getLineStart(elements[z]))
                 points.append(GUIRead.getLineEnd(elements[z]))
                 
-                #Loops through the points in the line and corrects them
-                for point in range(0,2):
-                    points[point][0] = points[point][0]
-                    points[point][1] = points[point][1]
                 color = GUIRead.getLineColor(elements[z])
                 colors = color.split(":")
                 self.drawLineStrip(points,GUIRead.getLineWidth(elements[z]),(colors[0],colors[1],colors[2],colors[3])) #Draws a line based on the points
@@ -1232,7 +1222,7 @@ class apiMessageParser:
                 color = GUIRead.getTextColor(elements[z])
                 colors = color.split(":")
                 self.drawText(pos[0], pos[1], text, size, font + ".ttf",(colors[0],colors[1],colors[2],colors[3]))
-        
+        glColor4f(1,1,1,1)
         
     #Processes the GUI data for the desired window and calls functions to draw the elements contained within it
     def displayWindow(self, windowNo, GUIRead):
@@ -1398,7 +1388,7 @@ class apiMessageParser:
                     self.renderOrder.append(self.pps*(y+1) + self.pps-1-x)
                 lTOr = True
         tex = []
-        for y in range(0,self.pps):
+        for y in list(reversed(range(0,self.pps))):
             for x in range(0,self.pps):
                 tex.append([(1.0/(self.pps-1))*x,(1.0/(self.pps-1))*y])
         self.numpy_tex = numpy.array(tex, dtype=numpy.float32)
