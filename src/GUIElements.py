@@ -817,15 +817,18 @@ class textBox(element):
         self.appno = appno
         self.subscribers = []
         self.adminMode = False
+        self.uptodate = False
 
     def setText(self, text):
         self.text = text
+        self.uptodate = False
 
     def getText(self):
         return self.text
 
     def setLocation(self, x, y):
         self.coord.reposition(x,y)
+        self.uptodate = False
 
     def getLocationX(self):
         return self.coord.getX()
@@ -835,21 +838,29 @@ class textBox(element):
 
     def setPt(self, size):
         self.pt = int(size)
+        self.uptodate = False
 
     def getPt(self):
         return self.pt
 
     def setFont(self, font):
         self.font = font
+        self.uptodate = False
 
     def getFont(self):
         return self.font
 
     def setColor(self,color):
         self.color = color
+        self.uptodate = False
 
     def getColor(self):
         return self.color
+    
+    def update(self):
+        temp = self.uptodate
+        self.uptodate = True
+        return temp
 
 class point2D:
     __slots__ = ['x', 'y']

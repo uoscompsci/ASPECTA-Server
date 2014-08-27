@@ -41,11 +41,12 @@ class Texture():
 
 #A class which is used to parse API messages and call the relevant actions
 class apiMessageParser:
-    __slots__ = ['GUI','meshBuffer','renderOrder']
+    __slots__ = ['GUI','meshBuffer','renderOrder', 'elementBuffer']
     
     winWidth = 1280
     winHeight = 1024
     mouseLock = False
+    elementBuffer = {}
     
     fonts = {"Times New Roman" : "FreeSerif",
          "Free Serif" : "FreeSerif",
@@ -1085,7 +1086,7 @@ class apiMessageParser:
         glPopMatrix()
         
     #Draws a circle at the desired location and with the desired radius
-    def drawText(self,x,y,text,size,font,colors):
+    def drawText(self,x,y,text,elementNo,colors):
         glDisable(GL_LIGHTING)
         glDisable(GL_TEXTURE_2D)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -1096,10 +1097,8 @@ class apiMessageParser:
                 
         glColor4f(float(colors[0]), float(colors[1]), float(colors[2]), float(colors[3]))
         
-        font = FTGL.PolygonFont(font)
-        font.FaceSize(size)
-        font.UseDisplayList(True)
-        font.Render(text)
+        self.elementBuffer[elementNo].Render(text)
+        
         glPopMatrix()
     
     #When passed a list of coordinates uses them to draw a line strip
@@ -1212,16 +1211,23 @@ class apiMessageParser:
                 colors = color.split(":")
                 self.drawLineStrip(points,GUIRead.getLineWidth(elements[z]),(colors[0],colors[1],colors[2],colors[3])) #Draws a line based on the points
             elif(type=="text"):
-                font=GUIRead.getFont(elements[z])
-                pos=GUIRead.getTextPos(elements[z])
-                size=GUIRead.getPtSize(elements[z])
-                text=GUIRead.getText(elements[z])
-                
-                if(self.fonts.has_key(font)):
-                    font = self.fonts[font]
+                toUpdate = GUIRead.updateText(elements[z])
                 color = GUIRead.getTextColor(elements[z])
                 colors = color.split(":")
-                self.drawText(pos[0], pos[1], text, size, font + ".ttf",(colors[0],colors[1],colors[2],colors[3]))
+                pos=GUIRead.getTextPos(elements[z])
+                text=GUIRead.getText(elements[z])
+                if(toUpdate==False):
+                    print "Creating font"
+                    font=GUIRead.getFont(elements[z])
+                    size=GUIRead.getPtSize(elements[z])
+                    
+                    if(self.fonts.has_key(font)):
+                        font = self.fonts[font]
+                    
+                    self.elementBuffer[elements[z]] = FTGL.PolygonFont(font + ".ttf")
+                    self.elementBuffer[elements[z]].FaceSize(size)
+                    self.elementBuffer[elements[z]].UseDisplayList(True)
+                self.drawText(pos[0], pos[1], text, elements[z],(colors[0],colors[1],colors[2],colors[3]))
         glColor4f(1,1,1,1)
         
     #Processes the GUI data for the desired window and calls functions to draw the elements contained within it
@@ -1302,16 +1308,23 @@ class apiMessageParser:
                 colors = color.split(":")
                 self.drawLineStrip(points,GUIRead.getLineWidth(elements[z]),(colors[0],colors[1],colors[2],colors[3])) #Draws a line based on the points
             elif(type=="text"):
-                font=GUIRead.getFont(elements[z])
-                pos=GUIRead.getTextPos(elements[z])
-                size=GUIRead.getPtSize(elements[z])
-                text=GUIRead.getText(elements[z])
-                
-                if(self.fonts.has_key(font)):
-                    font = self.fonts[font]
+                toUpdate = GUIRead.updateText(elements[z])
                 color = GUIRead.getTextColor(elements[z])
                 colors = color.split(":")
-                self.drawText(pos[0], pos[1], text, size, font + ".ttf",(colors[0],colors[1],colors[2],colors[3]))
+                text=GUIRead.getText(elements[z])
+                pos=GUIRead.getTextPos(elements[z])
+                if(toUpdate==False):
+                    print "Creating font"
+                    font=GUIRead.getFont(elements[z])
+                    size=GUIRead.getPtSize(elements[z])
+                    
+                    if(self.fonts.has_key(font)):
+                        font = self.fonts[font]
+                    
+                    self.elementBuffer[elements[z]] = FTGL.PolygonFont(font + ".ttf")
+                    self.elementBuffer[elements[z]].FaceSize(size)
+                    self.elementBuffer[elements[z]].UseDisplayList(True)
+                self.drawText(pos[0], pos[1], text, elements[z],(colors[0],colors[1],colors[2],colors[3]))
                 
     #Checks the setuo GUI and displays any required windows and cursors on it by calling the relevant functions
     def checkSetupGUI(self):

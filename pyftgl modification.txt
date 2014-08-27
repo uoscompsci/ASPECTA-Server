@@ -1,0 +1,6 @@
+PYFTGL must be modified by adding:
+
+~FontWrapper()
+{  delete m_font; }
+
+to ftgl.cpp. This will prevent a fatal memory leak.
