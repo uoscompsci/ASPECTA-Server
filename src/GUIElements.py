@@ -821,7 +821,6 @@ class textBox(element):
 
     def setText(self, text):
         self.text = text
-        self.uptodate = False
 
     def getText(self):
         return self.text
@@ -852,7 +851,6 @@ class textBox(element):
 
     def setColor(self,color):
         self.color = color
-        self.uptodate = False
 
     def getColor(self):
         return self.color

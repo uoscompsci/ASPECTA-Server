@@ -655,7 +655,7 @@ class GUI:
 	def getTextColor(self,elementNo):
 		return self.elements[str(elementNo)].getColor()
 	
-	def updateText(self,elementNo):
+	def upToDateText(self,elementNo):
 		return self.elements[str(elementNo)].update()
 	
 	def showElement(self,elementNo):

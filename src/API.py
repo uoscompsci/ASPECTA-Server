@@ -1211,13 +1211,12 @@ class apiMessageParser:
                 colors = color.split(":")
                 self.drawLineStrip(points,GUIRead.getLineWidth(elements[z]),(colors[0],colors[1],colors[2],colors[3])) #Draws a line based on the points
             elif(type=="text"):
-                toUpdate = GUIRead.updateText(elements[z])
+                upToDate = GUIRead.upToDateText(elements[z])
                 color = GUIRead.getTextColor(elements[z])
                 colors = color.split(":")
                 pos=GUIRead.getTextPos(elements[z])
                 text=GUIRead.getText(elements[z])
-                if(toUpdate==False):
-                    print "Creating font"
+                if(upToDate==False):
                     font=GUIRead.getFont(elements[z])
                     size=GUIRead.getPtSize(elements[z])
                     
@@ -1308,13 +1307,12 @@ class apiMessageParser:
                 colors = color.split(":")
                 self.drawLineStrip(points,GUIRead.getLineWidth(elements[z]),(colors[0],colors[1],colors[2],colors[3])) #Draws a line based on the points
             elif(type=="text"):
-                toUpdate = GUIRead.updateText(elements[z])
+                upToDate = GUIRead.upToDateText(elements[z])
                 color = GUIRead.getTextColor(elements[z])
                 colors = color.split(":")
                 text=GUIRead.getText(elements[z])
                 pos=GUIRead.getTextPos(elements[z])
-                if(toUpdate==False):
-                    print "Creating font"
+                if(upToDate==False):
                     font=GUIRead.getFont(elements[z])
                     size=GUIRead.getPtSize(elements[z])
                     
