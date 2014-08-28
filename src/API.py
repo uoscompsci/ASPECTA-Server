@@ -1401,16 +1401,32 @@ class apiMessageParser:
         tex = []
         
         self.meshLines=[]
+        revFlag = False
+        columns = []
         for x in range(0,self.pps):
-            column = []
             for y in range(0,self.pps):
-                column.append(x+self.pps*y)
-            self.meshLines.append(column)
+                if (revFlag == False):
+                    columns.append(x+self.pps*y)
+                else:
+                    columns.append(x+self.pps*(self.pps-1-y))
+            if revFlag==False:
+                revFlag=True
+            else:
+                revFlag=False
+        self.meshLines.append(columns)
+        revFlag = False
+        rows = []
         for y in range(0,self.pps):
-            row = []
             for x in range(0,self.pps):
-                row.append(x+self.pps*y)
-            self.meshLines.append(row)
+                if (revFlag == False):
+                    rows.append(x+self.pps*y)
+                else:
+                    rows.append(self.pps-1-x+self.pps*y)
+            if revFlag==False:
+                revFlag=True
+            else:
+                revFlag=False
+        self.meshLines.append(rows)
         print str(self.meshLines)
                 
         for y in list(reversed(range(0,self.pps))):
