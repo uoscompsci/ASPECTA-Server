@@ -1399,6 +1399,20 @@ class apiMessageParser:
                     self.renderOrder.append(self.pps*(y+1) + self.pps-1-x)
                 lTOr = True
         tex = []
+        
+        self.meshLines=[]
+        for x in range(0,self.pps):
+            column = []
+            for y in range(0,self.pps):
+                column.append(x+self.pps*y)
+            self.meshLines.append(column)
+        for y in range(0,self.pps):
+            row = []
+            for x in range(0,self.pps):
+                row.append(x+self.pps*y)
+            self.meshLines.append(row)
+        print str(self.meshLines)
+                
         for y in list(reversed(range(0,self.pps))):
             for x in range(0,self.pps):
                 tex.append([(1.0/(self.pps-1))*x,(1.0/(self.pps-1))*y])
@@ -1448,14 +1462,12 @@ class apiMessageParser:
                         self.meshBuffer[str(z+1)] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
                     self.drawMesh(z+1)
                     #self.drawSurface(z+1)
-                    '''for x in range(0,self.pps):
-                        vstrip = []
-                        hstrip = []
-                        for y in range(0,self.pps):
-                            vstrip.append(mesh[str(x) + "," + str(y)])
-                            hstrip.append(mesh[str(y) + "," + str(x)])
-                        self.drawLineStrip(vstrip, 1, (1,0,1,1))
-                        self.drawLineStrip(hstrip, 1, (1,0,1,1))'''
+                    for x in range(0,len(self.meshLines)):
+                        self.meshBuffer[str(z+1)][0].bind_vertexes(2, GL_FLOAT)
+                        glEnableClientState(GL_VERTEX_ARRAY)
+                        glColor4f(0,1,1,1)
+                        glLineWidth(1)
+                        glDrawElementsui(GL_LINE_STRIP, self.meshLines[x])
                     
             self.checkSetupGUI() #The setup GUI is rendered if it is meant to be visible
 			
