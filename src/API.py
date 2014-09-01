@@ -1012,33 +1012,6 @@ class apiMessageParser:
         for x in range(0,len(windows)):
             self.renderWindowContents(windows[x], self.GUI)
         
-    '''def drawSurface(self,surfaceNo):
-        mesh = self.GUI.getSurfacePoints(surfaceNo)
-        glDisable(GL_LIGHTING)
-        glEnable(GL_TEXTURE_2D)
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-        
-        glPushMatrix()
-
-        glColor4f(1.0, 1.0, 1.0, 1.0)
-        
-        (rendertarget,fbo) = self.createTexture(512,512,surfaceNo)
-        
-        glBindTexture(GL_TEXTURE_2D, rendertarget) #Sets the cross texture to be used
-
-        for y in range(0,50-1):
-            glBegin(GL_TRIANGLE_STRIP)
-            for x in range(0,50):
-                coor1 = mesh[str(x) + "," + str(y)]
-                coor2 = mesh[str(x) + "," + str(y+1)]
-                glTexCoord2f(1.0/(50-1) * x,1.0/(50-1) * y)
-                glVertex2f(coor1[0],coor1[1])
-                glTexCoord2f(1.0/(50-1) * x,1.0/(50-1) * (y+1))
-                glVertex2f(coor2[0],coor2[1])
-            glEnd()
-        
-        glPopMatrix()'''
-        
     def drawMesh(self, surfaceNo):
         glDisable(GL_LIGHTING)
         glEnable(GL_TEXTURE_2D)
@@ -1061,7 +1034,6 @@ class apiMessageParser:
         glDeleteTextures(rendertarget)
         glDeleteFramebuffers(1, fbo)
         
-    #Draws a circle at the desired location and with the desired radius
     def drawText(self,x,y,text,elementNo,colors):
         glDisable(GL_LIGHTING)
         glDisable(GL_TEXTURE_2D)
