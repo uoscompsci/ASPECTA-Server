@@ -553,6 +553,7 @@ class circle(element):
         self.subscribers = []
         self.adminMode = False
         self.sides = int(sides)
+        self.upToDate = False
 
     def getCenterX(self):
         return self.coord.getX()
@@ -562,9 +563,11 @@ class circle(element):
     
     def setCenterX(self,x):
         self.coord.setX(x)
+        self.upToDate = False
         
     def setCenterY(self,y):
         self.coord.setY(y)
+        self.upToDate = False
 
     def setCenter(self, x, y):
         self.setCenterX(x)
@@ -575,6 +578,7 @@ class circle(element):
 
     def setRadius(self, rad):
         self.radius = rad
+        self.upToDate = False
 
     def setLineColor(self, color):
         self.lineColor = color
@@ -593,6 +597,21 @@ class circle(element):
     
     def setSides(self, sides):
         self.sides = int(sides)
+        self.upToDate = False
+        
+    def borderTest(self):
+        return self.border
+    
+    def showBorder(self):
+        self.border = True
+        
+    def hideBorder(self):
+        self.border = False
+        
+    def update(self):
+        temp = self.upToDate
+        self.upToDate = True
+        return temp
 
 class line(element):
     __slots__ = ['coord1', 'coord2', 'color', 'width']
@@ -724,9 +743,11 @@ class polygon(element):
         self.appno = appno
         self.subscribers = []
         self.adminMode = False
+        self.upToDate = False
         
     def addPoint(self, x, y):
         self.points.append(point2D(x,y))
+        self.upToDate = False
 
     def getPointX(self, number):
         return self.points[int(number)-1].getX()
@@ -736,6 +757,7 @@ class polygon(element):
 
     def setPoint(self, number, x, y):
         self.points[number-1].reposition(x, y)
+        self.upToDate = False
 
     def getNumPoints(self):
         return len(self.points)
@@ -752,6 +774,11 @@ class polygon(element):
     def getFillColor(self):
         return self.fillColor
     
+    def update(self):
+        temp = self.uptodate
+        self.uptodate = True
+        return temp
+    
 class rectangle(element):
     __slots__ = ['topLeft', 'width', 'height', 'lineColor', 'fillColor']
     
@@ -767,6 +794,7 @@ class rectangle(element):
         self.appno = appno
         self.subscribers = []
         self.adminMode = False
+        self.upToDate = False
         
     def getTopLeftX(self):
         return self.topLeft.getX()
@@ -797,12 +825,14 @@ class rectangle(element):
     
     def setWidth(self, width):
         self.width = width
+        self.upToDate = False
     
     def getWidth(self):
         return self.width
     
     def setHeight(self, height):
         self.height = height
+        self.upToDate = False
     
     def getHeight(self):
         return self.height
@@ -818,6 +848,11 @@ class rectangle(element):
 
     def getFillColor(self):
         return self.fillColor
+    
+    def update(self):
+        temp = self.uptodate
+        self.uptodate = True
+        return temp
     
 class textBox(element):
     __slots__ = ['text', 'coord', 'pt', 'font', 'color']

@@ -429,6 +429,12 @@ class GUI:
 	def getCircleLine(self, elementNo):
 		return self.elements[str(elementNo)].getLineColor()
 	
+	def upToDateCircle(self,elementNo):
+		return self.elements[str(elementNo)].update()
+	
+	def borderTest(self, elementNo):
+		return self.elements[str(elementNo)].borderTest()
+	
 	def newLine(self, owner, app, appno, windowNo, x1, y1, x2, y2, color, width):
 		newLine = line(owner, app, appno, x1, y1, x2, y2, color, width)
 		elementNo = self.newElement(newLine, windowNo)
@@ -556,6 +562,9 @@ class GUI:
 	def getPolygonPointsCount(self, elementNo):
 		return self.elements[str(elementNo)].getNumPoints()
 	
+	def upToDatePolygon(self,elementNo):
+		return self.elements[str(elementNo)].update()
+	
 	def newRectangle(self, owner, app, appno, windowNo, x, y, width, height, lineColor, fillColor):
 		newRect = rectangle(owner, app, appno, x, y, width, height, lineColor, fillColor)
 		elementNo = self.newElement(newRect, windowNo)
@@ -614,6 +623,9 @@ class GUI:
 	
 	def setRectangleLineColor(self, elementNo, color):
 		self.elements[str(elementNo)].setLineColor(color)
+	
+	def upToDateRectangle(self,elementNo):
+		return self.elements[str(elementNo)].update()
 	
 	def newText(self, owner, app, appno, windowNo, text, x, y, pt, font, color):
 		newText = textBox(owner, app, appno, text, x, y, pt, font, color)

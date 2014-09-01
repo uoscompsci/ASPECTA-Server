@@ -1062,30 +1062,6 @@ class apiMessageParser:
         glDeleteFramebuffers(1, fbo)
         
     #Draws a circle at the desired location and with the desired radius
-    def drawCircle(self,x,y,rad,sides,colors):
-        glDisable(GL_LIGHTING)
-        glDisable(GL_TEXTURE_2D)
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-        
-        glPushMatrix()
-        
-        glTranslatef(x, y, 0.0)
-        
-        glColor4f(float(colors[0]), float(colors[1]), float(colors[2]), float(colors[3]))
-        
-        glBegin(GL_POLYGON)
-        
-        #Loops from 0 to the number of sides to be drawn in the circle
-        for i in range(sides):
-            cosine = float(rad) * cos(i*2*pi/sides) #Calculates the x position of the current point on the circle
-            sine = float(rad) * sin(i*2*pi/sides) #Calculates the y position of the current point on the circle
-            glVertex2f(cosine,sine) #Creates a vertex for the current point on the circle
-        
-        glEnd() #Finalises the polygon so that it is rendered
-        
-        glPopMatrix()
-        
-    #Draws a circle at the desired location and with the desired radius
     def drawText(self,x,y,text,elementNo,colors):
         glDisable(GL_LIGHTING)
         glDisable(GL_TEXTURE_2D)
@@ -1118,7 +1094,7 @@ class apiMessageParser:
         
         glPopMatrix()
         
-    def drawPolygon(self,polygon,color):
+    def drawPolygon(self,elementNo,color,count):
         glDisable(GL_LIGHTING)
         glDisable(GL_TEXTURE_2D)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -1126,15 +1102,11 @@ class apiMessageParser:
         glPushMatrix()
         
         glColor4f(float(color[0]), float(color[1]), float(color[2]), float(color[3]))
-        glLineWidth(5.0)
+        #glLineWidth(5.0)
         
-        glBegin(GL_POLYGON)
-        
-        #Loops through the points in the polygon
-        for i in range(0,len(polygon)):
-            glVertex2f(polygon[i][0],polygon[i][1]) #Creates a vertex at the current line strip point
-        
-        glEnd() #Finalises the polygon so that it is rendered
+        self.elementBuffer[elementNo][0].bind_vertexes(2,GL_FLOAT)
+        glEnableClientState(GL_VERTEX_ARRAY)
+        glDrawElementsui(GL_POLYGON, range(0, count))
         
         glPopMatrix()
         
@@ -1145,13 +1117,21 @@ class apiMessageParser:
             type = GUIRead.getEleType(elements[z]) #Gets the type of the current element
             
             if(type=="circle"): #Runs if the current element is a circle
-                cirPos = GUIRead.getCirclePos(elements[z]) #Gets the position of the circle
-                rad = GUIRead.getCircleRad(elements[z]) #Gets the radius of the circle
-                sides = GUIRead.getCircleSides(elements[z])
+                upToDate = GUIRead.upToDateCircle(elements[z])
                 color = GUIRead.getCircleFill(elements[z])
                 colors = color.split(":")
-                drawPos = (float(cirPos[0]),float(cirPos[1])) #Calculates the screen position the circle is to be drawn at based on the location of the window
-                self.drawCircle(drawPos[0],drawPos[1],rad,sides,(colors[0],colors[1],colors[2],colors[3])) #Draws a circle at the correct screen position
+                sides = GUIRead.getCircleSides(elements[z])
+                if(upToDate==False):
+                    rad = GUIRead.getCircleRad(elements[z])
+                    cirPos = GUIRead.getCirclePos(elements[z])
+                    points = []
+                    for i in range(sides):
+                        cosine = float(rad) * cos(i*2*pi/sides)
+                        sine = float(rad) * sin(i*2*pi/sides)
+                        points.append([cosine+float(cirPos[0]),sine+float(cirPos[1])])
+                    numpy_verts = numpy.array(points, dtype=numpy.float32)
+                    self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
+                self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]),sides)
             elif(type=="lineStrip"): #Runs if the current element is a line strip
                 upToDate = GUIRead.upToDateLineStrip(elements[z])
                 noPoints = GUIRead.getLineStripPointsCount(elements[z]) #Gets the number of points in the line strip
@@ -1171,35 +1151,41 @@ class apiMessageParser:
                         self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
                     self.drawLineStrip(elements[z],GUIRead.getLineStripWidth(elements[z]),(colors[0],colors[1],colors[2],colors[3]),GUIRead.getLineStripPointsCount(elements[z])) #Draws a strip based on the point list
             elif(type=="polygon"): #Runs if the current element is a line strip
-                noPoints = GUIRead.getPolygonPointsCount(elements[z]) #Gets the number of points in the polygon
-                
-                #Runs if there is more than two points in the polygon (otherwise the polygon wont be shown)
+                upToDate = GUIRead.upToDatePolygon(elements[z])
+                noPoints = GUIRead.getPolygonPointsCount(elements[z])
                 if(noPoints>2):
-                    points = [] #Creates an empty list to hold the polygon points
-                    
-                    #Loops through the points in the polygon
-                    for point in range(0,noPoints):
-                        pos = GUIRead.getPolygonPoint(elements[z],point) #Gets the position of the current point
-                        drawPos = (pos[0], pos[1]) #Converts the position of the point based on the window location
-                        points.append(drawPos) #Adds the calculated position to the point list
                     color = GUIRead.getPolygonFillColor(elements[z])
                     colors = color.split(":")
-                    self.drawPolygon(points,(colors[0],colors[1],colors[2],colors[3])) #Draws a strip based on the point list
+                    if(upToDate==False):
+                        points = []
+                        for point in range(0,noPoints):
+                            pos = GUIRead.getPolygonPoint(elements[z],point)
+                            drawPos = [pos[0], pos[1]]
+                            points.append(drawPos)
+                        numpy_verts = numpy.array(points, dtype=numpy.float32)
+                        self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
+                    self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]),noPoints)
             elif(type=="rectangle"): #Runs if the current element is a line strip
-                points = [] #Creates an empty list to hold the polygon points
-                
-                points.append(GUIRead.getRectangleTopLeft(elements[z]))
-                points.append(GUIRead.getRectangleTopRight(elements[z]))
-                points.append(GUIRead.getRectangleBottomRight(elements[z]))
-                points.append(GUIRead.getRectangleBottomLeft(elements[z]))
-                
-                #Loops through the points in the polygon and corrects them
-                for point in range(0,4):
-                    points[point][0] = points[point][0]
-                    points[point][1] = points[point][1]
+                upToDate = GUIRead.upToDatePolygon(elements[z])
                 color = GUIRead.getRectangleFillColor(elements[z])
                 colors = color.split(":")
-                self.drawPolygon(points,(colors[0],colors[1],colors[2],colors[3])) #Draws a strip based on the point list
+                if(upToDate==False):
+                    points = []
+                    temp = GUIRead.getRectangleTopLeft(elements[z])
+                    drawPos = [temp[0],temp[1]]
+                    points.append(drawPos)
+                    temp = GUIRead.getRectangleTopRight(elements[z])
+                    drawPos = [temp[0],temp[1]]
+                    points.append(drawPos)
+                    temp = GUIRead.getRectangleBottomRight(elements[z])
+                    drawPos = [temp[0],temp[1]]
+                    points.append(drawPos)
+                    temp = GUIRead.getRectangleBottomLeft(elements[z])
+                    drawPos = [temp[0],temp[1]]
+                    points.append(drawPos)
+                    numpy_verts = numpy.array(points, dtype=numpy.float32)
+                    self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
+                self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]),4)
             elif(type=="line"):
                 upToDate = GUIRead.upToDateLineStrip(elements[z])
                 color = GUIRead.getLineColor(elements[z])
@@ -1244,13 +1230,21 @@ class apiMessageParser:
             type = GUIRead.getEleType(elements[z]) #Gets the type of the current element
             
             if(type=="circle"): #Runs if the current element is a circle
-                cirPos = GUIRead.getCirclePos(elements[z]) #Gets the position of the circle
-                rad = GUIRead.getCircleRad(elements[z]) #Gets the radius of the circle
-                sides = GUIRead.getCircleSides(elements[z])
+                upToDate = GUIRead.upToDateCircle(elements[z])
                 color = GUIRead.getCircleFill(elements[z])
                 colors = color.split(":")
-                drawPos = (winPos[0]+float(cirPos[0]),winPos[1]-height+float(cirPos[1])) #Calculates the screen position the circle is to be drawn at based on the location of the window
-                self.drawCircle(drawPos[0],drawPos[1],rad,sides,(colors[0],colors[1],colors[2],colors[3])) #Draws a circle at the correct screen position
+                sides = GUIRead.getCircleSides(elements[z])
+                if(upToDate==False):
+                    rad = GUIRead.getCircleRad(elements[z])
+                    cirPos = GUIRead.getCirclePos(elements[z])
+                    points = []
+                    for i in range(sides):
+                        cosine = float(rad) * cos(i*2*pi/sides)
+                        sine = float(rad) * sin(i*2*pi/sides)
+                        points.append([cosine+float(cirPos[0])+float(winPos[0]),sine+float(cirPos[1])+float(winPos[1])-height])
+                    numpy_verts = numpy.array(points, dtype=numpy.float32)
+                    self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
+                self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]),sides)
             elif(type=="lineStrip"): #Runs if the current element is a line strip
                 upToDate = GUIRead.upToDateLineStrip(elements[z])
                 noPoints = GUIRead.getLineStripPointsCount(elements[z]) #Gets the number of points in the line strip
@@ -1270,35 +1264,41 @@ class apiMessageParser:
                         self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
                     self.drawLineStrip(elements[z],GUIRead.getLineStripWidth(elements[z]),(colors[0],colors[1],colors[2],colors[3]),GUIRead.getLineStripPointsCount(elements[z])) #Draws a strip based on the point list
             elif(type=="polygon"): #Runs if the current element is a line strip
-                noPoints = GUIRead.getPolygonPointsCount(elements[z]) #Gets the number of points in the polygon
-                
-                #Runs if there is more than two points in the polygon (otherwise the polygon wont be shown)
+                upToDate = GUIRead.upToDatePolygon(elements[z])
+                noPoints = GUIRead.getPolygonPointsCount(elements[z])
                 if(noPoints>2):
-                    points = [] #Creates an empty list to hold the polygon points
-                    
-                    #Loops through the points in the polygon
-                    for point in range(0,noPoints):
-                        pos = GUIRead.getPolygonPoint(elements[z],point) #Gets the position of the current point
-                        drawPos = (winPos[0] + pos[0], winPos[1] - height + pos[1]) #Converts the position of the point based on the window location
-                        points.append(drawPos) #Adds the calculated position to the point list
                     color = GUIRead.getPolygonFillColor(elements[z])
                     colors = color.split(":")
-                    self.drawPolygon(points,(colors[0],colors[1],colors[2],colors[3])) #Draws a strip based on the point list
+                    if(upToDate==False):
+                        points = []
+                        for point in range(0,noPoints):
+                            pos = GUIRead.getPolygonPoint(elements[z],point)
+                            drawPos = [pos[0]+winPos[0], pos[1] + winPos[1] - height]
+                            points.append(drawPos)
+                        numpy_verts = numpy.array(points, dtype=numpy.float32)
+                        self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
+                    self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]),noPoints)
             elif(type=="rectangle"): #Runs if the current element is a line strip
-                points = [] #Creates an empty list to hold the polygon points
-                
-                points.append(GUIRead.getRectangleTopLeft(elements[z]))
-                points.append(GUIRead.getRectangleTopRight(elements[z]))
-                points.append(GUIRead.getRectangleBottomRight(elements[z]))
-                points.append(GUIRead.getRectangleBottomLeft(elements[z]))
-                
-                #Loops through the points in the polygon and corrects them
-                for point in range(0,4):
-                    points[point][0] = points[point][0] + winPos[0]
-                    points[point][1] = points[point][1] + winPos[1]
+                upToDate = GUIRead.upToDatePolygon(elements[z])
                 color = GUIRead.getRectangleFillColor(elements[z])
                 colors = color.split(":")
-                self.drawPolygon(points,(colors[0],colors[1],colors[2],colors[3])) #Draws a strip based on the point list
+                if(upToDate==False):
+                    points = []
+                    temp = GUIRead.getRectangleTopLeft(elements[z])
+                    drawPos = [temp[0] + winPos[0],temp[1] + winPos[1]]
+                    points.append(drawPos)
+                    temp = GUIRead.getRectangleTopRight(elements[z])
+                    drawPos = [temp[0] + winPos[0],temp[1] + winPos[1]]
+                    points.append(drawPos)
+                    temp = GUIRead.getRectangleBottomRight(elements[z])
+                    drawPos = [temp[0] + winPos[0],temp[1] + winPos[1]]
+                    points.append(drawPos)
+                    temp = GUIRead.getRectangleBottomLeft(elements[z])
+                    drawPos = [temp[0] + winPos[0],temp[1] + winPos[1]]
+                    points.append(drawPos)
+                    numpy_verts = numpy.array(points, dtype=numpy.float32)
+                    self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
+                self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]),4)
             elif(type=="line"):
                 upToDate = GUIRead.upToDateLineStrip(elements[z])
                 color = GUIRead.getLineColor(elements[z])
@@ -1312,23 +1312,6 @@ class apiMessageParser:
                     numpy_verts = numpy.array(points, dtype=numpy.float32)
                     self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
                 self.drawLineStrip(elements[z],GUIRead.getLineWidth(elements[z]),(colors[0],colors[1],colors[2],colors[3]),2) #Draws a line based on the points
-                '''                upToDate = GUIRead.upToDateLineStrip(elements[z])
-                noPoints = GUIRead.getLineStripPointsCount(elements[z]) #Gets the number of points in the line strip
-                
-                #Runs if there is more than one point in the line strip (otherwise the line strip wont be shown)
-                if(noPoints>1):
-                    color = GUIRead.getLineStripColor(elements[z])
-                    colors = color.split(":")
-                    if(upToDate==False):
-                        strip = []
-                        #Loops through the points in the line strip
-                        for point in range(0,noPoints):
-                            pos = GUIRead.getLineStripPoint(elements[z],point) #Gets the position of the current point
-                            drawPos = [winPos[0] + pos[0], winPos[1] - height + pos[1]] #Converts the position of the point based on the window location
-                            strip.append(drawPos)
-                        numpy_verts = numpy.array(strip, dtype=numpy.float32)
-                        self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
-                    self.drawLineStrip(elements[z],GUIRead.getLineStripWidth(elements[z]),(colors[0],colors[1],colors[2],colors[3]),GUIRead.getLineStripPointsCount(elements[z])) #Draws a strip based on the point list'''
             elif(type=="text"):
                 upToDate = GUIRead.upToDateText(elements[z])
                 color = GUIRead.getTextColor(elements[z])
