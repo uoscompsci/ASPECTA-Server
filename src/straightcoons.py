@@ -62,24 +62,37 @@ class coonsCalc:
         return(point1[0]+xdiff,point1[1]+ydiff)
         
     def getMidPoints(self, point1, point2):
-        return ((point1[0]+point2[0])/float(2), (point1[1]+point2[1])/float(2))
-    
+        return ((float(point1[0])+float(point2[0]))/float(2), (float(point1[1])+float(point2[1]))/float(2))
+
     def oppControl(self, point, control):
-        return (point[0]+(point[0]-control[0]),point[1]+(point[1]-control[1]))
+        return (float(point[0])+(float(point[0])-float(control[0])),float(point[1])+(float(point[1])-float(control[1])))
         
     def getQCurve0Pt(self,v):
+        #print "Left points = " + str(self.Q0pts)
         return self.calc.calculateBezierPoint(self.Q0pts, self.Q0control, v)
         
     def getQCurve1Pt(self,v):
+        #print "Right points = " + str(self.Q1pts)
         return self.calc.calculateBezierPoint(self.Q1pts, self.Q1control, v)
         
     def getPCurve0Pt(self,u):
+        #print "Top points = " + str(self.P0pts)
         return self.calc.calculateBezierPoint(self.P0pts, self.P0control, u)
         
     def getPCurve1Pt(self,u):
+        #print "Bottom points = " + str(self.P1pts)
         return self.calc.calculateBezierPoint(self.P1pts, self.P1control, u)
     
     def getCoonsPoints(self,width,height):
+        #print "P0 pts = " + str(self.P0pts)
+        #print "P0 con = " + str(self.P0control)
+        #print "P1 pts = " + str(self.P1pts)
+        #print "P1 con = " + str(self.P1control)
+        #print "Q0 pts = " + str(self.Q0pts)
+        #print "Q0 con = " + str(self.Q0control)
+        #print "Q1 pts = " + str(self.Q1pts)
+        #print "Q1 con = " + str(self.Q1control)
+        
         surface = {}
         for i in range(0,width):
             for j in range(0,height):

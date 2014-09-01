@@ -467,6 +467,9 @@ class GUI:
 	
 	def setLineWidth(self, elementNo, width):
 		self.elements[str(elementNo)].setWidth(width)
+		
+	def upToDateLine(self,elementNo):
+		return self.elements[str(elementNo)].update()
 	
 	def newLineStrip(self, owner, app, appno, windowNo, x, y, color, width):
 		newLineStrip = lineStrip(owner, app, appno, x, y, color, width)
@@ -511,6 +514,9 @@ class GUI:
 	
 	def setLineStripContent(self, elementNo, content):
 		self.elements[str(elementNo)].setContent(content)
+		
+	def upToDateLineStrip(self,elementNo):
+		return self.elements[str(elementNo)].update()
 	
 	def newPolygon(self, owner, app, appno, windowNo, x, y, lineColor, fillColor):
 		newPoly = polygon(owner, app, appno, x, y, lineColor, fillColor)

@@ -609,12 +609,15 @@ class line(element):
         self.subscribers = []
         self.adminMode = False
         self.width = width
+        self.upToDate = False
 
     def setStart(self, x, y):
         self.coord1.reposition(x,y)
+        self.upToDate = False
 
     def setEnd(self, x, y):
         self.coord2.reposition(x,y)
+        self.upToDate = False
 
     def getStartX(self):
         return self.coord1.getX()
@@ -639,6 +642,11 @@ class line(element):
     
     def setWidth(self, width):
         self.width = width
+        
+    def update(self):
+        temp = self.upToDate
+        self.upToDate = True
+        return temp
 
 class lineStrip(element):
     __slots__ = ['points', 'color', 'width']
@@ -654,12 +662,15 @@ class lineStrip(element):
         self.subscribers = []
         self.adminMode = False
         self.width = width
+        self.uptodate = False
 
     def addPoint(self, x, y):
         self.points.append(point2D(x,y))
+        self.uptodate = False
         
     def addPointAt(self, x, y, index):
         self.points.insert(index, point2D(x,y))
+        self.uptodate = False
         
     def getPointX(self, number):
         return self.points[int(number)].getX()
@@ -669,6 +680,7 @@ class lineStrip(element):
 
     def setPoint(self, number, x, y):
         self.points[int(number)].reposition(x, y)
+        self.uptodate = False
 
     def getColor(self):
         return self.color
@@ -691,6 +703,12 @@ class lineStrip(element):
         for x in range(0,len(split1)):
             split2 = split1[x].split(":")
             self.points.append(point2D(split2[0],split2[1]))
+        self.uptodate = False
+            
+    def update(self):
+        temp = self.uptodate
+        self.uptodate = True
+        return temp
 
 class polygon(element):
     __slots__ = ['points', 'lineColor', 'fillColor']
