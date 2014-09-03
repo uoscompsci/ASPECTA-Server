@@ -627,6 +627,60 @@ class GUI:
 	def upToDateRectangle(self,elementNo):
 		return self.elements[str(elementNo)].update()
 	
+	def newTexRectangle(self, owner, app, appno, windowNo, x, y, width, height, texture):
+		newRect = texRectangle(owner, app, appno, x, y, width, height, texture)
+		elementNo = self.newElement(newRect, windowNo)
+		return elementNo
+	
+	def newTexRectangleWithID(self, owner, app, appno, ID, windowNo, x, y, width, height, texture):
+		elementNo = self.newTexRectangle(owner, app, appno, windowNo, x, y, width, height, texture)
+		self.elements[set(elementNo)].setID(ID)
+		return elementNo
+	
+	def setTexRectangleTexture(self, elementNo, texture):
+		self.elements[str(elementNo)].setTexture(texture)
+		
+	def getTexRectangleTexture(self, elementNo):
+		return self.elements[str(elementNo)].getTexture()
+	
+	def setTexRectangleTopLeft(self, elementNo, x, y):
+		self.elements[str(elementNo)].setTopLeft(x,y)
+		
+	def getTexRectangleTopLeft(self, elementNo):
+		xloc = self.elements[str(elementNo)].getTopLeftX()
+		yloc = self.elements[str(elementNo)].getTopLeftY()
+		return (xloc,yloc)
+	
+	def getTexRectangleTopRight(self, elementNo):
+		xloc = self.elements[str(elementNo)].getTopRightX()
+		yloc = self.elements[str(elementNo)].getTopRightY()
+		return (xloc,yloc)
+	
+	def getTexRectangleBottomRight(self, elementNo):
+		xloc = self.elements[str(elementNo)].getBottomRightX()
+		yloc = self.elements[str(elementNo)].getBottomRightY()
+		return (xloc,yloc)
+
+	def getTexRectangleBottomLeft(self, elementNo):
+		xloc = self.elements[str(elementNo)].getBottomLeftX()
+		yloc = self.elements[str(elementNo)].getBottomLeftY()
+		return (xloc,yloc)
+	
+	def setTexRectangleWidth(self, elementNo, width):
+		self.elements[str(elementNo)].setWidth(width)
+		
+	def getTexRectangleWidth(self, elementNo):
+		return int(self.elements[str(elementNo)].getWidth())
+		
+	def setTexRectangleHeight(self, elementNo, height):
+		self.elements[str(elementNo)].setHeight(height)
+		
+	def getTexRectangleHeight(self, elementNo):
+		return int(self.elements[str(elementNo)].getHeight())
+	
+	def upToDateTexRectangle(self,elementNo):
+		return self.elements[str(elementNo)].update()
+	
 	def newText(self, owner, app, appno, windowNo, text, x, y, pt, font, color):
 		newText = textBox(owner, app, appno, text, x, y, pt, font, color)
 		elementNo = self.newElement(newText, windowNo)

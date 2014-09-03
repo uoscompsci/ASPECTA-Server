@@ -47,6 +47,7 @@ class apiMessageParser:
     winHeight = 1024
     mouseLock = False
     elementBuffer = {}
+    textureBuffer = {}
     
     fonts = {"Times New Roman" : "FreeSerif",
          "Free Serif" : "FreeSerif",
@@ -123,6 +124,14 @@ class apiMessageParser:
     
     def newRectangleWithID(self,pieces):
         elementNo = self.GUI.newRectangleWithID(pieces[9], pieces[10], pieces[11], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
+        return {"elementNo" : elementNo}
+    
+    def newTexRectangle(self,pieces):
+        elementNo = self.GUI.newTexRectangle(pieces[7], pieces[8], pieces[9], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
+        return {"elementNo" : elementNo}
+    
+    def newTexRectangleWithID(self,pieces):
+        elementNo = self.GUI.newTexRectangleWithID(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
         return {"elementNo" : elementNo}
             
     def newText(self, pieces):
@@ -648,6 +657,49 @@ class apiMessageParser:
     def setRectangleLineColor(self, pieces):
         self.GUI.setRectangleLineColor(pieces[1], pieces[2])
         return {}
+    
+    def setTexRectangleTopLeft(self, pieces):
+        count = self.GUI.setTexRectangleTopLeft(pieces[1], pieces[2], pieces[3])
+        return {}
+    
+    def getTexRectangleTopLeft(self, pieces):
+        loc = self.GUI.getTexRectangleTopLeft(pieces[1])
+        return {'x' : loc[0], 'y' : loc[1]}
+    
+    def getTexRectangleTopRight(self, pieces):
+        loc = self.GUI.getTexRectangleTopRight(pieces[1])
+        return {'x' : loc[0], 'y' : loc[1]}
+    
+    def getTexRectangleBottomRight(self, pieces):
+        loc = self.GUI.getTexRectangleBottomRight(pieces[1])
+        return {'x' : loc[0], 'y' : loc[1]}
+    
+    def getTexRectangleBottomLeft(self, pieces):
+        loc = self.GUI.getTexRectangleBottomLeft(pieces[1])
+        return {'x' : loc[0], 'y' : loc[1]}
+    
+    def setTexRectangleTexture(self, pieces):
+        self.GUI.setTexRectangleTexture(pieces[1],pieces[2])
+    
+    def getTexRectangleTexture(self, pieces):
+        tex = self.GUI.getTexRectangleTexture(pieces[1])
+        return {'texture' : tex}
+    
+    def setTexRectangleWidth(self, pieces):
+        self.GUI.setTexRectangleWidth(pieces[1], pieces[2])
+        return {}
+        
+    def getTexRectangleWidth(self, pieces):
+        width = self.GUI.getTexRectangleWidth(pieces[1])
+        return {'width' : width}
+    
+    def setTexRectangleHeight(self, pieces):
+        self.GUI.setTexRectangleHeight(pieces[1], pieces[2])
+        return {}
+        
+    def getTexRectangleHeight(self, pieces):
+        width = self.GUI.getTexRectangleHeight(pieces[1])
+        return {'width' : width}
 
     def setText(self, pieces):
         self.GUI.setText(pieces[1], pieces[2])
@@ -736,6 +788,8 @@ class apiMessageParser:
             'new_polygon_with_ID' : (newPolygonWithID, 6),
             'new_rectangle' : (newRectangle,7),
             'new_rectangle_with_ID' : (newRectangleWithID, 8),
+            'new_texrectangle' : (newTexRectangle,6),
+            'new_texrectangle_with_ID' : (newTexRectangleWithID, 7),
             'new_text' : (newText, 7),  # [1]=WindowNo  [2]=text  [3]=x  [4]=y  [5]=PointSize  [6]=Font  [7]=Color
             'new_text_with_ID' : (newTextWithID, 8),
             'subscribe_to_surface' : (subscribeToSurface, 1),
@@ -850,6 +904,17 @@ class apiMessageParser:
             'set_rectangle_fill_color' : (setRectangleFillColor,2),
             'get_rectangle_line_color' : (getRectangleLineColor,1),
             'set_rectangle_line_color' : (setRectangleLineColor,2),
+            'set_texrectangle_top_left' : (setTexRectangleTopLeft, 3),
+            'get_texrectangle_top_left' : (getTexRectangleTopLeft,1),
+            'get_texrectangle_top_right' : (getTexRectangleTopRight,1),
+            'get_texrectangle_bottom_right' : (getTexRectangleBottomRight,1),
+            'get_texrectangle_bottom_left' : (getTexRectangleBottomLeft,1),
+            'set_texrectangle_texture' : (setTexRectangleTexture,2),
+            'get_texrectangle_texture' : (getTexRectangleTexture,1),
+            'set_texrectangle_width' : (setTexRectangleWidth,2),
+            'get_texrectangle_width' : (getTexRectangleWidth,1),
+            'set_texrectangle_height' : (setTexRectangleHeight,2),
+            'get_texrectangle_height' : (getTexRectangleHeight,1),
             'set_text' : (setText, 2),  # [1]=ElementNo  [2]=String
             'get_text' : (getText, 1),  # [1]=ElementNo
             'relocate_text' : (setTextPos, 4),  # [1]=ElementNo  [2]=x  [3]=y  [4]=WindowNo
@@ -1021,7 +1086,7 @@ class apiMessageParser:
         
         (rendertarget,fbo) = self.createTexture(512,512,surfaceNo)
         
-        glBindTexture(GL_TEXTURE_2D, rendertarget) #Sets the cross texture to be used
+        glBindTexture(GL_TEXTURE_2D, rendertarget)
         self.meshBuffer[str(surfaceNo)][0].bind_vertexes(2, GL_FLOAT)
         self.meshBuffer[str(surfaceNo)][1].bind_texcoords(2, GL_FLOAT)
         
@@ -1082,6 +1147,25 @@ class apiMessageParser:
         
         glPopMatrix()
         
+    def drawTexturedPolygon(self,elementNo,count):
+        glDisable(GL_LIGHTING)
+        glEnable(GL_TEXTURE_2D)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        
+        glPushMatrix()
+        
+        glColor4f(1, 1, 1, 1)
+
+        glBindTexture(GL_TEXTURE_2D, self.textureBuffer[elementNo].texID)
+        
+        self.elementBuffer[elementNo][0].bind_vertexes(2,GL_FLOAT)
+        self.elementBuffer[elementNo][1].bind_texcoords(2, GL_FLOAT)
+        glEnableClientState(GL_VERTEX_ARRAY)
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY)
+        glDrawElementsui(GL_POLYGON, range(0, count))
+        
+        glPopMatrix()
+        
     def renderWindowContents(self, windowNo, GUIRead):
         elements = GUIRead.getElements(int(windowNo)) #Gathers the list of elements in the window
         #Loops through the elements in the window
@@ -1138,7 +1222,7 @@ class apiMessageParser:
                         self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
                     self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]),noPoints)
             elif(type=="rectangle"): #Runs if the current element is a line strip
-                upToDate = GUIRead.upToDatePolygon(elements[z])
+                upToDate = GUIRead.upToDateRectangle(elements[z])
                 color = GUIRead.getRectangleFillColor(elements[z])
                 colors = color.split(":")
                 if(upToDate==False):
@@ -1188,6 +1272,30 @@ class apiMessageParser:
                     self.elementBuffer[elements[z]].FaceSize(size)
                     self.elementBuffer[elements[z]].UseDisplayList(True)
                 self.drawText(pos[0], pos[1], text, elements[z],(colors[0],colors[1],colors[2],colors[3]))
+            elif(type=="texRectangle"): #Runs if the current element is a line strip
+                upToDate = GUIRead.upToDateTexRectangle(elements[z])
+                colors = color.split(":")
+                if(upToDate==False):
+                    texture = GUIRead.getTexRectangleTexture(elements[z])
+                    self.textureBuffer[elements[z]] = Texture(texture)
+                    texCoors = [[0.0,1.0],[1.0,1.0],[1.0,0.0],[0.0,0.0]]
+                    points = []
+                    temp = GUIRead.getTexRectangleTopLeft(elements[z])
+                    drawPos = [temp[0],temp[1]]
+                    points.append(drawPos)
+                    temp = GUIRead.getTexRectangleTopRight(elements[z])
+                    drawPos = [temp[0],temp[1]]
+                    points.append(drawPos)
+                    temp = GUIRead.getTexRectangleBottomRight(elements[z])
+                    drawPos = [temp[0],temp[1]]
+                    points.append(drawPos)
+                    temp = GUIRead.getTexRectangleBottomLeft(elements[z])
+                    drawPos = [temp[0],temp[1]]
+                    points.append(drawPos)
+                    numpy_verts = numpy.array(points, dtype=numpy.float32)
+                    numpy_tex = numpy.array(texCoors, dtype=numpy.float32)
+                    self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(numpy_tex, GL_STATIC_DRAW))
+                self.drawTexturedPolygon(elements[z], 4)
         glColor4f(1,1,1,1)
         
     #Processes the GUI data for the desired window and calls functions to draw the elements contained within it
@@ -1251,7 +1359,7 @@ class apiMessageParser:
                         self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
                     self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]),noPoints)
             elif(type=="rectangle"): #Runs if the current element is a line strip
-                upToDate = GUIRead.upToDatePolygon(elements[z])
+                upToDate = GUIRead.upToDateRectangle(elements[z])
                 color = GUIRead.getRectangleFillColor(elements[z])
                 colors = color.split(":")
                 if(upToDate==False):
@@ -1301,6 +1409,30 @@ class apiMessageParser:
                     self.elementBuffer[elements[z]].FaceSize(size)
                     self.elementBuffer[elements[z]].UseDisplayList(True)
                 self.drawText(pos[0], pos[1], text, elements[z],(colors[0],colors[1],colors[2],colors[3]))
+            elif(type=="texRectangle"): #Runs if the current element is a line strip
+                upToDate = GUIRead.upToDateTexRectangle(elements[z])
+                colors = color.split(":")
+                if(upToDate==False):
+                    texture = GUIRead.getTexRectangleTexture(elements[z])
+                    self.textureBuffer[elements[z]] = Texture(texture)
+                    texCoors = [[0.0,1.0],[1.0,1.0],[1.0,0.0],[0.0,0.0]]
+                    points = []
+                    temp = GUIRead.getTexRectangleTopLeft(elements[z])
+                    drawPos = [temp[0] + winPos[0],temp[1] + winPos[1]]
+                    points.append(drawPos)
+                    temp = GUIRead.getTexRectangleTopRight(elements[z])
+                    drawPos = [temp[0] + winPos[0],temp[1] + winPos[1]]
+                    points.append(drawPos)
+                    temp = GUIRead.getTexRectangleBottomRight(elements[z])
+                    drawPos = [temp[0] + winPos[0],temp[1] + winPos[1]]
+                    points.append(drawPos)
+                    temp = GUIRead.getTexRectangleBottomLeft(elements[z])
+                    drawPos = [temp[0] + winPos[0],temp[1] + winPos[1]]
+                    points.append(drawPos)
+                    numpy_verts = numpy.array(points, dtype=numpy.float32)
+                    numpy_tex = numpy.array(texCoors, dtype=numpy.float32)
+                    self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(numpy_tex, GL_STATIC_DRAW))
+                self.drawTexturedPolygon(elements[z], 4)
                 
     #Checks the setuo GUI and displays any required windows and cursors on it by calling the relevant functions
     def checkSetupGUI(self):
@@ -1344,7 +1476,11 @@ class apiMessageParser:
         parser = SafeConfigParser()
         parser.read("config.ini")
         self.pps = parser.getint('surfaces','curveResolution')
-        
+        temp = parser.getint('surfaces','showMeshLines')
+        if(temp==0):
+            self.showMeshLines = False
+        else:
+            self.showMeshLines = True
         glClearColor(0.0, 0.0, 0.0, 0.0)
         glClearDepth(1.0)
         glDisable(GL_DEPTH_TEST)
@@ -1455,13 +1591,13 @@ class apiMessageParser:
                         numpy_verts = numpy.array(verts, dtype=numpy.float32)
                         self.meshBuffer[str(z+1)] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
                     self.drawMesh(z+1)
-                    #self.drawSurface(z+1)
-                    for x in range(0,len(self.meshLines)):
-                        self.meshBuffer[str(z+1)][0].bind_vertexes(2, GL_FLOAT)
-                        glEnableClientState(GL_VERTEX_ARRAY)
-                        glColor4f(0,1,1,1)
-                        glLineWidth(1)
-                        glDrawElementsui(GL_LINE_STRIP, self.meshLines[x])
+                    if(self.showMeshLines==True):
+                        for x in range(0,len(self.meshLines)):
+                            self.meshBuffer[str(z+1)][0].bind_vertexes(2, GL_FLOAT)
+                            glEnableClientState(GL_VERTEX_ARRAY)
+                            glColor4f(0,1,1,1)
+                            glLineWidth(1)
+                            glDrawElementsui(GL_LINE_STRIP, self.meshLines[x])
                     
             self.checkSetupGUI() #The setup GUI is rendered if it is meant to be visible
 			

@@ -806,22 +806,22 @@ class rectangle(element):
         return self.topLeft.reposition(x,y)
     
     def getTopRightX(self):
-        return self.topLeft.getX()+int(width)
+        return self.topLeft.getX()+int(self.width)
     
     def getTopRightY(self):
         return self.topLeft.getY()
     
     def getBottomRightX(self):
-        return self.topLeft.getX()+int(width)
+        return self.topLeft.getX()+int(self.width)
     
     def getBottomRightY(self):
-        return self.topLeft.getY()+int(height)
+        return self.topLeft.getY()-int(self.height)
     
     def getBottomLeftX(self):
         return self.topLeft.getX()
     
     def getBottomLeftY(self):
-        return self.topLeft.getY()+int(height)
+        return self.topLeft.getY()-int(self.height)
     
     def setWidth(self, width):
         self.width = width
@@ -850,8 +850,76 @@ class rectangle(element):
         return self.fillColor
     
     def update(self):
-        temp = self.uptodate
-        self.uptodate = True
+        temp = self.upToDate
+        self.upToDate = True
+        return temp
+    
+class texRectangle(element):
+    __slots__ = ['topLeft', 'width', 'height', 'texture']
+    
+    def __init__(self, owner, app, appno, tlx, tly, width, height, texture):
+        self.elementType = "texRectangle"
+        self.topLeft = point2D(tlx,tly)
+        self.width = width
+        self.height = height
+        self.texture = texture
+        self.owner = owner
+        self.app = app
+        self.appno = appno
+        self.subscribers = []
+        self.adminMode = False
+        self.upToDate = False
+        
+    def setTexture(self, texture):
+        self.texture = texture
+        
+    def getTexture(self):
+        return self.texture
+        
+    def getTopLeftX(self):
+        return self.topLeft.getX()
+    
+    def getTopLeftY(self):
+        return self.topLeft.getY()
+    
+    def setTopLeft(self,x,y):
+        return self.topLeft.reposition(x,y)
+    
+    def getTopRightX(self):
+        return self.topLeft.getX()+int(self.width)
+    
+    def getTopRightY(self):
+        return self.topLeft.getY()
+    
+    def getBottomRightX(self):
+        return self.topLeft.getX()+int(self.width)
+    
+    def getBottomRightY(self):
+        return self.topLeft.getY()-int(self.height)
+    
+    def getBottomLeftX(self):
+        return self.topLeft.getX()
+    
+    def getBottomLeftY(self):
+        return self.topLeft.getY()-int(self.height)
+    
+    def setWidth(self, width):
+        self.width = width
+        self.upToDate = False
+    
+    def getWidth(self):
+        return self.width
+    
+    def setHeight(self, height):
+        self.height = height
+        self.upToDate = False
+    
+    def getHeight(self):
+        return self.height
+    
+    def update(self):
+        temp = self.upToDate
+        self.upToDate = True
         return temp
     
 class textBox(element):
