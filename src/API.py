@@ -1074,6 +1074,12 @@ class apiMessageParser:
     
     def renderSurfaceTex(self, surfaceNo):
         windows = self.GUI.getWindows(surfaceNo) #Gathers the list of windows on the surface
+        glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST)
+        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST)
+        glHint(GL_POINT_SMOOTH_HINT, GL_NICEST)
+        glEnable(GL_POLYGON_SMOOTH)
+        glEnable(GL_LINE_SMOOTH)
+        glEnable(GL_POINT_SMOOTH)
         for x in range(0,len(windows)):
             self.renderWindowContents(windows[x], self.GUI)
         
@@ -1274,7 +1280,6 @@ class apiMessageParser:
                 self.drawText(pos[0], pos[1], text, elements[z],(colors[0],colors[1],colors[2],colors[3]))
             elif(type=="texRectangle"): #Runs if the current element is a line strip
                 upToDate = GUIRead.upToDateTexRectangle(elements[z])
-                colors = color.split(":")
                 if(upToDate==False):
                     texture = GUIRead.getTexRectangleTexture(elements[z])
                     self.textureBuffer[elements[z]] = Texture(texture)
@@ -1487,6 +1492,12 @@ class apiMessageParser:
         glDisable(GL_LIGHTING)
         glDepthFunc(GL_LEQUAL)
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
+        glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST)
+        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST)
+        glHint(GL_POINT_SMOOTH_HINT, GL_NICEST)
+        glEnable(GL_POLYGON_SMOOTH)
+        glEnable(GL_LINE_SMOOTH)
+        glEnable(GL_POINT_SMOOTH)
         glEnable(GL_BLEND)
         glEnable(GL_ALPHA_TEST)
 		
