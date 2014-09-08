@@ -775,8 +775,8 @@ class polygon(element):
         return self.fillColor
     
     def update(self):
-        temp = self.uptodate
-        self.uptodate = True
+        temp = self.upToDate
+        self.upToDate = True
         return temp
     
 class rectangle(element):
