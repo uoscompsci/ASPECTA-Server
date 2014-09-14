@@ -383,7 +383,7 @@ class surface():
         for x in range(0,len(rightSplit)):
             coordinates = rightSplit[x].split(":")
             rightArray.append([float(coordinates[0]),float(coordinates[1])])
-        ccalc = coonsCalc(bottomArray[0],bottomArray[len(bottomArray)-1],topArray[len(topArray)-1],topArray[0],topArray,bottomArray,leftArray,rightArray)
+        ccalc = coonsCalc(topArray[0],topArray[len(topArray)-1],bottomArray[len(bottomArray)-1],bottomArray[0],topArray,bottomArray,leftArray,rightArray)
         self.meshPoints = ccalc.getCoonsPoints(self.curveResolution,self.curveResolution)
         self.defined = True
         self.renderUpdate = True

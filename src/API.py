@@ -1552,7 +1552,6 @@ class apiMessageParser:
             else:
                 revFlag=False
         self.meshLines.append(rows)
-        print str(self.meshLines)
                 
         for y in list(reversed(range(0,self.pps))):
             for x in range(0,self.pps):
