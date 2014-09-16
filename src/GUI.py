@@ -391,9 +391,6 @@ class GUI:
 	def setCirclePos(self, elementNo, xLoc, yLoc):
 		self.elements[str(elementNo)].setCenter(xLoc,yLoc)
 		origWin = self.findElement(elementNo)
-		if(origWin != window):
-			self.windows[str(origWin)].removeElement(elementNo)
-			self.windows[str(origWin)].addElement(elementNo)
 		
 	def setCircleRad(self, elementNo, radius):
 		self.elements[str(elementNo)].setRadius(radius)

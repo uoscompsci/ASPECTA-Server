@@ -58,110 +58,134 @@ class apiMessageParser:
          "Free Sans" : "FreeSans"
          }
     
+    #Creates a new surface for projection as requested by the API call
     def newSurface(self, pieces):
         surfaceNo = self.GUI.newSurface(pieces[1], pieces[2], pieces[3])
         return {'surfaceNo' : surfaceNo}
     
+    #Creates a new surface for projection with an ID as requested by the API Call
     def newSurfaceWithID(self, peices):
         surfaceNo = self.GUI.newSurfaceWithID(pieces[2], pieces[3], pieces[4], pieces[1])
         return {'surfaceNo' : surfaceNo}
         
+    #Creates a new cursor on the desired surface as requested by the API call
     def newCursor(self, pieces):
         cursorNo = self.GUI.newCursor(pieces[1], pieces[2], pieces[3])
         return {"cursorNo" : cursorNo}
     
+    #Creates a new cursor with an ID on the desired surface as requested by the API call
     def newCursorWithID(self, pieces):
         cursorNo = self.GUI.newCursorWithID(pieces[1], pieces[2], pieces[3], pieces[4])
         return {"cursorNo" : cursorNo}
         
+    #Creates a new window on the desired surface as requested by the API call
     def newWindow(self, pieces):
         windowNo = self.GUI.newWindow(pieces[7], pieces[8], pieces[9], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
         return {"windowNo" : windowNo}
     
+    #Creates a new window with an ID on the desired surface as requested by the API call
     def newWindowWithID(self, pieces):
         windowNo = self.GUI.newWindowWithID(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
         return {"windowNo" : windowNo}
         
+    #Creates a new circle on the desired window as requested by the API call
     def newCircle(self, pieces):
-        #print str(pieces)
-        #print "sending - " + pieces[8] + "," + pieces[9] + "," + pieces[10] + "," + pieces[1] + "," + pieces[2] + "," + pieces[3] + "," + pieces[4] + "," + pieces[5] + "," + pieces[6] + "," + pieces[7]
         elementNo = self.GUI.newCircle(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
         return {"elementNo" : elementNo}
     
+    #Creates a new circle with an ID on the desired window as requested by the API call
     def newCircleWithID(self, pieces):
         print str(pieces)
         print "sending = " + pieces[8] + "," + pieces[9] + "," + pieces[10] + "," + pieces[1] + "," + pieces[2] + "," + pieces[3] + "," + pieces[4] + "," + pieces[5] + "," + pieces[6] + "," + pieces[7] + "," + pieces[8]
         elementNo = self.GUI.newCircleWithID(pieces[9], pieces[10], pieces[11], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
         return {"elementNo" : elementNo}
         
+    #Creates a new line on the desired window as requested by the API call
     def newLine(self, pieces):
         elementNo = self.GUI.newLine(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
         return {"elementNo" : elementNo}
     
+    #Creates a new line with an ID in the desired window as requested by the API call
     def newLineWithID(self, pieces):
         elementNo = self.GUI.newLineWithID(pieces[9], pieces[10], pieces[11], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
         return {"elementNo" : elementNo}
         
+    #Creates the starting point of a new line strip on the desired window as requested by the API call
     def newLineStrip(self, pieces):
         elementNo = self.GUI.newLineStrip(pieces[6], pieces[7], pieces[8], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5])
         return {"elementNo" : elementNo}
     
+    #Creates the starting point of a new line strip with an ID on the desired window as requested by the API call
     def newLineStripWithID(self, pieces):
         elementNo = self.GUI.newLineStripWithID(pieces[7], pieces[8], pieces[9], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
         return {"elementNo" : elementNo}
         
+    #Creates the starting point of a new polygon on the desired window as requested by the API call
     def newPolygon(self, pieces):
         elementNo = self.GUI.newPolygon(pieces[6], pieces[7], pieces[8], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5])
         return {"elementNo" : elementNo}
     
+    #Creates the starting point of a new polygon with an ID on the desired window as requested by the API call
     def newPolygonWithID(self, pieces):
         elementNo = self.GUI.newPolygonWithID(pieces[7], pieces[8], pieces[9], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
         return {"elementNo" : elementNo}
     
+    #Creates a new rectangle on the desired window as requested by the API call
     def newRectangle(self,pieces):
         elementNo = self.GUI.newRectangle(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
         return {"elementNo" : elementNo}
     
+    #Creates a new rectangle with an ID on the desired window as requested by the API call
     def newRectangleWithID(self,pieces):
         elementNo = self.GUI.newRectangleWithID(pieces[9], pieces[10], pieces[11], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
         return {"elementNo" : elementNo}
     
+    #Creates a new textured rectangle on the desired window as requested by the API call
     def newTexRectangle(self,pieces):
         elementNo = self.GUI.newTexRectangle(pieces[7], pieces[8], pieces[9], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
         return {"elementNo" : elementNo}
     
+    #Creates a new textured rectangle with an ID on the desired window as requested by the API call
     def newTexRectangleWithID(self,pieces):
         elementNo = self.GUI.newTexRectangleWithID(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
         return {"elementNo" : elementNo}
             
+    #Creates a new block of text on the desired window as requested by the API call
     def newText(self, pieces):
         elementNo = self.GUI.newText(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
         return {"elementNo" : elementNo}
     
+    #Creates a new block of text with an ID on the desired window as requested by the API call
     def newTextWithID(self, pieces):
         elementNo = self.GUI.newTextWithID(pieces[9], pieces[10], pieces[11], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
         return {"elementNo" : elementNo}
     
+    #Subscribes the current user to a surface
     def subscribeToSurface(self, pieces):
         self.GUI.subscribeToSurface(pieces[3] + "," + pieces[4], pieces[1])
         return {}
     
+    #Gets the ID of a surface
     def getSurfaceID(self, pieces):
         ID = self.GUI.getSurfaceID(pieces[1])
         return {"ID" : ID}
     
+    #Sets the ID of a surface
     def setSurfaceID(self, pieces):
         self.GUI.setSurfaceID(pieces[1],pieces[2])
         return {}
     
+    #Gets the owner of a surface
     def getSurfaceOwner(self, pieces):
         owner = self.GUI.getSurfaceOwner(pieces[1])
         return {"owner" : owner}
     
+    #Gets the details of the creator application of a surface
     def getSurfaceAppDetails(self, pieces):
         app = self.GUI.getSurfaceAppDetails(pieces[1])
         return {"app" : app[0], "instance" : app[1]}
     
+    #Returns all surfaces with the desired ID
     def getSurfacesByID(self, pieces):
         found = self.GUI.getSurfacesByID(pieces[1])
         dict = {}
@@ -170,6 +194,7 @@ class apiMessageParser:
             dict[x] = found[x]
         return dict
     
+    #Returns all surfaces with the desired owner
     def getSurfacesByOwner(self, pieces):
         found = self.GUI.getSurfacesByOwner(pieces[1])
         dict = {}
@@ -178,6 +203,7 @@ class apiMessageParser:
             dict[x] = found[x]
         return dict
     
+    #Returns all surfaces with the desired app name
     def getSurfacesByAppName(self, pieces):
         found = self.GUI.getSurfacesByAppName(pieces[1])
         dict = {}
@@ -186,6 +212,7 @@ class apiMessageParser:
             dict[x] = found[x]
         return dict
     
+    #Returns all surfaces with the desired application details
     def getSurfacesByAppDetails(self, pieces):
         found = self.GUI.getSurfacesByAppDetails(pieces[1], pieces[2])
         dict = {}
@@ -194,6 +221,7 @@ class apiMessageParser:
             dict[x] = found[x]
         return dict
     
+    #Registers the application as the admin for the surface
     def becomeSurfaceAdmin(self, pieces):
         test = self.GUI.becomeSurfaceAdmin(pieces[1], pieces[3], pieces[4])
         if(test==True):
@@ -201,6 +229,7 @@ class apiMessageParser:
         else:
             return {"error" : 7}
         
+    #Deregisters the current user as admin for the surface
     def stopBeingSurfaceAdmin(self, pieces):
         test = self.GUI.stopBeingSurfaceAdmin(pieces[1], pieces[3], pieces[4])
         if(test==True):
@@ -208,10 +237,12 @@ class apiMessageParser:
         else:
             return {"error" : 7}
         
+    #Sets the edge points for a surface
     def setSurfaceEdges(self, pieces):
         self.GUI.setSurfacePoints(pieces[1],pieces[2],pieces[3],pieces[4],pieces[5])
         return {}
         
+    #Removes all the known edge points from a surface so it is no longer shown.
     def undefineSurface(self, pieces):
         self.GUI.undefineSurface(pieces[1])
         return {}
@@ -1073,6 +1104,7 @@ class apiMessageParser:
         return (rendertarget,fbo)
     
     def renderSurfaceTex(self, surfaceNo):
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         windows = self.GUI.getWindows(surfaceNo) #Gathers the list of windows on the surface
         glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST)
         glHint(GL_LINE_SMOOTH_HINT, GL_NICEST)
@@ -1082,6 +1114,13 @@ class apiMessageParser:
         glEnable(GL_POINT_SMOOTH)
         for x in range(0,len(windows)):
             self.renderWindowContents(windows[x], self.GUI)
+        cursors = self.GUI.getCursors(surfaceNo) #Gathers the list of cursors on the setup surface
+        
+        #Loops through all the cursors on the setup surface
+        for z in range(0,len(cursors)):
+            position = self.GUI.getCursorPos(cursors[z]) #Gets the position of the current cursor
+            rotation = self.GUI.getCursorRotation(cursors[z]) #Gets the rotation of the current cursor
+            self.drawCursor(position[0],position[1],rotation) #Draws the cursor at the correct position with the correct rotation
         
     def drawMesh(self, surfaceNo):
         glDisable(GL_LIGHTING)
