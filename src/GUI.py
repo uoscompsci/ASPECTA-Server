@@ -701,6 +701,9 @@ class GUI:
 			self.windows[str(origWin)].removeElement(elementNo)
 			self.windows[str(window)].addElement(elementNo)
 			
+	def removeElement(self, elementNo, window):
+		self.windows[window].removeElement(elementNo)
+			
 	def getTextPos(self, elementNo):
 		xloc = self.elements[str(elementNo)].getLocationX()
 		yloc = self.elements[str(elementNo)].getLocationY()
