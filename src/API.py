@@ -1418,16 +1418,16 @@ class apiMessageParser:
                     if(upToDate==False):
                         points = []
                         temp = GUIRead.getRectangleTopLeft(elements[z])
-                        drawPos = [temp[0] + winPos[0],temp[1] + winPos[1]]
+                        drawPos = [temp[0] + winPos[0],temp[1] + winPos[1] - height]
                         points.append(drawPos)
                         temp = GUIRead.getRectangleTopRight(elements[z])
-                        drawPos = [temp[0] + winPos[0],temp[1] + winPos[1]]
+                        drawPos = [temp[0] + winPos[0],temp[1] + winPos[1] - height]
                         points.append(drawPos)
                         temp = GUIRead.getRectangleBottomRight(elements[z])
-                        drawPos = [temp[0] + winPos[0],temp[1] + winPos[1]]
+                        drawPos = [temp[0] + winPos[0],temp[1] + winPos[1] - height]
                         points.append(drawPos)
                         temp = GUIRead.getRectangleBottomLeft(elements[z])
-                        drawPos = [temp[0] + winPos[0],temp[1] + winPos[1]]
+                        drawPos = [temp[0] + winPos[0],temp[1] + winPos[1] - height]
                         points.append(drawPos)
                         numpy_verts = numpy.array(points, dtype=numpy.float32)
                         self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
@@ -1436,8 +1436,6 @@ class apiMessageParser:
                     upToDate = GUIRead.upToDateLineStrip(elements[z])
                     color = GUIRead.getLineColor(elements[z])
                     colors = color.split(":")
-                    #[winPos[0] + pos[0], winPos[1] - height + pos[1]]
-                    
                     if(upToDate==False):
                         points = [] #Creates an empty list to hold the line points
                         start = GUIRead.getLineStart(elements[z])
@@ -1467,23 +1465,22 @@ class apiMessageParser:
                     self.drawText(pos[0], pos[1], text, elements[z],(colors[0],colors[1],colors[2],colors[3]))
                 elif(type=="texRectangle"): #Runs if the current element is a line strip
                     upToDate = GUIRead.upToDateTexRectangle(elements[z])
-                    colors = color.split(":")
                     if(upToDate==False):
                         texture = GUIRead.getTexRectangleTexture(elements[z])
                         self.textureBuffer[elements[z]] = Texture(texture)
                         texCoors = [[0.0,1.0],[1.0,1.0],[1.0,0.0],[0.0,0.0]]
                         points = []
                         temp = GUIRead.getTexRectangleTopLeft(elements[z])
-                        drawPos = [temp[0] + winPos[0],temp[1] + winPos[1]]
+                        drawPos = [temp[0] + winPos[0],temp[1] + winPos[1] - height]
                         points.append(drawPos)
                         temp = GUIRead.getTexRectangleTopRight(elements[z])
-                        drawPos = [temp[0] + winPos[0],temp[1] + winPos[1]]
+                        drawPos = [temp[0] + winPos[0],temp[1] + winPos[1] - height]
                         points.append(drawPos)
                         temp = GUIRead.getTexRectangleBottomRight(elements[z])
-                        drawPos = [temp[0] + winPos[0],temp[1] + winPos[1]]
+                        drawPos = [temp[0] + winPos[0],temp[1] + winPos[1] - height]
                         points.append(drawPos)
                         temp = GUIRead.getTexRectangleBottomLeft(elements[z])
-                        drawPos = [temp[0] + winPos[0],temp[1] + winPos[1]]
+                        drawPos = [temp[0] + winPos[0],temp[1] + winPos[1] - height]
                         points.append(drawPos)
                         numpy_verts = numpy.array(points, dtype=numpy.float32)
                         numpy_tex = numpy.array(texCoors, dtype=numpy.float32)
