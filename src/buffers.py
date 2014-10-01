@@ -14,7 +14,10 @@ class VertexBuffer(object):
 		glBufferData(GL_ARRAY_BUFFER, ADT.arrayByteCount(data), ADT.voidDataPointer(data), usage)
 
 	def __del__(self):
-		glDeleteBuffers(1, GL.GLuint(self.buffer))
+		try:
+			glDeleteBuffers(1, GL.GLuint(self.buffer))
+		except:
+			pass
 
 	def bind(self):
 		glBindBuffer(GL_ARRAY_BUFFER, self.buffer)
