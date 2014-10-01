@@ -5,7 +5,7 @@ import pygame
 from pygame.locals import *
 from threading import Thread
 from math import *
-from coons import coonsCalc
+from straightcoons import coonsCalc
 import FTGL
 import time
 import numpy
