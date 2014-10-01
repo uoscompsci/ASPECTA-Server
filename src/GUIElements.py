@@ -789,6 +789,7 @@ class rectangle(element):
         self.height = height
         self.lineColor = lineColor
         self.fillColor = fillColor
+        self.visible=True
         self.owner = owner
         self.app = app
         self.appno = appno
@@ -863,6 +864,7 @@ class texRectangle(element):
         self.width = width
         self.height = height
         self.texture = texture
+        self.visible=True
         self.owner = owner
         self.app = app
         self.appno = appno

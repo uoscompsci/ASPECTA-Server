@@ -1,6 +1,7 @@
 from GUIElements import *
 import threading
 from math import *
+import time
 
 class GUI:
 	__slots__ = ['surfaces', 'surfaces_lock', 'displays', 'displays_lock', 'cursors', 'cursors_lock', 'lastcur', 'lastsur', 'lastwin', 'lastele' 'windows', 'windows_lock', 'elements', 'elements_lock', 'setup_surface_visible']
@@ -702,6 +703,12 @@ class GUI:
 			self.windows[str(window)].addElement(elementNo)
 			
 	def removeElement(self, elementNo, window):
+		self.elements[str(elementNo)].hide()
+		removalThread = threading.Thread(target=self.delayedRemove, args=[window,elementNo]) #Creates the display thread
+		removalThread.start()
+		
+	def delayedRemove(self, window, elementNo):
+		time.sleep(2)
 		self.windows[window].removeElement(elementNo)
 			
 	def getTextPos(self, elementNo):
@@ -797,6 +804,14 @@ class GUI:
 	
 	def getElements(self, windowNo):
 		return self.windows[str(windowNo)].getElements()
+	
+	def getVisibleElements(self, windowNo):
+		found = []
+		orig = self.windows[str(windowNo)].getElements()
+		for x in range(0, len(orig)):
+			if(self.elements[orig[x]].isVisible()):
+				found.append(orig[x])
+		return found
 	
 	def getClickedElements(self, surfaceNo, x, y):
 		windows = self.getWindows(surfaceNo)
