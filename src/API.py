@@ -1659,8 +1659,10 @@ class apiMessageParser:
             self.checkSetupGUI() #The setup GUI is rendered if it is meant to be visible
 			
             pygame.display.flip() #Displays the display surface on the screen
+            
+            time.sleep(1.0/self.demandedFps)
 			
-            clock.tick(self.demandedFps) #Sets the maximum FPS allowed
+            #clock.tick(self.demandedFps) #Sets the maximum FPS allowed
 	
     #Creates a GUI object and starts a thread to display its contents
     def __init__(self):

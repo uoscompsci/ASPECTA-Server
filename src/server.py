@@ -1,6 +1,7 @@
 import socket
 import select
 import sys
+import time
 from threading import Thread
 from Queue import Queue
 from API import apiMessageParser
@@ -14,6 +15,7 @@ sock2app = {}
 
 #Constantly monitors the queue for received messages
 def message_queue_monitor():
+	time.sleep(0.0/30)
 	counter = 0
 	while(True):
 		if(len(queue)!=0):
