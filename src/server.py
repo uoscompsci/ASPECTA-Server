@@ -12,12 +12,13 @@ queue = deque([])
 sock2usr = {}
 app2sock = {}
 sock2app = {}
+loop = True
 
 #Constantly monitors the queue for received messages
 def message_queue_monitor():
 	time.sleep(0.0/30)
 	counter = 0
-	while(True):
+	while(loop):
 		if(len(queue)!=0):
 			qitem = queue.pop()
 			reply(qitem[0],str(messageParser.processMessage(qitem[1] + "," + sock2usr[qitem[0]] + "," + sock2app[qitem[0]])))
@@ -58,7 +59,7 @@ if __name__ == "__main__":
 	loop = True
 	
 	#Loop until the looping flag changes
-	while(loop==True):
+	while(loop):
 		try:
 			read_sockets,write_sockets,error_sockets = select.select(CONNECTION_LIST,[],[]) #Wait until ready for IO
 		except:
@@ -76,6 +77,7 @@ if __name__ == "__main__":
 					if data:
 						if(data == "quit"): #If the received data is a quit command close the socket and exit
 							print '\033[1;31mShutting down server\033[1;m'
+							messageParser.processMessage(data)
 							loop=False
 						elif(data.startswith("login,")):
 							pieces = data.split(',')
@@ -111,3 +113,5 @@ if __name__ == "__main__":
 					CONNECTION_LIST.remove(sock)
 					continue
 	server_socket.close()
+	time.sleep(0.2)
+	sys.exit(0)

@@ -48,6 +48,7 @@ class apiMessageParser:
     mouseLock = False
     elementBuffer = {}
     textureBuffer = {}
+    looping = True
     
     fonts = {"Times New Roman" : "FreeSerif",
          "Free Serif" : "FreeSerif",
@@ -974,6 +975,8 @@ class apiMessageParser:
     
     #Takes a recieved API message and processes it
     def processMessage(self, msg):
+        if(msg=="quit"):
+            self.looping = False
         pieces = msg.split(',') #Splits the message up into sections
         data = None #Creates an empty variable to hold the message reply
         try:
@@ -1622,7 +1625,7 @@ class apiMessageParser:
         clock = pygame.time.Clock() #Creates a clock to enable FPS control
         
         #The rendering loop
-        while 1:
+        while self.looping:
             event = pygame.event.poll() # Polls for events
             
             #If a quit event has been received the program is closed
@@ -1663,6 +1666,8 @@ class apiMessageParser:
             time.sleep(1.0/self.demandedFps)
 			
             #clock.tick(self.demandedFps) #Sets the maximum FPS allowed
+        time.sleep(0.1)
+        pygame.quit()
 	
     #Creates a GUI object and starts a thread to display its contents
     def __init__(self):
