@@ -358,6 +358,8 @@ class surface():
         self.adminMode = False
         self.defined = False
         self.renderUpdate = False
+        self.rotation = 0
+        self.mirrored = False
         
     def setPoints(self, topPoints, bottomPoints, leftPoints, rightPoints):
         parser = SafeConfigParser()
@@ -387,6 +389,12 @@ class surface():
         self.meshPoints = ccalc.getCoonsPoints(self.curveResolution,self.curveResolution)
         self.defined = True
         self.renderUpdate = True
+        
+    def getRotation(self):
+        return self.rotation
+        
+    def getMirrored(self):
+        return self.mirrored
         
     def checkRenderUpdate(self):
         temp = self.renderUpdate

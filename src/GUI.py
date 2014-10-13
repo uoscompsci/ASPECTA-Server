@@ -123,6 +123,12 @@ class GUI:
 	def getSurfacePoints(self, surfaceNo):
 		return self.surfaces[str(surfaceNo)].getPoints()
 	
+	def getSurfaceRotation(self, surfaceNo):
+		return self.surfaces[str(surfaceNo)].getRotation()
+		
+	def getSurfaceMirrored(self, surfaceNo):
+		return self.surfaces[str(surfaceNo)].getMirrored()
+	
 	def checkSurfaceRenderUpdate(self, surfaceNo):
 		return self.surfaces[str(surfaceNo)].checkRenderUpdate()
 	

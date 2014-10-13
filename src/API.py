@@ -1133,7 +1133,7 @@ class apiMessageParser:
             rotation = self.GUI.getCursorRotation(cursors[z]) #Gets the rotation of the current cursor
             self.drawCursor(position[0],position[1],rotation,False) #Draws the cursor at the correct position with the correct rotation
         
-    def drawMesh(self, surfaceNo):
+    def drawMesh(self, surfaceNo, rotation, mirrored):
         glDisable(GL_LIGHTING)
         glEnable(GL_TEXTURE_2D)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -1144,7 +1144,29 @@ class apiMessageParser:
         
         glBindTexture(GL_TEXTURE_2D, rendertarget)
         self.meshBuffer[str(surfaceNo)][0].bind_vertexes(2, GL_FLOAT)
-        self.meshBuffer[str(surfaceNo)][1].bind_texcoords(2, GL_FLOAT)
+        
+        tb = None
+        if(rotation==0):
+            if(mirrored):
+                tb = VertexBuffer(self.numpy_tex_0_m, GL_STATIC_DRAW)
+            else:
+                tb = VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW)
+        elif(rotation==1):
+            if(mirrored):
+                tb = VertexBuffer(self.numpy_tex_90_m, GL_STATIC_DRAW)
+            else:
+                tb = VertexBuffer(self.numpy_tex_90, GL_STATIC_DRAW)
+        elif(rotation==2):
+            if(mirrored):
+                tb = VertexBuffer(self.numpy_tex_180_m, GL_STATIC_DRAW)
+            else:
+                tb = VertexBuffer(self.numpy_tex_180, GL_STATIC_DRAW)
+        elif(rotation==3):
+            if(mirrored):
+                tb = VertexBuffer(self.numpy_tex_270_m, GL_STATIC_DRAW)
+            else:
+                tb = VertexBuffer(self.numpy_tex_270, GL_STATIC_DRAW)
+        tb.bind_texcoords(2, GL_FLOAT)
         
         glEnableClientState(GL_VERTEX_ARRAY)
         glEnableClientState(GL_TEXTURE_COORD_ARRAY)
@@ -1242,7 +1264,7 @@ class apiMessageParser:
                         sine = float(rad) * sin(i*2*pi/sides)
                         points.append([cosine+float(cirPos[0]),sine+float(cirPos[1])])
                     numpy_verts = numpy.array(points, dtype=numpy.float32)
-                    self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
+                    self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
                 self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]),sides)
             elif(type=="lineStrip"): #Runs if the current element is a line strip
                 upToDate = GUIRead.upToDateLineStrip(elements[z])
@@ -1260,7 +1282,7 @@ class apiMessageParser:
                             drawPos = [pos[0], pos[1]] #Converts the position of the point based on the window location
                             strip.append(drawPos) #Adds the calculated position to the point list
                         numpy_verts = numpy.array(strip, dtype=numpy.float32)
-                        self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
+                        self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
                     self.drawLineStrip(elements[z],GUIRead.getLineStripWidth(elements[z]),(colors[0],colors[1],colors[2],colors[3]),GUIRead.getLineStripPointsCount(elements[z])) #Draws a strip based on the point list
             elif(type=="polygon"): #Runs if the current element is a line strip
                 upToDate = GUIRead.upToDatePolygon(elements[z])
@@ -1275,7 +1297,7 @@ class apiMessageParser:
                             drawPos = [pos[0], pos[1]]
                             points.append(drawPos)
                         numpy_verts = numpy.array(points, dtype=numpy.float32)
-                        self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
+                        self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
                     self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]),noPoints)
             elif(type=="rectangle"): #Runs if the current element is a line strip
                 upToDate = GUIRead.upToDateRectangle(elements[z])
@@ -1296,7 +1318,7 @@ class apiMessageParser:
                     drawPos = [temp[0],temp[1]]
                     points.append(drawPos)
                     numpy_verts = numpy.array(points, dtype=numpy.float32)
-                    self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
+                    self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
                 self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]),4)
             elif(type=="line"):
                 upToDate = GUIRead.upToDateLineStrip(elements[z])
@@ -1309,7 +1331,7 @@ class apiMessageParser:
                     points.append([start[0],start[1]])
                     points.append([end[0],end[1]])
                     numpy_verts = numpy.array(points, dtype=numpy.float32)
-                    self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
+                    self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
                 self.drawLineStrip(elements[z],GUIRead.getLineWidth(elements[z]),(colors[0],colors[1],colors[2],colors[3]),2) #Draws a line based on the points
             elif(type=="text"):
                 upToDate = GUIRead.upToDateText(elements[z])
@@ -1378,7 +1400,7 @@ class apiMessageParser:
                         sine = float(rad) * sin(i*2*pi/sides)
                         points.append([cosine+float(cirPos[0])+float(winPos[0]),sine+float(cirPos[1])+float(winPos[1])-height])
                     numpy_verts = numpy.array(points, dtype=numpy.float32)
-                    self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
+                    self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
                 self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]),sides)
             elif(type=="lineStrip"): #Runs if the current element is a line strip
                 upToDate = GUIRead.upToDateLineStrip(elements[z])
@@ -1396,7 +1418,7 @@ class apiMessageParser:
                             drawPos = [winPos[0] + pos[0], winPos[1] - height + pos[1]] #Converts the position of the point based on the window location
                             strip.append(drawPos)
                         numpy_verts = numpy.array(strip, dtype=numpy.float32)
-                        self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
+                        self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
                     self.drawLineStrip(elements[z],GUIRead.getLineStripWidth(elements[z]),(colors[0],colors[1],colors[2],colors[3]),GUIRead.getLineStripPointsCount(elements[z])) #Draws a strip based on the point list
             elif(type=="polygon"): #Runs if the current element is a line strip
                 upToDate = GUIRead.upToDatePolygon(elements[z])
@@ -1411,7 +1433,7 @@ class apiMessageParser:
                             drawPos = [pos[0]+winPos[0], pos[1] + winPos[1] - height]
                             points.append(drawPos)
                         numpy_verts = numpy.array(points, dtype=numpy.float32)
-                        self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
+                        self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
                     self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]),noPoints)
             elif(type=="rectangle"): #Runs if the current element is a line strip
                 upToDate = GUIRead.upToDateRectangle(elements[z])
@@ -1432,7 +1454,7 @@ class apiMessageParser:
                     drawPos = [temp[0] + winPos[0],temp[1] + winPos[1] - height]
                     points.append(drawPos)
                     numpy_verts = numpy.array(points, dtype=numpy.float32)
-                    self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
+                    self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
                 self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]),4)
             elif(type=="line"):
                 upToDate = GUIRead.upToDateLineStrip(elements[z])
@@ -1445,7 +1467,7 @@ class apiMessageParser:
                     points.append([float(start[0])+winPos[0],float(start[1])+winPos[1]-height])
                     points.append([float(end[0])+winPos[0],float(end[1])+winPos[1]-height])
                     numpy_verts = numpy.array(points, dtype=numpy.float32)
-                    self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
+                    self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
                 self.drawLineStrip(elements[z],GUIRead.getLineWidth(elements[z]),(colors[0],colors[1],colors[2],colors[3]),2) #Draws a line based on the points
             elif(type=="text"):
                 upToDate = GUIRead.upToDateText(elements[z])
@@ -1561,7 +1583,6 @@ class apiMessageParser:
         self.renderOrder = []
         lTOr = True
         for y in range(0,self.pps-1):
-            orderStrip = []
             if(lTOr == True):
                 for x in range(0,self.pps):
                     self.renderOrder.append(self.pps*y + x)
@@ -1605,9 +1626,34 @@ class apiMessageParser:
         for y in list(reversed(range(0,self.pps))):
             for x in range(0,self.pps):
                 tex.append([(1.0/(self.pps-1))*x,(1.0/(self.pps-1))*y])
-        self.numpy_tex = numpy.array(tex, dtype=numpy.float32)
+        self.numpy_tex_0 = numpy.array(tex, dtype=numpy.float32)
+        tex = list(reversed(tex))
+        self.numpy_tex_180 = numpy.array(tex, dtype=numpy.float32)
 
+        tex=[]
+        for x in range(0,self.pps):
+            for y in range(0,self.pps):
+                tex.append([(1.0/(self.pps-1))*x,(1.0/(self.pps-1))*y])
+        self.numpy_tex_90 = numpy.array(tex, dtype=numpy.float32)
+        tex = list(reversed(tex))
+        self.numpy_tex_270 = numpy.array(tex, dtype=numpy.float32)
+
+        tex=[]
+        for x in list(reversed(range(0,self.pps))):
+            for y in range(0,self.pps):
+                tex.append([(1.0/(self.pps-1))*x,(1.0/(self.pps-1))*y])
+        self.numpy_tex_90_m = numpy.array(tex, dtype=numpy.float32)
+        tex = list(reversed(tex))
+        self.numpy_tex_270_m = numpy.array(tex, dtype=numpy.float32)
 		
+        tex=[]
+        for y in list(reversed(range(0,self.pps))):
+            for x in list(reversed(range(0,self.pps))):
+                tex.append([(1.0/(self.pps-1))*x,(1.0/(self.pps-1))*y])
+        self.numpy_tex_0_m = numpy.array(tex, dtype=numpy.float32)
+        tex = list(reversed(tex))
+        self.numpy_tex_180_m = numpy.array(tex, dtype=numpy.float32)
+    
     #Starts the pygame window and runs the rendering loop
     def display(self):
         video_flags = OPENGL | DOUBLEBUF
@@ -1648,8 +1694,10 @@ class apiMessageParser:
                                 meshloc = mesh[str(x) + "," + str(y)]
                                 verts.append([meshloc[0],meshloc[1]])
                         numpy_verts = numpy.array(verts, dtype=numpy.float32)
-                        self.meshBuffer[str(z+1)] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
-                    self.drawMesh(z+1)
+                        self.meshBuffer[str(z+1)] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
+                    rot = self.GUI.getSurfaceRotation(z+1)
+                    mir = self.GUI.getSurfaceMirrored(z+1)
+                    self.drawMesh(z+1,rot,mir)
                     if(self.showMeshLines==True):
                         for x in range(0,len(self.meshLines)):
                             self.meshBuffer[str(z+1)][0].bind_vertexes(2, GL_FLOAT)
