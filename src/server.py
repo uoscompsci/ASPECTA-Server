@@ -38,12 +38,13 @@ if __name__ == "__main__":
 	parser.read("config.ini")
 	RECV_BUFFER = parser.getint('connection','RecieveBuffer')
 	PORT = parser.getint('connection','port')
+	HOST = parser.get('connection','host')
 	 
 	CONNECTION_LIST = []
 	 
 	server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # why is this not working?
-	server_socket.bind(("138.251.207.231", PORT))
+	server_socket.bind((HOST, PORT))
 	server_socket.listen(10)
  
 	CONNECTION_LIST.append(server_socket)

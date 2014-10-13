@@ -43,8 +43,8 @@ class Texture():
 class apiMessageParser:
     __slots__ = ['GUI','meshBuffer','renderOrder', 'elementBuffer']
     
-    winWidth = 1280
-    winHeight = 1024
+    winWidth = 1024
+    winHeight = 768
     mouseLock = False
     elementBuffer = {}
     textureBuffer = {}
@@ -1444,7 +1444,6 @@ class apiMessageParser:
                     end = GUIRead.getLineEnd(elements[z])
                     points.append([float(start[0])+winPos[0],float(start[1])+winPos[1]-height])
                     points.append([float(end[0])+winPos[0],float(end[1])+winPos[1]-height])
-                    print str(points)
                     numpy_verts = numpy.array(points, dtype=numpy.float32)
                     self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex, GL_STATIC_DRAW))
                 self.drawLineStrip(elements[z],GUIRead.getLineWidth(elements[z]),(colors[0],colors[1],colors[2],colors[3]),2) #Draws a line based on the points
