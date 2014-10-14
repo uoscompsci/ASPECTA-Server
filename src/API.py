@@ -247,6 +247,26 @@ class apiMessageParser:
     def undefineSurface(self, pieces):
         self.GUI.undefineSurface(pieces[1])
         return {}
+    
+    def rotateSurfaceTo0(self, pieces):
+        self.GUI.rotateSurfaceTo0(pieces[1])
+        return {}
+    
+    def rotateSurfaceTo90(self, pieces):
+        self.GUI.rotateSurfaceTo90(pieces[1])
+        return {}
+    
+    def rotateSurfaceTo180(self, pieces):
+        self.GUI.rotateSurfaceTo180(pieces[1])
+        return {}
+    
+    def rotateSurfaceTo270(self, pieces):
+        self.GUI.rotateSurfaceTo270(pieces[1])
+        return {}
+    
+    def mirrorSurface(self, pieces):
+        self.GUI.mirrorSurface(pieces[1])
+        return {}
 
     def subscribeToWindow(self, pieces):
         self.GUI.subscribeToWindow(pieces[3] + "," + pieces[4], pieces[1])
@@ -843,6 +863,11 @@ class apiMessageParser:
             'stop_being_surface_admin' : (stopBeingSurfaceAdmin, 1),
             'set_surface_edges' : (setSurfaceEdges, 5),
             'undefine_surface' : (undefineSurface, 1),
+            'rotate_surface_to_0' : (rotateSurfaceTo0, 1),
+            'rotate_surface_to_90' : (rotateSurfaceTo90, 1),
+            'rotate_surface_to_180' : (rotateSurfaceTo180, 1),
+            'rotate_surface_to_270' : (rotateSurfaceTo270, 1),
+            'mirror_surface' : (mirrorSurface, 1),
             'subscribe_to_window' : (subscribeToWindow, 1),
             'get_window_ID' : (getWindowID, 1),
             'set_window_ID' : (setWindowID, 2),

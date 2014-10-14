@@ -129,6 +129,21 @@ class GUI:
 	def getSurfaceMirrored(self, surfaceNo):
 		return self.surfaces[str(surfaceNo)].getMirrored()
 	
+	def rotateSurfaceTo0(self, surfaceNo):
+		self.surfaces[str(surfaceNo)].rotateTo0()
+		
+	def rotateSurfaceTo90(self, surfaceNo):
+		self.surfaces[str(surfaceNo)].rotateTo90()
+		
+	def rotateSurfaceTo180(self, surfaceNo):
+		self.surfaces[str(surfaceNo)].rotateTo180()
+		
+	def rotateSurfaceTo270(self, surfaceNo):
+		self.surfaces[str(surfaceNo)].rotateTo270()
+		
+	def mirrorSurface(self, surfaceNo):
+		self.surfaces[str(surfaceNo)].mirror()
+	
 	def checkSurfaceRenderUpdate(self, surfaceNo):
 		return self.surfaces[str(surfaceNo)].checkRenderUpdate()
 	

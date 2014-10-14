@@ -395,6 +395,24 @@ class surface():
         
     def getMirrored(self):
         return self.mirrored
+    
+    def rotateTo0(self):
+        self.rotation=0
+        
+    def rotateTo90(self):
+        self.rotation=1
+        
+    def rotateTo180(self):
+        self.rotation=2
+        
+    def rotateTo270(self):
+        self.rotation=3
+        
+    def mirror(self):
+        if (self.mirrored):
+            self.mirrored=False
+        else:
+            self.mirrored=True
         
     def checkRenderUpdate(self):
         temp = self.renderUpdate
