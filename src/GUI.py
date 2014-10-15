@@ -148,7 +148,7 @@ class GUI:
 		print "Connecting " + side1 + " of " + surfaceNo1 + " to " + side2 + " of " + surfaceNo2
 		
 	def disconnectSurfaces(self, surfaceNo1, side1, surfaceNo2, side2):
-		
+		print "Disconnecting " + side1 + " of " + surfaceNo1 + " from " + side2 + " of " + surfaceNo2
 	
 	def checkSurfaceRenderUpdate(self, surfaceNo):
 		return self.surfaces[str(surfaceNo)].checkRenderUpdate()
