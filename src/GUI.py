@@ -143,6 +143,12 @@ class GUI:
 		
 	def mirrorSurface(self, surfaceNo):
 		self.surfaces[str(surfaceNo)].mirror()
+		
+	def connectSurfaces(self, surfaceNo1, side1, surfaceNo2, side2):
+		print "Connecting " + side1 + " of " + surfaceNo1 + " to " + side2 + " of " + surfaceNo2
+		
+	def disconnectSurfaces(self, surfaceNo1, side1, surfaceNo2, side2):
+		
 	
 	def checkSurfaceRenderUpdate(self, surfaceNo):
 		return self.surfaces[str(surfaceNo)].checkRenderUpdate()

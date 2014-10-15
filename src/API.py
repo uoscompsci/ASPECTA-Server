@@ -267,6 +267,14 @@ class apiMessageParser:
     def mirrorSurface(self, pieces):
         self.GUI.mirrorSurface(pieces[1])
         return {}
+    
+    def connectSurfaces(self, pieces):
+        self.GUI.connectSurfaces(pieces[1], pieces[2], pieces[3], pieces[4])
+        return {}
+        
+    def disconnectSurfaces(self, pieces):
+        self.GUI.disconnectSurfaces(pieces[1], pieces[2], pieces[3], pieces[4])
+        return {}
 
     def subscribeToWindow(self, pieces):
         self.GUI.subscribeToWindow(pieces[3] + "," + pieces[4], pieces[1])
@@ -868,6 +876,8 @@ class apiMessageParser:
             'rotate_surface_to_180' : (rotateSurfaceTo180, 1),
             'rotate_surface_to_270' : (rotateSurfaceTo270, 1),
             'mirror_surface' : (mirrorSurface, 1),
+            'connect_surfaces' : (connectSurfaces, 4),
+            'disconnect_surfaces' : (disconnectSurfaces, 4),
             'subscribe_to_window' : (subscribeToWindow, 1),
             'get_window_ID' : (getWindowID, 1),
             'set_window_ID' : (setWindowID, 2),
