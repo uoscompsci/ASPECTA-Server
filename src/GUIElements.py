@@ -152,6 +152,9 @@ class cursor:
 
     def getY(self):
         return self.loc.getY()
+    
+    def getLoc(self):
+        return (self.getX(), self.getY())
         
     def testMove(self, xdist, ydist):
         dists1 = self.testMoveX(xdist)

@@ -7,6 +7,10 @@ class GUI:
 	__slots__ = ['surfaces', 'surfaces_lock', 'displays', 'displays_lock', 'cursors', 'cursors_lock', 'lastcur', 'lastsur', 'lastwin', 'lastele' 'windows', 'windows_lock', 'elements', 'elements_lock', 'setup_surface_visible']
 	
 	def __init__(self):
+		parser = SafeConfigParser()
+		parser.read("config.ini")
+		self.winWidth = parser.getint('surfaces', 'windowWidth')
+		self.winHeight = parser.getint('surfaces', 'windowHeight')
 		self.lastcur = 0
 		self.lastsur = 0
 		self.lastwin = 0
@@ -199,7 +203,27 @@ class GUI:
 		return location
 	
 	def moveCursor(self, cursorNo, xDist, yDist):
-		self.cursors[str(cursorNo)].move(xDist,yDist) #TODO Handle when moves to different screen
+		xDist = float(xDist)
+		yDist = float(yDist)
+		loc = self.getCursorPos(cursorNo)
+		finalLoc=[0,0]
+		testLoc=[loc[0]+xDist,loc[1]+yDist]
+		if(testLoc[0] > self.winWidth):
+			finalLoc[0] = self.winWidth
+		elif(testLoc[0] < 0):
+			finalLoc[0] = 0
+		else:
+			finalLoc[0] = testLoc[0]
+		if(testLoc[1] > self.winHeight):
+			finalLoc[1] = self.winHeight
+		elif(testLoc[1] < 0):
+			finalLoc[1] = 0
+		else:
+			finalLoc[1] = testLoc[1]
+		self.setCursorPos(cursorNo, finalLoc[0], finalLoc[1], self.findCursor(cursorNo)) #TODO Handle when moves to different screen
+		
+	def getCursorPos(self, cursorNo):
+		return self.cursors[str(cursorNo)].getLoc()
 		
 	def testMoveCursor(self, cursorNo, xDist, yDist):
 		return self.cursors[str(cursorNo)].testMove(xDist,yDist) #TODO Handle when moves to different screen

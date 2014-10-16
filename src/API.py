@@ -41,10 +41,8 @@ class Texture():
 
 #A class which is used to parse API messages and call the relevant actions
 class apiMessageParser:
-    __slots__ = ['GUI','meshBuffer','renderOrder', 'elementBuffer']
+    __slots__ = ['GUI','meshBuffer','renderOrder', 'elementBuffer', 'winWidth', 'winHeight']
     
-    winWidth = 1024
-    winHeight = 768
     mouseLock = False
     elementBuffer = {}
     textureBuffer = {}
@@ -1586,7 +1584,6 @@ class apiMessageParser:
         #glShadeModel(GL_SMOOTH)
         parser = SafeConfigParser()
         parser.read("config.ini")
-        self.pps = parser.getint('surfaces','curveResolution')
         temp = parser.getint('surfaces','showMeshLines')
         if(temp==0):
             self.showMeshLines = False
@@ -1753,6 +1750,11 @@ class apiMessageParser:
 	
     #Creates a GUI object and starts a thread to display its contents
     def __init__(self):
+        parser = SafeConfigParser()
+        parser.read("config.ini")
+        self.pps = parser.getint('surfaces','curveResolution')
+        self.winWidth = parser.getint('surfaces', 'windowWidth')
+        self.winHeight = parser.getint('surfaces', 'windowHeight')
         self.GUI = GUI() #Creates the GUI
         thread = Thread(target=self.display, args=()) #Creates the display thread
         thread.start() #Starts the display thread
