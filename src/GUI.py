@@ -208,18 +208,32 @@ class GUI:
 		loc = self.getCursorPos(cursorNo)
 		finalLoc=[0,0]
 		testLoc=[loc[0]+xDist,loc[1]+yDist]
-		if(testLoc[0] > self.winWidth):
-			finalLoc[0] = self.winWidth
-		elif(testLoc[0] < 0):
-			finalLoc[0] = 0
+		if(self.findCursor(cursorNo)==0):
+			if(testLoc[0] > self.winWidth):
+				finalLoc[0] = self.winWidth
+			elif(testLoc[0] < 0):
+				finalLoc[0] = 0
+			else:
+				finalLoc[0] = testLoc[0]
+			if(testLoc[1] > self.winHeight):
+				finalLoc[1] = self.winHeight
+			elif(testLoc[1] < 0):
+				finalLoc[1] = 0
+			else:
+				finalLoc[1] = testLoc[1]
 		else:
-			finalLoc[0] = testLoc[0]
-		if(testLoc[1] > self.winHeight):
-			finalLoc[1] = self.winHeight
-		elif(testLoc[1] < 0):
-			finalLoc[1] = 0
-		else:
-			finalLoc[1] = testLoc[1]
+			if(testLoc[0] > 512):
+				finalLoc[0] = 512
+			elif(testLoc[0] < 0):
+				finalLoc[0] = 0
+			else:
+				finalLoc[0] = testLoc[0]
+			if(testLoc[1] > 512):
+				finalLoc[1] = 512
+			elif(testLoc[1] < 0):
+				finalLoc[1] = 0
+			else:
+				finalLoc[1] = testLoc[1]
 		self.setCursorPos(cursorNo, finalLoc[0], finalLoc[1], self.findCursor(cursorNo)) #TODO Handle when moves to different screen
 		
 	def getCursorPos(self, cursorNo):
