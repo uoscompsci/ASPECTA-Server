@@ -518,6 +518,21 @@ class surface():
     def undefine(self):
         self.defined = False
         
+class surfaceConnection:
+    __slots__ = ['surface1No', 'surface1Side', 'surface2No', 'surface2Side']
+    
+    def __init__(self, surface1No, surface1Side, surface2No, surface2Side):
+        self.surface1No = surface1No
+        self.surface1Side = surface1Side
+        self.surface2No = surface2No
+        self.surface2Side = surface2Side
+        
+    def getSurface1(self):
+        return (self.surface1No,self.surface1Side)
+    
+    def getSurface2(self):
+        return (self.surface2No,self.surface2Side)
+        
 class element:
     __slots__ = ['elementType', 'visible', 'elementID', 'owner', 'app', 'appno', 'subscribers', 'adminMode']
 

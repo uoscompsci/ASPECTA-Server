@@ -20,6 +20,7 @@ class GUI:
 		self.surfaces = {}
 		self.windows = {}
 		self.elements = {}
+		self.connections = []
 		self.surfaces["0"] = surface("server", "server", "0")
 		self.setup_surface_visible = False
 		
@@ -145,10 +146,24 @@ class GUI:
 		self.surfaces[str(surfaceNo)].mirror()
 		
 	def connectSurfaces(self, surfaceNo1, side1, surfaceNo2, side2):
-		print "Connecting " + side1 + " of " + surfaceNo1 + " to " + side2 + " of " + surfaceNo2
+		newConnection = surfaceConnection(surfaceNo1, side1, surfaceNo2, side2)
+		self.connections.append(newConnection)
 		
 	def disconnectSurfaces(self, surfaceNo1, side1, surfaceNo2, side2):
-		print "Disconnecting " + side1 + " of " + surfaceNo1 + " from " + side2 + " of " + surfaceNo2
+		notDisconnected = True
+		for x in range(0,len(self.connections)):
+			if(notDisconnected):
+				sur1 = self.connections[x].getSurface1()
+				if(sur1[0]==surfaceNo1 and sur1[1]==side1):
+					sur2 = self.connections[x].getSurface2()
+					if(sur2[0]==surfaceNo2 and sur2[1]==side2):
+						notDisconnected = False
+						self.connections.pop(x)
+				elif(sur1[0]==surfaceNo2 and sur1[1]==side2):
+					sur2 = self.connections[x].getSurface2()
+					if(sur2[0]==surfaceNo1 and sur2[1]==side1):
+						notDisconnected = False
+						self.connections.pop(x)
 	
 	def checkSurfaceRenderUpdate(self, surfaceNo):
 		return self.surfaces[str(surfaceNo)].checkRenderUpdate()
