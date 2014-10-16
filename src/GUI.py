@@ -207,7 +207,8 @@ class GUI:
 		yDist = float(yDist)
 		loc = self.getCursorPos(cursorNo)
 		finalLoc=[0,0]
-		testLoc=[loc[0]+xDist,loc[1]+yDist]
+		tempLoc = self.cursors[str(cursorNo)].testMove(xDist,yDist)
+		testLoc=[tempLoc[0],tempLoc[1]]
 		if(self.findCursor(cursorNo)==0):
 			if(testLoc[0] > self.winWidth):
 				finalLoc[0] = self.winWidth
