@@ -209,6 +209,8 @@ class GUI:
 		finalLoc=[0,0]
 		tempLoc = self.cursors[str(cursorNo)].testMove(xDist,yDist)
 		testLoc=[tempLoc[0],tempLoc[1]]
+		switchSurface=False
+		surface=0
 		if(self.findCursor(cursorNo)==0):
 			if(testLoc[0] > self.winWidth):
 				finalLoc[0] = self.winWidth
@@ -224,18 +226,64 @@ class GUI:
 				finalLoc[1] = testLoc[1]
 		else:
 			if(testLoc[0] > 512):
-				finalLoc[0] = 512
+				conn = self.testForConnection(self.findCursor(cursorNo)-1,"right")
+				if(conn[1]=="None"):
+					finalLoc[0] = 512
+				else:
+					switchSurface=True
+					surface=int(conn[0])+1
+					finalLoc[0] = testLoc[0]-512
 			elif(testLoc[0] < 0):
-				finalLoc[0] = 0
+				conn = self.testForConnection(self.findCursor(cursorNo)-1,"left")
+				if(conn[1]=="None"):
+					finalLoc[0] = 0
+				else:
+					switchSurface=True
+					surface=int(conn[0])+1
+					finalLoc[0] = 512+testLoc[0]
 			else:
 				finalLoc[0] = testLoc[0]
 			if(testLoc[1] > 512):
-				finalLoc[1] = 512
+				conn = self.testForConnection(self.findCursor(cursorNo)-1,"top")
+				if(conn[1]=="None"):
+					finalLoc[1] = 512
+				else:
+					switchSurface=True
+					surface=int(conn[0])+1
+					finalLoc[1] = testLoc[1]-512
 			elif(testLoc[1] < 0):
-				finalLoc[1] = 0
+				conn = self.testForConnection(self.findCursor(cursorNo)-1,"bottom")
+				if(conn[1]=="None"):
+					finalLoc[1] = 0
+				else:
+					switchSurface=True
+					surface=int(conn[0])+1
+					finalLoc[1] = 512+testLoc[1]
 			else:
 				finalLoc[1] = testLoc[1]
-		self.setCursorPos(cursorNo, finalLoc[0], finalLoc[1], self.findCursor(cursorNo)) #TODO Handle when moves to different screen
+		if(switchSurface):
+			self.setCursorPos(cursorNo, finalLoc[0], finalLoc[1], surface)
+		else:
+			self.setCursorPos(cursorNo, finalLoc[0], finalLoc[1], self.findCursor(cursorNo))
+		
+	def testForConnection(self, surfaceNo, side):
+		found=False
+		surfaceNo = str(surfaceNo)
+		result=()
+		for x in range(0,len(self.connections)):
+			if(found==False):
+				sur1 = self.connections[x].getSurface1()
+				sur2 = self.connections[x].getSurface2()
+				if(sur1[0]==surfaceNo and sur1[1]==side):
+					result=(sur2[0],sur2[1])
+					found=True
+				elif(sur2[0]==surfaceNo and sur2[1]==side):
+					result=(sur1[0],sur1[1])
+					found=True
+		if found:
+			return result
+		else:
+			return (0,"None")
 		
 	def getCursorPos(self, cursorNo):
 		return self.cursors[str(cursorNo)].getLoc()
@@ -253,6 +301,7 @@ class GUI:
 		return self.cursors[str(cursorNo)].getRotation()
 		
 	def setCursorPos(self, cursorNo, xLoc, yLoc, surface):
+		cursorNo = int(cursorNo)
 		self.cursors[str(cursorNo)].setLoc(xLoc,yLoc)
 		origSur = self.findCursor(cursorNo)
 		if(origSur != surface):
