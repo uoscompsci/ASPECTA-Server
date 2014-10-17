@@ -6,6 +6,12 @@ import time
 class GUI:
 	__slots__ = ['surfaces', 'surfaces_lock', 'displays', 'displays_lock', 'cursors', 'cursors_lock', 'lastcur', 'lastsur', 'lastwin', 'lastele' 'windows', 'windows_lock', 'elements', 'elements_lock', 'setup_surface_visible']
 	
+	correctDirect = {'right' : {0 : 'right', 1 : 'bottom', 2 : 'left', 3 : "top"},
+				'bottom' : {0 : 'bottom', 1 : 'left', 2 : 'top', 3 : "right"},
+				'left' : {0 : 'left', 1 : 'top', 2 : 'right', 3 : "bottom"},
+				'top' : {0 : 'top', 1 : 'right', 2 : 'bottom', 3 : "left"}
+				}
+	
 	def __init__(self):
 		parser = SafeConfigParser()
 		parser.read("config.ini")
@@ -226,7 +232,7 @@ class GUI:
 				finalLoc[1] = testLoc[1]
 		else:
 			if(testLoc[0] > 512):
-				conn = self.testForConnection(self.findCursor(cursorNo)-1,"right")
+				conn = self.testForConnection(self.findCursor(cursorNo)-1,self.correctDirect["right"][self.getSurfaceRotation(self.findCursor(cursorNo))])
 				if(conn[1]=="None"):
 					finalLoc[0] = 512
 				else:
@@ -234,7 +240,7 @@ class GUI:
 					surface=int(conn[0])+1
 					finalLoc[0] = testLoc[0]-512
 			elif(testLoc[0] < 0):
-				conn = self.testForConnection(self.findCursor(cursorNo)-1,"left")
+				conn = self.testForConnection(self.findCursor(cursorNo)-1,self.correctDirect["left"][self.getSurfaceRotation(self.findCursor(cursorNo))])
 				if(conn[1]=="None"):
 					finalLoc[0] = 0
 				else:
@@ -244,7 +250,7 @@ class GUI:
 			else:
 				finalLoc[0] = testLoc[0]
 			if(testLoc[1] > 512):
-				conn = self.testForConnection(self.findCursor(cursorNo)-1,"top")
+				conn = self.testForConnection(self.findCursor(cursorNo)-1,self.correctDirect["top"][self.getSurfaceRotation(self.findCursor(cursorNo))])
 				if(conn[1]=="None"):
 					finalLoc[1] = 512
 				else:
@@ -252,7 +258,7 @@ class GUI:
 					surface=int(conn[0])+1
 					finalLoc[1] = testLoc[1]-512
 			elif(testLoc[1] < 0):
-				conn = self.testForConnection(self.findCursor(cursorNo)-1,"bottom")
+				conn = self.testForConnection(self.findCursor(cursorNo)-1,self.correctDirect["bottom"][self.getSurfaceRotation(self.findCursor(cursorNo))])
 				if(conn[1]=="None"):
 					finalLoc[1] = 0
 				else:
