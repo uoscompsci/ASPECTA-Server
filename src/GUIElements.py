@@ -349,7 +349,7 @@ class window:
             return False
 
 class surface():
-    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows', 'surfaceID', 'owner', 'app', 'appno', 'subscribers', 'adminMode', 'curveResolution', 'meshPoints', 'defined', 'renderUpdate']
+    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows', 'surfaceID', 'owner', 'app', 'appno', 'subscribers', 'adminMode', 'curveResolution', 'meshPoints', 'defined', 'renderUpdate' 'topPoints', 'bottomPoints', 'leftPoints', 'rightPoints']
 
     def __init__(self, owner, app, appno):
         self.cursors = []
@@ -365,6 +365,10 @@ class surface():
         self.mirrored = False
         
     def setPoints(self, topPoints, bottomPoints, leftPoints, rightPoints):
+        self.topPoints = topPoints
+        self.bottomPoints = bottomPoints
+        self.leftPoints = leftPoints
+        self.rightPoints = rightPoints
         parser = SafeConfigParser()
         parser.read("config.ini")
         self.curveResolution = parser.getint('surfaces','curveResolution')
@@ -520,6 +524,18 @@ class surface():
     
     def undefine(self):
         self.defined = False
+        
+    def getTopPoints(self):
+        return self.topPoints
+    
+    def getBottomPoints(self):
+        return self.bottomPoints
+    
+    def getLeftPoints(self):
+        return self.leftPoints
+    
+    def getRightPoints(self):
+        return self.rightPoints
         
 class surfaceConnection:
     __slots__ = ['surface1No', 'surface1Side', 'surface2No', 'surface2Side']

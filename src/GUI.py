@@ -93,6 +93,50 @@ class GUI:
 				found.append(x)
 		return found
 	
+	def saveDefinedSurfaces(self, filename):
+		file = open(filename + ".lyt", 'w')
+		defSurfaces = self.getDefinedSurfaces()
+		for z in range(0, len(defSurfaces)):
+			top = self.surfaces[str(defSurfaces[z])].getTopPoints()
+			bottom = self.surfaces[str(defSurfaces[z])].getBottomPoints()
+			left = self.surfaces[str(defSurfaces[z])].getLeftPoints()
+			right = self.surfaces[str(defSurfaces[z])].getRightPoints()
+			owner = self.getSurfaceOwner(defSurfaces[z])
+			app = self.getSurfaceAppDetails(defSurfaces[z])
+			file.write(str(defSurfaces[z]) + "\n")
+			file.write(owner + ";" + app[0] + ";" + str(app[1]) + "\n")
+			file.write(top + "\n")
+			file.write(bottom + "\n")
+			file.write(left + "\n")
+			file.write(right + "\n")
+		file.write("#\n")
+		for z in range(0, len(self.connections)):
+			surf1 = self.connections[z].getSurface1()
+			surf2 = self.connections[z].getSurface2()
+			file.write(str(surf1[0]) + ":" + surf1[1] + ";" + str(surf2[0]) + ":" + surf2[1] + "\n")
+		file.close()
+		
+	def loadDefinedSurfaces(self, filename):
+		file = open(filename + ".lyt", 'r')
+		check = file.readline()
+		while(check!="#" and check!=""):
+			params = file.readline().strip()
+			params.split(";")
+			surf = self.newSurface(params[0], params[1], int(params[2]))
+			top = file.readline().strip()
+			bottom = file.readline().strip()
+			left = file.readline().strip()
+			right = file.readline().strip()
+			self.setSurfacePoints(surf, top, bottom, left, right)
+			check = file.readline().strip()
+		connection = file.readline().strip()
+		while(connection!=""):
+			connection = connection.split(";")
+			side1 = connection[0].split(":")
+			side2 = connection[1].split(":")
+			self.connectSurfaces(side1[0], side1[1], side2[0], side2[1])
+			connection = file.readline().strip()
+		
 	def getSurfacesByID(self, ID):
 		found = []
 		for x in range(0,len(self.surfaces)):
@@ -517,7 +561,6 @@ class GUI:
 	def newCircle(self, owner, app, appno, windowNo, x, y, radius, lineColor, fillColor, sides):
 		newCir = circle(owner, app, appno, x, y, radius, lineColor, fillColor, sides)
 		elementNo = self.newElement(newCir, windowNo)
-		self.getElements(2)
 		return elementNo
 	
 	def newCircleWithID(self, owner, app, appno, ID, windowNo, x, y, radius, lineColor, fillColor, sides):

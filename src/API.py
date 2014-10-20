@@ -246,6 +246,14 @@ class apiMessageParser:
         self.GUI.undefineSurface(pieces[1])
         return {}
     
+    def saveDefinedSurfaces(self, pieces):
+        self.GUI.saveDefinedSurfaces(pieces[1])
+        return {}
+    
+    def loadDefinedSurfaces(self, pieces):
+        self.GUI.loadDefinedSurfaces(pieces[1])
+        return {}
+    
     def rotateSurfaceTo0(self, pieces):
         self.GUI.rotateSurfaceTo0(pieces[1])
         return {}
@@ -869,6 +877,8 @@ class apiMessageParser:
             'stop_being_surface_admin' : (stopBeingSurfaceAdmin, 1),
             'set_surface_edges' : (setSurfaceEdges, 5),
             'undefine_surface' : (undefineSurface, 1),
+            'save_defined_surfaces' : (saveDefinedSurfaces, 1),
+            'load_defined_surfaces' : (loadDefinedSurfaces, 1),
             'rotate_surface_to_0' : (rotateSurfaceTo0, 1),
             'rotate_surface_to_90' : (rotateSurfaceTo90, 1),
             'rotate_surface_to_180' : (rotateSurfaceTo180, 1),
@@ -1159,12 +1169,31 @@ class apiMessageParser:
         for x in range(0,len(windows)):
             self.renderWindowContents(windows[x], self.GUI)
         cursors = self.GUI.getCursors(surfaceNo) #Gathers the list of cursors on the setup surface
+        '''test = self.GUI.testForConnection(surfaceNo,"left")
+        if (test[1] != "None"):
+            self.drawPartialCursors(test[0],test[1],surfaceNo,"left")
+        test = self.GUI.testForConnection(surfaceNo,"right")
+        if (test[1] != "None"):
+            self.drawPartialCursors(test[0],test[1],surfaceNo,"right")
+        test = self.GUI.testForConnection(surfaceNo,"top")
+        if (test[1] != "None"):
+            self.drawPartialCursors(test[0],test[1],surfaceNo,"top")
+        test = self.GUI.testForConnection(surfaceNo,"bottom")
+        if (test[1] != "None"):
+            self.drawPartialCursors(test[0],test[1],surfaceNo,"bottom")'''
         
         #Loops through all the cursors on the setup surface
         for z in range(0,len(cursors)):
             position = self.GUI.getCursorPos(cursors[z]) #Gets the position of the current cursor
             rotation = self.GUI.getCursorRotation(cursors[z]) #Gets the rotation of the current cursor
             self.drawCursor(position[0],position[1],rotation,False) #Draws the cursor at the correct position with the correct rotation
+            
+    '''def drawPartialCursors(self, fromSurf, inSide, toSurf, outSide):
+        cursors = self.GUI.getCursors(fromSurf)
+        for z in range(0,len(cursors)):
+            position = self.GUI.getCursorPos(cursors[z])
+            rotation = self.GUI.getCursorRotation(cursors[z])
+            self.drawCursor(position[0],position[1],rotation,False)'''
         
     def drawMesh(self, surfaceNo, rotation, mirrored):
         glDisable(GL_LIGHTING)
@@ -1204,6 +1233,15 @@ class apiMessageParser:
         glEnableClientState(GL_VERTEX_ARRAY)
         glEnableClientState(GL_TEXTURE_COORD_ARRAY)
         glDrawElementsui(GL_TRIANGLE_STRIP, self.renderOrder)
+        
+        glDisable(GL_TEXTURE_2D)
+        self.meshBuffer[str(surfaceNo)][0].bind_vertexes(2, GL_FLOAT)
+        glEnableClientState(GL_VERTEX_ARRAY)
+        glLineWidth(3)
+        glDrawElementsui(GL_LINE_STRIP, self.left)
+        glDrawElementsui(GL_LINE_STRIP, self.right)
+        glDrawElementsui(GL_LINE_STRIP, self.top)
+        glDrawElementsui(GL_LINE_STRIP, self.bottom)
             
         glPopMatrix()
         
@@ -1630,12 +1668,20 @@ class apiMessageParser:
         self.meshLines=[]
         revFlag = False
         columns = []
+        self.top = []
+        self.bottom = []
         for x in range(0,self.pps):
             for y in range(0,self.pps):
                 if (revFlag == False):
                     columns.append(x+self.pps*y)
+                    if(x==0):
+                        self.top.append(x+self.pps*y)
+                    elif(x==self.pps-1):
+                        self.bottom.append(x+self.pps*y)
                 else:
                     columns.append(x+self.pps*(self.pps-1-y))
+                    if(x==self.pps-1):
+                        self.bottom.append(x+self.pps*(self.pps-1-y))
             if revFlag==False:
                 revFlag=True
             else:
@@ -1643,12 +1689,20 @@ class apiMessageParser:
         self.meshLines.append(columns)
         revFlag = False
         rows = []
+        self.left = []
+        self.right = []
         for y in range(0,self.pps):
             for x in range(0,self.pps):
                 if (revFlag == False):
                     rows.append(x+self.pps*y)
+                    if(y==0):
+                        self.left.append(x+self.pps*y)
+                    elif(y==self.pps-1):
+                        self.right.append(x+self.pps*y)
                 else:
                     rows.append(self.pps-1-x+self.pps*y)
+                    if(y==self.pps-1):
+                        self.right.append(self.pps-1-x+self.pps*y)
             if revFlag==False:
                 revFlag=True
             else:
