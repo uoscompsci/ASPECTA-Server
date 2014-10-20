@@ -105,6 +105,9 @@ class GUI:
 			app = self.getSurfaceAppDetails(defSurfaces[z])
 			file.write(str(defSurfaces[z]) + "\n")
 			file.write(owner + ";" + app[0] + ";" + str(app[1]) + "\n")
+			rot = self.getSurfaceRotation(defSurfaces[z])
+			mir = self.getSurfaceMirrored(defSurfaces[z])
+			file.write(str(rot) + ";" + str(mir) + "\n")
 			file.write(top + "\n")
 			file.write(bottom + "\n")
 			file.write(left + "\n")
@@ -121,8 +124,20 @@ class GUI:
 		check = file.readline()
 		while(check!="#" and check!=""):
 			params = file.readline().strip()
-			params.split(";")
+			params = params.split(";")
 			surf = self.newSurface(params[0], params[1], int(params[2]))
+			rotmir = file.readline().strip()
+			rotmir = rotmir.split(";")
+			if(int(rotmir[0])==0):
+				self.rotateSurfaceTo0(surf)
+			elif(int(rotmir[0])==1):
+				self.rotateSurfaceTo90(surf)
+			elif(int(rotmir[0])==2):
+				self.rotateSurfaceTo180(surf)
+			elif(int(rotmir[0])==2):
+				self.rotateSurfaceTo270(surf)
+			if(rotmir[1]=="True"):
+				self.mirrorSurface(surf)
 			top = file.readline().strip()
 			bottom = file.readline().strip()
 			left = file.readline().strip()
