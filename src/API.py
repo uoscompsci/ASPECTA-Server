@@ -9,7 +9,8 @@ from straightcoons import coonsCalc
 import FTGL
 import time
 import numpy
-
+import glob
+import os
 from OpenGL.GL.ARB.framebuffer_object import *
 from OpenGL.GL.EXT.framebuffer_object import *
 from buffers import *
@@ -251,8 +252,20 @@ class apiMessageParser:
         return {}
     
     def loadDefinedSurfaces(self, pieces):
+        self.GUI = GUI()
         self.GUI.loadDefinedSurfaces(pieces[1])
         return {}
+    
+    def getSavedLayouts(self, pieces):
+        layouts = glob.glob('*.lyt')
+        dict = {}
+        dict["count"] = len(layouts)
+        for x in range(0,len(layouts)):
+            dict[x] = layouts[x].split(".")[0]
+        return dict
+    
+    def deleteLayout(self, pieces):
+        os.remove(pieces[1] + ".lyt")
     
     def rotateSurfaceTo0(self, pieces):
         self.GUI.rotateSurfaceTo0(pieces[1])
@@ -879,6 +892,8 @@ class apiMessageParser:
             'undefine_surface' : (undefineSurface, 1),
             'save_defined_surfaces' : (saveDefinedSurfaces, 1),
             'load_defined_surfaces' : (loadDefinedSurfaces, 1),
+            'get_saved_layouts' : (getSavedLayouts, 0),
+            'delete_layout' : (deleteLayout, 1),
             'rotate_surface_to_0' : (rotateSurfaceTo0, 1),
             'rotate_surface_to_90' : (rotateSurfaceTo90, 1),
             'rotate_surface_to_180' : (rotateSurfaceTo180, 1),
