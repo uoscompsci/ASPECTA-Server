@@ -121,28 +121,27 @@ class GUI:
 		
 	def loadDefinedSurfaces(self, filename):
 		file = open(filename + ".lyt", 'r')
-		check = file.readline()
+		check = file.readline().strip()
 		while(check!="#" and check!=""):
 			params = file.readline().strip()
 			params = params.split(";")
-			surf = self.newSurface(params[0], params[1], int(params[2]))
 			rotmir = file.readline().strip()
 			rotmir = rotmir.split(";")
 			if(int(rotmir[0])==0):
-				self.rotateSurfaceTo0(surf)
+				self.rotateSurfaceTo0(int(check))
 			elif(int(rotmir[0])==1):
-				self.rotateSurfaceTo90(surf)
+				self.rotateSurfaceTo90(int(check))
 			elif(int(rotmir[0])==2):
-				self.rotateSurfaceTo180(surf)
+				self.rotateSurfaceTo180(int(check))
 			elif(int(rotmir[0])==2):
-				self.rotateSurfaceTo270(surf)
+				self.rotateSurfaceTo270(int(check))
 			if(rotmir[1]=="True"):
-				self.mirrorSurface(surf)
+				self.mirrorSurface(int(check))
 			top = file.readline().strip()
 			bottom = file.readline().strip()
 			left = file.readline().strip()
 			right = file.readline().strip()
-			self.setSurfacePoints(surf, top, bottom, left, right)
+			self.setSurfacePoints(int(check), top, bottom, left, right)
 			check = file.readline().strip()
 		connection = file.readline().strip()
 		while(connection!=""):
@@ -151,6 +150,11 @@ class GUI:
 			side2 = connection[1].split(":")
 			self.connectSurfaces(side1[0], side1[1], side2[0], side2[1])
 			connection = file.readline().strip()
+		count = 0
+		for x in self.surfaces:
+			if self.surfaces[x].isDefined()==True:
+				count += 1
+		return count
 		
 	def getSurfacesByID(self, ID):
 		found = []

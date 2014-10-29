@@ -252,9 +252,8 @@ class apiMessageParser:
         return {}
     
     def loadDefinedSurfaces(self, pieces):
-        self.GUI = GUI()
-        self.GUI.loadDefinedSurfaces(pieces[1])
-        return {}
+        count = self.GUI.loadDefinedSurfaces(pieces[1])
+        return {"count" : count}
     
     def getSavedLayouts(self, pieces):
         layouts = glob.glob('*.lyt')
