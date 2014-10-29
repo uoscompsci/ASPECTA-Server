@@ -122,6 +122,7 @@ class GUI:
 	def loadDefinedSurfaces(self, filename):
 		file = open(filename + ".lyt", 'r')
 		check = file.readline().strip()
+		layouts = []
 		while(check!="#" and check!=""):
 			params = file.readline().strip()
 			params = params.split(";")
@@ -142,6 +143,7 @@ class GUI:
 			left = file.readline().strip()
 			right = file.readline().strip()
 			self.setSurfacePoints(int(check), top, bottom, left, right)
+			layouts.append(top + "&" + bottom + "&" + left + "&" + right)
 			check = file.readline().strip()
 		connection = file.readline().strip()
 		while(connection!=""):
@@ -154,7 +156,12 @@ class GUI:
 		for x in self.surfaces:
 			if self.surfaces[x].isDefined()==True:
 				count += 1
-		return count
+		layoutstring = ""
+		if(len(layouts)>0):
+			layoutstring = layouts[0]
+		for x in range(1,len(layouts)):
+			layoutstring += "%" + layouts[x] 
+		return (count, layoutstring)
 		
 	def getSurfacesByID(self, ID):
 		found = []
