@@ -123,6 +123,7 @@ class GUI:
 		file = open(filename + ".lyt", 'r')
 		check = file.readline().strip()
 		layouts = []
+		connections = []
 		while(check!="#" and check!=""):
 			params = file.readline().strip()
 			params = params.split(";")
@@ -147,6 +148,7 @@ class GUI:
 			check = file.readline().strip()
 		connection = file.readline().strip()
 		while(connection!=""):
+			connections.append(connection)
 			connection = connection.split(";")
 			side1 = connection[0].split(":")
 			side2 = connection[1].split(":")
@@ -160,8 +162,13 @@ class GUI:
 		if(len(layouts)>0):
 			layoutstring = layouts[0]
 		for x in range(1,len(layouts)):
-			layoutstring += "%" + layouts[x] 
-		return (count, layoutstring)
+			layoutstring += "%" + layouts[x]
+		connectstring = ""
+		if(len(connections)>0):
+			connectstring = connections[0]
+		for x in range(1,len(connections)):
+			connectstring += "%" + connections[x]
+		return (count, layoutstring, connectstring)
 		
 	def getSurfacesByID(self, ID):
 		found = []
