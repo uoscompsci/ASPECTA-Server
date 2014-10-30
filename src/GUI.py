@@ -31,7 +31,7 @@ class GUI:
 		self.windows = {}
 		self.elements = {}
 		self.connections = []
-		self.surfaces["0"] = surface("server", "server", "0")
+		self.surfaces["0"] = surface("server", "server", "0", "setup")
 		self.setup_surface_visible = False
 		
 	def hideSetupSurface(self):
@@ -44,7 +44,7 @@ class GUI:
 		return self.setup_surface_visible
 		
 	def newSurface(self, owner, app, appno):
-		newSur = surface(owner, app, appno)
+		newSur = surface(owner, app, appno, "standard")
 		surfaceNo = 0
 		with self.surfaces_lock:
 			if (len(self.surfaces)==0):
@@ -58,7 +58,7 @@ class GUI:
 		return surfaceNo
 	
 	def newSurfaceWithID(self, owner, app, appno, ID):
-		surfaceNo = self.newSurface(owner, app, appno)
+		surfaceNo = self.newSurface(owner, app, appno, "standard")
 		self.surfaces[set(surfaceNo)].setID(ID)
 		return surfaceNo
 	
@@ -80,6 +80,7 @@ class GUI:
 	def getSurfaceAppDetails(self, surfaceNo):
 		return self.surfaces[str(surfaceNo)].getAppDetails()
 	
+	
 	def getSurfaces(self):
 		found = []
 		for x in range(1,len(self.surfaces)):
@@ -93,6 +94,12 @@ class GUI:
 				found.append(x)
 		return found
 	
+	def setSurfaceType(self, surfaceNo, type):
+		self.surfaces[str(surfaceNo)].setType(type)
+		
+	def getSurfaceType(self, surfaceNo):
+		return self.surfaces[str(surfaceNo)].getType()
+	
 	def saveDefinedSurfaces(self, filename):
 		file = open(filename + ".lyt", 'w')
 		defSurfaces = self.getDefinedSurfaces()
@@ -103,7 +110,8 @@ class GUI:
 			right = self.surfaces[str(defSurfaces[z])].getRightPoints()
 			owner = self.getSurfaceOwner(defSurfaces[z])
 			app = self.getSurfaceAppDetails(defSurfaces[z])
-			file.write(str(defSurfaces[z]) + "\n")
+			type = self.getSurfaceType(defSurfaces[z])
+			file.write(str(defSurfaces[z]) + ";" + type + "\n")
 			file.write(owner + ";" + app[0] + ";" + str(app[1]) + "\n")
 			rot = self.getSurfaceRotation(defSurfaces[z])
 			mir = self.getSurfaceMirrored(defSurfaces[z])
@@ -122,30 +130,33 @@ class GUI:
 	def loadDefinedSurfaces(self, filename):
 		file = open(filename + ".lyt", 'r')
 		check = file.readline().strip()
+		check = check.split(";")
 		layouts = []
 		connections = []
-		while(check!="#" and check!=""):
+		while(check[0]!="#" and check[0]!=""):
 			params = file.readline().strip()
 			params = params.split(";")
 			rotmir = file.readline().strip()
 			rotmir = rotmir.split(";")
 			if(int(rotmir[0])==0):
-				self.rotateSurfaceTo0(int(check))
+				self.rotateSurfaceTo0(int(check[0]))
 			elif(int(rotmir[0])==1):
-				self.rotateSurfaceTo90(int(check))
+				self.rotateSurfaceTo90(int(check[0]))
 			elif(int(rotmir[0])==2):
-				self.rotateSurfaceTo180(int(check))
+				self.rotateSurfaceTo180(int(check[0]))
 			elif(int(rotmir[0])==2):
-				self.rotateSurfaceTo270(int(check))
+				self.rotateSurfaceTo270(int(check[0]))
 			if(rotmir[1]=="True"):
-				self.mirrorSurface(int(check))
+				self.mirrorSurface(int(check[0]))
 			top = file.readline().strip()
 			bottom = file.readline().strip()
 			left = file.readline().strip()
 			right = file.readline().strip()
-			self.setSurfacePoints(int(check), top, bottom, left, right)
+			self.setSurfaceType(int(check[0]), check[1])
+			self.setSurfacePoints(int(check[0]), top, bottom, left, right)
 			layouts.append(top + "&" + bottom + "&" + left + "&" + right)
 			check = file.readline().strip()
+			check = check.split(";")
 		connection = file.readline().strip()
 		while(connection!=""):
 			connections.append(connection)

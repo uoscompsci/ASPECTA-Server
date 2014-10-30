@@ -351,7 +351,7 @@ class window:
 class surface():
     __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows', 'surfaceID', 'owner', 'app', 'appno', 'subscribers', 'adminMode', 'curveResolution', 'meshPoints', 'defined', 'renderUpdate' 'topPoints', 'bottomPoints', 'leftPoints', 'rightPoints']
 
-    def __init__(self, owner, app, appno):
+    def __init__(self, owner, app, appno, type):
         self.cursors = []
         self.windows = []
         self.owner = owner
@@ -363,6 +363,7 @@ class surface():
         self.renderUpdate = False
         self.rotation = 0
         self.mirrored = False
+        self.surfaceType = type
         
     def setPoints(self, topPoints, bottomPoints, leftPoints, rightPoints):
         self.topPoints = topPoints
@@ -396,6 +397,12 @@ class surface():
         self.meshPoints = ccalc.getCoonsPoints(self.curveResolution,self.curveResolution)
         self.defined = True
         self.renderUpdate = True
+        
+    def getType(self):
+        return self.surfaceType
+    
+    def setType(self, type):
+        self.surfaceType = type
         
     def getRotation(self):
         return self.rotation
