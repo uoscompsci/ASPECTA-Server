@@ -95,8 +95,6 @@ class apiMessageParser:
     
     #Creates a new circle with an ID on the desired window as requested by the API call
     def newCircleWithID(self, pieces):
-        print str(pieces)
-        print "sending = " + pieces[8] + "," + pieces[9] + "," + pieces[10] + "," + pieces[1] + "," + pieces[2] + "," + pieces[3] + "," + pieces[4] + "," + pieces[5] + "," + pieces[6] + "," + pieces[7] + "," + pieces[8]
         elementNo = self.GUI.newCircleWithID(pieces[9], pieces[10], pieces[11], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
         return {"elementNo" : elementNo}
         
@@ -1603,8 +1601,6 @@ class apiMessageParser:
             GUIRead = self.GUI # Makes a copy of the GUI so that changes during rendering don't cause problems
 
             windows = GUIRead.getWindows(0) #Gathers the list of windows on the setup surface
-
-            #print str(len(windows))
             
             #Loops through all the windows on the setup surface
             for z in range(0,len(windows)):
