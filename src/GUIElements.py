@@ -327,8 +327,11 @@ class window:
     def containsEle(self, elementNo):
         found = False
         for x in range(0, len(self.elements)):
-            if(int(self.elements[x])==int(elementNo)):
-                found = True
+            try:
+                if(int(self.elements[x])==int(elementNo)):
+                    found = True
+            except IndexError, e:
+                pass
         return found
     
     def getElements(self):

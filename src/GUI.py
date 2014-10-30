@@ -1032,8 +1032,11 @@ class GUI:
 		found = []
 		orig = self.windows[str(windowNo)].getElements()
 		for x in range(0, len(orig)):
-			if(self.elements[orig[x]].isVisible()):
-				found.append(orig[x])
+			try:
+				if(self.elements[orig[x]].isVisible()):
+					found.append(orig[x])
+			except IndexError, e:
+				print pass
 		return found
 	
 	def getClickedElements(self, surfaceNo, x, y):
