@@ -1036,7 +1036,7 @@ class GUI:
 				if(self.elements[orig[x]].isVisible()):
 					found.append(orig[x])
 			except IndexError, e:
-				print pass
+				pass
 		return found
 	
 	def getClickedElements(self, surfaceNo, x, y):
