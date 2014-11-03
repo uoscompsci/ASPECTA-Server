@@ -4,7 +4,7 @@ from ConfigParser import SafeConfigParser
 from straightcoons import *
 
 class cursor:
-    __slots__ = ['id', 'loc', 'stateL', 'stateM', 'stateR', 'downTimeL', 'downTimeR', 'downTimeM', 'rotaton']
+    __slots__ = ['id', 'loc', 'stateL', 'stateM', 'stateR', 'downTimeL', 'downTimeR', 'downTimeM', 'rotaton', 'type', 'mode']
 
     def __init__(self, x, y):
         #self.loc=point2D(x,y)
@@ -13,6 +13,7 @@ class cursor:
         self.stateR = "up"
         self.loc = point2D(x,y)
         self.rotation = 0
+        self.mode = "default"
         
 
     def moveX(self, distance):
@@ -170,6 +171,21 @@ class cursor:
     def setLoc(self, xloc, yloc):
         self.setX(xloc)
         self.setY(yloc)
+        
+    def getMode(self):
+        return self.mode
+    
+    def setDefaultMode(self):
+        self.mode = "default"
+    
+    def setWallMode(self):
+        self.mode = "wall"
+        
+    def setBlockMode(self):
+        self.mode = "block"
+        
+    def setScreenMode(self):
+        self.mode = "screen"
 
     def getStateL(self):
         return self.stateL

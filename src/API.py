@@ -483,6 +483,26 @@ class apiMessageParser:
     def getCursorRotation(self,pieces):
         rot = self.GUI.getCursorRotation(pieces[1])
         return {"rotation" : rot}
+    
+    def getCursorMode(self, pieces):
+        mode = self.GUI.getCursorMode(pieces[1])
+        return {"mode" : mode}
+    
+    def setCursorDefaultMode(self, pieces):
+        self.GUI.setCursorDefaultMode(pieces[1])
+        return {}
+    
+    def setCursorWallMode(self, pieces):
+        self.GUI.setCursorWallMode(pieces[1])
+        return {}
+    
+    def setCursorBlockMode(self, pieces):
+        self.GUI.setCursorBlockMode(pieces[1])
+        return {}
+    
+    def setCursorScreenMode(self, pieces):
+        self.GUI.setCursorScreenMode(pieces[1])
+        return {}
         
     def moveWindow(self, pieces):
         self.GUI.moveWindow(pieces[1], pieces[2], pieces[3])
@@ -934,6 +954,11 @@ class apiMessageParser:
             'rotate_cursor_clockwise' : (rotateCursorClockwise,2), #[1]=CursorNo [2]=Degrees
             'rotate_cursor_anticlockwise' : (rotateCursorAnticlockwise,2), #[1]=CursorNo [2]=Degrees
             'get_cursor_rotation' : (getCursorRotation,1), #[1]=CursorNo
+            'get_cursor_mode' : (getCursorMode,1),
+            'set_cursor_default_mode' : (setCursorDefaultMode,1),
+            'set_cursor_wall_mode' : (setCursorWallMode,1),
+            'set_cursor_block_mode' : (setCursorBlockMode,1),
+            'set_cursor_screen_mode' : (setCursorScreenMode,1),
             'move_window' : (moveWindow, 3),  # [1]=WindowNo  [2]=xDistance  [3]=yDistance
             'relocate_window' : (relocateWindow, 4),  # [1]=WindowNo  [2]=x  [3]=y  [4]=Surface
             'set_window_width' : (setWindowWidth, 2),  # [1]=WindowNo  [2]=Width
@@ -1044,7 +1069,7 @@ class apiMessageParser:
         return data
     
     #Draws a cursor at the requested location and rotated as required
-    def drawCursor(self,x,y,rotation,cross):
+    def drawCursor(self,x,y,rotation,cross,mode):
         glDisable(GL_LIGHTING)
         glEnable(GL_TEXTURE_2D)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -1056,30 +1081,15 @@ class apiMessageParser:
 
         glColor4f(1.0, 1.0, 1.0, 1.0)
         
-        glBindTexture(GL_TEXTURE_2D, self.mouse_texture.texID) #Selects the cursor texture to be used
-
-        glBegin(GL_QUADS)
-        
-        #Creates the top left vertex and attaches the top left of the texture
-        glTexCoord2f(0.0, 1.0)
-        glVertex2f(0, 0)
-        
-        #Creates the top right vertex and attaches the top right of the texture
-        glTexCoord2f(1.0, 1.0)
-        glVertex2f(29, 0)
-        
-        #Creates the bottom right vertex and attaches the bottom right of the texture
-        glTexCoord2f(1.0, 0.0)
-        glVertex2f(29, -46)
-        
-        #Creates the bottom left vertex and attaches the bottom left of the texture
-        glTexCoord2f(0.0, 0.0)
-        glVertex2f(0, -46)
-        
-        glEnd() #Finalises the quad so that it is displayed
-        
         if (cross==True):
-            glBindTexture(GL_TEXTURE_2D, self.cross_texture.texID) #Selects the cross texture to be used
+            if(mode=="wall"):
+                glBindTexture(GL_TEXTURE_2D, self.cross_texturew.texID) #Selects the cross texture to be used
+            elif(mode=="screen"):
+                glBindTexture(GL_TEXTURE_2D, self.cross_textures.texID) #Selects the cross texture to be used
+            elif(mode=="block"):
+                glBindTexture(GL_TEXTURE_2D, self.cross_textureb.texID) #Selects the cross texture to be used
+            else:
+                glBindTexture(GL_TEXTURE_2D, self.cross_textured.texID) #Selects the cross texture to be used
     
             glBegin(GL_QUADS)
             
@@ -1100,6 +1110,35 @@ class apiMessageParser:
             glVertex2f(-20, -20)
             
             glEnd() #Finalises the quad so that it is displayed
+        
+        if(mode=="wall"):
+            glBindTexture(GL_TEXTURE_2D, self.mouse_texturew.texID) #Selects the cross texture to be used
+        elif(mode=="screen"):
+            glBindTexture(GL_TEXTURE_2D, self.mouse_textures.texID) #Selects the cross texture to be used
+        elif(mode=="block"):
+            glBindTexture(GL_TEXTURE_2D, self.mouse_textureb.texID) #Selects the cross texture to be used
+        else:
+            glBindTexture(GL_TEXTURE_2D, self.mouse_textured.texID) #Selects the cross texture to be used
+
+        glBegin(GL_QUADS)
+        
+        #Creates the top left vertex and attaches the top left of the texture
+        glTexCoord2f(0.0, 1.0)
+        glVertex2f(0, 0)
+        
+        #Creates the top right vertex and attaches the top right of the texture
+        glTexCoord2f(1.0, 1.0)
+        glVertex2f(29, 0)
+        
+        #Creates the bottom right vertex and attaches the bottom right of the texture
+        glTexCoord2f(1.0, 0.0)
+        glVertex2f(29, -46)
+        
+        #Creates the bottom left vertex and attaches the bottom left of the texture
+        glTexCoord2f(0.0, 0.0)
+        glVertex2f(0, -46)
+        
+        glEnd() #Finalises the quad so that it is displayed
         
         glPopMatrix()
         
@@ -1198,7 +1237,7 @@ class apiMessageParser:
         for z in range(0,len(cursors)):
             position = self.GUI.getCursorPos(cursors[z]) #Gets the position of the current cursor
             rotation = self.GUI.getCursorRotation(cursors[z]) #Gets the rotation of the current cursor
-            self.drawCursor(position[0],position[1],rotation,False) #Draws the cursor at the correct position with the correct rotation
+            self.drawCursor(position[0],position[1],rotation,False,"default") #Draws the cursor at the correct position with the correct rotation
             
     '''def drawPartialCursors(self, fromSurf, inSide, toSurf, outSide):
         cursors = self.GUI.getCursors(fromSurf)
@@ -1612,7 +1651,8 @@ class apiMessageParser:
             for z in range(0,len(cursors)):
                 position = GUIRead.getCursorPos(cursors[z]) #Gets the position of the current cursor
                 rotation = GUIRead.getCursorRotation(cursors[z]) #Gets the rotation of the current cursor
-                self.drawCursor(position[0],position[1],rotation,True) #Draws the cursor at the correct position with the correct rotation
+                mode = GUIRead.getCursorMode(cursors[z])
+                self.drawCursor(position[0],position[1],rotation,True,mode) #Draws the cursor at the correct position with the correct rotation
 	
     #Resizes the window to the desired width and height
     def resize(self, (width, height)):
@@ -1653,8 +1693,14 @@ class apiMessageParser:
         glEnable(GL_ALPHA_TEST)
 		
         #Loads the cursor and cross textures into memory
-        self.mouse_texture = Texture("cursor.png")
-        self.cross_texture = Texture("cursorcross.png")
+        self.mouse_textured = Texture("dcursor.png")
+        self.cross_textured = Texture("dcursorcross.png")
+        self.mouse_textureb = Texture("bcursor.png")
+        self.cross_textureb = Texture("bcursorcross.png")
+        self.mouse_textures = Texture("scursor.png")
+        self.cross_textures = Texture("scursorcross.png")
+        self.mouse_texturew = Texture("wcursor.png")
+        self.cross_texturew = Texture("wcursorcross.png")
 		
         self.demandedFps = 30.0 #Indicates the number of desired frames per second
         

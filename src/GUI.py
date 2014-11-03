@@ -133,6 +133,11 @@ class GUI:
 		check = check.split(";")
 		layouts = []
 		connections = []
+		if(len(self.surfaces)<2):
+			self.newSurface("loaded", "loaded", 0)
+			self.newSurface("loaded", "loaded", 0)
+			self.newSurface("loaded", "loaded", 0)
+			self.newSurface("loaded", "loaded", 0)
 		while(check[0]!="#" and check[0]!=""):
 			params = file.readline().strip()
 			params = params.split(";")
@@ -381,6 +386,21 @@ class GUI:
 		
 	def getCursorPos(self, cursorNo):
 		return self.cursors[str(cursorNo)].getLoc()
+	
+	def getCursorMode(self, cursorNo):
+		return self.cursors[str(cursorNo)].getMode()
+	
+	def setCursorWallMode(self, cursorNo):
+		self.cursors[str(cursorNo)].setWallMode()
+	
+	def setCursorBlockMode(self, cursorNo):
+		self.cursors[str(cursorNo)].setBlockMode()
+	
+	def setCursorScreenMode(self, cursorNo):
+		self.cursors[str(cursorNo)].setScreenMode()
+	
+	def setCursorDefaultMode(self, cursorNo):
+		self.cursors[str(cursorNo)].setDefaultMode()
 		
 	def testMoveCursor(self, cursorNo, xDist, yDist):
 		return self.cursors[str(cursorNo)].testMove(xDist,yDist) #TODO Handle when moves to different screen
