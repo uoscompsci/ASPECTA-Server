@@ -503,6 +503,18 @@ class apiMessageParser:
     def setCursorScreenMode(self, pieces):
         self.GUI.setCursorScreenMode(pieces[1])
         return {}
+    
+    def showCursor(self, pieces):
+        self.GUI.showCursor(pieces[1])
+        return {}
+    
+    def hideCursor(self, pieces):
+        self.GUI.hideCursor(pieces[1])
+        return {}
+    
+    def isCursorVisible(self, pieces):
+        visibility = self.GUI.isCursorVisible(pieces[1])
+        return {"visibility" : visibility}
         
     def moveWindow(self, pieces):
         self.GUI.moveWindow(pieces[1], pieces[2], pieces[3])
@@ -959,6 +971,9 @@ class apiMessageParser:
             'set_cursor_wall_mode' : (setCursorWallMode,1),
             'set_cursor_block_mode' : (setCursorBlockMode,1),
             'set_cursor_screen_mode' : (setCursorScreenMode,1),
+            'show_cursor' : (showCursor,1),
+            'hide_cursor' : (hideCursor,1),
+            'is_cursor_visible' : (isCursorVisible,1),
             'move_window' : (moveWindow, 3),  # [1]=WindowNo  [2]=xDistance  [3]=yDistance
             'relocate_window' : (relocateWindow, 4),  # [1]=WindowNo  [2]=x  [3]=y  [4]=Surface
             'set_window_width' : (setWindowWidth, 2),  # [1]=WindowNo  [2]=Width
@@ -1235,9 +1250,10 @@ class apiMessageParser:
         
         #Loops through all the cursors on the setup surface
         for z in range(0,len(cursors)):
-            position = self.GUI.getCursorPos(cursors[z]) #Gets the position of the current cursor
-            rotation = self.GUI.getCursorRotation(cursors[z]) #Gets the rotation of the current cursor
-            self.drawCursor(position[0],position[1],rotation,False,"default") #Draws the cursor at the correct position with the correct rotation
+            if(self.GUI.isCursorVisible(cursors[z])):
+                position = self.GUI.getCursorPos(cursors[z]) #Gets the position of the current cursor
+                rotation = self.GUI.getCursorRotation(cursors[z]) #Gets the rotation of the current cursor
+                self.drawCursor(position[0],position[1],rotation,False,"default") #Draws the cursor at the correct position with the correct rotation
             
     '''def drawPartialCursors(self, fromSurf, inSide, toSurf, outSide):
         cursors = self.GUI.getCursors(fromSurf)
@@ -1649,10 +1665,11 @@ class apiMessageParser:
             
             #Loops through all the cursors on the setup surface
             for z in range(0,len(cursors)):
-                position = GUIRead.getCursorPos(cursors[z]) #Gets the position of the current cursor
-                rotation = GUIRead.getCursorRotation(cursors[z]) #Gets the rotation of the current cursor
-                mode = GUIRead.getCursorMode(cursors[z])
-                self.drawCursor(position[0],position[1],rotation,True,mode) #Draws the cursor at the correct position with the correct rotation
+                if(GUIRead.isCursorVisible(cursors[z])):
+                    position = GUIRead.getCursorPos(cursors[z]) #Gets the position of the current cursor
+                    rotation = GUIRead.getCursorRotation(cursors[z]) #Gets the rotation of the current cursor
+                    mode = GUIRead.getCursorMode(cursors[z])
+                    self.drawCursor(position[0],position[1],rotation,True,mode) #Draws the cursor at the correct position with the correct rotation
 	
     #Resizes the window to the desired width and height
     def resize(self, (width, height)):

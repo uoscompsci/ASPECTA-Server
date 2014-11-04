@@ -413,6 +413,15 @@ class GUI:
 		
 	def getCursorRotation(self,cursorNo):
 		return self.cursors[str(cursorNo)].getRotation()
+	
+	def hideCursor(self, cursorNo):
+		self.cursors[str(cursorNo)].hide()
+		
+	def showCursor(self, cursorNo):
+		self.cursors[str(cursorNo)].show()
+		
+	def isCursorVisible(self, cursorNo):
+		return self.cursors[str(cursorNo)].isVisible()
 		
 	def setCursorPos(self, cursorNo, xLoc, yLoc, surface):
 		cursorNo = int(cursorNo)

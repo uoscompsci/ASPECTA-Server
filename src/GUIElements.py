@@ -14,6 +14,7 @@ class cursor:
         self.loc = point2D(x,y)
         self.rotation = 0
         self.mode = "default"
+        self.visible = True
         
 
     def moveX(self, distance):
@@ -238,6 +239,15 @@ class cursor:
         self.rotation = self.rotation - int(degrees)
         if(self.rotation<0):
             self.rotation = self.rotation%360
+            
+    def show(self):
+        self.visible = True
+        
+    def hide(self):
+        self.visible = False
+        
+    def isVisible(self):
+        return self.visible
 
 class window:
     __slots__ = ['elements', 'loc', 'xsize', 'ysize', 'subwindows', 'name', 'windowID', 'owner', 'app', 'appno', 'subscribers', 'adminMode']
