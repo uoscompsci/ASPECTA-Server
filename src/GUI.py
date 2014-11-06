@@ -100,6 +100,18 @@ class GUI:
 	def getSurfaceType(self, surfaceNo):
 		return self.surfaces[str(surfaceNo)].getType()
 	
+	def getSurfacePixelWidth(self, surfaceNo):
+		return self.surfaces[str(surfaceNo)].getPixelWidth()
+		
+	def getSurfacePixelHeight(self, surfaceNo):
+		return self.surfaces[str(surfaceNo)].getPixelHeight()
+		
+	def setSurfacePixelWidth(self, surfaceNo, width):
+		self.surfaces[str(surfaceNo)].setPixelWidth(width)
+		
+	def setSurfacePixelHeight(self, surfaceNo, height):
+		self.surfaces[str(surfaceNo)].setPixelHeight(height)
+	
 	def saveDefinedSurfaces(self, filename):
 		file = open(filename + ".lyt", 'w')
 		defSurfaces = self.getDefinedSurfaces()
@@ -324,14 +336,14 @@ class GUI:
 			else:
 				finalLoc[1] = testLoc[1]
 		else:
-			if(testLoc[0] > 512):
+			if(testLoc[0] > self.getSurfacePixelWidth(self.findCursor(cursorNo))):
 				conn = self.testForConnection(self.findCursor(cursorNo)-1,self.correctDirect["right"][self.getSurfaceRotation(self.findCursor(cursorNo))])
 				if(conn[1]=="None"):
-					finalLoc[0] = 512
+					finalLoc[0] = self.getSurfacePixelWidth(self.findCursor(cursorNo))
 				else:
 					switchSurface=True
 					surface=int(conn[0])+1
-					finalLoc[0] = testLoc[0]-512
+					finalLoc[0] = testLoc[0]-self.getSurfacePixelWidth(self.findCursor(cursorNo))
 			elif(testLoc[0] < 0):
 				conn = self.testForConnection(self.findCursor(cursorNo)-1,self.correctDirect["left"][self.getSurfaceRotation(self.findCursor(cursorNo))])
 				if(conn[1]=="None"):
@@ -339,17 +351,17 @@ class GUI:
 				else:
 					switchSurface=True
 					surface=int(conn[0])+1
-					finalLoc[0] = 512+testLoc[0]
+					finalLoc[0] = self.getSurfacePixelWidth(self.findCursor(cursorNo))+testLoc[0]
 			else:
 				finalLoc[0] = testLoc[0]
-			if(testLoc[1] > 512):
+			if(testLoc[1] > self.getSurfacePixelHeight(self.findCursor(cursorNo))):
 				conn = self.testForConnection(self.findCursor(cursorNo)-1,self.correctDirect["top"][self.getSurfaceRotation(self.findCursor(cursorNo))])
 				if(conn[1]=="None"):
-					finalLoc[1] = 512
+					finalLoc[1] = self.getSurfacePixelHeight(self.findCursor(cursorNo))
 				else:
 					switchSurface=True
 					surface=int(conn[0])+1
-					finalLoc[1] = testLoc[1]-512
+					finalLoc[1] = testLoc[1]-self.getSurfacePixelHeight(self.findCursor(cursorNo))
 			elif(testLoc[1] < 0):
 				conn = self.testForConnection(self.findCursor(cursorNo)-1,self.correctDirect["bottom"][self.getSurfaceRotation(self.findCursor(cursorNo))])
 				if(conn[1]=="None"):
@@ -357,7 +369,7 @@ class GUI:
 				else:
 					switchSurface=True
 					surface=int(conn[0])+1
-					finalLoc[1] = 512+testLoc[1]
+					finalLoc[1] = self.getSurfacePixelHeight(self.findCursor(cursorNo))+testLoc[1]
 			else:
 				finalLoc[1] = testLoc[1]
 		if(switchSurface):

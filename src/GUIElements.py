@@ -378,7 +378,7 @@ class window:
             return False
 
 class surface():
-    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows', 'surfaceID', 'owner', 'app', 'appno', 'subscribers', 'adminMode', 'curveResolution', 'meshPoints', 'defined', 'renderUpdate' 'topPoints', 'bottomPoints', 'leftPoints', 'rightPoints']
+    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows', 'surfaceID', 'owner', 'app', 'appno', 'subscribers', 'adminMode', 'curveResolution', 'meshPoints', 'defined', 'renderUpdate' 'topPoints', 'bottomPoints', 'leftPoints', 'rightPoints','pixelwidth','pixelheight']
 
     def __init__(self, owner, app, appno, type):
         self.cursors = []
@@ -393,6 +393,8 @@ class surface():
         self.rotation = 0
         self.mirrored = False
         self.surfaceType = type
+        self.pixelwidth = 512
+        self.pixelheight = 512
         
     def setPoints(self, topPoints, bottomPoints, leftPoints, rightPoints):
         self.topPoints = topPoints
@@ -572,6 +574,18 @@ class surface():
     
     def getRightPoints(self):
         return self.rightPoints
+    
+    def getPixelWidth(self):
+        return int(self.pixelwidth)
+    
+    def getPixelHeight(self):
+        return int(self.pixelheight)
+    
+    def setPixelWidth(self, width):
+        self.pixelwidth = width
+        
+    def setPixelHeight(self, height):
+        self.pixelheight = height
         
 class surfaceConnection:
     __slots__ = ['surface1No', 'surface1Side', 'surface2No', 'surface2Side']
@@ -900,7 +914,7 @@ class rectangle(element):
         return self.topLeft.getY()
     
     def setTopLeft(self,x,y):
-        return self.topLeft.reposition(x,y)
+        return self.topLeft.reposition(float(x),float(y))
     
     def getTopRightX(self):
         return self.topLeft.getX()+int(self.width)
@@ -921,14 +935,14 @@ class rectangle(element):
         return self.topLeft.getY()-int(self.height)
     
     def setWidth(self, width):
-        self.width = width
+        self.width = float(width)
         self.upToDate = False
     
     def getWidth(self):
         return self.width
     
     def setHeight(self, height):
-        self.height = height
+        self.height = float(height)
         self.upToDate = False
     
     def getHeight(self):

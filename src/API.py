@@ -261,6 +261,22 @@ class apiMessageParser:
             dict[x] = layouts[x].split(".")[0]
         return dict
     
+    def getSurfacePixelWidth(self, pieces):
+        width = self.GUI.getSurfacePixelWidth(pieces[1])
+        return {"width" : width}
+    
+    def getSurfacePixelHeight(self, pieces):
+        height = self.GUI.getSurfacePixelHeight(pieces[1])
+        return {"height" : height}
+    
+    def setSurfacePixelWidth(self, pieces):
+        self.GUI.setSurfacePixelWidth(pieces[1],pieces[2])
+        return {}
+    
+    def setSurfacePixelHeight(self, pieces):
+        self.GUI.setSurfacePixelHeight(pieces[1],pieces[2])
+        return {}
+    
     def deleteLayout(self, pieces):
         os.remove(pieces[1] + ".lyt")
     
@@ -747,8 +763,8 @@ class apiMessageParser:
         return {}
         
     def getRectangleHeight(self, pieces):
-        width = self.GUI.getRectangleHeight(pieces[1])
-        return {'width' : width}
+        height = self.GUI.getRectangleHeight(pieces[1])
+        return {'height' : height}
 
     def getRectangleFillColor(self, pieces):
         color = self.GUI.getRectangleFillColor(pieces[1])
@@ -922,6 +938,10 @@ class apiMessageParser:
             'save_defined_surfaces' : (saveDefinedSurfaces, 1),
             'load_defined_surfaces' : (loadDefinedSurfaces, 1),
             'get_saved_layouts' : (getSavedLayouts, 0),
+            'get_surface_pixel_width' : (getSurfacePixelWidth,1),
+            'get_surface_pixel_height' : (getSurfacePixelHeight,1),
+            'set_surface_pixel_width' : (setSurfacePixelWidth,2),
+            'set_surface_pixel_height' : (setSurfacePixelHeight,2),
             'delete_layout' : (deleteLayout, 1),
             'rotate_surface_to_0' : (rotateSurfaceTo0, 1),
             'rotate_surface_to_90' : (rotateSurfaceTo90, 1),
@@ -1262,14 +1282,14 @@ class apiMessageParser:
             rotation = self.GUI.getCursorRotation(cursors[z])
             self.drawCursor(position[0],position[1],rotation,False)'''
         
-    def drawMesh(self, surfaceNo, rotation, mirrored):
+    def drawMesh(self, surfaceNo, rotation, mirrored, width, height):
         glDisable(GL_LIGHTING)
         glEnable(GL_TEXTURE_2D)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         
         glPushMatrix()
         
-        (rendertarget,fbo) = self.createTexture(512,512,surfaceNo)
+        (rendertarget,fbo) = self.createTexture(width,height,surfaceNo)
         
         glBindTexture(GL_TEXTURE_2D, rendertarget)
         self.meshBuffer[str(surfaceNo)][0].bind_vertexes(2, GL_FLOAT)
@@ -1856,7 +1876,9 @@ class apiMessageParser:
                         self.meshBuffer[str(z+1)] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
                     rot = self.GUI.getSurfaceRotation(z+1)
                     mir = self.GUI.getSurfaceMirrored(z+1)
-                    self.drawMesh(z+1,rot,mir)
+                    wid = self.GUI.getSurfacePixelWidth(z+1)
+                    hei = self.GUI.getSurfacePixelHeight(z+1)
+                    self.drawMesh(z+1,rot,mir,wid,hei)
                     if(self.showMeshLines==True):
                         for x in range(0,len(self.meshLines)):
                             self.meshBuffer[str(z+1)][0].bind_vertexes(2, GL_FLOAT)
