@@ -111,6 +111,24 @@ class GUI:
 		
 	def setSurfacePixelHeight(self, surfaceNo, height):
 		self.surfaces[str(surfaceNo)].setPixelHeight(height)
+		
+	def clearSurface(self, surfaceNo):
+		windows = self.getWindows(surfaceNo)
+		cursors = self.getCursors(surfaceNo)
+		for x in range(0,len(windows)):
+			elements = self.getElements(windows[x])
+			for y in range(0,len(elements)):
+				self.removeElement(elements[y], windows[x])
+		for x in range(0,len(cursors)):
+			self.removeCursor(cursors[x])
+		windowRemovalThread = threading.Thread(target=self.delayedWindowRemoval, args=[windows]) #Creates the display thread
+		windowRemovalThread.start()
+		
+	def delayedWindowRemoval(self,windows):
+		time.sleep(3)
+		for x in range(0,len(windows)):
+			self.removeWindow(windows[x])
+					
 	
 	def saveDefinedSurfaces(self, filename):
 		file = open(filename + ".lyt", 'w')
@@ -123,8 +141,11 @@ class GUI:
 			owner = self.getSurfaceOwner(defSurfaces[z])
 			app = self.getSurfaceAppDetails(defSurfaces[z])
 			type = self.getSurfaceType(defSurfaces[z])
+			pixwid = self.getSurfacePixelWidth(defSurfaces[z])
+			pixhei = self.getSurfacePixelHeight(defSurfaces[z])
 			file.write(str(defSurfaces[z]) + ";" + type + "\n")
 			file.write(owner + ";" + app[0] + ";" + str(app[1]) + "\n")
+			file.write(str(pixwid) + ";" + str(pixhei) + "\n")
 			rot = self.getSurfaceRotation(defSurfaces[z])
 			mir = self.getSurfaceMirrored(defSurfaces[z])
 			file.write(str(rot) + ";" + str(mir) + "\n")
@@ -153,6 +174,8 @@ class GUI:
 		while(check[0]!="#" and check[0]!=""):
 			params = file.readline().strip()
 			params = params.split(";")
+			pixdim = file.readline().strip()
+			pixdim = pixdim.split(";")
 			rotmir = file.readline().strip()
 			rotmir = rotmir.split(";")
 			if(int(rotmir[0])==0):
@@ -165,6 +188,8 @@ class GUI:
 				self.rotateSurfaceTo270(int(check[0]))
 			if(rotmir[1]=="True"):
 				self.mirrorSurface(int(check[0]))
+			self.setSurfacePixelWidth(int(check[0]), int(pixdim[0]))
+			self.setSurfacePixelHeight(int(check[0]), int(pixdim[1]))
 			top = file.readline().strip()
 			bottom = file.readline().strip()
 			left = file.readline().strip()
@@ -968,6 +993,7 @@ class GUI:
 			
 	def removeElement(self, elementNo, window):
 		self.elements[str(elementNo)].hide()
+		window = str(window)
 		removalThread = threading.Thread(target=self.delayedRemove, args=[window,elementNo]) #Creates the display thread
 		removalThread.start()
 		

@@ -277,6 +277,10 @@ class apiMessageParser:
         self.GUI.setSurfacePixelHeight(pieces[1],pieces[2])
         return {}
     
+    def clearSurface(self, pieces):
+        self.GUI.clearSurface(pieces[1])
+        return {}
+    
     def deleteLayout(self, pieces):
         os.remove(pieces[1] + ".lyt")
     
@@ -942,6 +946,7 @@ class apiMessageParser:
             'get_surface_pixel_height' : (getSurfacePixelHeight,1),
             'set_surface_pixel_width' : (setSurfacePixelWidth,2),
             'set_surface_pixel_height' : (setSurfacePixelHeight,2),
+            'clear_surface' : (clearSurface,1),
             'delete_layout' : (deleteLayout, 1),
             'rotate_surface_to_0' : (rotateSurfaceTo0, 1),
             'rotate_surface_to_90' : (rotateSurfaceTo90, 1),
