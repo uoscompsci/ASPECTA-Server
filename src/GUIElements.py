@@ -346,10 +346,13 @@ class window:
         popped = False
         for x in range(0, len(self.elements)):
             if(popped==False):
-                if(self.elements[x]==elementNo):
-                    self.elements.pop(x)
-                    popped=True
-    
+                try:
+                    if(self.elements[x]==elementNo):
+                        self.elements.pop(x)
+                        popped=True
+                except IndexError, e:
+                    pass
+                    
     def containsEle(self, elementNo):
         found = False
         for x in range(0, len(self.elements)):
