@@ -282,7 +282,7 @@ class apiMessageParser:
         return {}
     
     def deleteLayout(self, pieces):
-        os.remove(pieces[1] + ".lyt")
+        os.remove("layouts/" + pieces[1] + ".lyt")
     
     def rotateSurfaceTo0(self, pieces):
         self.GUI.rotateSurfaceTo0(pieces[1])
@@ -1673,7 +1673,7 @@ class apiMessageParser:
                     self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(numpy_tex, GL_STATIC_DRAW))
                 self.drawTexturedPolygon(elements[z], 4)
                 
-    #Checks the setuo GUI and displays any required windows and cursors on it by calling the relevant functions
+    #Checks the setup GUI and displays any required windows and cursors on it by calling the relevant functions
     def checkSetupGUI(self):
         
         #Runs if the setup surface is meant to be visible
