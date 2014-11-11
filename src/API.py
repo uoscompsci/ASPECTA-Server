@@ -254,11 +254,11 @@ class apiMessageParser:
         return {"count" : count[0], "layouts" : count[1], "connections" : count[2]}
     
     def getSavedLayouts(self, pieces):
-        layouts = glob.glob('*.lyt')
+        layouts = glob.glob('layouts/*.lyt')
         dict = {}
         dict["count"] = len(layouts)
         for x in range(0,len(layouts)):
-            dict[x] = layouts[x].split(".")[0]
+            dict[x] = layouts[x].split(".")[0].split("/")[1]
         return dict
     
     def getSurfacePixelWidth(self, pieces):
@@ -1509,7 +1509,7 @@ class apiMessageParser:
                     if(self.fonts.has_key(font)):
                         font = self.fonts[font]
                     
-                    self.elementBuffer[elements[z]] = FTGL.PolygonFont(font + ".ttf")
+                    self.elementBuffer[elements[z]] = FTGL.PolygonFont("fonts/" + font + ".ttf")
                     self.elementBuffer[elements[z]].FaceSize(size)
                     self.elementBuffer[elements[z]].UseDisplayList(True)
                 self.drawText(pos[0], pos[1], text, elements[z],(colors[0],colors[1],colors[2],colors[3]))
@@ -1517,7 +1517,7 @@ class apiMessageParser:
                 upToDate = GUIRead.upToDateTexRectangle(elements[z])
                 if(upToDate==False):
                     texture = GUIRead.getTexRectangleTexture(elements[z])
-                    self.textureBuffer[elements[z]] = Texture(texture)
+                    self.textureBuffer[elements[z]] = Texture("images/" + texture)
                     texCoors = [[0.0,1.0],[1.0,1.0],[1.0,0.0],[0.0,0.0]]
                     points = []
                     temp = GUIRead.getTexRectangleTopLeft(elements[z])
@@ -1645,7 +1645,7 @@ class apiMessageParser:
                     if(self.fonts.has_key(font)):
                         font = self.fonts[font]
                     
-                    self.elementBuffer[elements[z]] = FTGL.PolygonFont(font + ".ttf")
+                    self.elementBuffer[elements[z]] = FTGL.PolygonFont("fonts/" + font + ".ttf")
                     self.elementBuffer[elements[z]].FaceSize(size)
                     self.elementBuffer[elements[z]].UseDisplayList(True)
                 self.drawText(pos[0], pos[1], text, elements[z],(colors[0],colors[1],colors[2],colors[3]))
@@ -1653,7 +1653,7 @@ class apiMessageParser:
                 upToDate = GUIRead.upToDateTexRectangle(elements[z])
                 if(upToDate==False):
                     texture = GUIRead.getTexRectangleTexture(elements[z])
-                    self.textureBuffer[elements[z]] = Texture(texture)
+                    self.textureBuffer[elements[z]] = Texture("images/" + texture)
                     texCoors = [[0.0,1.0],[1.0,1.0],[1.0,0.0],[0.0,0.0]]
                     points = []
                     temp = GUIRead.getTexRectangleTopLeft(elements[z])
@@ -1735,14 +1735,14 @@ class apiMessageParser:
         glEnable(GL_ALPHA_TEST)
 		
         #Loads the cursor and cross textures into memory
-        self.mouse_textured = Texture("dcursor.png")
-        self.cross_textured = Texture("dcursorcross.png")
-        self.mouse_textureb = Texture("bcursor.png")
-        self.cross_textureb = Texture("bcursorcross.png")
-        self.mouse_textures = Texture("scursor.png")
-        self.cross_textures = Texture("scursorcross.png")
-        self.mouse_texturew = Texture("wcursor.png")
-        self.cross_texturew = Texture("wcursorcross.png")
+        self.mouse_textured = Texture("icons/dcursor.png")
+        self.cross_textured = Texture("icons/dcursorcross.png")
+        self.mouse_textureb = Texture("icons/bcursor.png")
+        self.cross_textureb = Texture("icons/bcursorcross.png")
+        self.mouse_textures = Texture("icons/scursor.png")
+        self.cross_textures = Texture("icons/scursorcross.png")
+        self.mouse_texturew = Texture("icons/wcursor.png")
+        self.cross_texturew = Texture("icons/wcursorcross.png")
 		
         self.demandedFps = 30.0 #Indicates the number of desired frames per second
         
@@ -1843,7 +1843,7 @@ class apiMessageParser:
         video_flags = OPENGL | DOUBLEBUF
 		
         pygame.init()
-        pygame.display.set_icon(pygame.image.load("icon.png"))
+        pygame.display.set_icon(pygame.image.load("icons/icon.png"))
         pygame.display.set_mode((self.winWidth, self.winHeight), video_flags)
 		
         pygame.display.set_caption("Display") #Sets the window name

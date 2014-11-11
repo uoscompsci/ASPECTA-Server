@@ -131,7 +131,7 @@ class GUI:
 					
 	
 	def saveDefinedSurfaces(self, filename):
-		file = open(filename + ".lyt", 'w')
+		file = open("layouts/" + filename + ".lyt", 'w')
 		defSurfaces = self.getDefinedSurfaces()
 		for z in range(0, len(defSurfaces)):
 			top = self.surfaces[str(defSurfaces[z])].getTopPoints()
@@ -161,7 +161,7 @@ class GUI:
 		file.close()
 		
 	def loadDefinedSurfaces(self, filename):
-		file = open(filename + ".lyt", 'r')
+		file = open("layouts/" + filename + ".lyt", 'r')
 		check = file.readline().strip()
 		check = check.split(";")
 		layouts = []
