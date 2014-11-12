@@ -14,6 +14,7 @@ import os
 from OpenGL.GL.ARB.framebuffer_object import *
 from OpenGL.GL.EXT.framebuffer_object import *
 from buffers import *
+from fileTransferServer import fts
 
 from ctypes import *
 
@@ -269,6 +270,9 @@ class apiMessageParser:
             dict[x] = images[x].split("/")[1]
         return dict
     
+    def setUploadName(self, pieces):
+        self.fts.setFileName(pieces[1])
+    
     def getSurfacePixelWidth(self, pieces):
         width = self.GUI.getSurfacePixelWidth(pieces[1])
         return {"width" : width}
@@ -291,6 +295,11 @@ class apiMessageParser:
     
     def deleteLayout(self, pieces):
         os.remove("layouts/" + pieces[1] + ".lyt")
+        return {}
+        
+    def deleteImage(self, pieces):
+        os.remove("images/" + pieces[1])
+        return {}
     
     def rotateSurfaceTo0(self, pieces):
         self.GUI.rotateSurfaceTo0(pieces[1])
@@ -951,12 +960,14 @@ class apiMessageParser:
             'load_defined_surfaces' : (loadDefinedSurfaces, 1),
             'get_saved_layouts' : (getSavedLayouts, 0),
             'get_saved_images' : (getSavedImages, 0),
+            'set_upload_name' : (setUploadName, 1),
             'get_surface_pixel_width' : (getSurfacePixelWidth,1),
             'get_surface_pixel_height' : (getSurfacePixelHeight,1),
             'set_surface_pixel_width' : (setSurfacePixelWidth,2),
             'set_surface_pixel_height' : (setSurfacePixelHeight,2),
             'clear_surface' : (clearSurface,1),
             'delete_layout' : (deleteLayout, 1),
+            'delete_image' : (deleteImage, 1),
             'rotate_surface_to_0' : (rotateSurfaceTo0, 1),
             'rotate_surface_to_90' : (rotateSurfaceTo90, 1),
             'rotate_surface_to_180' : (rotateSurfaceTo180, 1),
@@ -1918,6 +1929,9 @@ class apiMessageParser:
         self.pps = parser.getint('surfaces','curveResolution')
         self.winWidth = parser.getint('surfaces', 'windowWidth')
         self.winHeight = parser.getint('surfaces', 'windowHeight')
+        self.fts = fts()
+        ftsthread = Thread(target=self.fts.awaitConnection, args=())
+        ftsthread.start()
         self.GUI = GUI() #Creates the GUI
         thread = Thread(target=self.display, args=()) #Creates the display thread
         thread.start() #Starts the display thread
