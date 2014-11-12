@@ -261,6 +261,14 @@ class apiMessageParser:
             dict[x] = layouts[x].split(".")[0].split("/")[1]
         return dict
     
+    def getSavedImages(self, pieces):
+        images = glob.glob('images/*')
+        dict = {}
+        dict["count"] = len(images)
+        for x in range(0,len(images)):
+            dict[x] = images[x].split("/")[1]
+        return dict
+    
     def getSurfacePixelWidth(self, pieces):
         width = self.GUI.getSurfacePixelWidth(pieces[1])
         return {"width" : width}
@@ -942,6 +950,7 @@ class apiMessageParser:
             'save_defined_surfaces' : (saveDefinedSurfaces, 1),
             'load_defined_surfaces' : (loadDefinedSurfaces, 1),
             'get_saved_layouts' : (getSavedLayouts, 0),
+            'get_saved_images' : (getSavedImages, 0),
             'get_surface_pixel_width' : (getSurfacePixelWidth,1),
             'get_surface_pixel_height' : (getSurfacePixelHeight,1),
             'set_surface_pixel_width' : (setSurfacePixelWidth,2),
