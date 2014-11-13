@@ -19,7 +19,6 @@ class fts():
         
     def awaitConnection(self):
         while True:
-            print "Scanning"
             sockConnection, address = self.sock.accept()
             
             f = open("images/" + self.filename,'wb')
