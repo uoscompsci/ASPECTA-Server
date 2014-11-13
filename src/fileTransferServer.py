@@ -14,11 +14,10 @@ class fts():
         self.PORT = parser.getint('connection','port') + 1
         self.HOST = parser.get('connection','host')
         
+    def awaitConnection(self):
         self.sock = socket.socket()
         self.sock.bind((self.HOST,self.PORT))
         self.sock.listen(10)
-        
-    def awaitConnection(self):
         sockConnection, address = self.sock.accept()
         
         f = open("images/" + self.filename,'wb')
