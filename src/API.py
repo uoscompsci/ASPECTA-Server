@@ -272,6 +272,8 @@ class apiMessageParser:
     
     def setUploadName(self, pieces):
         self.fts.setFileName(pieces[1])
+        ftsthread = Thread(target=self.fts.awaitConnection, args=())
+        ftsthread.start()
     
     def getSurfacePixelWidth(self, pieces):
         width = self.GUI.getSurfacePixelWidth(pieces[1])
@@ -1931,8 +1933,6 @@ class apiMessageParser:
         self.winWidth = parser.getint('surfaces', 'windowWidth')
         self.winHeight = parser.getint('surfaces', 'windowHeight')
         self.fts = fts()
-        ftsthread = Thread(target=self.fts.awaitConnection, args=())
-        ftsthread.start()
         self.GUI = GUI() #Creates the GUI
         thread = Thread(target=self.display, args=()) #Creates the display thread
         thread.start() #Starts the display thread

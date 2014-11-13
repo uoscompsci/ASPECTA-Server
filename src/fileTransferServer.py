@@ -19,18 +19,17 @@ class fts():
         self.sock.listen(10)
         
     def awaitConnection(self):
-        while self.quit==False:
-            sockConnection, address = self.sock.accept()
+        sockConnection, address = self.sock.accept()
+        
+        f = open("images/" + self.filename,'wb')
+        
+        l = sockConnection.recv(1024)
+        while (l):
+                f.write(l)
+                l = sockConnection.recv(1024)
+        f.close()
             
-            f = open("images/" + self.filename,'wb')
-            
-            l = sockConnection.recv(1024)
-            while (l):
-                    f.write(l)
-                    l = sockConnection.recv(1024)
-            f.close()
-                
-            sockConnection.close()
+        sockConnection.close()
         self.sock.close()
         
     def setFileName(self, filename):
