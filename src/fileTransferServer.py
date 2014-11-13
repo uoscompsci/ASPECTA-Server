@@ -19,7 +19,7 @@ class fts():
         self.sock.listen(10)
         
     def awaitConnection(self):
-        while quit == False:
+        while self.quit==False:
             sockConnection, address = self.sock.accept()
             
             f = open("images/" + self.filename,'wb')
@@ -37,4 +37,4 @@ class fts():
         self.filename = filename
         
     def quitRequest(self):
-        quit = True
+        self.quit = True
