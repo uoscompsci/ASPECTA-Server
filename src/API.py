@@ -1919,6 +1919,7 @@ class apiMessageParser:
             time.sleep(1.0/self.demandedFps)
 			
             #clock.tick(self.demandedFps) #Sets the maximum FPS allowed
+        self.fts.quitRequest()
         time.sleep(0.1)
         pygame.quit()
 	

@@ -6,6 +6,7 @@ class fts():
     PORT = ""
     HOST = ""
     filename = "no_filename"
+    quit = False
     
     def __init__(self):
         parser = SafeConfigParser()
@@ -18,7 +19,7 @@ class fts():
         self.sock.listen(10)
         
     def awaitConnection(self):
-        while True:
+        while quit == False:
             sockConnection, address = self.sock.accept()
             
             f = open("images/" + self.filename,'wb')
@@ -34,3 +35,6 @@ class fts():
         
     def setFileName(self, filename):
         self.filename = filename
+        
+    def quitRequest(self):
+        quit = True
