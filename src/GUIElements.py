@@ -4,18 +4,14 @@ from ConfigParser import SafeConfigParser
 from straightcoons import *
 
 class cursor:
-    __slots__ = ['id', 'loc', 'stateL', 'stateM', 'stateR', 'downTimeL', 'downTimeR', 'downTimeM', 'rotaton', 'type', 'mode']
+    __slots__ = ['id', 'loc', 'rotaton', 'type', 'mode']
 
     def __init__(self, x, y):
         #self.loc=point2D(x,y)
-        self.stateL = "up"
-        self.stateM = "up"
-        self.stateR = "up"
         self.loc = point2D(x,y)
         self.rotation = 0
         self.mode = "default"
         self.visible = True
-        
 
     def moveX(self, distance):
         if(self.rotation==0):
@@ -187,45 +183,6 @@ class cursor:
         
     def setScreenMode(self):
         self.mode = "screen"
-
-    def getStateL(self):
-        return self.stateL
-
-    def getStateR(self):
-        return self.stateR
-
-    def getStateM(self):
-        return self.stateM
-
-    def setStateLUp(self):
-        self.stateL = "Up"
-        now = datetime.datetime.now()
-        clickTime = (now-self.downTimeL).total_seconds()
-        return clickTime
-
-    def setStateRUp(self):
-        self.stateR = "Up"
-        now = datetime.datetime.now()
-        clickTime = (now-self.downTimeR).total_seconds()
-        return clickTime
-
-    def setStateMUp(self):
-        self.stateM = "Up"
-        now = datetime.datetime.now()
-        clickTime = (now-self.downTimeM).total_seconds()
-        return clickTime
-        
-    def setStateLDown(self):
-        self.downTimeL=datetime.datetime.now()
-        self.stateL = "Down"
-
-    def setStateRDown(self):
-        self.downTimeR=datetime.datetime.now()
-        self.stateR = "Down"
-
-    def setStateMDown(self):
-        self.downTimeM=datetime.datetime.now()
-        self.stateM = "Down"
         
     def getRotation(self):
         return self.rotation

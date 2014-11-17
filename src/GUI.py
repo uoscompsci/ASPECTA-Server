@@ -478,42 +478,6 @@ class GUI:
 		surNo = self.findCursor(cursorNo)
 		self.surfaces[str(surNo)].removeCursor(cursorNo)
 		self.cursors.pop(str(cursorNo),None)
-		
-	def leftDown(self, cursorNo):
-		self.cursors[str(cursorNo)].setStateLDown()
-		xloc = self.cursors[str(cursorNo)].getX()
-		yloc = self.cursors[str(cursorNo)].getY()
-		return (xloc,yloc)
-
-	def middleDown(self, cursorNo):
-		self.cursors[str(cursorNo)].setStateMDown()
-		xloc = self.cursors[str(cursorNo)].getX()
-		yloc = self.cursors[str(cursorNo)].getY()
-		return (xloc,yloc)
-
-	def rightDown(self, cursorNo):
-		self.cursors[str(cursorNo)].setStateRDown()
-		xloc = self.cursors[str(cursorNo)].getX()
-		yloc = self.cursors[str(cursorNo)].getY()
-		return (xloc,yloc)
-
-	def leftUp(self, cursorNo):
-		secondsDown = self.cursors[str(cursorNo)].setStateLUp()
-		xloc = self.cursors[str(cursorNo)].getX()
-		yloc = self.cursors[str(cursorNo)].getY()
-		return (xloc,yloc,secondsDown)
-	
-	def middleUp(self, cursorNo):
-		secondsDown = self.cursors[str(cursorNo)].setStateMUp()
-		xloc = self.cursors[str(cursorNo)].getX()
-		yloc = self.cursors[str(cursorNo)].getY()
-		return (xloc,yloc,secondsDown)
-
-	def rightUp(self, cursorNo):
-		secondsDown = self.cursors[str(cursorNo)].setStateRUp()
-		xloc = self.cursors[str(cursorNo)].getX()
-		yloc = self.cursors[str(cursorNo)].getY()
-		return (xloc,yloc,secondsDown)
 	
 	def getCursorPos(self, cursorNo):
 		xloc = self.cursors[str(cursorNo)].getX()

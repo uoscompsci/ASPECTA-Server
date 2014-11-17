@@ -471,30 +471,6 @@ class apiMessageParser:
         else:
             return {"error" : 7}
         
-    def mouseLeftDown(self, pieces):
-        loc = self.GUI.leftDown(pieces[1])
-        return {"x" : loc[0], "y" : loc[1]}
-        
-    def mouseLeftUp(self, pieces):
-        loc = self.GUI.leftUp(pieces[1])
-        return {"x" : loc[0], "y" : loc[1], "duration" : loc[2]}
-        
-    def mouseMiddleDown(self, pieces):
-        loc = self.GUI.middleDown(pieces[1])
-        return {"x" : loc[0], "y" : loc[1]}
-        
-    def mouseMiddleUp(self, pieces):
-        loc = self.GUI.middleUp(pieces[1])
-        return {"x" : loc[0], "y" : loc[1], "duration" : loc[2]}
-        
-    def mouseRightDown(self, pieces):
-        loc = self.GUI.rightDown(pieces[1])
-        return {"x" : str(loc[0]), "y" : str(loc[1])}
-        
-    def mouseRightUp(self, pieces):
-        loc = self.GUI.rightUp(pieces[1])
-        return {"x" : loc[0], "y" : loc[1], "duration" : loc[2]}
-        
     def moveCursor(self, pieces):
         self.GUI.moveCursor(pieces[1], pieces[2], pieces[3])
         return {}
@@ -1000,12 +976,6 @@ class apiMessageParser:
             'get_elements_on_window' : (getElementsOnWindow, 1),
             'become_element_admin' : (becomeElementAdmin, 1),
             'stop_being_element_admin' : (stopBeingElementAdmin, 1),
-            'mouse_l' : (mouseLeftDown, 1),  # [1]=CursorNo
-            'mouse_lu' : (mouseLeftUp, 1),  # [1]=CursorNo
-            'mouse_m' : (mouseMiddleDown, 1),  # [1]=CursorNo
-            'mouse_mu' : (mouseMiddleUp, 1),  # [1]=CursorNo
-            'mouse_r' : (mouseRightDown, 1),  # [1]=CursorNo
-            'mouse_ru' : (mouseRightUp, 1),  # [1]=CursorNo
             'move_cursor' : (moveCursor, 3),  # [1]=CursorNo  [2]=xDistance  [3]=yDistance
             'test_move_cursor' : (testMoveCursor, 3),  # [1]=CursorNo  [2]=xDistance  [3]=yDistance
             'relocate_cursor' : (relocateCursor, 4),  # [1]=CursorNo  [2]=x  [3]=y  [4]=Surface
