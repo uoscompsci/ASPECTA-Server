@@ -100,6 +100,8 @@ if __name__ == "__main__":
 										sock2app[sock] = pieces[1] + "," + str(count)
 										reply(sock,str({}))
 										added = True
+									else:
+										count += 1
 						else: #If the message isn't a quit command puts the received API message onto the queue to be processed
 							if(sock2usr.has_key(sock) and sock2app.has_key(sock)):
 							 	queue.appendleft((sock,data))
