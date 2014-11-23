@@ -1509,7 +1509,8 @@ class apiMessageParser:
                 upToDate = GUIRead.upToDateTexRectangle(elements[z])
                 if(upToDate==False):
                     texture = GUIRead.getTexRectangleTexture(elements[z])
-                    self.textureBuffer[elements[z]] = Texture("images/" + texture)
+                    texturefile = glob.glob('images/' + str(texture) + "-*")
+                    self.textureBuffer[elements[z]] = Texture(texturefile[0])
                     texCoors = [[0.0,1.0],[1.0,1.0],[1.0,0.0],[0.0,0.0]]
                     points = []
                     temp = GUIRead.getTexRectangleTopLeft(elements[z])
@@ -1645,7 +1646,8 @@ class apiMessageParser:
                 upToDate = GUIRead.upToDateTexRectangle(elements[z])
                 if(upToDate==False):
                     texture = GUIRead.getTexRectangleTexture(elements[z])
-                    self.textureBuffer[elements[z]] = Texture("images/" + texture)
+                    texturefile = glob.glob('images/' + str(texture) + "-*")
+                    self.textureBuffer[elements[z]] = Texture(texturefile[0])
                     texCoors = [[0.0,1.0],[1.0,1.0],[1.0,0.0],[0.0,0.0]]
                     points = []
                     temp = GUIRead.getTexRectangleTopLeft(elements[z])

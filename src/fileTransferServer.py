@@ -1,5 +1,7 @@
 import socket
 import sys
+import os
+import glob
 from ConfigParser import SafeConfigParser
 
 class fts():
@@ -7,12 +9,16 @@ class fts():
     HOST = ""
     filename = "no_filename"
     quit = False
+    imageCounter = 0
     
     def __init__(self):
         parser = SafeConfigParser()
         parser.read("config.ini")
         self.PORT = parser.getint('connection','port') + 1
         self.HOST = parser.get('connection','host')
+        files = glob.glob('images/*')
+        for f in files:
+            os.remove(f)
         
     def awaitConnection(self):
         self.sock = socket.socket()
@@ -20,7 +26,11 @@ class fts():
         self.sock.listen(10)
         sockConnection, address = self.sock.accept()
         
-        f = open("images/" + self.filename,'wb')
+        sockConnection.send(str(self.imageCounter))
+        
+        f = open("images/" + str(self.imageCounter) + "-" + self.filename,'wb')
+        
+        self.imageCounter += 1
         
         l = sockConnection.recv(1024)
         while (l):
@@ -30,9 +40,11 @@ class fts():
             
         sockConnection.close()
         self.sock.close()
+        print "Recieved All"
         
     def setFileName(self, filename):
         self.filename = filename
         
     def quitRequest(self):
         self.quit = True
+        
