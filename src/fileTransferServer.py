@@ -1,4 +1,4 @@
-import socket
+from socket import *
 import sys
 import os
 import glob
@@ -19,32 +19,41 @@ class fts():
         files = glob.glob('images/*')
         for f in files:
             os.remove(f)
+        self.sock = socket()
+        self.sock.bind((self.HOST,self.PORT))
+            
+    def decode_length(self, l):
+        while(l[0]=="0"):
+            l = l[1:]
+        return int(l)
         
     def awaitConnection(self):
-        self.sock = socket.socket()
-        self.sock.bind((self.HOST,self.PORT))
+        LENGTH_SIZE = 8
         self.sock.listen(10)
         sockConnection, address = self.sock.accept()
         
         sockConnection.send(str(self.imageCounter))
         
         f = open("images/" + str(self.imageCounter) + "-" + self.filename,'wb')
+        length = self.decode_length(sockConnection.recv(LENGTH_SIZE))
+        
+        while(length):
+            rec = sockConnection.recv(min(1024, length))
+            f.write(rec)
+            length -= len(rec)
+            
+        f.close()
         
         self.imageCounter += 1
         
-        l = sockConnection.recv(1024)
-        while (l):
-                f.write(l)
-                l = sockConnection.recv(1024)
-        f.close()
+        sockConnection.send(b'A')
             
         sockConnection.close()
-        self.sock.close()
-        print "Recieved All"
         
     def setFileName(self, filename):
         self.filename = filename
         
     def quitRequest(self):
         self.quit = True
+        self.sock.close()
         

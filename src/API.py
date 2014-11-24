@@ -1853,7 +1853,8 @@ class apiMessageParser:
             
             #If a quit event has been received the program is closed
             if event.type == QUIT:
-                pygame.quit () 
+                pygame.quit ()
+                self.fts.quitRequest()
                 break
             
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
