@@ -77,5 +77,75 @@ def newLineWithID():
     returnData = processor.processMessage("new_line_with_ID," + str(request.json['ID']) + "," + str(request.json['windowNo']) + "," + str(request.json['xStart']) + "," + str(request.json['yStart']) + "," + str(request.json['xEnd']) + "," + str(request.json['yEnd']) + "," + str(request.json['color']))
     return returnData
 
+@app.route('/api/newLineStrip', methods=['POST'])
+def newLineStrip():
+    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'color' in request.json:
+        abort(400)
+    returnData = processor.processMessage("new_line_strip," + str(request.json['windowNo']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['color']))
+    return returnData
+
+@app.route('/api/newLineStripWithID', methods=['POST'])
+def newLineStripWithID():
+    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'color' in request.json:
+        abort(400)
+    returnData = processor.processMessage("new_line_strip_with_ID," + str(request.json['ID']) + "," + str(request.json['windowNo']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['color']))
+    return returnData
+
+@app.route('/api/newPolygon', methods=['POST'])
+def newPolygon():
+    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'linecolor' in request.json or not 'fillcolor' in request.json:
+        abort(400)
+    returnData = processor.processMessage("new_polygon," + str(request.json['windowNo']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['linecolor']) + "," + str(request.json['fillcolor']))
+    return returnData
+
+@app.route('/api/newPolygonWithID', methods=['POST'])
+def newPolygonWithID():
+    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'linecolor' in request.json or not 'fillcolor' in request.json:
+        abort(400)
+    returnData = processor.processMessage("new_polygon_with_ID," + str(request.json['ID']) + "," + str(request.json['windowNo']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['linecolor']) + "," + str(request.json['fillcolor']))
+    return returnData
+
+@app.route('/api/newRectangle', methods=['POST'])
+def newRectangle():
+    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'linecolor' in request.json or not 'fillcolor' in request.json:
+        abort(400)
+    returnData = processor.processMessage("new_rectangle," + str(request.json['windowNo']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['width']) + "," + str(request.json['height']) + "," + str(request.json['linecolor']) + "," + str(request.json['fillcolor']))
+    return returnData
+
+@app.route('/api/newRectangleWithID', methods=['POST'])
+def newRectangleWithID():
+    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'linecolor' in request.json or not 'fillcolor' in request.json:
+        abort(400)
+    returnData = processor.processMessage("new_rectangle_with_ID," + str(request.json['ID']) + "," + str(request.json['windowNo']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['width']) + "," + str(request.json['height']) + "," + str(request.json['linecolor']) + "," + str(request.json['fillcolor']))
+    return returnData
+
+@app.route('/api/newTexRectangle', methods=['POST'])
+def newTexRectangle():
+    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'texture' in request.json:
+        abort(400)
+    returnData = processor.processMessage("new_texrectangle," + str(request.json['windowNo']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['width']) + "," + str(request.json['height']) + "," + str(request.json['texture']))
+    return returnData
+
+@app.route('/api/newTexRectangleWithID', methods=['POST'])
+def newTexRectangleWithID():
+    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'texture' in request.json:
+        abort(400)
+    returnData = processor.processMessage("new_texrectangle_with_ID," + str(request.json['ID']) + "," + str(request.json['windowNo']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['width']) + "," + str(request.json['height']) + "," + str(request.json['texture']))
+    return returnData
+
+@app.route('/api/newText', methods=['POST'])
+def newText():
+    if not request.json or not 'windowNo' in request.json or not 'text' in request.json or not 'x' in request.json or not 'y' in request.json or not 'pt' in request.json or not 'font' in request.json or not 'color' in request.json:
+        abort(400)
+    returnData = processor.processMessage("new_text," + str(request.json['windowNo']) + "," + str(request.json['text']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['pt']) + "," + str(request.json['font']) + "," + str(request.json['color']))
+    return returnData
+
+@app.route('/api/newTextWithID', methods=['POST'])
+def newTextWithID():
+    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'text' in request.json or not 'x' in request.json or not 'y' in request.json or not 'pt' in request.json or not 'font' in request.json or not 'color' in request.json:
+        abort(400)
+    returnData = processor.processMessage("new_text_with_ID," + str(request.json['ID']) + "," + str(request.json['windowNo']) + "," + str(request.json['text']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['pt']) + "," + str(request.json['font']) + "," + str(request.json['color']))
+    return returnData
+
 if __name__ == '__main__':
     app.run(debug=True)
