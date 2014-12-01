@@ -8,6 +8,20 @@ class processor(object):
     def processMessage(message):
         print message
         return jsonify({})
+    
+@app.route('/api/login', methods=['POST'])
+def login():
+    if not request.json or not 'username' in request.json:
+        abort(400)
+    returnData = processor.processMessage("login," + request.json['username'])
+    return returnData
+
+@app.route('/api/setApp', methods=['POST'])
+def setApp():
+    if not request.json or not 'appName' in request.json:
+        abort(400)
+    returnData = processor.processMessage("setapp," + request.json['appName'])
+    return returnData
 
 @app.route('/api/newSurface', methods=['POST'])
 def newSurface():
@@ -798,6 +812,419 @@ def getLineWidth():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
     returnData = processor.processMessage("get_line_width," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/addLineStripPoint', methods=['POST'])
+def addLineStripPoint():
+    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json:
+        abort(400)
+    returnData = processor.processMessage("add_line_strip_point," + str(request.json['elementNo']) + "," + str(request.json['x']) + "," + str(request.json['y']))
+    return returnData
+
+@app.route('/api/addLineStripPointAt', methods=['POST'])
+def addLineStripPointAt():
+    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'index' in request.json:
+        abort(400)
+    returnData = processor.processMessage("add_line_strip_point_at," + str(request.json['elementNo']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['index']))
+    return returnData
+
+@app.route('/api/getLineStripPoint', methods=['GET'])
+def getLineStripPoint():
+    if not request.json or not 'elementNo' in request.json or not 'index' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_line_strip_point," + str(request.json['elementNo']) + "," + str(request.json['index']))
+    return returnData
+
+@app.route('/api/moveLineStripPoint', methods=['POST'])
+def moveLineStripPoint():
+    if not request.json or not 'elementNo' in request.json or not 'index' in request.json or not 'x' in request.json or not 'y' in request.json:
+        abort(400)
+    returnData = processor.processMessage("relocate_line_strip_point," + str(request.json['elementNo']) + "," + str(request.json['index']) + "," + str(request.json['x']) + "," + str(request.json['y']))
+    return returnData
+
+@app.route('/api/setLineStripColor', methods=['POST'])
+def setLineStripColor():
+    if not request.json or not 'elementNo' in request.json or not 'color' in request.json:
+        abort(400)
+    returnData = processor.processMessage("set_line_strip_color," + str(request.json['elementNo']) + "," + str(request.json['color']))
+    return returnData
+
+@app.route('/api/getLineStripColor', methods=['GET'])
+def getLineStripColor():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_line_strip_color," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/setLineStripWidth', methods=['POST'])
+def setLineStripWidth():
+    if not request.json or not 'elementNo' in request.json or not 'width' in request.json:
+        abort(400)
+    returnData = processor.processMessage("set_line_strip_width," + str(request.json['elementNo']) + "," + str(request.json['width']))
+    return returnData
+
+@app.route('/api/getLineStripWidth', methods=['GET'])
+def getLineStripWidth():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_line_strip_width," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/getLineStripPointCount', methods=['GET'])
+def getLineStripPointCount():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_line_strip_point_count," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/setLineStripContent', methods=['POST'])
+def setLineStripContent():
+    if not request.json or not 'elementNo' in request.json or not 'content' in request.json:
+        abort(400)
+    returnData = processor.processMessage("set_line_strip_content," + str(request.json['elementNo']) + "," + str(request.json['content']))
+    return returnData
+
+@app.route('/api/addPolygonPoint', methods=['POST'])
+def addPolygonPoint():
+    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json:
+        abort(400)
+    returnData = processor.processMessage("add_polygon_point," + str(request.json['elementNo']) + "," + str(request.json['x']) + "," + str(request.json['y']))
+    return returnData
+
+@app.route('/api/getPolygonPoint', methods=['GET'])
+def getPolygonPoint():
+    if not request.json or not 'elementNo' in request.json or not 'index' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_polygon_point," + str(request.json['elementNo']) + "," + str(request.json['index']))
+    return returnData
+
+@app.route('/api/movePolygonPoint', methods=['POST'])
+def movePolygonPoint():
+    if not request.json or not 'elementNo' in request.json or not 'index' in request.json or not 'x' in request.json or not 'y' in request.json:
+        abort(400)
+    returnData = processor.processMessage("relocate_polygon_point," + str(request.json['elementNo']) + "," + str(request.json['index']) + "," + str(request.json['x']) + "," + str(request.json['y']))
+    return returnData
+
+@app.route('/api/setPolygonFillColor', methods=['POST'])
+def setPolygonFillColor():
+    if not request.json or not 'elementNo' in request.json or not 'color' in request.json:
+        abort(400)
+    returnData = processor.processMessage("set_polygon_fill_color," + str(request.json['elementNo']) + "," + str(request.json['color']))
+    return returnData
+
+@app.route('/api/getPolygonFillColor', methods=['GET'])
+def getPolygonFillColor():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_polygon_fill_color," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/setPolygonLineColor', methods=['POST'])
+def setPolygonLineColor():
+    if not request.json or not 'elementNo' in request.json or not 'color' in request.json:
+        abort(400)
+    returnData = processor.processMessage("set_polygon_line_color," + str(request.json['elementNo']) + "," + str(request.json['color']))
+    return returnData
+
+@app.route('/api/getPolygonLineColor', methods=['GET'])
+def getPolygonLineColor():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_polygon_line_color," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/getPolygonPointCount', methods=['GET'])
+def getPolygonPointCount():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_polygon_point_count," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/setRectangleTopLeft', methods=['POST'])
+def setRectangleTopLeft():
+    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json:
+        abort(400)
+    returnData = processor.processMessage("set_rectange_top_left," + str(request.json['elementNo']) + "," + str(request.json['x']) + "," + str(request.json['y']))
+    return returnData
+
+@app.route('/api/getRectangleTopLeft', methods=['GET'])
+def getRectangleTopLeft():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_rectange_top_left," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/getRectangleTopRight', methods=['GET'])
+def getRectangleTopRight():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_rectange_top_right," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/getRectangleBottomRight', methods=['GET'])
+def getRectangleBottomRight():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_rectange_bottom_right," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/getRectangleBottomLeft', methods=['GET'])
+def getRectangleBottomLeft():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_rectange_bottom_left," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/setRectangleWidth', methods=['POST'])
+def setRectangleWidth():
+    if not request.json or not 'elementNo' in request.json or not 'width' in request.json:
+        abort(400)
+    returnData = processor.processMessage("set_rectangle_width," + str(request.json['elementNo']) + "," + str(request.json['width']))
+    return returnData
+
+@app.route('/api/getRectangleWidth', methods=['GET'])
+def getRectangleWidth():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_rectangle_width," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/setRectangleHeight', methods=['POST'])
+def setRectangleHeight():
+    if not request.json or not 'elementNo' in request.json or not 'height' in request.json:
+        abort(400)
+    returnData = processor.processMessage("set_rectangle_height," + str(request.json['elementNo']) + "," + str(request.json['height']))
+    return returnData
+
+@app.route('/api/getRectangleHeight', methods=['GET'])
+def getRectangleHeight():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_rectangle_height," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/setRectangleFillColor', methods=['POST'])
+def setRectangleFillColor():
+    if not request.json or not 'elementNo' in request.json or not 'color' in request.json:
+        abort(400)
+    returnData = processor.processMessage("set_rectangle_fill_color," + str(request.json['elementNo']) + "," + str(request.json['color']))
+    return returnData
+
+@app.route('/api/getRectangleFillColor', methods=['GET'])
+def getRectangleFillColor():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_rectangle_fill_color," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/setRectangleLineColor', methods=['POST'])
+def setRectangleLineColor():
+    if not request.json or not 'elementNo' in request.json or not 'color' in request.json:
+        abort(400)
+    returnData = processor.processMessage("set_rectangle_line_color," + str(request.json['elementNo']) + "," + str(request.json['color']))
+    return returnData
+
+@app.route('/api/getRectangleLineColor', methods=['GET'])
+def getRectangleLineColor():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_rectangle_line_color," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/setTexRectangleTopLeft', methods=['POST'])
+def setTexRectangleTopLeft():
+    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json:
+        abort(400)
+    returnData = processor.processMessage("set_texrectange_top_left," + str(request.json['elementNo']) + "," + str(request.json['x']) + "," + str(request.json['y']))
+    return returnData
+
+@app.route('/api/getTexRectangleTopLeft', methods=['GET'])
+def getTexRectangleTopLeft():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_texrectange_top_left," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/getTexRectangleTopRight', methods=['GET'])
+def getTexRectangleTopRight():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_texrectange_top_right," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/getTexRectangleBottomRight', methods=['GET'])
+def getTexRectangleBottomRight():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_texrectange_bottom_right," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/getTexRectangleBottomLeft', methods=['GET'])
+def getTexRectangleBottomLeft():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_texrectange_bottom_left," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/setTexRectangleTexture', methods=['POST'])
+def setTexRectangleTexture():
+    if not request.json or not 'elementNo' in request.json or not 'texture' in request.json:
+        abort(400)
+    returnData = processor.processMessage("set_texrectangle_texture," + str(request.json['elementNo']) + "," + str(request.json['texture']))
+    return returnData
+
+@app.route('/api/getTexRectangleTexture', methods=['GET'])
+def getTexRectangleTexture():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_texrectangle_texture," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/setTexRectangleWidth', methods=['POST'])
+def setTexRectangleWidth():
+    if not request.json or not 'elementNo' in request.json or not 'width' in request.json:
+        abort(400)
+    returnData = processor.processMessage("set_texrectangle_width," + str(request.json['elementNo']) + "," + str(request.json['width']))
+    return returnData
+
+@app.route('/api/getTexRectangleWidth', methods=['GET'])
+def getTexRectangleWidth():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_texrectangle_width," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/setTexRectangleHeight', methods=['POST'])
+def setTexRectangleHeight():
+    if not request.json or not 'elementNo' in request.json or not 'height' in request.json:
+        abort(400)
+    returnData = processor.processMessage("set_texrectangle_height," + str(request.json['elementNo']) + "," + str(request.json['height']))
+    return returnData
+
+@app.route('/api/getTexRectangleHeight', methods=['GET'])
+def getTexRectangleHeight():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_texrectangle_height," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/setText', methods=['POST'])
+def setText():
+    if not request.json or not 'elementNo' in request.json or not 'text' in request.json:
+        abort(400)
+    returnData = processor.processMessage("set_text," + str(request.json['elementNo']) + "," + str(request.json['text']))
+    return returnData
+
+@app.route('/api/getText', methods=['GET'])
+def getText():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_text," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/setTextPosition', methods=['POST'])
+def setTextPosition():
+    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'windowNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("relocate_text," + str(request.json['elementNo']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['windowNo']))
+    return returnData
+
+@app.route('/api/getTextPosition', methods=['GET'])
+def getTextPosition():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_text_position," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/setTextPointSize', methods=['POST'])
+def setTextPointSize():
+    if not request.json or not 'elementNo' in request.json or not 'pt' in request.json:
+        abort(400)
+    returnData = processor.processMessage("set_text_point_size," + str(request.json['elementNo']) + "," + str(request.json['pt']))
+    return returnData
+
+@app.route('/api/getTextPointSize', methods=['GET'])
+def getTextPointSize():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_text_point_size," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/setTextFont', methods=['POST'])
+def setTextFont():
+    if not request.json or not 'elementNo' in request.json or not 'font' in request.json:
+        abort(400)
+    returnData = processor.processMessage("set_text_font," + str(request.json['elementNo']) + "," + str(request.json['font']))
+    return returnData
+
+@app.route('/api/getTextFont', methods=['GET'])
+def getTextFont():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_text_font," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/setTextColor', methods=['POST'])
+def setTextColor():
+    if not request.json or not 'elementNo' in request.json or not 'color' in request.json:
+        abort(400)
+    returnData = processor.processMessage("set_text_color," + str(request.json['elementNo']) + "," + str(request.json['color']))
+    return returnData
+
+@app.route('/api/getTextColor', methods=['GET'])
+def getTextColor():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("get_text_color," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/showElement', methods=['POST'])
+def showElement():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("show_element," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/hideElement', methods=['POST'])
+def hideElement():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("hide_element," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/checkElementVisibility', methods=['GET'])
+def checkElementVisibility():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("check_element_visibility," + str(request.json['elementNo']))
+    return returnData
+
+@app.route('/api/hideSetupSurface', methods=['POST'])
+def hideSetupSurface():
+    if not request.json:
+        abort(400)
+    returnData = processor.processMessage("hide_setup_surface")
+    return returnData
+
+@app.route('/api/showSetupSurface', methods=['POST'])
+def showSetupSurface():
+    if not request.json:
+        abort(400)
+    returnData = processor.processMessage("show_setup_surface")
+    return returnData
+
+@app.route('/api/getSetupSurfaceVisibility', methods=['GET'])
+def getSetupSurfaceVisibility():
+    if not request.json:
+        abort(400)
+    returnData = processor.processMessage("get_setup_surface_visibility")
+    return returnData
+
+@app.route('/api/removeElement', methods=['POST'])
+def removeElement():
+    if not request.json or not 'elementNo' in request.json or not 'windowNo' in request.json:
+        abort(400)
+    returnData = processor.processMessage("remove_element," + str(request.json['elementNo']) + "," + str(request.json['windowNo']))
     return returnData
 
 if __name__ == '__main__':
