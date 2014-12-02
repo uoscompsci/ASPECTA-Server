@@ -1,15 +1,20 @@
 #!flask/bin/python
 from flask import Flask, jsonify, abort, make_response, request
+from API import apiMessageParser
+from collections import deque
+import os
 
 app = Flask(__name__)
+messageParser = None
+
 
 class processor(object):
     @staticmethod
     def processMessage(message):
-        print message
-        return jsonify({})
+        reply = messageParser.processMessage(message + ",webusr,REST,0")
+        return jsonify(reply)
     
-@app.route('/api/login', methods=['POST'])
+'''@app.route('/api/login', methods=['POST'])
 def login():
     if not request.json or not 'username' in request.json:
         abort(400)
@@ -21,7 +26,7 @@ def setApp():
     if not request.json or not 'appName' in request.json:
         abort(400)
     returnData = processor.processMessage("setapp," + request.json['appName'])
-    return returnData
+    return returnData'''
 
 @app.route('/api/newSurface', methods=['POST'])
 def newSurface():
@@ -67,16 +72,16 @@ def newWindowWithID():
 
 @app.route('/api/newCircle', methods=['POST'])
 def newCircle():
-    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'radius' in request.json or not 'linecolor' in request.json or not 'fillcolor' in request.json:
+    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'radius' in request.json or not 'linecolor' in request.json or not 'fillcolor' in request.json or not 'sides' in request.json:
         abort(400)
-    returnData = processor.processMessage("new_circle," + str(request.json['windowNo']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['radius']) + "," + str(request.json['linecolor']) + "," + str(request.json['fillcolor']))
+    returnData = processor.processMessage("new_circle," + str(request.json['windowNo']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['radius']) + "," + str(request.json['linecolor']) + "," + str(request.json['fillcolor']) + "," + str(request.json['sides']))
     return returnData
 
 @app.route('/api/newCircleWithID', methods=['POST'])
 def newCircleWithID():
-    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'radius' in request.json or not 'linecolor' in request.json or not 'fillcolor' in request.json:
+    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'radius' in request.json or not 'linecolor' in request.json or not 'fillcolor' in request.json or not 'sides' in request.json:
         abort(400)
-    returnData = processor.processMessage("new_circle_with_ID," + str(request.json['ID']) + "," + str(request.json['windowNo']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['radius']) + "," + str(request.json['linecolor']) + "," + str(request.json['fillcolor']))
+    returnData = processor.processMessage("new_circle_with_ID," + str(request.json['ID']) + "," + str(request.json['windowNo']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['radius']) + "," + str(request.json['linecolor']) + "," + str(request.json['fillcolor']) + "," + str(request.json['sides']))
     return returnData
 
 @app.route('/api/newLine', methods=['POST'])
@@ -1228,4 +1233,9 @@ def removeElement():
     return returnData
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    if (messageParser==None):
+        if os.environ.get('WERKZEUG_RUN_MAIN') == 'true': #Only run on the child server
+            messageParser = apiMessageParser()
+            messageParser.processMessage("login,webusr")
+            messageParser.processMessage("appName,REST")
+    app.run(port=5000, debug=True, host='0.0.0.0')
