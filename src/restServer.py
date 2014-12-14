@@ -3,9 +3,12 @@ from flask import Flask, jsonify, abort, make_response, request
 from API import apiMessageParser
 from collections import deque
 import os
+import glob
+import base64
 
 app = Flask(__name__)
 messageParser = None
+counter = 0
 
 
 class processor(object):
@@ -30,8 +33,6 @@ def setApp():
 
 @app.route('/api/newSurface', methods=['POST'])
 def newSurface():
-    if not request.json:
-        abort(400)
     returnData = processor.processMessage("new_surface")
     return returnData
     
@@ -142,16 +143,27 @@ def newRectangleWithID():
 
 @app.route('/api/newTexRectangle', methods=['POST'])
 def newTexRectangle():
-    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'texture' in request.json:
+    global counter
+    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'textureData' in request.json or not 'extension' in request.json:
+        print str(request.json)
         abort(400)
-    returnData = processor.processMessage("new_texrectangle," + str(request.json['windowNo']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['width']) + "," + str(request.json['height']) + "," + str(request.json['texture']))
+    g = open("images/" + str(counter) + "-rest." + str(request.json['extension']), "w")
+    g.write(base64.decodestring(str(request.json['textureData'])))
+    g.close()
+    returnData = processor.processMessage("new_texrectangle," + str(request.json['windowNo']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['width']) + "," + str(request.json['height']) + "," + str(counter))
+    counter += 1
     return returnData
 
 @app.route('/api/newTexRectangleWithID', methods=['POST'])
 def newTexRectangleWithID():
-    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'texture' in request.json:
+    global counter
+    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'textureData' in request.json or not 'extension' in request.json:
         abort(400)
-    returnData = processor.processMessage("new_texrectangle_with_ID," + str(request.json['ID']) + "," + str(request.json['windowNo']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['width']) + "," + str(request.json['height']) + "," + str(request.json['texture']))
+    g = open("images/" + str(counter) + "." + str(request.json['extension']), "w")
+    g.write(base64.decodestring(str(request.json['textureData'])))
+    g.close()
+    returnData = processor.processMessage("new_texrectangle_with_ID," + str(request.json['ID']) + "," + str(request.json['windowNo']) + "," + str(request.json['x']) + "," + str(request.json['y']) + "," + str(request.json['width']) + "," + str(request.json['height']) + "," + str(counter))
+    counter += 1
     return returnData
 
 @app.route('/api/newText', methods=['POST'])
@@ -254,15 +266,11 @@ def loadDefinedSurfaces():
 
 @app.route('/api/getSavedLayouts', methods=['GET'])
 def getSavedLayouts():
-    if not request.json:
-        abort(400)
     returnData = processor.processMessage("get_saved_layouts")
     return returnData
 
 @app.route('/api/getSavedImages', methods=['GET'])
 def getSavedImages():
-    if not request.json:
-        abort(400)
     returnData = processor.processMessage("get_saved_images")
     return returnData
 
@@ -1073,9 +1081,14 @@ def getTexRectangleBottomLeft():
 
 @app.route('/api/setTexRectangleTexture', methods=['POST'])
 def setTexRectangleTexture():
-    if not request.json or not 'elementNo' in request.json or not 'texture' in request.json:
+    global counter
+    if not request.json or not 'elementNo' in request.json or not 'textureData' in request.json or not 'extension' in request.json:
         abort(400)
-    returnData = processor.processMessage("set_texrectangle_texture," + str(request.json['elementNo']) + "," + str(request.json['texture']))
+    g = open("images/" + str(counter) + "." + str(request.json['extension']), "w")
+    g.write(base64.decodestring(str(request.json['textureData'])))
+    g.close()
+    returnData = processor.processMessage("set_texrectangle_texture," + str(request.json['elementNo']) + "," + str(counter))
+    counter += 1
     return returnData
 
 @app.route('/api/getTexRectangleTexture', methods=['GET'])
@@ -1206,22 +1219,16 @@ def checkElementVisibility():
 
 @app.route('/api/hideSetupSurface', methods=['POST'])
 def hideSetupSurface():
-    if not request.json:
-        abort(400)
     returnData = processor.processMessage("hide_setup_surface")
     return returnData
 
 @app.route('/api/showSetupSurface', methods=['POST'])
 def showSetupSurface():
-    if not request.json:
-        abort(400)
     returnData = processor.processMessage("show_setup_surface")
     return returnData
 
 @app.route('/api/getSetupSurfaceVisibility', methods=['GET'])
 def getSetupSurfaceVisibility():
-    if not request.json:
-        abort(400)
     returnData = processor.processMessage("get_setup_surface_visibility")
     return returnData
 
@@ -1233,9 +1240,12 @@ def removeElement():
     return returnData
 
 if __name__ == '__main__':
-    if (messageParser==None):
-        if os.environ.get('WERKZEUG_RUN_MAIN') == 'true': #Only run on the child server
-            messageParser = apiMessageParser()
-            messageParser.processMessage("login,webusr")
-            messageParser.processMessage("appName,REST")
+    if os.environ.get('WERKZEUG_RUN_MAIN') == 'true': #Only run on the child server to prevent two windows and port blocking
+        messageParser = apiMessageParser()
+        messageParser.processMessage("login,webusr")
+        messageParser.processMessage("appName,REST")
+        counter = 0
+        files = glob.glob('images/*')
+        for f in files:
+            os.remove(f)
     app.run(port=5000, debug=True, host='0.0.0.0')

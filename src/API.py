@@ -1669,26 +1669,23 @@ class apiMessageParser:
                 
     #Checks the setup GUI and displays any required windows and cursors on it by calling the relevant functions
     def checkSetupGUI(self):
-        
-        #Runs if the setup surface is meant to be visible
-        if(self.GUI.getSetupSurfaceVisibilty()==True):
-            GUIRead = self.GUI # Makes a copy of the GUI so that changes during rendering don't cause problems
+        GUIRead = self.GUI # Makes a copy of the GUI so that changes during rendering don't cause problems
 
-            windows = GUIRead.getWindows(0) #Gathers the list of windows on the setup surface
-            
-            #Loops through all the windows on the setup surface
-            for z in range(0,len(windows)):
-                self.displayWindow(windows[z],GUIRead) #Renders the current window in the list
-            
-            cursors = GUIRead.getCursors(0) #Gathers the list of cursors on the setup surface
-            
-            #Loops through all the cursors on the setup surface
-            for z in range(0,len(cursors)):
-                if(GUIRead.isCursorVisible(cursors[z])):
-                    position = GUIRead.getCursorPos(cursors[z]) #Gets the position of the current cursor
-                    rotation = GUIRead.getCursorRotation(cursors[z]) #Gets the rotation of the current cursor
-                    mode = GUIRead.getCursorMode(cursors[z])
-                    self.drawCursor(position[0],position[1],rotation,True,mode) #Draws the cursor at the correct position with the correct rotation
+        windows = GUIRead.getWindows(0) #Gathers the list of windows on the setup surface
+        
+        #Loops through all the windows on the setup surface
+        for z in range(0,len(windows)):
+            self.displayWindow(windows[z],GUIRead) #Renders the current window in the list
+        
+        cursors = GUIRead.getCursors(0) #Gathers the list of cursors on the setup surface
+        
+        #Loops through all the cursors on the setup surface
+        for z in range(0,len(cursors)):
+            if(GUIRead.isCursorVisible(cursors[z])):
+                position = GUIRead.getCursorPos(cursors[z]) #Gets the position of the current cursor
+                rotation = GUIRead.getCursorRotation(cursors[z]) #Gets the rotation of the current cursor
+                mode = GUIRead.getCursorMode(cursors[z])
+                self.drawCursor(position[0],position[1],rotation,True,mode) #Draws the cursor at the correct position with the correct rotation
 	
     #Resizes the window to the desired width and height
     def resize(self, (width, height)):
