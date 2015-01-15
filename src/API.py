@@ -61,132 +61,132 @@ class apiMessageParser:
     
     #Creates a new surface for projection as requested by the API call
     def newSurface(self, pieces):
-        surfaceNo = self.GUI.newSurface(pieces[1], pieces[2], pieces[3])
+        surfaceNo = self.GUI.newSurface(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'])
         return {'surfaceNo' : surfaceNo}
     
     #Creates a new surface for projection with an ID as requested by the API Call
     def newSurfaceWithID(self, peices):
-        surfaceNo = self.GUI.newSurfaceWithID(pieces[2], pieces[3], pieces[4], pieces[1])
+        surfaceNo = self.GUI.newSurfaceWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'])
         return {'surfaceNo' : surfaceNo}
         
     #Creates a new cursor on the desired surface as requested by the API call
     def newCursor(self, pieces):
-        cursorNo = self.GUI.newCursor(pieces[1], pieces[2], pieces[3])
+        cursorNo = self.GUI.newCursor(pieces['surfaceNo'], pieces['x'], pieces['y'])
         return {"cursorNo" : cursorNo}
     
     #Creates a new cursor with an ID on the desired surface as requested by the API call
     def newCursorWithID(self, pieces):
-        cursorNo = self.GUI.newCursorWithID(pieces[1], pieces[2], pieces[3], pieces[4])
+        cursorNo = self.GUI.newCursorWithID(pieces['ID'], pieces['surfaceNo'], pieces['x'], pieces['y'])
         return {"cursorNo" : cursorNo}
         
     #Creates a new window on the desired surface as requested by the API call
     def newWindow(self, pieces):
-        windowNo = self.GUI.newWindow(pieces[7], pieces[8], pieces[9], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
+        windowNo = self.GUI.newWindow(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['surfaceNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['name'])
         return {"windowNo" : windowNo}
     
     #Creates a new window with an ID on the desired surface as requested by the API call
     def newWindowWithID(self, pieces):
-        windowNo = self.GUI.newWindowWithID(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
+        windowNo = self.GUI.newWindowWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['surfaceNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['name'])
         return {"windowNo" : windowNo}
         
     #Creates a new circle on the desired window as requested by the API call
     def newCircle(self, pieces):
-        elementNo = self.GUI.newCircle(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
+        elementNo = self.GUI.newCircle(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['radius'], pieces['lineColor'], pieces['fillColor'], pieces['sides'])
         return {"elementNo" : elementNo}
     
     #Creates a new circle with an ID on the desired window as requested by the API call
     def newCircleWithID(self, pieces):
-        elementNo = self.GUI.newCircleWithID(pieces[9], pieces[10], pieces[11], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
+        elementNo = self.GUI.newCircleWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['radius'], pieces['lineColor'], pieces['fillColor'], pieces['sides'])
         return {"elementNo" : elementNo}
         
     #Creates a new line on the desired window as requested by the API call
     def newLine(self, pieces):
-        elementNo = self.GUI.newLine(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
+        elementNo = self.GUI.newLine(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['xStart'], pieces['yStart'], pieces['xEnd'], pieces['yEnd'], pieces['color'], pieces['width'])
         return {"elementNo" : elementNo}
     
     #Creates a new line with an ID in the desired window as requested by the API call
     def newLineWithID(self, pieces):
-        elementNo = self.GUI.newLineWithID(pieces[9], pieces[10], pieces[11], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
+        elementNo = self.GUI.newLineWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['xStart'], pieces['yStart'], pieces['xEnd'], pieces['yEnd'], pieces['color'], pieces['width'])
         return {"elementNo" : elementNo}
         
     #Creates the starting point of a new line strip on the desired window as requested by the API call
     def newLineStrip(self, pieces):
-        elementNo = self.GUI.newLineStrip(pieces[6], pieces[7], pieces[8], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5])
+        elementNo = self.GUI.newLineStrip(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['color'], pieces['width'])
         return {"elementNo" : elementNo}
     
     #Creates the starting point of a new line strip with an ID on the desired window as requested by the API call
     def newLineStripWithID(self, pieces):
-        elementNo = self.GUI.newLineStripWithID(pieces[7], pieces[8], pieces[9], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
+        elementNo = self.GUI.newLineStripWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['color'], pieces['width'])
         return {"elementNo" : elementNo}
         
     #Creates the starting point of a new polygon on the desired window as requested by the API call
     def newPolygon(self, pieces):
-        elementNo = self.GUI.newPolygon(pieces[6], pieces[7], pieces[8], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5])
+        elementNo = self.GUI.newPolygon(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['lineColor'], pieces['fillColor'])
         return {"elementNo" : elementNo}
     
     #Creates the starting point of a new polygon with an ID on the desired window as requested by the API call
     def newPolygonWithID(self, pieces):
-        elementNo = self.GUI.newPolygonWithID(pieces[7], pieces[8], pieces[9], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
+        elementNo = self.GUI.newPolygonWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['lineColor'], pieces['fillColor'])
         return {"elementNo" : elementNo}
     
     #Creates a new rectangle on the desired window as requested by the API call
     def newRectangle(self,pieces):
-        elementNo = self.GUI.newRectangle(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
+        elementNo = self.GUI.newRectangle(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['lineColor'], pieces['fillColor'])
         return {"elementNo" : elementNo}
     
     #Creates a new rectangle with an ID on the desired window as requested by the API call
     def newRectangleWithID(self,pieces):
-        elementNo = self.GUI.newRectangleWithID(pieces[9], pieces[10], pieces[11], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
+        elementNo = self.GUI.newRectangleWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['lineColor'], pieces['fillColor'])
         return {"elementNo" : elementNo}
     
     #Creates a new textured rectangle on the desired window as requested by the API call
     def newTexRectangle(self,pieces):
-        elementNo = self.GUI.newTexRectangle(pieces[7], pieces[8], pieces[9], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6])
+        elementNo = self.GUI.newTexRectangle(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['imageID'])
         return {"elementNo" : elementNo}
     
     #Creates a new textured rectangle with an ID on the desired window as requested by the API call
     def newTexRectangleWithID(self,pieces):
-        elementNo = self.GUI.newTexRectangleWithID(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
+        elementNo = self.GUI.newTexRectangleWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['imageID'])
         return {"elementNo" : elementNo}
             
     #Creates a new block of text on the desired window as requested by the API call
     def newText(self, pieces):
-        elementNo = self.GUI.newText(pieces[8], pieces[9], pieces[10], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7])
+        elementNo = self.GUI.newText(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['text'], pieces['x'], pieces['y'], pieces['ptSize'], pieces['font'], pieces['color'])
         return {"elementNo" : elementNo}
     
     #Creates a new block of text with an ID on the desired window as requested by the API call
     def newTextWithID(self, pieces):
-        elementNo = self.GUI.newTextWithID(pieces[9], pieces[10], pieces[11], pieces[1], pieces[2], pieces[3], pieces[4], pieces[5], pieces[6], pieces[7], pieces[8])
+        elementNo = self.GUI.newTextWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['text'], pieces['x'], pieces['y'], pieces['ptSize'], pieces['font'], pieces['color'])
         return {"elementNo" : elementNo}
     
     #Subscribes the current user to a surface
     def subscribeToSurface(self, pieces):
-        self.GUI.subscribeToSurface(pieces[3] + "," + pieces[4], pieces[1])
+        self.GUI.subscribeToSurface(pieces['IDapp'] + "," + pieces['IDinstance'], pieces['surfaceNo'])
         return {}
     
     #Gets the ID of a surface
     def getSurfaceID(self, pieces):
-        ID = self.GUI.getSurfaceID(pieces[1])
+        ID = self.GUI.getSurfaceID(pieces['surfaceNo'])
         return {"ID" : ID}
     
     #Sets the ID of a surface
     def setSurfaceID(self, pieces):
-        self.GUI.setSurfaceID(pieces[1],pieces[2])
+        self.GUI.setSurfaceID(pieces['surfaceNo'],pieces['ID'])
         return {}
     
     #Gets the owner of a surface
     def getSurfaceOwner(self, pieces):
-        owner = self.GUI.getSurfaceOwner(pieces[1])
+        owner = self.GUI.getSurfaceOwner(pieces['surfaceNo'])
         return {"owner" : owner}
     
     #Gets the details of the creator application of a surface
     def getSurfaceAppDetails(self, pieces):
-        app = self.GUI.getSurfaceAppDetails(pieces[1])
+        app = self.GUI.getSurfaceAppDetails(pieces['surfaceNo'])
         return {"app" : app[0], "instance" : app[1]}
     
     #Returns all surfaces with the desired ID
     def getSurfacesByID(self, pieces):
-        found = self.GUI.getSurfacesByID(pieces[1])
+        found = self.GUI.getSurfacesByID(pieces['ID'])
         dict = {}
         dict["count"] = len(found)
         for x in range(0,len(found)):
@@ -195,7 +195,7 @@ class apiMessageParser:
     
     #Returns all surfaces with the desired owner
     def getSurfacesByOwner(self, pieces):
-        found = self.GUI.getSurfacesByOwner(pieces[1])
+        found = self.GUI.getSurfacesByOwner(pieces['owner'])
         dict = {}
         dict["count"] = len(found)
         for x in range(0,len(found)):
@@ -204,7 +204,7 @@ class apiMessageParser:
     
     #Returns all surfaces with the desired app name
     def getSurfacesByAppName(self, pieces):
-        found = self.GUI.getSurfacesByAppName(pieces[1])
+        found = self.GUI.getSurfacesByAppName(pieces['name'])
         dict = {}
         dict["count"] = len(found)
         for x in range(0,len(found)):
@@ -213,7 +213,7 @@ class apiMessageParser:
     
     #Returns all surfaces with the desired application details
     def getSurfacesByAppDetails(self, pieces):
-        found = self.GUI.getSurfacesByAppDetails(pieces[1], pieces[2])
+        found = self.GUI.getSurfacesByAppDetails(pieces['name'], pieces['number'])
         dict = {}
         dict["count"] = len(found)
         for x in range(0,len(found)):
@@ -222,7 +222,7 @@ class apiMessageParser:
     
     #Registers the application as the admin for the surface
     def becomeSurfaceAdmin(self, pieces):
-        test = self.GUI.becomeSurfaceAdmin(pieces[1], pieces[3], pieces[4])
+        test = self.GUI.becomeSurfaceAdmin(pieces['surfaceNo'], pieces['IDapp'], pieces['IDinstance'])
         if(test==True):
             return {}
         else:
@@ -230,7 +230,7 @@ class apiMessageParser:
         
     #Deregisters the current user as admin for the surface
     def stopBeingSurfaceAdmin(self, pieces):
-        test = self.GUI.stopBeingSurfaceAdmin(pieces[1], pieces[3], pieces[4])
+        test = self.GUI.stopBeingSurfaceAdmin(pieces['surfaceNo'], pieces['IDapp'], pieces['IDinstance'])
         if(test==True):
             return {}
         else:
@@ -238,20 +238,20 @@ class apiMessageParser:
         
     #Sets the edge points for a surface
     def setSurfaceEdges(self, pieces):
-        self.GUI.setSurfacePoints(pieces[1],pieces[2],pieces[3],pieces[4],pieces[5])
+        self.GUI.setSurfacePoints(pieces['surfaceNo'],pieces['topString'],pieces['bottomString'],pieces['leftString'],pieces['rightString'])
         return {}
         
     #Removes all the known edge points from a surface so it is no longer shown.
     def undefineSurface(self, pieces):
-        self.GUI.undefineSurface(pieces[1])
+        self.GUI.undefineSurface(pieces['surfaceNo'])
         return {}
     
     def saveDefinedSurfaces(self, pieces):
-        self.GUI.saveDefinedSurfaces(pieces[1])
+        self.GUI.saveDefinedSurfaces(pieces['fileName'])
         return {}
     
     def loadDefinedSurfaces(self, pieces):
-        count = self.GUI.loadDefinedSurfaces(pieces[1])
+        count = self.GUI.loadDefinedSurfaces(pieces['fileName'])
         return {"count" : count[0], "layouts" : count[1], "connections" : count[2]}
     
     def getSavedLayouts(self, pieces):
@@ -271,28 +271,28 @@ class apiMessageParser:
         return dict
     
     def setUploadName(self, pieces):
-        self.fts.setFileName(pieces[1])
+        self.fts.setFileName(pieces['fileName'])
         ftsthread = Thread(target=self.fts.awaitConnection, args=())
         ftsthread.start()
     
     def getSurfacePixelWidth(self, pieces):
-        width = self.GUI.getSurfacePixelWidth(pieces[1])
+        width = self.GUI.getSurfacePixelWidth(pieces['surfaceNo'])
         return {"width" : width}
     
     def getSurfacePixelHeight(self, pieces):
-        height = self.GUI.getSurfacePixelHeight(pieces[1])
+        height = self.GUI.getSurfacePixelHeight(pieces['surfaceNo'])
         return {"height" : height}
     
     def setSurfacePixelWidth(self, pieces):
-        self.GUI.setSurfacePixelWidth(pieces[1],pieces[2])
+        self.GUI.setSurfacePixelWidth(pieces['surfaceNo'],pieces['width'])
         return {}
     
     def setSurfacePixelHeight(self, pieces):
-        self.GUI.setSurfacePixelHeight(pieces[1],pieces[2])
+        self.GUI.setSurfacePixelHeight(pieces['surfaceNo'],pieces['height'])
         return {}
     
     def clearSurface(self, pieces):
-        self.GUI.clearSurface(pieces[1])
+        self.GUI.clearSurface(pieces['surfaceNo'])
         return {}
     
     def deleteLayout(self, pieces):
@@ -304,55 +304,55 @@ class apiMessageParser:
         return {}
     
     def rotateSurfaceTo0(self, pieces):
-        self.GUI.rotateSurfaceTo0(pieces[1])
+        self.GUI.rotateSurfaceTo0(pieces['surfaceNo'])
         return {}
     
     def rotateSurfaceTo90(self, pieces):
-        self.GUI.rotateSurfaceTo90(pieces[1])
+        self.GUI.rotateSurfaceTo90(pieces['surfaceNo'])
         return {}
     
     def rotateSurfaceTo180(self, pieces):
-        self.GUI.rotateSurfaceTo180(pieces[1])
+        self.GUI.rotateSurfaceTo180(pieces['surfaceNo'])
         return {}
     
     def rotateSurfaceTo270(self, pieces):
-        self.GUI.rotateSurfaceTo270(pieces[1])
+        self.GUI.rotateSurfaceTo270(pieces['surfaceNo'])
         return {}
     
     def mirrorSurface(self, pieces):
-        self.GUI.mirrorSurface(pieces[1])
+        self.GUI.mirrorSurface(pieces['surfaceNo'])
         return {}
     
     def connectSurfaces(self, pieces):
-        self.GUI.connectSurfaces(pieces[1], pieces[2], pieces[3], pieces[4])
+        self.GUI.connectSurfaces(pieces['surfaceNo1'], pieces['side1'], pieces['surfaceNo2'], pieces['side2'])
         return {}
         
     def disconnectSurfaces(self, pieces):
-        self.GUI.disconnectSurfaces(pieces[1], pieces[2], pieces[3], pieces[4])
+        self.GUI.disconnectSurfaces(pieces['surfaceNo1'], pieces['side1'], pieces['surfaceNo2'], pieces['side2'])
         return {}
 
     def subscribeToWindow(self, pieces):
-        self.GUI.subscribeToWindow(pieces[3] + "," + pieces[4], pieces[1])
+        self.GUI.subscribeToWindow(pieces['IDapp'] + "," + pieces['IDinstance'], pieces['windowNo'])
         return {}
     
     def getWindowID(self, pieces):
-        ID = self.GUI.getWindowID(pieces[1])
+        ID = self.GUI.getWindowID(pieces['windowNo'])
         return {"ID" : ID}
     
     def setWindowID(self, pieces):
-        self.GUI.setWindowID(pieces[1],pieces[2])
+        self.GUI.setWindowID(pieces['windowNo'],pieces['ID'])
         return {}
     
     def getWindowOwner(self, pieces):
-        owner = self.GUI.getWindowOwner(pieces[1])
+        owner = self.GUI.getWindowOwner(pieces['windowNo'])
         return {"owner" : owner}
     
     def getWindowAppDetails(self, pieces):
-        app = self.GUI.getWindowAppDetails(pieces[1])
+        app = self.GUI.getWindowAppDetails(pieces['windowNo'])
         return {"app" : app[0], "instance" : app[1]}
     
     def getWindowsByID(self, pieces):
-        found = self.GUI.getWindowsByID(pieces[1])
+        found = self.GUI.getWindowsByID(pieces['ID'])
         dict = {}
         dict["count"] = len(found)
         for x in range(0,len(found)):
@@ -360,7 +360,7 @@ class apiMessageParser:
         return dict
     
     def getWindowsByOwner(self, pieces):
-        found = self.GUI.getWindowsByOwner(pieces[1])
+        found = self.GUI.getWindowsByOwner(pieces['owner'])
         dict = {}
         dict["count"] = len(found)
         for x in range(0,len(found)):
@@ -368,7 +368,7 @@ class apiMessageParser:
         return dict
     
     def getWindowsByAppName(self, pieces):
-        found = self.GUI.getWindowsByAppName(pieces[1])
+        found = self.GUI.getWindowsByAppName(pieces['name'])
         dict = {}
         dict["count"] = len(found)
         for x in range(0,len(found)):
@@ -376,7 +376,7 @@ class apiMessageParser:
         return dict
     
     def getWindowsByAppDetails(self, pieces):
-        found = self.GUI.getWindowsByAppDetails(pieces[1], pieces[2])
+        found = self.GUI.getWindowsByAppDetails(pieces['name'], pieces['number'])
         dict = {}
         dict["count"] = len(found)
         for x in range(0,len(found)):
@@ -384,41 +384,41 @@ class apiMessageParser:
         return dict
     
     def becomeWindowAdmin(self, pieces):
-        test = self.GUI.becomeWindowAdmin(pieces[1], pieces[3], pieces[4])
+        test = self.GUI.becomeWindowAdmin(pieces['windowNo'], pieces['IDapp'], pieces['IDinstance'])
         if(test==True):
             return {}
         else:
             return {"error" : 7}
         
     def stopBeingWindowAdmin(self, pieces):
-        test = self.GUI.stopBeingWindowAdmin(pieces[1], pieces[3], pieces[4])
+        test = self.GUI.stopBeingWindowAdmin(pieces['windowNo'], pieces['IDapp'], pieces['IDinstance'])
         if(test==True):
             return {}
         else:
             return {"error" : 7}
     
     def subscribeToElement(self, pieces):
-        self.GUI.subscribeToElement(pieces[3] + "," + pieces[4], pieces[1])
+        self.GUI.subscribeToElement(pieces['IDapp'] + "," + pieces['IDinstance'], pieces['elementNo'])
         return {}
     
     def getElementID(self, pieces):
-        ID = self.GUI.getElementID(pieces[1])
+        ID = self.GUI.getElementID(pieces['elementNo'])
         return {"ID" : ID}
     
     def setElementID(self, pieces):
-        self.GUI.setElementID(pieces[1],pieces[2])
+        self.GUI.setElementID(pieces['elementNo'],pieces['ID'])
         return {}
     
     def getElementOwner(self, pieces):
-        owner = self.GUI.getElementOwner(pieces[1])
+        owner = self.GUI.getElementOwner(pieces['elementNo'])
         return {"owner" : owner}
     
     def getElementAppDetails(self, pieces):
-        app = self.GUI.getElementAppDetails(pieces[1])
+        app = self.GUI.getElementAppDetails(pieces['elementNo'])
         return {"app" : app[0], "instance" : app[1]}
     
     def getElementsByID(self, pieces):
-        found = self.GUI.getElementsByID(pieces[1])
+        found = self.GUI.getElementsByID(pieces['ID'])
         dict = {}
         dict["count"] = len(found)
         for x in range(0,len(found)):
@@ -426,7 +426,7 @@ class apiMessageParser:
         return dict
     
     def getElementsByOwner(self, pieces):
-        found = self.GUI.getElementsByOwner(pieces[1])
+        found = self.GUI.getElementsByOwner(pieces['owner'])
         dict = {}
         dict["count"] = len(found)
         for x in range(0,len(found)):
@@ -434,7 +434,7 @@ class apiMessageParser:
         return dict
     
     def getElementsByAppName(self, pieces):
-        found = self.GUI.getElementsByAppName(pieces[1])
+        found = self.GUI.getElementsByAppName(pieces['name'])
         dict = {}
         dict["count"] = len(found)
         for x in range(0,len(found)):
@@ -442,7 +442,7 @@ class apiMessageParser:
         return dict
     
     def getElementsByAppDetails(self, pieces):
-        found = self.GUI.getElementsByAppDetails(pieces[1], pieces[2])
+        found = self.GUI.getElementsByAppDetails(pieces['name'], pieces['number'])
         dict = {}
         dict["count"] = len(found)
         for x in range(0,len(found)):
@@ -450,7 +450,7 @@ class apiMessageParser:
         return dict
     
     def getElementsOnWindow(self, pieces):
-        found = self.GUI.getElements(pieces[1])
+        found = self.GUI.getElements(pieces['windowNo'])
         dict = {}
         dict["count"] = len(found)
         for x in range(0,len(found)):
@@ -458,422 +458,422 @@ class apiMessageParser:
         return dict
     
     def becomeElementAdmin(self, pieces):
-        test = self.GUI.becomeElementAdmin(pieces[1], pieces[3], pieces[4])
+        test = self.GUI.becomeElementAdmin(pieces['elementNo'], pieces['IDapp'], pieces['IDinstance'])
         if(test==True):
             return {}
         else:
             return {"error" : 7}
         
     def stopBeingElementAdmin(self, pieces):
-        test = self.GUI.stopBeingElementAdmin(pieces[1], pieces[3], pieces[4])
+        test = self.GUI.stopBeingElementAdmin(pieces['elementNo'], pieces['IDapp'], pieces['IDinstance'])
         if(test==True):
             return {}
         else:
             return {"error" : 7}
         
     def moveCursor(self, pieces):
-        self.GUI.moveCursor(pieces[1], pieces[2], pieces[3])
+        self.GUI.moveCursor(pieces['cursorNo'], pieces['xDist'], pieces['yDist'])
         return {}
     
     def testMoveCursor(self, pieces):
-        loc = self.GUI.testMoveCursor(pieces[1], pieces[2], pieces[3])
+        loc = self.GUI.testMoveCursor(pieces['cursorNo'], pieces['xDist'], pieces['yDist'])
         return {'x' : loc[0], 'y' : loc[1]}
         
     def relocateCursor(self, pieces):
-        self.GUI.setCursorPos(pieces[1], pieces[2], pieces[3], pieces[4])
+        self.GUI.setCursorPos(pieces['cursorNo'], pieces['x'], pieces['y'], pieces['surfaceNo'])
         return {}
         
     def getCursorPosition(self, pieces):
-        loc = self.GUI.getCursorPos(pieces[1])
+        loc = self.GUI.getCursorPos(pieces['cursorNo'])
         return {"x" : loc[0], "y" : loc[1]}
     
     def rotateCursorClockwise(self,pieces):
-        self.GUI.rotateCursorClockwise(pieces[1],pieces[2])
+        self.GUI.rotateCursorClockwise(pieces['cursorNo'],pieces['degrees'])
         return {}
         
     def rotateCursorAnticlockwise(self,pieces):
-        self.GUI.rotateCursorAnticlockwise(pieces[1],pieces[2])
+        self.GUI.rotateCursorAnticlockwise(pieces['cursorNo'],pieces['degrees'])
         return {}
         
     def getCursorRotation(self,pieces):
-        rot = self.GUI.getCursorRotation(pieces[1])
+        rot = self.GUI.getCursorRotation(pieces['cursorNo'])
         return {"rotation" : rot}
     
     def getCursorMode(self, pieces):
-        mode = self.GUI.getCursorMode(pieces[1])
+        mode = self.GUI.getCursorMode(pieces['cursorNo'])
         return {"mode" : mode}
     
     def setCursorDefaultMode(self, pieces):
-        self.GUI.setCursorDefaultMode(pieces[1])
+        self.GUI.setCursorDefaultMode(pieces['cursorNo'])
         return {}
     
     def setCursorWallMode(self, pieces):
-        self.GUI.setCursorWallMode(pieces[1])
+        self.GUI.setCursorWallMode(pieces['cursorNo'])
         return {}
     
     def setCursorBlockMode(self, pieces):
-        self.GUI.setCursorBlockMode(pieces[1])
+        self.GUI.setCursorBlockMode(pieces['cursorNo'])
         return {}
     
     def setCursorScreenMode(self, pieces):
-        self.GUI.setCursorScreenMode(pieces[1])
+        self.GUI.setCursorScreenMode(pieces['cursorNo'])
         return {}
     
     def showCursor(self, pieces):
-        self.GUI.showCursor(pieces[1])
+        self.GUI.showCursor(pieces['cursorNo'])
         return {}
     
     def hideCursor(self, pieces):
-        self.GUI.hideCursor(pieces[1])
+        self.GUI.hideCursor(pieces['cursorNo'])
         return {}
     
     def isCursorVisible(self, pieces):
-        visibility = self.GUI.isCursorVisible(pieces[1])
+        visibility = self.GUI.isCursorVisible(pieces['cursorNo'])
         return {"visibility" : visibility}
         
     def moveWindow(self, pieces):
-        self.GUI.moveWindow(pieces[1], pieces[2], pieces[3])
+        self.GUI.moveWindow(pieces['windowNo'], pieces['xDist'], pieces['yDist'])
         return {}
         
     def relocateWindow(self, pieces):
-        self.GUI.setWindowPos(pieces[1], pieces[2], pieces[3], pieces[4])
+        self.GUI.setWindowPos(pieces['windowNo'], pieces['x'], pieces['y'], pieces['surfaceNo'])
         return {}
         
     def setWindowWidth(self, pieces):
-        self.GUI.setWindowWidth(pieces[1], pieces[2])
+        self.GUI.setWindowWidth(pieces['windowNo'], pieces['width'])
         return {}
         
     def setWindowHeight(self, pieces):
-        self.GUI.setWindowHeight(pieces[1], pieces[2])
+        self.GUI.setWindowHeight(pieces['windowNo'], pieces['height'])
         return {}
         
     def getWindowPosition(self, pieces):
-        loc = self.GUI.getWindowPos(pieces[1])
+        loc = self.GUI.getWindowPos(pieces['windowNo'])
         return {"x" : loc[0], "y" : loc[1]}
         
     def getWindowWidth(self, pieces):
-        width = self.GUI.getWindowWidth(pieces[1])
+        width = self.GUI.getWindowWidth(pieces['windowNo'])
         return {"width" : width}
         
     def getWindowHeight(self, pieces):
-        height = self.GUI.getWindowHeight(pieces[1])
+        height = self.GUI.getWindowHeight(pieces['windowNo'])
         return {"height" : height}
         
     def stretchWindowDown(self, pieces):
-        self.GUI.stretchWindowDown(pieces[1], pieces[2])
+        self.GUI.stretchWindowDown(pieces['windowNo'], pieces['distance'])
         return {}
         
     def stretchWindowUp(self, pieces):
-        self.GUI.stretchWindowUp(pieces[1], pieces[2])
+        self.GUI.stretchWindowUp(pieces['windowNo'], pieces['distance'])
         return {}
         
     def stretchWindowLeft(self, pieces):    
-        self.GUI.stretchWindowLeft(pieces[1], pieces[2])
+        self.GUI.stretchWindowLeft(pieces['windowNo'], pieces['distance'])
         return {}
         
     def stretchWindowRight(self, pieces):
-        self.GUI.stretchWindowRight(pieces[1], pieces[2])
+        self.GUI.stretchWindowRight(pieces['windowNo'], pieces['distance'])
         return {}
         
     def setWindowName(self, pieces):
-        self.GUI.setWindowName(pieces[1], pieces[2])
+        self.GUI.setWindowName(pieces['windowNo'], pieces['name'])
         return {}
         
     def getWindowName(self, pieces):
-        name = self.GUI.getWindowName(pieces[1])
+        name = self.GUI.getWindowName(pieces['windowNo'])
         return {"name" : name}
         
     def relocateCircle(self, pieces):
-        name = self.GUI.setCirclePos(pieces[1], pieces[2], pieces[3])
+        name = self.GUI.setCirclePos(pieces['elementNo'], pieces['x'], pieces['y'])
         return {}
         
     def getCirclePosition(self, pieces):
-        loc = self.GUI.getCirclePos(pieces[1])
+        loc = self.GUI.getCirclePos(pieces['elementNo'])
         return {"x" : loc[0], "y" : loc[1]}
         
     def getElementType(self, pieces):
-        type = self.GUI.getEleType(pieces[1])
+        type = self.GUI.getEleType(pieces['elementNo'])
         return {"type" : type}
         
     def setCircleLineColor(self, pieces):
-        self.GUI.setCircleLine(pieces[1], pieces[2])
+        self.GUI.setCircleLine(pieces['elementNo'], pieces['color'])
         return {}
         
     def setCircleFillColor(self, pieces):
-        self.GUI.setCircleFill(pieces[1], pieces[2])
+        self.GUI.setCircleFill(pieces['elementNo'], pieces['color'])
         return {}
         
     def getCircleLineColor(self, pieces):
-        color = self.GUI.getCircleLine(pieces[1])
+        color = self.GUI.getCircleLine(pieces['elementNo'])
         return {"color" : color}
         
     def getCircleFillColor(self, pieces):
-        color = self.GUI.getCircleFill(pieces[1])
+        color = self.GUI.getCircleFill(pieces['elementNo'])
         return {"color" : color}
         
     def getCircleRadius(self, pieces):
-        radius = self.GUI.getCircleRad(pieces[1])
+        radius = self.GUI.getCircleRad(pieces['elementNo'])
         return {"radius" : radius}
         
     def setCircleRadius(self, pieces):
-        self.GUI.setCircleRad(pieces[1], pieces[2])
+        self.GUI.setCircleRad(pieces['elementNo'], pieces['radius'])
         return {}
     
     def getCircleSides(self, pieces):
-        sides = self.GUI.getCircleSides(pieces[1])
+        sides = self.GUI.getCircleSides(pieces['elementNo'])
         return {"sides" : sides}
     
     def setCircleSides(self, pieces):
-        self.GUI.setCircleSides(pieces[1], pieces[2])
+        self.GUI.setCircleSides(pieces['elementNo'], pieces['sides'])
         return {}
         
     def getLineStart(self, pieces):
-        loc = self.GUI.getLineStart(pieces[1])
+        loc = self.GUI.getLineStart(pieces['elementNo'])
         return {"x" : loc[0], "y" : loc[1]}
         
     def getLineEnd(self, pieces):
-        loc = self.GUI.getLineEnd(pieces[1])
+        loc = self.GUI.getLineEnd(pieces['elementNo'])
         return {"x" : loc[0], "y" : loc[1]}
         
     def setLineStart(self, pieces):
-        self.GUI.setLineStart(pieces[1], pieces[2], pieces[3])
+        self.GUI.setLineStart(pieces['elementNo'], pieces['x'], pieces['y'])
         return {}
         
     def setLineEnd(self, pieces):
-        self.GUI.setLineEnd(pieces[1], pieces[2], pieces[3])
+        self.GUI.setLineEnd(pieces['elementNo'], pieces['x'], pieces['y'])
         return {}
         
     def setLineColor(self, pieces):
-        self.GUI.setLineColor(pieces[1], pieces[2])
+        self.GUI.setLineColor(pieces['elementNo'], pieces['color'])
         return {}
         
     def getLineColor(self, pieces):
-        color = self.GUI.getLineColor(pieces[1])
+        color = self.GUI.getLineColor(pieces['elementNo'])
         return {"color" : color}
     
     def getLineWidth(self, pieces):
-        width = self.GUI.getLineWidth(pieces[1])
+        width = self.GUI.getLineWidth(pieces['elementNo'])
         return {"width" : width}
     
     def setLineWidth(self, pieces):
-        self.GUI.setLineWidth(pieces[1], pieces[2])
+        self.GUI.setLineWidth(pieces['elementNo'], pieces['width'])
         
     def addLineStripPoint(self, pieces):
-        self.GUI.addLineStripPoint(pieces[1], pieces[2], pieces[3])
+        self.GUI.addLineStripPoint(pieces['elementNo'], pieces['x'], pieces['y'])
         return {}
     
     def addLineStripPointAt(self, pieces):
-        self.GUI.addLineStripPointAt(pieces[1], pieces[2], pieces[3], pieces[4])
+        self.GUI.addLineStripPointAt(pieces['elementNo'], pieces['x'], pieces['y'], pieces['index'])
         return {}
         
     def getLineStripPoint(self, pieces):
-        loc = self.GUI.getLineStripPoint(pieces[1], pieces[2])
+        loc = self.GUI.getLineStripPoint(pieces['elementNo'], pieces['index'])
         return {"x" : loc[0], "y" : loc[1]}
         
     def moveLineStripPoint(self, pieces):
-        self.GUI.moveLineStripPoint(int(pieces[1]), int(pieces[2]), float(pieces[3]), float(pieces[4]))    
+        self.GUI.moveLineStripPoint(int(pieces['elementNo']), int(pieces['pointNo']), float(pieces['x']), float(pieces['y']))    
         return {}    
         
     def getLineStripColor(self, pieces):
-        color = self.GUI.getLineStripColor(pieces[1])
+        color = self.GUI.getLineStripColor(pieces['elementNo'])
         return {"color" : color}
         
     def setLineStripColor(self, pieces):
-        self.GUI.setLineStripColor(pieces[1], pieces[2])
+        self.GUI.setLineStripColor(pieces['elementNo'], pieces['color'])
         return {}
     
     def getLineStripWidth(self, pieces):
-        width = self.GUI.getLineStripWidth(pieces[1])
+        width = self.GUI.getLineStripWidth(pieces['elementNo'])
         return {"width" : width}
     
     def setLineStripWidth(self, pieces):
-        self.GUI.setLineStripWidth(pieces[1], pieces[2])
+        self.GUI.setLineStripWidth(pieces['elementNo'], pieces['width'])
         
     def getLineStripPointCount(self, pieces):
-        count = self.GUI.getLineStripPointsCount(pieces[1])
+        count = self.GUI.getLineStripPointsCount(pieces['elementNo'])
         return {"count" : count}
     
     def setLineStripContent(self, pieces):
-        self.GUI.setLineStripContent(pieces[1], pieces[2])
+        self.GUI.setLineStripContent(pieces['elementNo'], pieces['content'])
         return {}
         
     def addPolygonPoint(self, pieces):
-        self.GUI.addPolygonPoint(pieces[1], pieces[2], pieces[3])
+        self.GUI.addPolygonPoint(pieces['elementNo'], pieces['x'], pieces['y'])
         return {}
         
     def getPolygonPoint(self, pieces):
-        loc = self.GUI.getPolygonPoint(pieces[1], pieces[2])
+        loc = self.GUI.getPolygonPoint(pieces['elementNo'], pieces['index'])
         return {"x" : loc[0], "y" : loc[1]}
         
     def movePolygonPoint(self, pieces):
-        self.GUI.movePolygonPoint(pieces[1], pieces[2], pieces[3], pieces[4])
+        self.GUI.movePolygonPoint(pieces['elementNo'], pieces['index'], pieces['x'], pieces['y'])
         return {}
         
     def getPolygonFillColor(self, pieces):
-        color = self.GUI.getPolygonFillColor(pieces[1])
+        color = self.GUI.getPolygonFillColor(pieces['elementNo'])
         return {"color" : color}
         
     def setPolygonFillColor(self, pieces):
-        self.GUI.setPolygonFillColor(pieces[1], pieces[2])
+        self.GUI.setPolygonFillColor(pieces['elementNo'], pieces['color'])
         return {}
         
     def getPolygonLineColor(self, pieces):
-        color = self.GUI.getPolygonLineColor(pieces[1])
+        color = self.GUI.getPolygonLineColor(pieces['elementNo'])
         return {"color" : color}
         
     def setPolygonLineColor(self, pieces):
-        self.GUI.setPolygonLineColor(pieces[1], pieces[2])
+        self.GUI.setPolygonLineColor(pieces['elementNo'], pieces['color'])
         return {}
         
     def getPolygonPointCount(self, pieces):
-        count = self.GUI.getPolygonPointsCount(pieces[1])
+        count = self.GUI.getPolygonPointsCount(pieces['elementNo'])
         return {"count" : count}
     
     def setRectangleTopLeft(self, pieces):
-        count = self.GUI.setRectangleTopLeft(pieces[1], pieces[2], pieces[3])
+        count = self.GUI.setRectangleTopLeft(pieces['elementNo'], pieces['x'], pieces['y'])
         return {}
     
     def getRectangleTopLeft(self, pieces):
-        loc = self.GUI.getRectangleTopLeft(pieces[1])
+        loc = self.GUI.getRectangleTopLeft(pieces['elementNo'])
         return {'x' : loc[0], 'y' : loc[1]}
     
     def getRectangleTopRight(self, pieces):
-        loc = self.GUI.getRectangleTopRight(pieces[1])
+        loc = self.GUI.getRectangleTopRight(pieces['elementNo'])
         return {'x' : loc[0], 'y' : loc[1]}
     
     def getRectangleBottomRight(self, pieces):
-        loc = self.GUI.getRectangleBottomRight(pieces[1])
+        loc = self.GUI.getRectangleBottomRight(pieces['elementNo'])
         return {'x' : loc[0], 'y' : loc[1]}
     
     def getRectangleBottomLeft(self, pieces):
-        loc = self.GUI.getRectangleBottomLeft(pieces[1])
+        loc = self.GUI.getRectangleBottomLeft(pieces['elementNo'])
         return {'x' : loc[0], 'y' : loc[1]}
     
     def setRectangleWidth(self, pieces):
-        self.GUI.setRectangleWidth(pieces[1], pieces[2])
+        self.GUI.setRectangleWidth(pieces['elementNo'], pieces['width'])
         return {}
         
     def getRectangleWidth(self, pieces):
-        width = self.GUI.getRectangleWidth(pieces[1])
+        width = self.GUI.getRectangleWidth(pieces['elementNo'])
         return {'width' : width}
     
     def setRectangleHeight(self, pieces):
-        self.GUI.setRectangleHeight(pieces[1], pieces[2])
+        self.GUI.setRectangleHeight(pieces['elementNo'], pieces['height'])
         return {}
         
     def getRectangleHeight(self, pieces):
-        height = self.GUI.getRectangleHeight(pieces[1])
+        height = self.GUI.getRectangleHeight(pieces['elementNo'])
         return {'height' : height}
 
     def getRectangleFillColor(self, pieces):
-        color = self.GUI.getRectangleFillColor(pieces[1])
+        color = self.GUI.getRectangleFillColor(pieces['elementNo'])
         return {'color' : color}
     
     def setRectangleFillColor(self, pieces):
-        self.GUI.setRectangleFillColor(pieces[1], pieces[2])
+        self.GUI.setRectangleFillColor(pieces['elementNo'], pieces['color'])
         return {}
     
     def getRectangleLineColor(self, pieces):
-        color = self.GUI.getRectangleLineColor(pieces[1])
+        color = self.GUI.getRectangleLineColor(pieces['elementNo'])
         return {'color' : color}
     
     def setRectangleLineColor(self, pieces):
-        self.GUI.setRectangleLineColor(pieces[1], pieces[2])
+        self.GUI.setRectangleLineColor(pieces['elementNo'], pieces['color'])
         return {}
     
     def setTexRectangleTopLeft(self, pieces):
-        count = self.GUI.setTexRectangleTopLeft(pieces[1], pieces[2], pieces[3])
+        count = self.GUI.setTexRectangleTopLeft(pieces['elementNo'], pieces['x'], pieces['y'])
         return {}
     
     def getTexRectangleTopLeft(self, pieces):
-        loc = self.GUI.getTexRectangleTopLeft(pieces[1])
+        loc = self.GUI.getTexRectangleTopLeft(pieces['elementNo'])
         return {'x' : loc[0], 'y' : loc[1]}
     
     def getTexRectangleTopRight(self, pieces):
-        loc = self.GUI.getTexRectangleTopRight(pieces[1])
+        loc = self.GUI.getTexRectangleTopRight(pieces['elementNo'])
         return {'x' : loc[0], 'y' : loc[1]}
     
     def getTexRectangleBottomRight(self, pieces):
-        loc = self.GUI.getTexRectangleBottomRight(pieces[1])
+        loc = self.GUI.getTexRectangleBottomRight(pieces['elementNo'])
         return {'x' : loc[0], 'y' : loc[1]}
     
     def getTexRectangleBottomLeft(self, pieces):
-        loc = self.GUI.getTexRectangleBottomLeft(pieces[1])
+        loc = self.GUI.getTexRectangleBottomLeft(pieces['elementNo'])
         return {'x' : loc[0], 'y' : loc[1]}
     
     def setTexRectangleTexture(self, pieces):
-        self.GUI.setTexRectangleTexture(pieces[1],pieces[2])
+        self.GUI.setTexRectangleTexture(pieces['elementNo'],pieces['imageID'])
     
     def getTexRectangleTexture(self, pieces):
-        tex = self.GUI.getTexRectangleTexture(pieces[1])
+        tex = self.GUI.getTexRectangleTexture(pieces['elementNo'])
         return {'texture' : tex}
     
     def setTexRectangleWidth(self, pieces):
-        self.GUI.setTexRectangleWidth(pieces[1], pieces[2])
+        self.GUI.setTexRectangleWidth(pieces['elementNo'], pieces['width'])
         return {}
         
     def getTexRectangleWidth(self, pieces):
-        width = self.GUI.getTexRectangleWidth(pieces[1])
+        width = self.GUI.getTexRectangleWidth(pieces['elementNo'])
         return {'width' : width}
     
     def setTexRectangleHeight(self, pieces):
-        self.GUI.setTexRectangleHeight(pieces[1], pieces[2])
+        self.GUI.setTexRectangleHeight(pieces['elementNo'], pieces['height'])
         return {}
         
     def getTexRectangleHeight(self, pieces):
-        width = self.GUI.getTexRectangleHeight(pieces[1])
+        width = self.GUI.getTexRectangleHeight(pieces['elementNo'])
         return {'width' : width}
 
     def setText(self, pieces):
-        self.GUI.setText(pieces[1], pieces[2])
+        self.GUI.setText(pieces['elementNo'], pieces['text'])
         return {}
         
     def getText(self, pieces):
-        text = self.GUI.getText(pieces[1])
+        text = self.GUI.getText(pieces['elementNo'])
         return {'text' : text}
         
     def setTextPos(self, pieces):
-        self.GUI.setTextPos(pieces[1], pieces[2], pieces[3], pieces[4])
+        self.GUI.setTextPos(pieces['elementNo'], pieces['x'], pieces['y'], pieces['windowNo'])
         return {}
         
     def getTextPos(self, pieces):
-        loc = self.GUI.getTextPos(pieces[1])
+        loc = self.GUI.getTextPos(pieces['elementNo'])
         return {"x" : loc[0], "y" : loc[1]}
         
     def setPointSize(self, pieces):
-        self.GUI.setPtSize(pieces[1], pieces[2])
+        self.GUI.setPtSize(pieces['elementNo'], pieces['pt'])
         return {}
         
     def getPointSize(self, pieces):
-        size = self.GUI.getPtSize(pieces[1])
+        size = self.GUI.getPtSize(pieces['elementNo'])
         return {"size" : size}
         
     def getTextFont(self, pieces):
-        font = self.GUI.getFont(pieces[1])
+        font = self.GUI.getFont(pieces['elementNo'])
         return {"font" : font}
         
     def setTextFont(self, pieces):
-        self.GUI.setFont(pieces[1], pieces[2])
+        self.GUI.setFont(pieces['elementNo'], pieces['font'])
         return {}
         
     def getTextColor(self, pieces):
-        color = self.GUI.getTextColor(pieces[1])
+        color = self.GUI.getTextColor(pieces['elementNo'])
         return {"color" : color}
         
     def setTextColor(self, pieces):
-        self.GUI.setTextColor(pieces[1], pieces[2])
+        self.GUI.setTextColor(pieces['elementNo'], pieces['color'])
         return {}
         
     def showElement(self, pieces):
-        self.GUI.showElement(pieces[1])
+        self.GUI.showElement(pieces['elementNo'])
         return {}
         
     def hideElement(self, pieces):
-        self.GUI.hideElement(pieces[1])
+        self.GUI.hideElement(pieces['elementNo'])
         return {}
         
     def checkElementVisibility(self, pieces):
-        visible = self.GUI.checkElementVisibility(pieces[1])
+        visible = self.GUI.checkElementVisibility(pieces['elementNo'])
         return {"visible" : visible}
     
     def hideSetupSurface(self,pieces):
@@ -889,7 +889,7 @@ class apiMessageParser:
         return {"visible" : visible}
     
     def getClickedElements(self,pieces):
-        elements = self.GUI.getClickedElements(pieces[1],pieces[2],pieces[3])
+        elements = self.GUI.getClickedElements(pieces['surfaceNo'],pieces['x'],pieces['y'])
         dict = {}
         dict["count"] = len(elements)
         for x in range(0,len(elements)):
@@ -897,7 +897,7 @@ class apiMessageParser:
         return dict
     
     def removeElement(self, pieces):
-        self.GUI.removeElement(pieces[1], pieces[2])
+        self.GUI.removeElement(pieces['elementNo'], pieces['windowNo'])
         return {}
     
     #A dict used so that the program can check which function to call for each API command, and to tell the program how many arguments should be expected
@@ -917,8 +917,8 @@ class apiMessageParser:
             'new_polygon_with_ID' : (newPolygonWithID, 6),
             'new_rectangle' : (newRectangle,7),
             'new_rectangle_with_ID' : (newRectangleWithID, 8),
-            'new_texrectangle' : (newTexRectangle,6),
-            'new_texrectangle_with_ID' : (newTexRectangleWithID, 7),
+            'new_texrectangle' : (newTexRectangle,8),
+            'new_texrectangle_with_ID' : (newTexRectangleWithID, 9),
             'new_text' : (newText, 7),  # [1]=WindowNo  [2]=text  [3]=x  [4]=y  [5]=PointSize  [6]=Font  [7]=Color
             'new_text_with_ID' : (newTextWithID, 8),
             'subscribe_to_surface' : (subscribeToSurface, 1),
@@ -1059,7 +1059,7 @@ class apiMessageParser:
             'get_texrectangle_top_right' : (getTexRectangleTopRight,1),
             'get_texrectangle_bottom_right' : (getTexRectangleBottomRight,1),
             'get_texrectangle_bottom_left' : (getTexRectangleBottomLeft,1),
-            'set_texrectangle_texture' : (setTexRectangleTexture,2),
+            'set_texrectangle_texture' : (setTexRectangleTexture,4),
             'get_texrectangle_texture' : (getTexRectangleTexture,1),
             'set_texrectangle_width' : (setTexRectangleWidth,2),
             'get_texrectangle_width' : (getTexRectangleWidth,1),
@@ -1089,13 +1089,13 @@ class apiMessageParser:
     def processMessage(self, msg):
         if(msg=="quit"):
             self.looping = False
-        pieces = msg.split(',') #Splits the message up into sections
         data = None #Creates an empty variable to hold the message reply
         try:
-            if(len(pieces) - 4 == self.messages[pieces[0]][1]):
-                data = self.messages[str(pieces[0])][0](self, pieces)
+            if(len(msg) - 4 == self.messages[msg['call']][1]):
+                data = self.messages[str(msg['call'])][0](self, msg)
             else:
-                data = {"error" : 2, "1" : str(len(pieces) - 1), "2" : str(self.messages[pieces[0]][1])}
+                print "MSG - " + str(msg)
+                data = {"error" : 2, "1" : str(len(msg) - 1), "2" : str(self.messages[msg['call']][1])}
         except KeyError, e:
             data = {"error" : 1}
         return data
@@ -1509,7 +1509,7 @@ class apiMessageParser:
                 upToDate = GUIRead.upToDateTexRectangle(elements[z])
                 if(upToDate==False):
                     texture = GUIRead.getTexRectangleTexture(elements[z])
-                    texturefile = glob.glob('images/' + str(texture) + "-*")
+                    texturefile = glob.glob('images/' + str(texture) + "*")
                     self.textureBuffer[elements[z]] = Texture(texturefile[0])
                     texCoors = [[0.0,1.0],[1.0,1.0],[1.0,0.0],[0.0,0.0]]
                     points = []

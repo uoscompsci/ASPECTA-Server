@@ -2,6 +2,8 @@ import socket
 import select
 import sys
 import time
+import json
+import base64
 from threading import Thread
 from Queue import Queue
 from API import apiMessageParser
@@ -21,13 +23,26 @@ def message_queue_monitor():
 	while(loop):
 		if(len(queue)!=0):
 			qitem = queue.pop()
-			reply(qitem[0],str(messageParser.processMessage(qitem[1] + "," + sock2usr[qitem[0]] + "," + sock2app[qitem[0]])))
+			appsplit = sock2app[qitem[0]].split(',')
+			temp = qitem[1]
+			temp['IDuser'] = sock2usr[qitem[0]]
+			temp['IDapp'] = appsplit[0]
+			temp['IDinstance'] = appsplit[1]
+			if(temp['call'] == "set_rectangle_texture" or temp['call'] == "new_texrectangle" or temp['call'] == "new_texrectangle_with_ID"):
+				g = open("images/" + str(counter) + "." + str(temp['extension']), "w")
+				g.write(base64.decodestring(str(temp['textureData'])))
+				g.close()
+				temp['imageID'] = counter
+				counter += 1
+			qitem = (qitem[0], json.dumps(temp))
+			reply(qitem[0],messageParser.processMessage(temp))
 #Sends a reply to the client that the last message was received from 
 def reply (sock, message):
 	for socket in CONNECTION_LIST:
 		if socket == sock :
 			try :
-				socket.send(message)
+				jsonmessage = json.dumps(message)
+				socket.send(jsonmessage)
 			except :
 				socket.close()
 				CONNECTION_LIST.remove(socket)
@@ -73,48 +88,47 @@ if __name__ == "__main__":
 				CONNECTION_LIST.append(sockfd)
 				print "Client (%s, %s) connected" % addr
 			else:
-				try: #Try to receive data and process it
+				#try: #Try to receive data and process it
 					data = sock.recv(RECV_BUFFER)
+					dataJSON = json.loads(data)
 					if data:
-						if(data == "quit"): #If the received data is a quit command close the socket and exit
+						if(dataJSON['call'] == 'quit'): #If the received data is a quit command close the socket and exit
 							print '\033[1;31mShutting down server\033[1;m'
 							messageParser.processMessage(data)
 							loop=False
-						elif(data.startswith("login,")):
-							pieces = data.split(',')
+						elif(dataJSON['call'] == 'login'):
 							if(sock2usr.has_key(sock)==False):
-								sock2usr[sock] = pieces[1]
+								sock2usr[sock] = dataJSON['username']
 								reply(sock,str({}))
 							else:
 								reply(sock,str({'error' : 4}))
-						elif(data.startswith("setapp,")):
+						elif(dataJSON['call'] == 'setapp'):
 							if(sock2app.has_key(sock)):
 								reply(sock,str({'error' : 5}))
 							else:
-								pieces = data.split(',')
 								count = 0
 								added = False
 								while(added==False):
-									if(app2sock.has_key(pieces[1] + "," + str(count))==False):
-										app2sock[pieces[1] + "," + str(count)] = sock
-										sock2app[sock] = pieces[1] + "," + str(count)
+									if(app2sock.has_key(dataJSON['appname'] + "," + str(count))==False):
+										app2sock[dataJSON['appname'] + "," + str(count)] = sock
+										sock2app[sock] = dataJSON['appname'] + "," + str(count)
 										reply(sock,str({}))
 										added = True
 									else:
 										count += 1
 						else: #If the message isn't a quit command puts the received API message onto the queue to be processed
 							if(sock2usr.has_key(sock) and sock2app.has_key(sock)):
-							 	queue.appendleft((sock,data))
+							 	queue.appendleft((sock,dataJSON))
 							else:
 								if(sock2usr.has_key(sock)==False):
 									reply(sock,str({'error' : 3}))
 								else:
 									reply(sock,str({'error' : 6}))
-				except:
+	'''			except:
 					print "Client (%s, %s) is offline" % addr
 					sock.close()
 					CONNECTION_LIST.remove(sock)
-					continue
+					continue'''
 	server_socket.close()
 	time.sleep(0.2)
 	sys.exit(0)
