@@ -89,7 +89,12 @@ if __name__ == "__main__":
 				print "Client (%s, %s) connected" % addr
 			else:
 				#try: #Try to receive data and process it
-					data = sock.recv(RECV_BUFFER)
+					recieved = int(sock.recv(10))
+					data = ""
+					while (recieved>0):
+						temp = sock.recv(RECV_BUFFER)
+						data += temp
+						recieved -= len(temp)
 					dataJSON = json.loads(data)
 					if data:
 						if(dataJSON['call'] == 'quit'): #If the received data is a quit command close the socket and exit
