@@ -14,7 +14,7 @@ import os
 from OpenGL.GL.ARB.framebuffer_object import *
 from OpenGL.GL.EXT.framebuffer_object import *
 from buffers import *
-from fileTransferServer import fts
+#from fileTransferServer import fts
 
 from ctypes import *
 
@@ -270,10 +270,10 @@ class apiMessageParser:
             dict[x] = images[x].split("/")[1]
         return dict
     
-    def setUploadName(self, pieces):
-        self.fts.setFileName(pieces['fileName'])
-        ftsthread = Thread(target=self.fts.awaitConnection, args=())
-        ftsthread.start()
+    #def setUploadName(self, pieces):
+        #self.fts.setFileName(pieces['fileName'])
+        #ftsthread = Thread(target=self.fts.awaitConnection, args=())
+        #ftsthread.start()
     
     def getSurfacePixelWidth(self, pieces):
         width = self.GUI.getSurfacePixelWidth(pieces['surfaceNo'])
@@ -938,7 +938,7 @@ class apiMessageParser:
             'load_defined_surfaces' : (loadDefinedSurfaces, 1),
             'get_saved_layouts' : (getSavedLayouts, 0),
             'get_saved_images' : (getSavedImages, 0),
-            'set_upload_name' : (setUploadName, 1),
+            #'set_upload_name' : (setUploadName, 1),
             'get_surface_pixel_width' : (getSurfacePixelWidth,1),
             'get_surface_pixel_height' : (getSurfacePixelHeight,1),
             'set_surface_pixel_width' : (setSurfacePixelWidth,2),
@@ -1851,7 +1851,7 @@ class apiMessageParser:
             #If a quit event has been received the program is closed
             if event.type == QUIT:
                 pygame.quit ()
-                self.fts.quitRequest()
+                #self.fts.quitRequest()
                 break
             
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -1891,7 +1891,7 @@ class apiMessageParser:
             time.sleep(1.0/self.demandedFps)
 			
             #clock.tick(self.demandedFps) #Sets the maximum FPS allowed
-        self.fts.quitRequest()
+        #self.fts.quitRequest()
         time.sleep(0.1)
         pygame.quit()
 	
@@ -1902,7 +1902,6 @@ class apiMessageParser:
         self.pps = parser.getint('surfaces','curveResolution')
         self.winWidth = parser.getint('surfaces', 'windowWidth')
         self.winHeight = parser.getint('surfaces', 'windowHeight')
-        self.fts = fts()
         self.GUI = GUI() #Creates the GUI
         thread = Thread(target=self.display, args=()) #Creates the display thread
         thread.start() #Starts the display thread

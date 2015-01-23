@@ -2,7 +2,7 @@ import socket
 import select
 import sys
 import time
-import json
+import ujson as json
 import base64
 from threading import Thread
 from Queue import Queue
@@ -34,7 +34,7 @@ def message_queue_monitor():
 				g.close()
 				temp['imageID'] = counter
 				counter += 1
-			qitem = (qitem[0], json.dumps(temp))
+			#qitem = (qitem[0], json.dumps(temp))
 			reply(qitem[0],messageParser.processMessage(temp))
 #Sends a reply to the client that the last message was received from 
 def reply (sock, message):
@@ -77,7 +77,7 @@ if __name__ == "__main__":
 	#Loop until the looping flag changes
 	while(loop):
 		try:
-			read_sockets,write_sockets,error_sockets = select.select(CONNECTION_LIST,[],[]) #Wait until ready for IO
+			read_sockets = select.select(CONNECTION_LIST,[],[])[0] #Wait until ready for IO
 		except:
 	   		continue #Start loop again
  
@@ -88,7 +88,7 @@ if __name__ == "__main__":
 				CONNECTION_LIST.append(sockfd)
 				print "Client (%s, %s) connected" % addr
 			else:
-				#try: #Try to receive data and process it
+				try: #Try to receive data and process it
 					recieved = int(sock.recv(10))
 					data = ""
 					while (recieved>0):
@@ -129,11 +129,11 @@ if __name__ == "__main__":
 									reply(sock,str({'error' : 3}))
 								else:
 									reply(sock,str({'error' : 6}))
-	'''			except:
+				except:
 					print "Client (%s, %s) is offline" % addr
 					sock.close()
 					CONNECTION_LIST.remove(sock)
-					continue'''
+					continue
 	server_socket.close()
 	time.sleep(0.2)
 	sys.exit(0)
