@@ -1343,7 +1343,7 @@ class apiMessageParser:
                 
         glColor4f(float(colors[0]), float(colors[1]), float(colors[2]), float(colors[3]))
         
-        self.elementBuffer[elementNo].Render(text)
+        self.elementBuffer[elementNo].Render(text.encode('utf8'))
         
         glPopMatrix()
     
