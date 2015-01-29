@@ -184,7 +184,7 @@ class GUI:
 				self.rotateSurfaceTo90(int(check[0]))
 			elif(int(rotmir[0])==2):
 				self.rotateSurfaceTo180(int(check[0]))
-			elif(int(rotmir[0])==2):
+			elif(int(rotmir[0])==3):
 				self.rotateSurfaceTo270(int(check[0]))
 			if(rotmir[1]=="True"):
 				if(self.getSurfaceMirrored(int(check[0]))==False):
