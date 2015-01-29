@@ -187,7 +187,12 @@ class GUI:
 			elif(int(rotmir[0])==2):
 				self.rotateSurfaceTo270(int(check[0]))
 			if(rotmir[1]=="True"):
-				self.mirrorSurface(int(check[0]))
+				if(self.getSurfaceMirrored(int(check[0]))==False):
+					self.mirrorSurface(int(check[0]))
+			elif(rotmir[1]=="False"):
+				if(self.getSurfaceMirrored(int(check[0]))==True):
+					self.mirrorSurface(int(check[0]))
+				
 			self.setSurfacePixelWidth(int(check[0]), int(pixdim[0]))
 			self.setSurfacePixelHeight(int(check[0]), int(pixdim[1]))
 			top = file.readline().strip()
