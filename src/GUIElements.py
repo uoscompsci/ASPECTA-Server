@@ -656,6 +656,12 @@ class circle(element):
 
     def getLineColor(self):
         return self.lineColor
+    
+    def setLineWidth(self, width):
+        self.lineWidth = width
+
+    def getLineWidth(self):
+        return self.lineWidth
 
     def setFillColor(self, color):
         self.fillColor = color
@@ -839,6 +845,12 @@ class polygon(element):
 
     def getLineColor(self):
         return self.lineColor
+    
+    def setLineWidth(self, width):
+        self.lineWidth = width
+
+    def getLineWidth(self):
+        return self.lineWidth
 
     def setFillColor(self, color):
         self.fillColor = color
@@ -916,6 +928,12 @@ class rectangle(element):
 
     def getLineColor(self):
         return self.lineColor
+    
+    def setLineWidth(self, width):
+        self.lineWidth = width
+
+    def getLineWidth(self):
+        return self.lineWidth
 
     def setFillColor(self, color):
         self.fillColor = color

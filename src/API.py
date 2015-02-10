@@ -1364,7 +1364,7 @@ class apiMessageParser:
         
         glPopMatrix()
         
-    def drawPolygon(self,elementNo,color,linecolor,count):
+    def drawPolygon(self,elementNo,color,linecolor,lineWidth,count):
         glDisable(GL_LIGHTING)
         glDisable(GL_TEXTURE_2D)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -1378,7 +1378,8 @@ class apiMessageParser:
         glEnableClientState(GL_VERTEX_ARRAY)
         glDrawElementsui(GL_POLYGON, range(0, count))
         
-        if(float(linecolor[3])!=0.0):
+        if(float(linecolor[3])!=0.0 and float(lineWidth)!=0.0):
+            glLineWidth(float(lineWidth))
             glColor4f(float(linecolor[0]), float(linecolor[1]), float(linecolor[2]), float(linecolor[3]))
             
             self.elementBuffer[elementNo][0].bind_vertexes(2,GL_FLOAT)
@@ -1418,6 +1419,7 @@ class apiMessageParser:
                 colors = color.split(":")
                 linecolor = GUIRead.getCircleLine(elements[z])
                 linecolors = linecolor.split(":")
+                lineWidth = GUIRead.getCircleLineWidth(elements[z])
                 sides = GUIRead.getCircleSides(elements[z])
                 if(upToDate==False):
                     rad = GUIRead.getCircleRad(elements[z])
@@ -1429,7 +1431,7 @@ class apiMessageParser:
                         points.append([cosine+float(cirPos[0]),sine+float(cirPos[1])])
                     numpy_verts = numpy.array(points, dtype=numpy.float32)
                     self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
-                self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]), (linecolors[0],linecolors[1],linecolors[2],linecolors[3]), sides)
+                self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]), (linecolors[0],linecolors[1],linecolors[2],linecolors[3]), lineWidth, sides)
             elif(type=="lineStrip"): #Runs if the current element is a line strip
                 upToDate = GUIRead.upToDateLineStrip(elements[z])
                 noPoints = GUIRead.getLineStripPointsCount(elements[z]) #Gets the number of points in the line strip
@@ -1456,6 +1458,7 @@ class apiMessageParser:
                     colors = color.split(":")
                     linecolor = GUIRead.getPolygonLineColor(elements[z])
                     linecolors = linecolor.split(":")
+                    lineWidth = GUIRead.getPolygonLineWidth(elements[z])
                     if(upToDate==False):
                         points = []
                         for point in range(0,noPoints):
@@ -1464,13 +1467,14 @@ class apiMessageParser:
                             points.append(drawPos)
                         numpy_verts = numpy.array(points, dtype=numpy.float32)
                         self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
-                    self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]), (linecolors[0],linecolors[1],linecolors[2],linecolors[3]), noPoints)
+                    self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]), (linecolors[0],linecolors[1],linecolors[2],linecolors[3]), lineWidth, noPoints)
             elif(type=="rectangle"): #Runs if the current element is a line strip
                 upToDate = GUIRead.upToDateRectangle(elements[z])
                 color = GUIRead.getRectangleFillColor(elements[z])
                 colors = color.split(":")
                 linecolor = GUIRead.getRectangleLineColor(elements[z])
                 linecolors = linecolor.split(":")
+                lineWidth = GUIRead.getRectangleLineWidth(elements[z])
                 if(upToDate==False):
                     points = []
                     temp = GUIRead.getRectangleTopLeft(elements[z])
@@ -1487,7 +1491,7 @@ class apiMessageParser:
                     points.append(drawPos)
                     numpy_verts = numpy.array(points, dtype=numpy.float32)
                     self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
-                self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]), (linecolors[0],linecolors[1],linecolors[2],linecolors[3]), 4)
+                self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]), (linecolors[0],linecolors[1],linecolors[2],linecolors[3]), lineWidth, 4)
             elif(type=="line"):
                 upToDate = GUIRead.upToDateLineStrip(elements[z])
                 color = GUIRead.getLineColor(elements[z])
@@ -1561,6 +1565,7 @@ class apiMessageParser:
                 colors = color.split(":")
                 linecolor = GUIRead.getCircleLine(elements[z])
                 linecolors = linecolor.split(":")
+                lineWidth = GUIRead.getCircleLineWidth(elements[z])
                 sides = GUIRead.getCircleSides(elements[z])
                 if(upToDate==False):
                     rad = GUIRead.getCircleRad(elements[z])
@@ -1572,7 +1577,7 @@ class apiMessageParser:
                         points.append([cosine+float(cirPos[0])+float(winPos[0]),sine+float(cirPos[1])+float(winPos[1])-height])
                     numpy_verts = numpy.array(points, dtype=numpy.float32)
                     self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
-                self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]), (linecolors[0],linecolors[1],linecolors[2],linecolors[3]), sides)
+                self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]), (linecolors[0],linecolors[1],linecolors[2],linecolors[3]), lineWidth, sides)
             elif(type=="lineStrip"): #Runs if the current element is a line strip
                 upToDate = GUIRead.upToDateLineStrip(elements[z])
                 noPoints = GUIRead.getLineStripPointsCount(elements[z]) #Gets the number of points in the line strip
@@ -1599,6 +1604,7 @@ class apiMessageParser:
                     colors = color.split(":")
                     linecolor = GUIRead.getPolygonLineColor(elements[z])
                     linecolors = linecolor.split(":")
+                    lineWidth = GUIRead.getPolygonLineWidth(elements[z])
                     if(upToDate==False):
                         points = []
                         for point in range(0,noPoints):
@@ -1607,13 +1613,14 @@ class apiMessageParser:
                             points.append(drawPos)
                         numpy_verts = numpy.array(points, dtype=numpy.float32)
                         self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
-                    self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]), (linecolors[0],linecolors[1],linecolors[2],linecolors[3]), noPoints)
+                    self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]), (linecolors[0],linecolors[1],linecolors[2],linecolors[3]), lineWidth, noPoints)
             elif(type=="rectangle"): #Runs if the current element is a line strip
                 upToDate = GUIRead.upToDateRectangle(elements[z])
                 color = GUIRead.getRectangleFillColor(elements[z])
                 colors = color.split(":")
                 linecolor = GUIRead.getRectangleLineColor(elements[z])
                 linecolors = linecolor.split(":")
+                lineWidth = GUIRead.getRectangleLineWidth(elements[z])
                 if(upToDate==False):
                     points = []
                     temp = GUIRead.getRectangleTopLeft(elements[z])
@@ -1630,7 +1637,7 @@ class apiMessageParser:
                     points.append(drawPos)
                     numpy_verts = numpy.array(points, dtype=numpy.float32)
                     self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
-                self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]), (linecolors[0],linecolors[1],linecolors[2],linecolors[3]), 4)
+                self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]), (linecolors[0],linecolors[1],linecolors[2],linecolors[3]), lineWidth, 4)
             elif(type=="line"):
                 upToDate = GUIRead.upToDateLineStrip(elements[z])
                 color = GUIRead.getLineColor(elements[z])

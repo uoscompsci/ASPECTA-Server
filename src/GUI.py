@@ -679,11 +679,17 @@ class GUI:
 	def setCircleLine(self, elementNo, color):
 		self.elements[str(elementNo)].setLineColor(color)
 		
+	def setCircleLineWidth(self, elementNo, width):
+		self.elements[str(elementNo)].setLineWidth(width)
+		
 	def getCircleFill(self, elementNo):
 		return self.elements[str(elementNo)].getFillColor()
 		
 	def getCircleLine(self, elementNo):
 		return self.elements[str(elementNo)].getLineColor()
+	
+	def getCircleLineWidth(self, elementNo):
+		return self.elements[str(elementNo)].getLineWidth()
 	
 	def upToDateCircle(self,elementNo):
 		return self.elements[str(elementNo)].update()
@@ -812,8 +818,15 @@ class GUI:
 		color = self.elements[str(elementNo)].getLineColor()
 		return color
 	
+	def getPolygonLineWidth(self, elementNo):
+		color = self.elements[str(elementNo)].getLineWidth()
+		return color
+	
 	def setPolygonLineColor(self, elementNo, color):
 		self.elements[str(elementNo)].setLineColor(color)
+		
+	def setPolygonLineWidth(self, elementNo, width):
+		self.elements[str(elementNo)].setLineWidth(width)
 		
 	def getPolygonPointsCount(self, elementNo):
 		return self.elements[str(elementNo)].getNumPoints()
@@ -877,8 +890,15 @@ class GUI:
 		color = self.elements[str(elementNo)].getLineColor()
 		return color
 	
+	def getRectangleLineWidth(self, elementNo):
+		color = self.elements[str(elementNo)].getLineWidth()
+		return color
+	
 	def setRectangleLineColor(self, elementNo, color):
 		self.elements[str(elementNo)].setLineColor(color)
+		
+	def setRectangleLineWidth(self, elementNo, width):
+		self.elements[str(elementNo)].setLineWidth(width)
 	
 	def upToDateRectangle(self,elementNo):
 		return self.elements[str(elementNo)].update()
