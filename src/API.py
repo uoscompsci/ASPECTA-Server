@@ -91,12 +91,12 @@ class apiMessageParser:
         
     #Creates a new circle on the desired window as requested by the API call
     def newCircle(self, pieces):
-        elementNo = self.GUI.newCircle(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['radius'], pieces['lineColor'], pieces['fillColor'], pieces['sides'])
+        elementNo = self.GUI.newCircle(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['radius'], pieces['lineColor'], pieces['lineWidth'], pieces['fillColor'], pieces['sides'])
         return {"elementNo" : elementNo}
     
     #Creates a new circle with an ID on the desired window as requested by the API call
     def newCircleWithID(self, pieces):
-        elementNo = self.GUI.newCircleWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['radius'], pieces['lineColor'], pieces['fillColor'], pieces['sides'])
+        elementNo = self.GUI.newCircleWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['radius'], pieces['lineColor'], pieces['lineWidth'], pieces['fillColor'], pieces['sides'])
         return {"elementNo" : elementNo}
         
     #Creates a new line on the desired window as requested by the API call
@@ -121,22 +121,22 @@ class apiMessageParser:
         
     #Creates the starting point of a new polygon on the desired window as requested by the API call
     def newPolygon(self, pieces):
-        elementNo = self.GUI.newPolygon(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['lineColor'], pieces['fillColor'])
+        elementNo = self.GUI.newPolygon(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['lineColor'], pieces['lineWidth'], pieces['fillColor'])
         return {"elementNo" : elementNo}
     
     #Creates the starting point of a new polygon with an ID on the desired window as requested by the API call
     def newPolygonWithID(self, pieces):
-        elementNo = self.GUI.newPolygonWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['lineColor'], pieces['fillColor'])
+        elementNo = self.GUI.newPolygonWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['lineColor'], pieces['lineWidth'], pieces['fillColor'])
         return {"elementNo" : elementNo}
     
     #Creates a new rectangle on the desired window as requested by the API call
     def newRectangle(self,pieces):
-        elementNo = self.GUI.newRectangle(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['lineColor'], pieces['fillColor'])
+        elementNo = self.GUI.newRectangle(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['lineColor'], pieces['lineWidth'], pieces['fillColor'])
         return {"elementNo" : elementNo}
     
     #Creates a new rectangle with an ID on the desired window as requested by the API call
     def newRectangleWithID(self,pieces):
-        elementNo = self.GUI.newRectangleWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['lineColor'], pieces['fillColor'])
+        elementNo = self.GUI.newRectangleWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['lineColor'], pieces['lineWidth'], pieces['fillColor'])
         return {"elementNo" : elementNo}
     
     #Creates a new textured rectangle on the desired window as requested by the API call
@@ -907,16 +907,16 @@ class apiMessageParser:
             'new_cursor_with_ID' : (newCursorWithID, 4), # [1]=ID [2]=SurfaceNo  [3]=x  [4]=y
             'new_window' : (newWindow, 6),  # [1]=SurfaceNo  [2]=x  [3]=y  [4]=width  [5]=height  [6]=name
             'new_window_with_ID' : (newWindowWithID, 7),
-            'new_circle' : (newCircle, 7),  # [1]=WindowNo  [2]=x  [3]=y  [4]=Radius  [5]=LineColor  [6]=FillColor
-            'new_circle_with_ID' : (newCircleWithID, 8),
+            'new_circle' : (newCircle, 8),  # [1]=WindowNo  [2]=x  [3]=y  [4]=Radius  [5]=LineColor  [6]=FillColor
+            'new_circle_with_ID' : (newCircleWithID, 9),
             'new_line' : (newLine, 7),  # [1]=WindowNo  [2]=xStart  [3]=yStart  [4]=xEnd  [5]=yEnd  [6]=Color
             'new_line_with_ID' : (newLineWithID, 8),
             'new_line_strip' : (newLineStrip, 5),  # [1]=WindowNo  [2]=x  [3]=y  [4]=Color
             'new_line_strip_with_ID' : (newLineStripWithID, 6),
-            'new_polygon' : (newPolygon, 5),  # [1]=WindowNo  [2]=x  [3]=y  [4]=LineColor  [5]=FillColor
-            'new_polygon_with_ID' : (newPolygonWithID, 6),
-            'new_rectangle' : (newRectangle,7),
-            'new_rectangle_with_ID' : (newRectangleWithID, 8),
+            'new_polygon' : (newPolygon, 6),  # [1]=WindowNo  [2]=x  [3]=y  [4]=LineColor  [5]=FillColor
+            'new_polygon_with_ID' : (newPolygonWithID, 7),
+            'new_rectangle' : (newRectangle,8),
+            'new_rectangle_with_ID' : (newRectangleWithID, 9),
             'new_texrectangle' : (newTexRectangle,8),
             'new_texrectangle_with_ID' : (newTexRectangleWithID, 9),
             'new_text' : (newText, 7),  # [1]=WindowNo  [2]=text  [3]=x  [4]=y  [5]=PointSize  [6]=Font  [7]=Color

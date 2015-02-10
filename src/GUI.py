@@ -637,13 +637,13 @@ class GUI:
 		self.windows[str(windowNo)].addElement(elementNo)
 		return elementNo
 	
-	def newCircle(self, owner, app, appno, windowNo, x, y, radius, lineColor, fillColor, sides):
-		newCir = circle(owner, app, appno, x, y, radius, lineColor, fillColor, sides)
+	def newCircle(self, owner, app, appno, windowNo, x, y, radius, lineColor, lineWidth, fillColor, sides):
+		newCir = circle(owner, app, appno, x, y, radius, lineColor, lineWidth, fillColor, sides)
 		elementNo = self.newElement(newCir, windowNo)
 		return elementNo
 	
-	def newCircleWithID(self, owner, app, appno, ID, windowNo, x, y, radius, lineColor, fillColor, sides):
-		elementNo = self.newCircle(owner, app, appno, windowNo, x, y, radius, lineColor, fillColor, sides)
+	def newCircleWithID(self, owner, app, appno, ID, windowNo, x, y, radius, lineColor, lineWidth, fillColor, sides):
+		elementNo = self.newCircle(owner, app, appno, windowNo, x, y, radius, lineColor, lineWidth, fillColor, sides)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 		
@@ -780,13 +780,13 @@ class GUI:
 	def upToDateLineStrip(self,elementNo):
 		return self.elements[str(elementNo)].update()
 	
-	def newPolygon(self, owner, app, appno, windowNo, x, y, lineColor, fillColor):
-		newPoly = polygon(owner, app, appno, x, y, lineColor, fillColor)
+	def newPolygon(self, owner, app, appno, windowNo, x, y, lineColor, lineWidth, fillColor):
+		newPoly = polygon(owner, app, appno, x, y, lineColor, lineWidth, fillColor)
 		elementNo = self.newElement(newPoly, windowNo)
 		return elementNo
 	
-	def newPolygonWithID(self, owner, app, appno, ID, windowNo, x, y, lineColor, fillColor):
-		elementNo = self.newPolygon(owner, app, appno, windowNo, x, y, lineColor, fillColor)
+	def newPolygonWithID(self, owner, app, appno, ID, windowNo, x, y, lineColor, lineWidth, fillColor):
+		elementNo = self.newPolygon(owner, app, appno, windowNo, x, y, lineColor, lineWidth, fillColor)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
@@ -821,13 +821,13 @@ class GUI:
 	def upToDatePolygon(self,elementNo):
 		return self.elements[str(elementNo)].update()
 	
-	def newRectangle(self, owner, app, appno, windowNo, x, y, width, height, lineColor, fillColor):
-		newRect = rectangle(owner, app, appno, x, y, width, height, lineColor, fillColor)
+	def newRectangle(self, owner, app, appno, windowNo, x, y, width, height, lineColor, lineWidth, fillColor):
+		newRect = rectangle(owner, app, appno, x, y, width, height, lineColor, lineWidth, fillColor)
 		elementNo = self.newElement(newRect, windowNo)
 		return elementNo
 	
-	def newRectangleWithID(self, owner, app, appno, ID, windowNo, x, y, width, height, lineColor, fillColor):
-		elementNo = self.newRectangle(owner, app, appno, windowNo, x, y, width, height, lineColor, fillColor)
+	def newRectangleWithID(self, owner, app, appno, ID, windowNo, x, y, width, height, lineColor, lineWidth, fillColor):
+		elementNo = self.newRectangle(owner, app, appno, windowNo, x, y, width, height, lineColor, lineWidth, fillColor)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	

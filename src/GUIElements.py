@@ -608,13 +608,14 @@ class element:
             return False
 
 class circle(element):
-    __slots__ = ['coord', 'radius', 'lineColor', 'fillColor', 'sides']
+    __slots__ = ['coord', 'radius', 'lineColor', 'lineWidth', 'fillColor', 'sides']
 
-    def __init__(self, owner, app, appno, x, y, radius, lineColor, fillColor, sides):
+    def __init__(self, owner, app, appno, x, y, radius, lineColor, lineWidth, fillColor, sides):
         self.elementType = "circle"
         self.coord = point2D(x,y)
         self.radius = radius
         self.lineColor = lineColor
+        self.lineWidth = lineWidth
         self.fillColor = fillColor
         self.visible=True
         self.owner = owner
@@ -800,12 +801,13 @@ class lineStrip(element):
         return temp
 
 class polygon(element):
-    __slots__ = ['points', 'lineColor', 'fillColor']
+    __slots__ = ['points', 'lineColor', 'lineWidth', 'fillColor']
 
-    def __init__(self, owner, app, appno, x, y, lineColor, fillColor):
+    def __init__(self, owner, app, appno, x, y, lineColor, lineWidth, fillColor):
         self.elementType = "polygon"
         self.points = [point2D(x,y)]
         self.lineColor = lineColor
+        self.lineWidth = lineWidth
         self.fillColor = fillColor
         self.visible=True
         self.owner = owner
@@ -850,14 +852,15 @@ class polygon(element):
         return temp
     
 class rectangle(element):
-    __slots__ = ['topLeft', 'width', 'height', 'lineColor', 'fillColor']
+    __slots__ = ['topLeft', 'width', 'height', 'lineColor', 'lineWidth', 'fillColor']
     
-    def __init__(self, owner, app, appno, tlx, tly, width, height, lineColor, fillColor):
+    def __init__(self, owner, app, appno, tlx, tly, width, height, lineColor, lineWidth, fillColor):
         self.elementType = "rectangle"
         self.topLeft = point2D(tlx,tly)
         self.width = width
         self.height = height
         self.lineColor = lineColor
+        self.lineWidth = lineWidth
         self.fillColor = fillColor
         self.visible=True
         self.owner = owner
