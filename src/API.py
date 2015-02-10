@@ -1378,11 +1378,12 @@ class apiMessageParser:
         glEnableClientState(GL_VERTEX_ARRAY)
         glDrawElementsui(GL_POLYGON, range(0, count))
         
-        glColor4f(float(linecolor[0]), float(linecolor[1]), float(linecolor[2]), float(linecolor[3]))
-        
-        self.elementBuffer[elementNo][0].bind_vertexes(2,GL_FLOAT)
-        glEnableClientState(GL_VERTEX_ARRAY)
-        glDrawElementsui(GL_LINE_LOOP, range(0, count))
+        if(float(linecolor[3])!=0.0):
+            glColor4f(float(linecolor[0]), float(linecolor[1]), float(linecolor[2]), float(linecolor[3]))
+            
+            self.elementBuffer[elementNo][0].bind_vertexes(2,GL_FLOAT)
+            glEnableClientState(GL_VERTEX_ARRAY)
+            glDrawElementsui(GL_LINE_LOOP, range(0, count))
         
         glPopMatrix()
         
