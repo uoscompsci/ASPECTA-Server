@@ -598,6 +598,10 @@ class apiMessageParser:
     def setCircleLineColor(self, pieces):
         self.GUI.setCircleLine(pieces['elementNo'], pieces['color'])
         return {}
+    
+    def setCircleLineWidth(self, pieces):
+        self.GUI.setCircleLineWidth(pieces['elementNo'], pieces['width'])
+        return {}
         
     def setCircleFillColor(self, pieces):
         self.GUI.setCircleFill(pieces['elementNo'], pieces['color'])
@@ -606,6 +610,10 @@ class apiMessageParser:
     def getCircleLineColor(self, pieces):
         color = self.GUI.getCircleLine(pieces['elementNo'])
         return {"color" : color}
+    
+    def getCircleLineWidth(self, pieces):
+        width = self.GUI.getCircleLineWidth(pieces['elementNo'])
+        return {"width" : width}
         
     def getCircleFillColor(self, pieces):
         color = self.GUI.getCircleFill(pieces['elementNo'])
@@ -720,9 +728,17 @@ class apiMessageParser:
     def getPolygonLineColor(self, pieces):
         color = self.GUI.getPolygonLineColor(pieces['elementNo'])
         return {"color" : color}
+    
+    def getPolygonLineWidth(self, pieces):
+        width = self.GUI.getPolygonLineWidth(pieces['elementNo'])
+        return {"width" : width}
         
     def setPolygonLineColor(self, pieces):
         self.GUI.setPolygonLineColor(pieces['elementNo'], pieces['color'])
+        return {}
+    
+    def setPolygonLineWidth(self, pieces):
+        self.GUI.setPolygonLineWidth(pieces['elementNo'], pieces['width'])
         return {}
         
     def getPolygonPointCount(self, pieces):
@@ -777,9 +793,16 @@ class apiMessageParser:
         color = self.GUI.getRectangleLineColor(pieces['elementNo'])
         return {'color' : color}
     
+    def getRectangleLineWidth(self, pieces):
+        width = self.GUI.getRectangleLineWidth(pieces['elementNo'])
+        return {'width' : width}
+    
     def setRectangleLineColor(self, pieces):
         self.GUI.setRectangleLineColor(pieces['elementNo'], pieces['color'])
         return {}
+    
+    def setRectangleLineWidth(self, pieces):
+        self.GUI.setRectangleLineWidth(pieces['elementNo'], pieces['width'])
     
     def setTexRectangleTopLeft(self, pieces):
         count = self.GUI.setTexRectangleTopLeft(pieces['elementNo'], pieces['x'], pieces['y'])
@@ -1008,8 +1031,10 @@ class apiMessageParser:
             'get_circle_pos' : (getCirclePosition, 1),  # [1]=ElementNo
             'get_element_type' : (getElementType, 1),  # [1]=ElementNo
             'set_circle_line_color' : (setCircleLineColor, 2),  # [1]=ElementNo  [2]=Color
+            'set_circle_line_width' : (setCircleLineWidth, 2),  # [1]=ElementNo  [2]=Width
             'set_circle_fill_color' : (setCircleFillColor, 2),  # [1]=ElementNo  [2]=Color
             'get_circle_line_color' : (getCircleLineColor, 1),  # [1]=ElementNo
+            'get_circle_line_width' : (getCircleLineWidth, 1),  # [1]=ElementNo
             'get_circle_fill_color' : (getCircleFillColor, 1),  # [1]=ElementNo
             'set_circle_radius' : (setCircleRadius, 2),  # [1]=ElementNo  [2]=Radius
             'get_circle_radius' : (getCircleRadius, 1),  # [1]=ElementNo
@@ -1039,7 +1064,9 @@ class apiMessageParser:
             'get_polygon_fill_color' : (getPolygonFillColor, 1),  # [1]=ElementNo
             'set_polygon_fill_color' : (setPolygonFillColor, 2),  # [1]=ElementNo  [2]=Color
             'get_polygon_line_color' : (getPolygonLineColor, 1),  # [1]=ElementNo
+            'get_polygon_line_width' : (getPolygonLineWidth, 1),  # [1]=ElementNo
             'set_polygon_line_color' : (setPolygonLineColor, 2),  # [1]=ElementNo  [2]=Color
+            'set_polygon_line_width' : (setPolygonLineWidth, 2),  # [1]=ElementNo  [2]=Width
             'get_polygon_point_count' : (getPolygonPointCount, 1),  # [1]=ElementNo
             'set_rectangle_top_left' : (setRectangleTopLeft, 3),
             'get_rectangle_top_left' : (getRectangleTopLeft,1),
@@ -1053,7 +1080,9 @@ class apiMessageParser:
             'get_rectangle_fill_color' : (getRectangleFillColor,1),
             'set_rectangle_fill_color' : (setRectangleFillColor,2),
             'get_rectangle_line_color' : (getRectangleLineColor,1),
+            'get_rectangle_line_width' : (getRectangleLineWidth,1),
             'set_rectangle_line_color' : (setRectangleLineColor,2),
+            'set_rectangle_line_width' : (setRectangleLineWidth,2),
             'set_texrectangle_top_left' : (setTexRectangleTopLeft, 3),
             'get_texrectangle_top_left' : (getTexRectangleTopLeft,1),
             'get_texrectangle_top_right' : (getTexRectangleTopRight,1),
