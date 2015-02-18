@@ -34,6 +34,31 @@ class GUI:
 		self.surfaces["0"] = surface("server", "server", "0", "setup")
 		self.setup_surface_visible = False
 		
+	def winWidPropToPix(self, win, prop):
+		width = self.getWindowWidth(win)
+		print prop
+		print width
+		return float(prop)*width
+		
+	def winHeiPropToPix(self, win, prop):
+		height = self.getWindowHeight(win)
+		print prop
+		print height
+		return float(prop)*height
+		
+	def surfWidPropToPix(self, surf, prop):
+		width = self.getSurfacePixelWidth(surf)
+		print prop
+		print width
+		return float(prop)*width
+		
+	def surfHeiPropToPix(self, surf, prop):
+		height = self.getSurfacePixelHeight(surf)
+		print prop
+		print height
+		return float(prop)*height
+		
+	
 	def hideSetupSurface(self):
 		self.setup_surface_visible = False
 		
@@ -128,7 +153,6 @@ class GUI:
 		time.sleep(3)
 		for x in range(0,len(windows)):
 			self.removeWindow(windows[x])
-					
 	
 	def saveDefinedSurfaces(self, filename):
 		file = open("layouts/" + filename + ".lyt", 'w')
@@ -316,7 +340,10 @@ class GUI:
 	def undefineSurface(self, surfaceNo):
 		self.surfaces[str(surfaceNo)].undefine()
 	
-	def newCursor(self, surface, x, y):
+	def newCursor(self, surface, x, y, coorSys):
+		if(coorSys=="prop"):
+			x = self.surfWidPropToPix(surface, x)
+			y = self.surfHeiPropToPix(surface, y)
 		newCur = cursor(x,y)
 		cursorNo = 0
 		with self.cursors_lock:
@@ -331,8 +358,8 @@ class GUI:
 		self.surfaces[str(surface)].addCursor(cursorNo)
 		return cursorNo
 	
-	def newCursorWithID(self, ID, surface, x, y):
-		cursorNo = self.newCursor(surface, x, y)
+	def newCursorWithID(self, ID, surface, x, y, coorSys):
+		cursorNo = self.newCursor(surface, x, y, coorSys)
 		self.cursors[set(cursorNo)].setID(ID)
 		return cursorNo
 		
@@ -489,7 +516,12 @@ class GUI:
 		yloc = self.cursors[str(cursorNo)].getY()
 		return (xloc,yloc)
 	
-	def newWindow(self, owner, app, appno, surface, x, y, xWid, yWid, name):
+	def newWindow(self, owner, app, appno, surface, x, y, xWid, yWid, coorSys, name):
+		if(coorSys=="prop"):
+			x = self.surfWidPropToPix(surface, x)
+			y = self.surfHeiPropToPix(surface, y)
+			xWid = self.surfWidPropToPix(surface, xWid)
+			yWid = self.surfHeiPropToPix(surface, yWid)
 		newWin = window(owner,app,appno,x,y,xWid,yWid,name)
 		windowNo = 0
 		with self.windows_lock:
@@ -504,8 +536,8 @@ class GUI:
 		self.surfaces[str(surface)].addWindow(windowNo)
 		return windowNo
 	
-	def newWindowWithID(self, owner, app, appno, ID, surface, x, y, xWid, yWid, name):
-		windowNo = self.newWindow(owner, app, appno, surface, x, y, xWid, yWid, name)
+	def newWindowWithID(self, owner, app, appno, ID, surface, x, y, xWid, yWid, coorSys, name):
+		windowNo = self.newWindow(owner, app, appno, surface, x, y, xWid, yWid, coorSys, name)
 		self.windows[set(windowNo)].setID(ID)
 		return windowNo
 	
@@ -637,13 +669,22 @@ class GUI:
 		self.windows[str(windowNo)].addElement(elementNo)
 		return elementNo
 	
-	def newCircle(self, owner, app, appno, windowNo, x, y, radius, lineColor, lineWidth, fillColor, sides):
+	def newCircle(self, owner, app, appno, windowNo, x, y, radius, coorSys, lineColor, lineWidth, fillColor, sides):
+		if(coorSys=="prop"):
+			print "HI"
+			x = int(self.winWidPropToPix(windowNo, x))
+			y = int(self.winHeiPropToPix(windowNo, y))
+			print "out x " + str(x)
+			print "out y " + str(y)
+			radius = self.winWidPropToPix(windowNo, radius)
+		print x
+		print y
 		newCir = circle(owner, app, appno, x, y, radius, lineColor, lineWidth, fillColor, sides)
 		elementNo = self.newElement(newCir, windowNo)
 		return elementNo
 	
-	def newCircleWithID(self, owner, app, appno, ID, windowNo, x, y, radius, lineColor, lineWidth, fillColor, sides):
-		elementNo = self.newCircle(owner, app, appno, windowNo, x, y, radius, lineColor, lineWidth, fillColor, sides)
+	def newCircleWithID(self, owner, app, appno, ID, windowNo, x, y, radius, coorSys, lineColor, lineWidth, fillColor, sides):
+		elementNo = self.newCircle(owner, app, appno, windowNo, x, y, radius, coorSys, lineColor, lineWidth, fillColor, sides)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 		
@@ -697,13 +738,18 @@ class GUI:
 	def borderTest(self, elementNo):
 		return self.elements[str(elementNo)].borderTest()
 	
-	def newLine(self, owner, app, appno, windowNo, x1, y1, x2, y2, color, width):
+	def newLine(self, owner, app, appno, windowNo, x1, y1, x2, y2, coorSys, color, width):
+		if(coorSys=="prop"):
+			x1 = self.winWidPropToPix(windowNo, x1)
+			y1 = self.winHeiPropToPix(windowNo, y1)
+			x2 = self.winWidPropToPix(windowNo, x2)
+			y2 = self.winHeiPropToPix(windowNo, y2)
 		newLine = line(owner, app, appno, x1, y1, x2, y2, color, width)
 		elementNo = self.newElement(newLine, windowNo)
 		return elementNo
 	
-	def newLineWithID(self, owner, app, appno, ID, windowNo, x1, y1, x2, y2, color, width):
-		elementNo = self.newLine(owner, app, appno, windowNo, x1, y1, x2, y2, color, width)
+	def newLineWithID(self, owner, app, appno, ID, windowNo, x1, y1, x2, y2, coorSys, color, width):
+		elementNo = self.newLine(owner, app, appno, windowNo, x1, y1, x2, y2, coorSys, color, width)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
@@ -739,13 +785,16 @@ class GUI:
 	def upToDateLine(self,elementNo):
 		return self.elements[str(elementNo)].update()
 	
-	def newLineStrip(self, owner, app, appno, windowNo, x, y, color, width):
+	def newLineStrip(self, owner, app, appno, windowNo, x, y, coorSys, color, width):
+		if(coorSys=="prop"):
+			x = self.winWidPropToPix(windowNo, x)
+			y = self.winHeiPropToPix(windowNo, y)
 		newLineStrip = lineStrip(owner, app, appno, x, y, color, width)
 		elementNo = self.newElement(newLineStrip, windowNo)
 		return elementNo
 	
-	def newLineStripWithID(self, owner, app, appno, ID, windowNo, x, y, color, width):
-		elementNo = self.newLineStrip(owner, app, appno, windowNo, x, y, color, width)
+	def newLineStripWithID(self, owner, app, appno, ID, windowNo, x, y, coorSys, color, width):
+		elementNo = self.newLineStrip(owner, app, appno, windowNo, x, y, coorSys, color, width)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
@@ -786,13 +835,16 @@ class GUI:
 	def upToDateLineStrip(self,elementNo):
 		return self.elements[str(elementNo)].update()
 	
-	def newPolygon(self, owner, app, appno, windowNo, x, y, lineColor, lineWidth, fillColor):
+	def newPolygon(self, owner, app, appno, windowNo, x, y, coorSys, lineColor, lineWidth, fillColor):
+		if(coorSys=="prop"):
+			x = self.winWidPropToPix(windowNo, x)
+			y = self.winHeiPropToPix(windowNo, y)
 		newPoly = polygon(owner, app, appno, x, y, lineColor, lineWidth, fillColor)
 		elementNo = self.newElement(newPoly, windowNo)
 		return elementNo
 	
-	def newPolygonWithID(self, owner, app, appno, ID, windowNo, x, y, lineColor, lineWidth, fillColor):
-		elementNo = self.newPolygon(owner, app, appno, windowNo, x, y, lineColor, lineWidth, fillColor)
+	def newPolygonWithID(self, owner, app, appno, ID, windowNo, x, y, coorSys, lineColor, lineWidth, fillColor):
+		elementNo = self.newPolygon(owner, app, appno, windowNo, x, y, coorSys, lineColor, lineWidth, fillColor)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
@@ -834,13 +886,18 @@ class GUI:
 	def upToDatePolygon(self,elementNo):
 		return self.elements[str(elementNo)].update()
 	
-	def newRectangle(self, owner, app, appno, windowNo, x, y, width, height, lineColor, lineWidth, fillColor):
+	def newRectangle(self, owner, app, appno, windowNo, x, y, width, height, coorSys, lineColor, lineWidth, fillColor):
+		if(coorSys=="prop"):
+			x = self.winWidPropToPix(windowNo, x)
+			y = self.winHeiPropToPix(windowNo, y)
+			width = self.winWidPropToPix(windowNo, width)
+			height = self.winHeiPropToPix(windowNo, height)
 		newRect = rectangle(owner, app, appno, x, y, width, height, lineColor, lineWidth, fillColor)
 		elementNo = self.newElement(newRect, windowNo)
 		return elementNo
 	
-	def newRectangleWithID(self, owner, app, appno, ID, windowNo, x, y, width, height, lineColor, lineWidth, fillColor):
-		elementNo = self.newRectangle(owner, app, appno, windowNo, x, y, width, height, lineColor, lineWidth, fillColor)
+	def newRectangleWithID(self, owner, app, appno, ID, windowNo, x, y, width, height, coorSys, lineColor, lineWidth, fillColor):
+		elementNo = self.newRectangle(owner, app, appno, windowNo, x, y, width, height, coorSys, lineColor, lineWidth, fillColor)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
@@ -903,13 +960,18 @@ class GUI:
 	def upToDateRectangle(self,elementNo):
 		return self.elements[str(elementNo)].update()
 	
-	def newTexRectangle(self, owner, app, appno, windowNo, x, y, width, height, texture):
+	def newTexRectangle(self, owner, app, appno, windowNo, x, y, width, height, coorSys, texture):
+		if(coorSys=="prop"):
+			x = self.winWidPropToPix(windowNo, x)
+			y = self.winHeiPropToPix(windowNo, y)
+			width = self.winWidPropToPix(windowNo, width)
+			height = self.winHeiPropToPix(windowNo, height)
 		newRect = texRectangle(owner, app, appno, x, y, width, height, texture)
 		elementNo = self.newElement(newRect, windowNo)
 		return elementNo
 	
-	def newTexRectangleWithID(self, owner, app, appno, ID, windowNo, x, y, width, height, texture):
-		elementNo = self.newTexRectangle(owner, app, appno, windowNo, x, y, width, height, texture)
+	def newTexRectangleWithID(self, owner, app, appno, ID, windowNo, x, y, width, height, coorSys, texture):
+		elementNo = self.newTexRectangle(owner, app, appno, windowNo, x, y, width, height, coorSys, texture)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
@@ -957,13 +1019,16 @@ class GUI:
 	def upToDateTexRectangle(self,elementNo):
 		return self.elements[str(elementNo)].update()
 	
-	def newText(self, owner, app, appno, windowNo, text, x, y, pt, font, color):
+	def newText(self, owner, app, appno, windowNo, text, x, y, coorSys, pt, font, color):
+		if(coorSys=="prop"):
+			x = self.winWidPropToPix(windowNo, x)
+			y = self.winHeiPropToPix(windowNo, y)
 		newText = textBox(owner, app, appno, text, x, y, pt, font, color)
 		elementNo = self.newElement(newText, windowNo)
 		return elementNo
 	
-	def newTextWithID(self, owner, app, appno, ID, windowNo, text, x, y, pt, font, color):
-		elementNo = self.newText(owner, app, appno, windowNo, text, x, y, pt, font, color)
+	def newTextWithID(self, owner, app, appno, ID, windowNo, text, x, y, coorSys, pt, font, color):
+		elementNo = self.newText(owner, app, appno, windowNo, text, x, y, coorSys, pt, font, color)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
