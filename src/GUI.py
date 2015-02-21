@@ -584,10 +584,18 @@ class GUI:
 				location = int(key)
 		return location
 	
-	def moveWindow(self, windowNo, xDist, yDist):
+	def moveWindow(self, windowNo, xDist, yDist, coorSys):
+		if(coorSys=="prop"):
+			surfaceNo = self.findWindow(windowNo)
+			xDist = self.surfWidPropToPix(surfaceNo, xDist)
+			yDist = self.surfHeiPropToPix(surfaceNo, yDist)
 		self.windows[str(windowNo)].drag(xDist,yDist) #TODO Handle when moves to different screen
 		
-	def setWindowPos(self, windowNo, xLoc, yLoc, surface):
+	def setWindowPos(self, windowNo, xLoc, yLoc, coorSys, surface):
+		if(coorSys=="prop"):
+			surfaceNo = self.findWindow(windowNo)
+			xLoc = self.surfWidPropToPix(surfaceNo, xLoc)
+			yLoc = self.surfHeiPropToPix(surfaceNo, yLoc)
 		self.windows[str(windowNo)].setLoc(xLoc,yLoc)
 		origSur = self.findWindow(windowNo)
 		if(origSur != surface):
@@ -599,10 +607,16 @@ class GUI:
 		self.surfaces[str(surNo)].removeWindow(windowNo)
 		self.windows.pop(str(windowNo),None)
 
-	def setWindowHeight(self,windowNo,height):
+	def setWindowHeight(self,windowNo,height,coorSys):
+		if(coorSys=="prop"):
+			surfaceNo = self.findWindow(windowNo)
+			height = self.surfHeiPropToPix(surfaceNo, height)
 		self.windows[str(windowNo)].setHeight(height)
 		
-	def setWindowWidth(self,windowNo,width):
+	def setWindowWidth(self,windowNo,width,coorSys):
+		if(coorSys=="prop"):
+			surfaceNo = self.findWindow(windowNo)
+			width = self.surfWidPropToPix(surfaceNo, width)
 		self.windows[str(windowNo)].setWidth(width)
 		
 	def getWindowHeight(self,windowNo):
@@ -612,15 +626,27 @@ class GUI:
 		return self.windows[str(windowNo)].getWidth()
 	
 	def stretchWindowRight(self,windowNo,dist):
+		if(coorSys=="prop"):
+			surfaceNo = self.findWindow(windowNo)
+			dist = self.surfWidPropToPix(surfaceNo, dist)
 		self.windows[str(windowNo)].stretchRight(dist)
 		
 	def stretchWindowLeft(self,windowNo,dist):
+		if(coorSys=="prop"):
+			surfaceNo = self.findWindow(windowNo)
+			dist = self.surfWidPropToPix(surfaceNo, dist)
 		self.windows[str(windowNo)].stretchLeft(dist)
 		
 	def stretchWindowUp(self,windowNo,dist):
+		if(coorSys=="prop"):
+			surfaceNo = self.findWindow(windowNo)
+			dist = self.surfHeiPropToPix(surfaceNo, dist)
 		self.windows[str(windowNo)].stretchUp(dist)
 		
 	def stretchWindowDown(self,windowNo,dist):
+		if(coorSys=="prop"):
+			surfaceNo = self.findWindow(windowNo)
+			dist = self.surfHeiPropToPix(surfaceNo, dist)
 		self.windows[str(windowNo)].stretchDown(dist)
 		
 	def setWindowName(self,windowNo,name):
@@ -676,14 +702,17 @@ class GUI:
 		return elementNo
 		
 	def setCirclePos(self, elementNo, xLoc, yLoc, coorSys):
-		windowNo = self.findElement(elementNo)
 		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
 			xLoc = self.winWidPropToPix(windowNo, xLoc)
 			yLoc = self.winHeiPropToPix(windowNo, yLoc)
 		self.elements[str(elementNo)].setCenter(xLoc,yLoc)
 		origWin = self.findElement(elementNo)
 		
-	def setCircleRad(self, elementNo, radius):
+	def setCircleRad(self, elementNo, radius, coorSys):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			radius = self.winWidPropToPix(windowNo, radius)
 		self.elements[str(elementNo)].setRadius(radius)
 		
 	def getCircleRad(self, elementNo):
@@ -744,10 +773,18 @@ class GUI:
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
-	def setLineStart(self,elementNo,x,y):
+	def setLineStart(self,elementNo,x,y,coorSys):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			x = int(self.winWidPropToPix(windowNo, x))
+			y = int(self.winHeiPropToPix(windowNo, y))
 		self.elements[str(elementNo)].setStart(x,y)
 		
-	def setLineEnd(self,elementNo,x,y):
+	def setLineEnd(self,elementNo,x,y,coorSys):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			x = int(self.winWidPropToPix(windowNo, x))
+			y = int(self.winHeiPropToPix(windowNo, y))
 		self.elements[str(elementNo)].setEnd(x,y)
 		
 	def getLineStart(self,elementNo):
@@ -789,10 +826,18 @@ class GUI:
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
-	def addLineStripPoint(self, elementNo, x, y):
+	def addLineStripPoint(self, elementNo, x, y, coorSys):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			x = self.winWidPropToPix(windowNo, x)
+			y = self.winHeiPropToPix(windowNo, y)
 		self.elements[str(elementNo)].addPoint(x,y)
 		
-	def addLineStripPointAt(self, elementNo, x, y, index):
+	def addLineStripPointAt(self, elementNo, x, y, coorSys, index):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			x = self.winWidPropToPix(windowNo, x)
+			y = self.winHeiPropToPix(windowNo, y)
 		self.elements[str(elementNo)].addPointAt(int(x),int(y),int(index))
 		
 	def getLineStripPoint(self, elementNo, pointNo):
@@ -800,7 +845,11 @@ class GUI:
 		yloc = self.elements[str(elementNo)].getPointY(pointNo)
 		return (xloc,yloc)
 	
-	def moveLineStripPoint(self, elementNo, pointNo, x, y):
+	def moveLineStripPoint(self, elementNo, pointNo, x, y, coorSys):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			x = self.winWidPropToPix(windowNo, x)
+			y = self.winHeiPropToPix(windowNo, y)
 		self.elements[str(elementNo)].setPoint(pointNo, x, y)
 		
 	def getLineStripColor(self, elementNo):
@@ -839,7 +888,11 @@ class GUI:
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
-	def addPolygonPoint(self, elementNo, x, y):
+	def addPolygonPoint(self, elementNo, x, y, coorSys):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			x = int(self.winWidPropToPix(windowNo, x))
+			y = int(self.winHeiPropToPix(windowNo, y))
 		self.elements[str(elementNo)].addPoint(x,y)
 		
 	def getPolygonPoint(self, elementNo, pointNo):
@@ -847,7 +900,11 @@ class GUI:
 		yloc = self.elements[str(elementNo)].getPointY(pointNo)
 		return (xloc,yloc)
 	
-	def movePolygonPoint(self, elementNo, pointNo, x, y):
+	def movePolygonPoint(self, elementNo, pointNo, x, y, coorSys):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			x = int(self.winWidPropToPix(windowNo, x))
+			y = int(self.winHeiPropToPix(windowNo, y))
 		self.elements[str(elementNo)].setPoint(pointNo, x, y)
 		
 	def getPolygonFillColor(self, elementNo):
@@ -892,7 +949,11 @@ class GUI:
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
-	def setRectangleTopLeft(self, elementNo, x, y):
+	def setRectangleTopLeft(self, elementNo, x, y, coorSys):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			x = int(self.winWidPropToPix(windowNo, x))
+			y = int(self.winHeiPropToPix(windowNo, y))
 		self.elements[str(elementNo)].setTopLeft(x,y)
 		
 	def getRectangleTopLeft(self, elementNo):
@@ -915,13 +976,19 @@ class GUI:
 		yloc = self.elements[str(elementNo)].getBottomLeftY()
 		return (xloc,yloc)
 	
-	def setRectangleWidth(self, elementNo, width):
+	def setRectangleWidth(self, elementNo, width, coorSys):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			width = int(self.winWidPropToPix(windowNo, width))
 		self.elements[str(elementNo)].setWidth(width)
 		
 	def getRectangleWidth(self, elementNo):
 		return int(self.elements[str(elementNo)].getWidth())
 		
-	def setRectangleHeight(self, elementNo, height):
+	def setRectangleHeight(self, elementNo, height, coorSys):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			height = int(self.winHeiPropToPix(windowNo, height))
 		self.elements[str(elementNo)].setHeight(height)
 		
 	def getRectangleHeight(self, elementNo):
@@ -972,7 +1039,11 @@ class GUI:
 	def getTexRectangleTexture(self, elementNo):
 		return self.elements[str(elementNo)].getTexture()
 	
-	def setTexRectangleTopLeft(self, elementNo, x, y):
+	def setTexRectangleTopLeft(self, elementNo, x, y, coorSys):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			x = int(self.winWidPropToPix(windowNo, x))
+			y = int(self.winHeiPropToPix(windowNo, y))
 		self.elements[str(elementNo)].setTopLeft(x,y)
 		
 	def getTexRectangleTopLeft(self, elementNo):
@@ -995,13 +1066,19 @@ class GUI:
 		yloc = self.elements[str(elementNo)].getBottomLeftY()
 		return (xloc,yloc)
 	
-	def setTexRectangleWidth(self, elementNo, width):
+	def setTexRectangleWidth(self, elementNo, width, coorSys):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			width = int(self.winWidPropToPix(windowNo, width))
 		self.elements[str(elementNo)].setWidth(width)
 		
 	def getTexRectangleWidth(self, elementNo):
 		return int(self.elements[str(elementNo)].getWidth())
 		
-	def setTexRectangleHeight(self, elementNo, height):
+	def setTexRectangleHeight(self, elementNo, height, coorSys):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			height = int(self.winHeiPropToPix(windowNo, height))
 		self.elements[str(elementNo)].setHeight(height)
 		
 	def getTexRectangleHeight(self, elementNo):
@@ -1029,7 +1106,11 @@ class GUI:
 	def getText(self, elementNo):
 		return self.elements[str(elementNo)].getText()
 	
-	def setTextPos(self, elementNo, xLoc, yLoc, window):
+	def setTextPos(self, elementNo, xLoc, yLoc, coorSys, window):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			xLoc = int(self.winWidPropToPix(windowNo, xLoc))
+			yLoc = int(self.winHeiPropToPix(windowNo, yLoc))
 		self.elements[str(elementNo)].setLocation(xLoc,yLoc)
 		origWin = self.findElement(elementNo)
 		if(origWin != window):

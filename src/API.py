@@ -532,19 +532,19 @@ class apiMessageParser:
         return {"visibility" : visibility}
         
     def moveWindow(self, pieces):
-        self.GUI.moveWindow(pieces['windowNo'], pieces['xDist'], pieces['yDist'])
+        self.GUI.moveWindow(pieces['windowNo'], pieces['xDist'], pieces['yDist'], pieces['coorSys'])
         return {}
         
     def relocateWindow(self, pieces):
-        self.GUI.setWindowPos(pieces['windowNo'], pieces['x'], pieces['y'], pieces['surfaceNo'])
+        self.GUI.setWindowPos(pieces['windowNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['surfaceNo'])
         return {}
         
     def setWindowWidth(self, pieces):
-        self.GUI.setWindowWidth(pieces['windowNo'], pieces['width'])
+        self.GUI.setWindowWidth(pieces['windowNo'], pieces['width'], pieces['coorSys'])
         return {}
         
     def setWindowHeight(self, pieces):
-        self.GUI.setWindowHeight(pieces['windowNo'], pieces['height'])
+        self.GUI.setWindowHeight(pieces['windowNo'], pieces['height'], pieces['coorSys'])
         return {}
         
     def getWindowPosition(self, pieces):
@@ -560,19 +560,19 @@ class apiMessageParser:
         return {"height" : height}
         
     def stretchWindowDown(self, pieces):
-        self.GUI.stretchWindowDown(pieces['windowNo'], pieces['distance'])
+        self.GUI.stretchWindowDown(pieces['windowNo'], pieces['distance'], pieces['coorSys'])
         return {}
         
     def stretchWindowUp(self, pieces):
-        self.GUI.stretchWindowUp(pieces['windowNo'], pieces['distance'])
+        self.GUI.stretchWindowUp(pieces['windowNo'], pieces['distance'], pieces['coorSys'])
         return {}
         
     def stretchWindowLeft(self, pieces):    
-        self.GUI.stretchWindowLeft(pieces['windowNo'], pieces['distance'])
+        self.GUI.stretchWindowLeft(pieces['windowNo'], pieces['distance'], pieces['coorSys'])
         return {}
         
     def stretchWindowRight(self, pieces):
-        self.GUI.stretchWindowRight(pieces['windowNo'], pieces['distance'])
+        self.GUI.stretchWindowRight(pieces['windowNo'], pieces['distance'], pieces['coorSys'])
         return {}
         
     def setWindowName(self, pieces):
@@ -624,7 +624,7 @@ class apiMessageParser:
         return {"radius" : radius}
         
     def setCircleRadius(self, pieces):
-        self.GUI.setCircleRad(pieces['elementNo'], pieces['radius'])
+        self.GUI.setCircleRad(pieces['elementNo'], pieces['radius'], pieces['coorSys'])
         return {}
     
     def getCircleSides(self, pieces):
@@ -644,11 +644,11 @@ class apiMessageParser:
         return {"x" : loc[0], "y" : loc[1]}
         
     def setLineStart(self, pieces):
-        self.GUI.setLineStart(pieces['elementNo'], pieces['x'], pieces['y'])
+        self.GUI.setLineStart(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'])
         return {}
         
     def setLineEnd(self, pieces):
-        self.GUI.setLineEnd(pieces['elementNo'], pieces['x'], pieces['y'])
+        self.GUI.setLineEnd(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'])
         return {}
         
     def setLineColor(self, pieces):
@@ -667,11 +667,11 @@ class apiMessageParser:
         self.GUI.setLineWidth(pieces['elementNo'], pieces['width'])
         
     def addLineStripPoint(self, pieces):
-        self.GUI.addLineStripPoint(pieces['elementNo'], pieces['x'], pieces['y'])
+        self.GUI.addLineStripPoint(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'])
         return {}
     
     def addLineStripPointAt(self, pieces):
-        self.GUI.addLineStripPointAt(pieces['elementNo'], pieces['x'], pieces['y'], pieces['index'])
+        self.GUI.addLineStripPointAt(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['index'])
         return {}
         
     def getLineStripPoint(self, pieces):
@@ -679,7 +679,7 @@ class apiMessageParser:
         return {"x" : loc[0], "y" : loc[1]}
         
     def moveLineStripPoint(self, pieces):
-        self.GUI.moveLineStripPoint(int(pieces['elementNo']), int(pieces['pointNo']), float(pieces['x']), float(pieces['y']))    
+        self.GUI.moveLineStripPoint(int(pieces['elementNo']), int(pieces['pointNo']), float(pieces['x']), float(pieces['y']), pieces['coorSys'])    
         return {}    
         
     def getLineStripColor(self, pieces):
@@ -706,7 +706,7 @@ class apiMessageParser:
         return {}
         
     def addPolygonPoint(self, pieces):
-        self.GUI.addPolygonPoint(pieces['elementNo'], pieces['x'], pieces['y'])
+        self.GUI.addPolygonPoint(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'])
         return {}
         
     def getPolygonPoint(self, pieces):
@@ -714,7 +714,7 @@ class apiMessageParser:
         return {"x" : loc[0], "y" : loc[1]}
         
     def movePolygonPoint(self, pieces):
-        self.GUI.movePolygonPoint(pieces['elementNo'], pieces['index'], pieces['x'], pieces['y'])
+        self.GUI.movePolygonPoint(pieces['elementNo'], pieces['index'], pieces['x'], pieces['y'], pieces['coorSys'])
         return {}
         
     def getPolygonFillColor(self, pieces):
@@ -746,7 +746,7 @@ class apiMessageParser:
         return {"count" : count}
     
     def setRectangleTopLeft(self, pieces):
-        count = self.GUI.setRectangleTopLeft(pieces['elementNo'], pieces['x'], pieces['y'])
+        count = self.GUI.setRectangleTopLeft(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'])
         return {}
     
     def getRectangleTopLeft(self, pieces):
@@ -766,7 +766,7 @@ class apiMessageParser:
         return {'x' : loc[0], 'y' : loc[1]}
     
     def setRectangleWidth(self, pieces):
-        self.GUI.setRectangleWidth(pieces['elementNo'], pieces['width'])
+        self.GUI.setRectangleWidth(pieces['elementNo'], pieces['width'], pieces['coorSys'])
         return {}
         
     def getRectangleWidth(self, pieces):
@@ -774,7 +774,7 @@ class apiMessageParser:
         return {'width' : width}
     
     def setRectangleHeight(self, pieces):
-        self.GUI.setRectangleHeight(pieces['elementNo'], pieces['height'])
+        self.GUI.setRectangleHeight(pieces['elementNo'], pieces['height'], pieces['coorSys'])
         return {}
         
     def getRectangleHeight(self, pieces):
@@ -805,7 +805,7 @@ class apiMessageParser:
         self.GUI.setRectangleLineWidth(pieces['elementNo'], pieces['width'])
     
     def setTexRectangleTopLeft(self, pieces):
-        count = self.GUI.setTexRectangleTopLeft(pieces['elementNo'], pieces['x'], pieces['y'])
+        count = self.GUI.setTexRectangleTopLeft(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'])
         return {}
     
     def getTexRectangleTopLeft(self, pieces):
@@ -832,7 +832,7 @@ class apiMessageParser:
         return {'texture' : tex}
     
     def setTexRectangleWidth(self, pieces):
-        self.GUI.setTexRectangleWidth(pieces['elementNo'], pieces['width'])
+        self.GUI.setTexRectangleWidth(pieces['elementNo'], pieces['width'], pieces['coorSys'])
         return {}
         
     def getTexRectangleWidth(self, pieces):
@@ -840,7 +840,7 @@ class apiMessageParser:
         return {'width' : width}
     
     def setTexRectangleHeight(self, pieces):
-        self.GUI.setTexRectangleHeight(pieces['elementNo'], pieces['height'])
+        self.GUI.setTexRectangleHeight(pieces['elementNo'], pieces['height'], pieces['coorSys'])
         return {}
         
     def getTexRectangleHeight(self, pieces):
@@ -856,7 +856,7 @@ class apiMessageParser:
         return {'text' : text}
         
     def setTextPos(self, pieces):
-        self.GUI.setTextPos(pieces['elementNo'], pieces['x'], pieces['y'], pieces['windowNo'])
+        self.GUI.setTextPos(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['windowNo'])
         return {}
         
     def getTextPos(self, pieces):
@@ -1014,17 +1014,17 @@ class apiMessageParser:
             'show_cursor' : (showCursor,1),
             'hide_cursor' : (hideCursor,1),
             'is_cursor_visible' : (isCursorVisible,1),
-            'move_window' : (moveWindow, 3),  # [1]=WindowNo  [2]=xDistance  [3]=yDistance
-            'relocate_window' : (relocateWindow, 4),  # [1]=WindowNo  [2]=x  [3]=y  [4]=Surface
-            'set_window_width' : (setWindowWidth, 2),  # [1]=WindowNo  [2]=Width
-            'set_window_height' : (setWindowHeight, 2),  # [1]=WindowNo  [2]=Height
+            'move_window' : (moveWindow, 4),  # [1]=WindowNo  [2]=xDistance  [3]=yDistance  [4]=coorSys
+            'relocate_window' : (relocateWindow, 5),  # [1]=WindowNo  [2]=x  [3]=y  [4]=coorSys  [5]=Surface
+            'set_window_width' : (setWindowWidth, 3),  # [1]=WindowNo  [2]=Width  [3]=coorSys
+            'set_window_height' : (setWindowHeight, 3),  # [1]=WindowNo  [2]=Height  [3]=coorSys
             'get_window_pos' : (getWindowPosition, 1),  # [1]=WindowNo
             'get_window_width' : (getWindowWidth, 1),  # [1]=WindowNo
             'get_window_height' : (getWindowHeight, 1),  # [1]=WindowNo
-            'stretch_window_down' : (stretchWindowDown, 2),  # [1]=WindowNo  [2]=Distance
-            'stretch_window_up' : (stretchWindowUp, 2),  # [1]=WindowNo  [2]=Distance
-            'stretch_window_left' : (stretchWindowLeft, 2),  # [1]=WindowNo  [2]=Distance
-            'stretch_window_right' : (stretchWindowRight, 2),  # [1]=WindowNo  [2]=Distance
+            'stretch_window_down' : (stretchWindowDown, 3),  # [1]=WindowNo  [2]=Distance  [3]=coorSys
+            'stretch_window_up' : (stretchWindowUp, 3),  # [1]=WindowNo  [2]=Distance  [3]=coorSys
+            'stretch_window_left' : (stretchWindowLeft, 2),  # [1]=WindowNo  [2]=Distance  [3]=coorSys
+            'stretch_window_right' : (stretchWindowRight, 2),  # [1]=WindowNo  [2]=Distance  [3]=coorSys
             'set_window_name' : (setWindowName, 2),  # [1]=WindowNo  [2]=Name
             'get_window_name' : (getWindowName, 1),  # [1]=WindowNo
             'relocate_circle' : (relocateCircle, 4),  # [1]=ElementNo  [2]=x  [3]=y [4]=coorSys
@@ -1036,31 +1036,31 @@ class apiMessageParser:
             'get_circle_line_color' : (getCircleLineColor, 1),  # [1]=ElementNo
             'get_circle_line_width' : (getCircleLineWidth, 1),  # [1]=ElementNo
             'get_circle_fill_color' : (getCircleFillColor, 1),  # [1]=ElementNo
-            'set_circle_radius' : (setCircleRadius, 2),  # [1]=ElementNo  [2]=Radius
+            'set_circle_radius' : (setCircleRadius, 3),  # [1]=ElementNo  [2]=Radius  [3]=coorSys
             'get_circle_radius' : (getCircleRadius, 1),  # [1]=ElementNo
             'set_circle_sides' : (setCircleSides, 2),
             'get_circle_sides' : (getCircleSides, 1),
             'get_line_start' : (getLineStart, 1),  # [1]=ElementNo
             'get_line_end' : (getLineEnd, 1),  # [1]=ElementNo
-            'relocate_line_start' : (setLineStart, 3),  # [1]=ElementNo  [2]=x  [3]=y
-            'relocate_line_end' : (setLineEnd, 3),  # [1]=ElementNo  [2]=x  [3]=y
+            'relocate_line_start' : (setLineStart, 4),  # [1]=ElementNo  [2]=x  [3]=y  [4]=coorSys
+            'relocate_line_end' : (setLineEnd, 4),  # [1]=ElementNo  [2]=x  [3]=y  [4]=coorSys
             'set_line_color' : (setLineColor, 2),  # [1]=ElementNo  [2]=Color
             'get_line_color' : (getLineColor, 1),  # [1]=ElementNo
             'set_line_width' : (setLineWidth, 2),
             'get_line_width' : (getLineWidth, 1),
-            'add_line_strip_point' : (addLineStripPoint, 3),  # [1]=ElementNo  [2]=x  [3]=y
-            'add_line_strip_point_at' : (addLineStripPointAt, 4), # [1]=ElementNo [2]=x [3]=y [4]=index
+            'add_line_strip_point' : (addLineStripPoint, 4),  # [1]=ElementNo  [2]=x  [3]=y  [4]=coorSys
+            'add_line_strip_point_at' : (addLineStripPointAt, 5), # [1]=ElementNo [2]=x [3]=y [4]=coorSys [5]=index
             'get_line_strip_point' : (getLineStripPoint, 2),  # [1]=ElementNo  [2]=PointNo
-            'relocate_line_strip_point' : (moveLineStripPoint, 4),  # [1]=ElementNo  [2]=PointNo  [3]=x  [4]=y
+            'relocate_line_strip_point' : (moveLineStripPoint, 5),  # [1]=ElementNo  [2]=PointNo  [3]=x  [4]=y [5]=coorSys
             'get_line_strip_color' : (getLineStripColor, 1),  # [1]=ElementNo
             'set_line_strip_color' : (setLineStripColor, 2),  # [1]=ElementNo  [2]=Color
             'get_line_strip_width' : (getLineStripWidth, 1),
             'set_line_strip_width' : (getLineStripWidth, 2),
             'get_line_strip_point_count' : (getLineStripPointCount, 1),  # [1]=ElementNo
             'set_line_strip_content' : (setLineStripContent, 2),
-            'add_polygon_point' : (addPolygonPoint, 3),  # [1]=ElementNo  [2]=x  [3]=y
+            'add_polygon_point' : (addPolygonPoint, 4),  # [1]=ElementNo  [2]=x  [3]=y  [4]=coorSys
             'get_polygon_point' : (getPolygonPoint, 2),  # [1]=ElementNo  [2]=PointNo
-            'relocate_polygon_point' : (movePolygonPoint, 4),  # [1]=ElementNo  [2]=PointNo  [3]=x  [4]=y
+            'relocate_polygon_point' : (movePolygonPoint, 5),  # [1]=ElementNo  [2]=PointNo  [3]=x  [4]=y  [5]=coorSys
             'get_polygon_fill_color' : (getPolygonFillColor, 1),  # [1]=ElementNo
             'set_polygon_fill_color' : (setPolygonFillColor, 2),  # [1]=ElementNo  [2]=Color
             'get_polygon_line_color' : (getPolygonLineColor, 1),  # [1]=ElementNo
@@ -1068,14 +1068,14 @@ class apiMessageParser:
             'set_polygon_line_color' : (setPolygonLineColor, 2),  # [1]=ElementNo  [2]=Color
             'set_polygon_line_width' : (setPolygonLineWidth, 2),  # [1]=ElementNo  [2]=Width
             'get_polygon_point_count' : (getPolygonPointCount, 1),  # [1]=ElementNo
-            'set_rectangle_top_left' : (setRectangleTopLeft, 3),
+            'set_rectangle_top_left' : (setRectangleTopLeft, 4),
             'get_rectangle_top_left' : (getRectangleTopLeft,1),
             'get_rectangle_top_right' : (getRectangleTopRight,1),
             'get_rectangle_bottom_right' : (getRectangleBottomRight,1),
             'get_rectangle_bottom_left' : (getRectangleBottomLeft,1),
-            'set_rectangle_width' : (setRectangleWidth,2),
+            'set_rectangle_width' : (setRectangleWidth,3),
             'get_rectangle_width' : (getRectangleWidth,1),
-            'set_rectangle_height' : (setRectangleHeight,2),
+            'set_rectangle_height' : (setRectangleHeight,3),
             'get_rectangle_height' : (getRectangleHeight,1),
             'get_rectangle_fill_color' : (getRectangleFillColor,1),
             'set_rectangle_fill_color' : (setRectangleFillColor,2),
@@ -1083,20 +1083,20 @@ class apiMessageParser:
             'get_rectangle_line_width' : (getRectangleLineWidth,1),
             'set_rectangle_line_color' : (setRectangleLineColor,2),
             'set_rectangle_line_width' : (setRectangleLineWidth,2),
-            'set_texrectangle_top_left' : (setTexRectangleTopLeft, 3),
+            'set_texrectangle_top_left' : (setTexRectangleTopLeft, 4),
             'get_texrectangle_top_left' : (getTexRectangleTopLeft,1),
             'get_texrectangle_top_right' : (getTexRectangleTopRight,1),
             'get_texrectangle_bottom_right' : (getTexRectangleBottomRight,1),
             'get_texrectangle_bottom_left' : (getTexRectangleBottomLeft,1),
             'set_texrectangle_texture' : (setTexRectangleTexture,4),
             'get_texrectangle_texture' : (getTexRectangleTexture,1),
-            'set_texrectangle_width' : (setTexRectangleWidth,2),
+            'set_texrectangle_width' : (setTexRectangleWidth,3),
             'get_texrectangle_width' : (getTexRectangleWidth,1),
-            'set_texrectangle_height' : (setTexRectangleHeight,2),
+            'set_texrectangle_height' : (setTexRectangleHeight,3),
             'get_texrectangle_height' : (getTexRectangleHeight,1),
             'set_text' : (setText, 2),  # [1]=ElementNo  [2]=String
             'get_text' : (getText, 1),  # [1]=ElementNo
-            'relocate_text' : (setTextPos, 4),  # [1]=ElementNo  [2]=x  [3]=y  [4]=WindowNo
+            'relocate_text' : (setTextPos, 5),  # [1]=ElementNo  [2]=x  [3]=y  [4]=coorSys  [5]=WindowNo
             'get_text_pos' : (getTextPos, 1),  # [1]=ElementNo
             'set_text_point_size' : (setPointSize, 2),  # [1]=ElementNo  [2]=PointSize
             'get_text_point_size' : (getPointSize, 1),  # [1]=ElementNo
