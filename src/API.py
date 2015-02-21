@@ -584,7 +584,7 @@ class apiMessageParser:
         return {"name" : name}
         
     def relocateCircle(self, pieces):
-        name = self.GUI.setCirclePos(pieces['elementNo'], pieces['x'], pieces['y'])
+        name = self.GUI.setCirclePos(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'])
         return {}
         
     def getCirclePosition(self, pieces):
@@ -1027,7 +1027,7 @@ class apiMessageParser:
             'stretch_window_right' : (stretchWindowRight, 2),  # [1]=WindowNo  [2]=Distance
             'set_window_name' : (setWindowName, 2),  # [1]=WindowNo  [2]=Name
             'get_window_name' : (getWindowName, 1),  # [1]=WindowNo
-            'relocate_circle' : (relocateCircle, 3),  # [1]=ElementNo  [2]=x  [3]=y
+            'relocate_circle' : (relocateCircle, 4),  # [1]=ElementNo  [2]=x  [3]=y [4]=coorSys
             'get_circle_pos' : (getCirclePosition, 1),  # [1]=ElementNo
             'get_element_type' : (getElementType, 1),  # [1]=ElementNo
             'set_circle_line_color' : (setCircleLineColor, 2),  # [1]=ElementNo  [2]=Color
@@ -1123,7 +1123,6 @@ class apiMessageParser:
             if(len(msg) - 4 == self.messages[msg['call']][1]):
                 data = self.messages[str(msg['call'])][0](self, msg)
             else:
-                print "MSG - " + str(msg)
                 data = {"error" : 2, "1" : str(len(msg) - 1), "2" : str(self.messages[msg['call']][1])}
         except KeyError, e:
             data = {"error" : 1}

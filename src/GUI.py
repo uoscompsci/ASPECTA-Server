@@ -36,26 +36,18 @@ class GUI:
 		
 	def winWidPropToPix(self, win, prop):
 		width = self.getWindowWidth(win)
-		print prop
-		print width
 		return float(prop)*width
 		
 	def winHeiPropToPix(self, win, prop):
 		height = self.getWindowHeight(win)
-		print prop
-		print height
 		return float(prop)*height
 		
 	def surfWidPropToPix(self, surf, prop):
 		width = self.getSurfacePixelWidth(surf)
-		print prop
-		print width
 		return float(prop)*width
 		
 	def surfHeiPropToPix(self, surf, prop):
 		height = self.getSurfacePixelHeight(surf)
-		print prop
-		print height
 		return float(prop)*height
 		
 	
@@ -671,14 +663,9 @@ class GUI:
 	
 	def newCircle(self, owner, app, appno, windowNo, x, y, radius, coorSys, lineColor, lineWidth, fillColor, sides):
 		if(coorSys=="prop"):
-			print "HI"
 			x = int(self.winWidPropToPix(windowNo, x))
 			y = int(self.winHeiPropToPix(windowNo, y))
-			print "out x " + str(x)
-			print "out y " + str(y)
 			radius = self.winWidPropToPix(windowNo, radius)
-		print x
-		print y
 		newCir = circle(owner, app, appno, x, y, radius, lineColor, lineWidth, fillColor, sides)
 		elementNo = self.newElement(newCir, windowNo)
 		return elementNo
@@ -688,7 +675,11 @@ class GUI:
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 		
-	def setCirclePos(self, elementNo, xLoc, yLoc):
+	def setCirclePos(self, elementNo, xLoc, yLoc, coorSys):
+		windowNo = self.findElement(elementNo)
+		if(coorSys=="prop"):
+			xLoc = self.winWidPropToPix(windowNo, xLoc)
+			yLoc = self.winHeiPropToPix(windowNo, yLoc)
 		self.elements[str(elementNo)].setCenter(xLoc,yLoc)
 		origWin = self.findElement(elementNo)
 		
