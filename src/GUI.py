@@ -50,7 +50,16 @@ class GUI:
 		height = self.getSurfacePixelHeight(surf)
 		return float(prop)*height
 		
-	
+	def surfWidMetToPix(self, surf, met):
+		width = self.getSurfacePixelWidth(surf)
+		realWidth = self.getSurfaceRealWidth(surf)
+		return float(width)/float(realWidth)*met
+		
+	def surfHeiMetToPix(self, surf, met):
+		height = self.getSurfacePixelHeight(surf)
+		realHeight = self.getSurfaceRealHeight(surf)
+		return float(height)/float(realHeight)*met
+		
 	def hideSetupSurface(self):
 		self.setup_surface_visible = False
 		
@@ -128,6 +137,18 @@ class GUI:
 		
 	def setSurfacePixelHeight(self, surfaceNo, height):
 		self.surfaces[str(surfaceNo)].setPixelHeight(height)
+		
+	def getSurfaceRealWidth(self, surfaceNo):
+		return self.surfaces[str(surfaceNo)].getRealWidth()
+		
+	def getSurfaceRealHeight(self, surfaceNo):
+		return self.surfaces[str(surfaceNo)].getRealHeight()
+		
+	def setSurfaceRealWidth(self, surfaceNo, width):
+		self.surfaces[str(surfaceNo)].setRealWidth(width)
+		
+	def setSurfaceRealHeight(self, surfaceNo, height):
+		self.surfaces[str(surfaceNo)].setRealHeight(height)
 		
 	def clearSurface(self, surfaceNo):
 		windows = self.getWindows(surfaceNo)
@@ -336,6 +357,9 @@ class GUI:
 		if(coorSys=="prop"):
 			x = self.surfWidPropToPix(surface, x)
 			y = self.surfHeiPropToPix(surface, y)
+		elif(coorSys=="real"):
+			x = self.surfWidMetToPix(surface, x)
+			y = self.surfHeiMetToPix(surface, y)
 		newCur = cursor(x,y)
 		cursorNo = 0
 		with self.cursors_lock:
@@ -514,6 +538,11 @@ class GUI:
 			y = self.surfHeiPropToPix(surface, y)
 			xWid = self.surfWidPropToPix(surface, xWid)
 			yWid = self.surfHeiPropToPix(surface, yWid)
+		elif(coorSys=="real"):
+			x = self.surfWidMetToPix(surface, x)
+			y = self.surfHeiMetToPix(surface, y)
+			xWid = self.surfWidMetToPix(surface, xWid)
+			yWid = self.surfHeiMetToPix(surface, yWid)
 		newWin = window(owner,app,appno,x,y,xWid,yWid,name)
 		windowNo = 0
 		with self.windows_lock:
@@ -589,6 +618,10 @@ class GUI:
 			surfaceNo = self.findWindow(windowNo)
 			xDist = self.surfWidPropToPix(surfaceNo, xDist)
 			yDist = self.surfHeiPropToPix(surfaceNo, yDist)
+		elif(coorSys=="real"):
+			surfaceNo = self.findWindow(windowNo)
+			xDist = self.surfWidMetToPix(surfaceNo, xDist)
+			yDist = self.surfHeiMetToPix(surfaceNo, yDist)
 		self.windows[str(windowNo)].drag(xDist,yDist) #TODO Handle when moves to different screen
 		
 	def setWindowPos(self, windowNo, xLoc, yLoc, coorSys, surface):
@@ -596,6 +629,10 @@ class GUI:
 			surfaceNo = self.findWindow(windowNo)
 			xLoc = self.surfWidPropToPix(surfaceNo, xLoc)
 			yLoc = self.surfHeiPropToPix(surfaceNo, yLoc)
+		elif(coorSys=="real"):
+			surfaceNo = self.findWindow(windowNo)
+			xLoc = self.surfWidMetToPix(surfaceNo, xLoc)
+			yLoc = self.surfHeiMetToPix(surfaceNo, yLoc)
 		self.windows[str(windowNo)].setLoc(xLoc,yLoc)
 		origSur = self.findWindow(windowNo)
 		if(origSur != surface):
@@ -611,12 +648,18 @@ class GUI:
 		if(coorSys=="prop"):
 			surfaceNo = self.findWindow(windowNo)
 			height = self.surfHeiPropToPix(surfaceNo, height)
+		elif(coorSys=="real"):
+			surfaceNo = self.findWindow(windowNo)
+			height = self.surfHeiMetToPix(surfaceNo, height)
 		self.windows[str(windowNo)].setHeight(height)
 		
 	def setWindowWidth(self,windowNo,width,coorSys):
 		if(coorSys=="prop"):
 			surfaceNo = self.findWindow(windowNo)
 			width = self.surfWidPropToPix(surfaceNo, width)
+		elif(coorSys=="real"):
+			surfaceNo = self.findWindow(windowNo)
+			width = self.surfWidMetToPix(surfaceNo, width)
 		self.windows[str(windowNo)].setWidth(width)
 		
 	def getWindowHeight(self,windowNo):
@@ -629,24 +672,36 @@ class GUI:
 		if(coorSys=="prop"):
 			surfaceNo = self.findWindow(windowNo)
 			dist = self.surfWidPropToPix(surfaceNo, dist)
+		elif(coorSys=="real"):
+			surfaceNo = self.findWindow(windowNo)
+			dist = self.surfWidMetToPix(surfaceNo, dist)
 		self.windows[str(windowNo)].stretchRight(dist)
 		
 	def stretchWindowLeft(self,windowNo,dist):
 		if(coorSys=="prop"):
 			surfaceNo = self.findWindow(windowNo)
 			dist = self.surfWidPropToPix(surfaceNo, dist)
+		elif(coorSys=="real"):
+			surfaceNo = self.findWindow(windowNo)
+			dist = self.surfWidMetToPix(surfaceNo, dist)
 		self.windows[str(windowNo)].stretchLeft(dist)
 		
 	def stretchWindowUp(self,windowNo,dist):
 		if(coorSys=="prop"):
 			surfaceNo = self.findWindow(windowNo)
 			dist = self.surfHeiPropToPix(surfaceNo, dist)
+		elif(coorSys=="real"):
+			surfaceNo = self.findWindow(windowNo)
+			dist = self.surfHeiMetToPix(surfaceNo, dist)
 		self.windows[str(windowNo)].stretchUp(dist)
 		
 	def stretchWindowDown(self,windowNo,dist):
 		if(coorSys=="prop"):
 			surfaceNo = self.findWindow(windowNo)
 			dist = self.surfHeiPropToPix(surfaceNo, dist)
+		elif(coorSys=="real"):
+			surfaceNo = self.findWindow(windowNo)
+			dist = self.surfHeiMetToPix(surfaceNo, dist)
 		self.windows[str(windowNo)].stretchDown(dist)
 		
 	def setWindowName(self,windowNo,name):
@@ -692,6 +747,11 @@ class GUI:
 			x = int(self.winWidPropToPix(windowNo, x))
 			y = int(self.winHeiPropToPix(windowNo, y))
 			radius = self.winWidPropToPix(windowNo, radius)
+		elif(coorSys=="real"):
+			surfaceNo = self.findWindow(windowNo)
+			x = self.surfWidMetToPix(surfaceNo, x)
+			y = self.surfHeiMetToPix(surfaceNo, y)
+			radius = self.surfWidMetToPix(surfaceNo, radius)
 		newCir = circle(owner, app, appno, x, y, radius, lineColor, lineWidth, fillColor, sides)
 		elementNo = self.newElement(newCir, windowNo)
 		return elementNo
@@ -706,6 +766,11 @@ class GUI:
 			windowNo = self.findElement(elementNo)
 			xLoc = self.winWidPropToPix(windowNo, xLoc)
 			yLoc = self.winHeiPropToPix(windowNo, yLoc)
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			xLoc = self.surfWidMetToPix(surfaceNo, xLoc)
+			yLoc = self.surfHeiMetToPix(surfaceNo, yLoc)
 		self.elements[str(elementNo)].setCenter(xLoc,yLoc)
 		origWin = self.findElement(elementNo)
 		
@@ -713,6 +778,10 @@ class GUI:
 		if(coorSys=="prop"):
 			windowNo = self.findElement(elementNo)
 			radius = self.winWidPropToPix(windowNo, radius)
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			radius = self.surfWidMetToPix(surfaceNo, radius)
 		self.elements[str(elementNo)].setRadius(radius)
 		
 	def getCircleRad(self, elementNo):
@@ -764,6 +833,12 @@ class GUI:
 			y1 = self.winHeiPropToPix(windowNo, y1)
 			x2 = self.winWidPropToPix(windowNo, x2)
 			y2 = self.winHeiPropToPix(windowNo, y2)
+		elif(coorSys=="real"):
+			surfaceNo = self.findWindow(windowNo)
+			x1 = self.surfWidMetToPix(surfaceNo, x1)
+			y1 = self.surfHeiMetToPix(surfaceNo, y1)
+			x2 = self.surfWidMetToPix(surfaceNo, x2)
+			y2 = self.surfHeiMetToPix(surfaceNo, y2)
 		newLine = line(owner, app, appno, x1, y1, x2, y2, color, width)
 		elementNo = self.newElement(newLine, windowNo)
 		return elementNo
@@ -778,6 +853,11 @@ class GUI:
 			windowNo = self.findElement(elementNo)
 			x = int(self.winWidPropToPix(windowNo, x))
 			y = int(self.winHeiPropToPix(windowNo, y))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			x = self.surfWidMetToPix(surfaceNo, x)
+			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].setStart(x,y)
 		
 	def setLineEnd(self,elementNo,x,y,coorSys):
@@ -785,6 +865,11 @@ class GUI:
 			windowNo = self.findElement(elementNo)
 			x = int(self.winWidPropToPix(windowNo, x))
 			y = int(self.winHeiPropToPix(windowNo, y))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			x = self.surfWidMetToPix(surfaceNo, x)
+			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].setEnd(x,y)
 		
 	def getLineStart(self,elementNo):
@@ -817,6 +902,10 @@ class GUI:
 		if(coorSys=="prop"):
 			x = self.winWidPropToPix(windowNo, x)
 			y = self.winHeiPropToPix(windowNo, y)
+		elif(coorSys=="real"):
+			surfaceNo = self.findWindow(windowNo)
+			x = self.surfWidMetToPix(surfaceNo, x)
+			y = self.surfHeiMetToPix(surfaceNo, y)
 		newLineStrip = lineStrip(owner, app, appno, x, y, color, width)
 		elementNo = self.newElement(newLineStrip, windowNo)
 		return elementNo
@@ -831,6 +920,11 @@ class GUI:
 			windowNo = self.findElement(elementNo)
 			x = self.winWidPropToPix(windowNo, x)
 			y = self.winHeiPropToPix(windowNo, y)
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			x = self.surfWidMetToPix(surfaceNo, x)
+			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].addPoint(x,y)
 		
 	def addLineStripPointAt(self, elementNo, x, y, coorSys, index):
@@ -838,6 +932,11 @@ class GUI:
 			windowNo = self.findElement(elementNo)
 			x = self.winWidPropToPix(windowNo, x)
 			y = self.winHeiPropToPix(windowNo, y)
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			x = self.surfWidMetToPix(surfaceNo, x)
+			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].addPointAt(int(x),int(y),int(index))
 		
 	def getLineStripPoint(self, elementNo, pointNo):
@@ -850,6 +949,11 @@ class GUI:
 			windowNo = self.findElement(elementNo)
 			x = self.winWidPropToPix(windowNo, x)
 			y = self.winHeiPropToPix(windowNo, y)
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			x = self.surfWidMetToPix(surfaceNo, x)
+			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].setPoint(pointNo, x, y)
 		
 	def getLineStripColor(self, elementNo):
@@ -879,6 +983,10 @@ class GUI:
 		if(coorSys=="prop"):
 			x = self.winWidPropToPix(windowNo, x)
 			y = self.winHeiPropToPix(windowNo, y)
+		elif(coorSys=="real"):
+			surfaceNo = self.findWindow(windowNo)
+			x = self.surfWidMetToPix(surfaceNo, x)
+			y = self.surfHeiMetToPix(surfaceNo, y)
 		newPoly = polygon(owner, app, appno, x, y, lineColor, lineWidth, fillColor)
 		elementNo = self.newElement(newPoly, windowNo)
 		return elementNo
@@ -893,6 +1001,11 @@ class GUI:
 			windowNo = self.findElement(elementNo)
 			x = int(self.winWidPropToPix(windowNo, x))
 			y = int(self.winHeiPropToPix(windowNo, y))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			x = self.surfWidMetToPix(surfaceNo, x)
+			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].addPoint(x,y)
 		
 	def getPolygonPoint(self, elementNo, pointNo):
@@ -905,6 +1018,11 @@ class GUI:
 			windowNo = self.findElement(elementNo)
 			x = int(self.winWidPropToPix(windowNo, x))
 			y = int(self.winHeiPropToPix(windowNo, y))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			x = self.surfWidMetToPix(surfaceNo, x)
+			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].setPoint(pointNo, x, y)
 		
 	def getPolygonFillColor(self, elementNo):
@@ -940,6 +1058,12 @@ class GUI:
 			y = self.winHeiPropToPix(windowNo, y)
 			width = self.winWidPropToPix(windowNo, width)
 			height = self.winHeiPropToPix(windowNo, height)
+		elif(coorSys=="real"):
+			surfaceNo = self.findWindow(windowNo)
+			x = self.surfWidMetToPix(surfaceNo, x)
+			y = self.surfHeiMetToPix(surfaceNo, y)
+			width = self.surfWidMetToPix(surfaceNo, width)
+			height = self.surfHeiMetToPix(surfaceNo, height)
 		newRect = rectangle(owner, app, appno, x, y, width, height, lineColor, lineWidth, fillColor)
 		elementNo = self.newElement(newRect, windowNo)
 		return elementNo
@@ -954,6 +1078,11 @@ class GUI:
 			windowNo = self.findElement(elementNo)
 			x = int(self.winWidPropToPix(windowNo, x))
 			y = int(self.winHeiPropToPix(windowNo, y))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			x = self.surfWidMetToPix(surfaceNo, x)
+			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].setTopLeft(x,y)
 		
 	def getRectangleTopLeft(self, elementNo):
@@ -980,6 +1109,10 @@ class GUI:
 		if(coorSys=="prop"):
 			windowNo = self.findElement(elementNo)
 			width = int(self.winWidPropToPix(windowNo, width))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			width = self.surfWidMetToPix(surfaceNo, width)
 		self.elements[str(elementNo)].setWidth(width)
 		
 	def getRectangleWidth(self, elementNo):
@@ -989,6 +1122,10 @@ class GUI:
 		if(coorSys=="prop"):
 			windowNo = self.findElement(elementNo)
 			height = int(self.winHeiPropToPix(windowNo, height))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			height = self.surfHeiMetToPix(surfaceNo, height)
 		self.elements[str(elementNo)].setHeight(height)
 		
 	def getRectangleHeight(self, elementNo):
@@ -1024,6 +1161,12 @@ class GUI:
 			y = self.winHeiPropToPix(windowNo, y)
 			width = self.winWidPropToPix(windowNo, width)
 			height = self.winHeiPropToPix(windowNo, height)
+		elif(coorSys=="real"):
+			surfaceNo = self.findWindow(windowNo)
+			x = self.surfWidMetToPix(surfaceNo, x)
+			y = self.surfHeiMetToPix(surfaceNo, y)
+			width = self.surfWidMetToPix(surfaceNo, width)
+			height = self.surfHeiMetToPix(surfaceNo, height)
 		newRect = texRectangle(owner, app, appno, x, y, width, height, texture)
 		elementNo = self.newElement(newRect, windowNo)
 		return elementNo
@@ -1044,6 +1187,11 @@ class GUI:
 			windowNo = self.findElement(elementNo)
 			x = int(self.winWidPropToPix(windowNo, x))
 			y = int(self.winHeiPropToPix(windowNo, y))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			x = self.surfWidMetToPix(surfaceNo, x)
+			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].setTopLeft(x,y)
 		
 	def getTexRectangleTopLeft(self, elementNo):
@@ -1070,6 +1218,10 @@ class GUI:
 		if(coorSys=="prop"):
 			windowNo = self.findElement(elementNo)
 			width = int(self.winWidPropToPix(windowNo, width))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			width = self.surfWidMetToPix(surfaceNo, width)
 		self.elements[str(elementNo)].setWidth(width)
 		
 	def getTexRectangleWidth(self, elementNo):
@@ -1079,6 +1231,10 @@ class GUI:
 		if(coorSys=="prop"):
 			windowNo = self.findElement(elementNo)
 			height = int(self.winHeiPropToPix(windowNo, height))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			height = self.surfHeiMetToPix(surfaceNo, height)
 		self.elements[str(elementNo)].setHeight(height)
 		
 	def getTexRectangleHeight(self, elementNo):
@@ -1091,6 +1247,10 @@ class GUI:
 		if(coorSys=="prop"):
 			x = self.winWidPropToPix(windowNo, x)
 			y = self.winHeiPropToPix(windowNo, y)
+		elif(coorSys=="real"):
+			surfaceNo = self.findWindow(windowNo)
+			x = self.surfWidMetToPix(surfaceNo, x)
+			y = self.surfHeiMetToPix(surfaceNo, y)
 		newText = textBox(owner, app, appno, text, x, y, pt, font, color)
 		elementNo = self.newElement(newText, windowNo)
 		return elementNo
@@ -1111,6 +1271,11 @@ class GUI:
 			windowNo = self.findElement(elementNo)
 			xLoc = int(self.winWidPropToPix(windowNo, xLoc))
 			yLoc = int(self.winHeiPropToPix(windowNo, yLoc))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			xLoc = self.surfWidMetToPix(surfaceNo, xLoc)
+			yLoc = self.surfHeiMetToPix(surfaceNo, yLoc)
 		self.elements[str(elementNo)].setLocation(xLoc,yLoc)
 		origWin = self.findElement(elementNo)
 		if(origWin != window):

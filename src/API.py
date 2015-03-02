@@ -52,7 +52,6 @@ class apiMessageParser:
     
     fonts = {"Times New Roman" : "FreeSerif",
          "Free Serif" : "FreeSerif",
-         "Arial" : "arial",
          "Free Mono" : "FreeMono",
          "Courier New": "FreeMono",
          "Arial" : "FreeSans",
@@ -289,6 +288,22 @@ class apiMessageParser:
     
     def setSurfacePixelHeight(self, pieces):
         self.GUI.setSurfacePixelHeight(pieces['surfaceNo'],pieces['height'])
+        return {}
+    
+    def getSurfaceRealWidth(self, pieces):
+        width = self.GUI.getSurfaceRealWidth(pieces['surfaceNo'])
+        return {"width" : width}
+    
+    def getSurfaceRealHeight(self, pieces):
+        height = self.GUI.getSurfaceRealHeight(pieces['surfaceNo'])
+        return {"height" : height}
+    
+    def setSurfaceRealWidth(self, pieces):
+        self.GUI.setSurfaceRealWidth(pieces['surfaceNo'],pieces['width'])
+        return {}
+    
+    def setSurfaceRealHeight(self, pieces):
+        self.GUI.setSurfaceRealHeight(pieces['surfaceNo'],pieces['height'])
         return {}
     
     def clearSurface(self, pieces):
@@ -966,6 +981,10 @@ class apiMessageParser:
             'get_surface_pixel_height' : (getSurfacePixelHeight,1),
             'set_surface_pixel_width' : (setSurfacePixelWidth,2),
             'set_surface_pixel_height' : (setSurfacePixelHeight,2),
+            'get_surface_real_width' : (getSurfaceRealWidth,1),
+            'get_surface_real_height' : (getSurfaceRealHeight,1),
+            'set_surface_real_width' : (setSurfaceRealWidth,2),
+            'set_surface_real_height' : (setSurfaceRealHeight,2),
             'clear_surface' : (clearSurface,1),
             'delete_layout' : (deleteLayout, 1),
             'delete_image' : (deleteImage, 1),
@@ -1545,7 +1564,7 @@ class apiMessageParser:
                     
                     if(self.fonts.has_key(font)):
                         font = self.fonts[font]
-                    
+                    print font
                     self.elementBuffer[elements[z]] = FTGL.PolygonFont("fonts/" + font + ".ttf")
                     self.elementBuffer[elements[z]].FaceSize(size)
                     self.elementBuffer[elements[z]].UseDisplayList(True)

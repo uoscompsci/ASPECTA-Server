@@ -355,6 +355,8 @@ class surface():
         self.surfaceType = type
         self.pixelwidth = 512
         self.pixelheight = 512
+        self.realWidth = 1
+        self.realHeight = 1
         
     def setPoints(self, topPoints, bottomPoints, leftPoints, rightPoints):
         self.topPoints = topPoints
@@ -546,6 +548,18 @@ class surface():
         
     def setPixelHeight(self, height):
         self.pixelheight = height
+        
+    def getRealWidth(self):
+        return int(self.realWidth)
+    
+    def getRealHeight(self):
+        return int(self.realHeight)
+    
+    def setRealWidth(self, width):
+        self.realWidth = width
+        
+    def setRealHeight(self, height):
+        self.realHeight = height
         
 class surfaceConnection:
     __slots__ = ['surface1No', 'surface1Side', 'surface2No', 'surface2Side']
