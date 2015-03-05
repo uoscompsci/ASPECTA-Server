@@ -180,9 +180,12 @@ class GUI:
 			type = self.getSurfaceType(defSurfaces[z])
 			pixwid = self.getSurfacePixelWidth(defSurfaces[z])
 			pixhei = self.getSurfacePixelHeight(defSurfaces[z])
+			realwid = self.getSurfaceRealWidth(defSurfaces[z])
+			realhei = self.getSurfaceRealHeight(defSurfaces[z])
 			file.write(str(defSurfaces[z]) + ";" + type + "\n")
 			file.write(owner + ";" + app[0] + ";" + str(app[1]) + "\n")
 			file.write(str(pixwid) + ";" + str(pixhei) + "\n")
+			file.write(str(realwid) + ";" + str(realhei) + "\n")
 			rot = self.getSurfaceRotation(defSurfaces[z])
 			mir = self.getSurfaceMirrored(defSurfaces[z])
 			file.write(str(rot) + ";" + str(mir) + "\n")
@@ -213,6 +216,8 @@ class GUI:
 			params = params.split(";")
 			pixdim = file.readline().strip()
 			pixdim = pixdim.split(";")
+			realdim = file.readline().strip()
+			realdim = realdim.split(";")
 			rotmir = file.readline().strip()
 			rotmir = rotmir.split(";")
 			if(int(rotmir[0])==0):
@@ -232,6 +237,10 @@ class GUI:
 				
 			self.setSurfacePixelWidth(int(check[0]), int(pixdim[0]))
 			self.setSurfacePixelHeight(int(check[0]), int(pixdim[1]))
+			
+			self.setSurfaceRealWidth(int(check[0]), int(realdim[0]))
+			self.setSurfaceRealHeight(int(check[0]), int(realdim[1]))
+			
 			top = file.readline().strip()
 			bottom = file.readline().strip()
 			left = file.readline().strip()
