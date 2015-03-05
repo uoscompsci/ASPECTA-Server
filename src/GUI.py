@@ -206,6 +206,7 @@ class GUI:
 		check = check.split(";")
 		layouts = []
 		connections = []
+		realSizes = ""
 		if(len(self.surfaces)<2):
 			self.newSurface("loaded", "loaded", 0)
 			self.newSurface("loaded", "loaded", 0)
@@ -241,6 +242,10 @@ class GUI:
 			self.setSurfaceRealWidth(int(check[0]), int(realdim[0]))
 			self.setSurfaceRealHeight(int(check[0]), int(realdim[1]))
 			
+			if(len(realSizes)!=0):
+				realSizes += ";"
+			realSizes += str(realdim[0]) + ":" + str(realdim[1])				
+			
 			top = file.readline().strip()
 			bottom = file.readline().strip()
 			left = file.readline().strip()
@@ -272,7 +277,7 @@ class GUI:
 			connectstring = connections[0]
 		for x in range(1,len(connections)):
 			connectstring += "%" + connections[x]
-		return (count, layoutstring, connectstring)
+		return (count, layoutstring, connectstring, realSizes)
 		
 	def getSurfacesByID(self, ID):
 		found = []

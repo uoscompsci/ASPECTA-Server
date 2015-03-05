@@ -251,7 +251,7 @@ class apiMessageParser:
     
     def loadDefinedSurfaces(self, pieces):
         count = self.GUI.loadDefinedSurfaces(pieces['fileName'])
-        return {"count" : count[0], "layouts" : count[1], "connections" : count[2]}
+        return {"count" : count[0], "layouts" : count[1], "connections" : count[2], "realSizes" : count[3]}
     
     def getSavedLayouts(self, pieces):
         layouts = glob.glob('layouts/*.lyt')
