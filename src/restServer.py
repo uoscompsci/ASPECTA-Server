@@ -51,7 +51,7 @@ def newSurfaceWithID():
 
 @app.route('/api/newCursor', methods=['POST'])
 def newCursor():
-    if not request.json or not 'surfaceNo' in request.json or not 'x' in request.json or not 'y' in request.json:
+    if not request.json or not 'surfaceNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'new_cursor'
@@ -60,7 +60,7 @@ def newCursor():
 
 @app.route('/api/newCursorWithID', methods=['POST'])
 def newCursorWithID():
-    if not request.json or not 'ID' in request.json or not 'surfaceNo' in request.json or not 'x' in request.json or not 'y' in request.json:
+    if not request.json or not 'ID' in request.json or not 'surfaceNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'new_cursor_with_ID'
@@ -69,7 +69,7 @@ def newCursorWithID():
 
 @app.route('/api/newWindow', methods=['POST'])
 def newWindow():
-    if not request.json or not 'surfaceNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'name' in request.json:
+    if not request.json or not 'surfaceNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'name' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'new_window'
@@ -78,7 +78,7 @@ def newWindow():
 
 @app.route('/api/newWindowWithID', methods=['POST'])
 def newWindowWithID():
-    if not request.json or not 'ID' in request.json or not 'surfaceNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'name' in request.json:
+    if not request.json or not 'ID' in request.json or not 'surfaceNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'name' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'new_window_with_ID'
@@ -87,7 +87,7 @@ def newWindowWithID():
 
 @app.route('/api/newCircle', methods=['POST'])
 def newCircle():
-    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'radius' in request.json or not 'linecolor' in request.json or not 'fillcolor' in request.json or not 'sides' in request.json:
+    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'radius' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json or not 'sides' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'new_circle'
@@ -96,7 +96,7 @@ def newCircle():
 
 @app.route('/api/newCircleWithID', methods=['POST'])
 def newCircleWithID():
-    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'radius' in request.json or not 'linecolor' in request.json or not 'fillcolor' in request.json or not 'sides' in request.json:
+    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'radius' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json or not 'sides' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'new_circle_with_ID'
@@ -105,7 +105,7 @@ def newCircleWithID():
 
 @app.route('/api/newLine', methods=['POST'])
 def newLine():
-    if not request.json or not 'windowNo' in request.json or not 'xStart' in request.json or not 'yStart' in request.json or not 'xEnd' in request.json or not 'yEnd' in request.json or not 'color' in request.json:
+    if not request.json or not 'windowNo' in request.json or not 'xStart' in request.json or not 'yStart' in request.json or not 'xEnd' in request.json or not 'yEnd' in request.json or not 'coorSys' in request.json or not 'color' in request.json or not 'width' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'new_line'
@@ -114,7 +114,7 @@ def newLine():
 
 @app.route('/api/newLineWithID', methods=['POST'])
 def newLineWithID():
-    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'xStart' in request.json or not 'yStart' in request.json or not 'xEnd' in request.json or not 'yEnd' in request.json or not 'color' in request.json:
+    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'xStart' in request.json or not 'yStart' in request.json or not 'xEnd' in request.json or not 'yEnd' in request.json or not 'coorSys' in request.json or not 'color' in request.json or not 'width' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'new_line_with_ID'
@@ -123,7 +123,7 @@ def newLineWithID():
 
 @app.route('/api/newLineStrip', methods=['POST'])
 def newLineStrip():
-    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'color' in request.json:
+    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'color' in request.json or not 'width' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'new_line_strip'
@@ -132,7 +132,7 @@ def newLineStrip():
 
 @app.route('/api/newLineStripWithID', methods=['POST'])
 def newLineStripWithID():
-    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'color' in request.json:
+    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'color' in request.json or not 'width' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'new_line_strip_with_ID'
@@ -141,7 +141,7 @@ def newLineStripWithID():
 
 @app.route('/api/newPolygon', methods=['POST'])
 def newPolygon():
-    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'linecolor' in request.json or not 'fillcolor' in request.json:
+    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'new_polygon'
@@ -150,7 +150,7 @@ def newPolygon():
 
 @app.route('/api/newPolygonWithID', methods=['POST'])
 def newPolygonWithID():
-    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'linecolor' in request.json or not 'fillcolor' in request.json:
+    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'new_polygon_with_ID'
@@ -159,7 +159,7 @@ def newPolygonWithID():
 
 @app.route('/api/newRectangle', methods=['POST'])
 def newRectangle():
-    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'linecolor' in request.json or not 'fillcolor' in request.json:
+    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'new_rectangle'
@@ -168,7 +168,7 @@ def newRectangle():
 
 @app.route('/api/newRectangleWithID', methods=['POST'])
 def newRectangleWithID():
-    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'linecolor' in request.json or not 'fillcolor' in request.json:
+    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'new_rectangle_with_ID'
@@ -178,7 +178,7 @@ def newRectangleWithID():
 @app.route('/api/newTexRectangle', methods=['POST'])
 def newTexRectangle():
     global counter
-    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'textureData' in request.json or not 'extension' in request.json:
+    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'textureData' in request.json or not 'extension' in request.json:
         print str(request.json)
         abort(400)
     g = open("images/" + str(counter) + "-rest." + str(request.json['extension']), "w")
@@ -194,7 +194,7 @@ def newTexRectangle():
 @app.route('/api/newTexRectangleWithID', methods=['POST'])
 def newTexRectangleWithID():
     global counter
-    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'textureData' in request.json or not 'extension' in request.json:
+    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'textureData' in request.json or not 'extension' in request.json:
         abort(400)
     g = open("images/" + str(counter) + "." + str(request.json['extension']), "w")
     g.write(base64.decodestring(str(request.json['textureData'])))
@@ -208,7 +208,7 @@ def newTexRectangleWithID():
 
 @app.route('/api/newText', methods=['POST'])
 def newText():
-    if not request.json or not 'windowNo' in request.json or not 'text' in request.json or not 'x' in request.json or not 'y' in request.json or not 'pt' in request.json or not 'font' in request.json or not 'color' in request.json:
+    if not request.json or not 'windowNo' in request.json or not 'text' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'ptSize' in request.json or not 'font' in request.json or not 'color' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'new_text'
@@ -217,7 +217,7 @@ def newText():
 
 @app.route('/api/newTextWithID', methods=['POST'])
 def newTextWithID():
-    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'text' in request.json or not 'x' in request.json or not 'y' in request.json or not 'pt' in request.json or not 'font' in request.json or not 'color' in request.json:
+    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'text' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'ptSize' in request.json or not 'font' in request.json or not 'color' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'new_text_with_ID'
@@ -298,7 +298,7 @@ def getSurfacesByAppDetails():
 
 @app.route('/api/setSurfaceEdges', methods=['POST'])
 def setSurfaceEdges():
-    if not request.json or not 'surfaceNo' in request.json or not 'topPoints' in request.json or not 'bottomPoints' in request.json or not 'leftPoints' in request.json or not 'rightPoints' in request.json:
+    if not request.json or not 'surfaceNo' in request.json or not 'topString' in request.json or not 'bottomString' in request.json or not 'leftString' in request.json or not 'rightString' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'set_surface_edges'
@@ -389,6 +389,42 @@ def setSurfacePixelHeight():
     returnData = processor.processMessage(dict)
     return returnData
 
+@app.route('/api/getSurfaceRealWidth', methods=['GET'])
+def getSurfaceRealWidth():
+    if not request.json or not 'surfaceNo' in request.json:
+        abort(400)
+    dict = json.loads(request.json)
+    dict['call'] = 'get_surface_real_width'
+    returnData = processor.processMessage(dict)
+    return returnData
+
+@app.route('/api/getSurfaceRealHeight', methods=['GET'])
+def getSurfaceRealHeight():
+    if not request.json or not 'surfaceNo' in request.json:
+        abort(400)
+    dict = json.loads(request.json)
+    dict['call'] = 'get_surface_real_height'
+    returnData = processor.processMessage(dict)
+    return returnData
+
+@app.route('/api/setSurfaceRealWidth', methods=['POST'])
+def setSurfaceRealWidth():
+    if not request.json or not 'surfaceNo' in request.json or not 'width' in request.json:
+        abort(400)
+    dict = json.loads(request.json)
+    dict['call'] = 'set_surface_real_width'
+    returnData = processor.processMessage(dict)
+    return returnData
+
+@app.route('/api/setSurfaceRealHeight', methods=['POST'])
+def setSurfaceRealHeight():
+    if not request.json or not 'surfaceNo' in request.json or not 'height' in request.json:
+        abort(400)
+    dict = json.loads(request.json)
+    dict['call'] = 'set_surface_real_height'
+    returnData = processor.processMessage(dict)
+    return returnData
+
 @app.route('/api/clearSurface', methods=['POST'])
 def clearSurface():
     if not request.json or not 'surfaceNo' in request.json:
@@ -400,7 +436,7 @@ def clearSurface():
 
 @app.route('/api/deleteLayout', methods=['POST'])
 def deleteLayout():
-    if not request.json or not 'layoutName' in request.json:
+    if not request.json or not 'name' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'delete_layout'
@@ -409,7 +445,7 @@ def deleteLayout():
 
 @app.route('/api/deleteImage', methods=['POST'])
 def deleteImage():
-    if not request.json or not 'fileName' in request.json:
+    if not request.json or not 'filename' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'delete_image'
@@ -769,7 +805,7 @@ def isCursorVisible():
 
 @app.route('/api/moveWindow', methods=['POST'])
 def moveWindow():
-    if not request.json or not 'windowNo' in request.json or not 'xDist' in request.json or not 'yDist' in request.json:
+    if not request.json or not 'windowNo' in request.json or not 'xDist' in request.json or not 'yDist' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'move_window'
@@ -778,7 +814,7 @@ def moveWindow():
 
 @app.route('/api/relocateWindow', methods=['POST'])
 def relocateWindow():
-    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'surfaceNo' in request.json:
+    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'surfaceNo' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'relocate_window'
@@ -787,7 +823,7 @@ def relocateWindow():
 
 @app.route('/api/setWindowHeight', methods=['POST'])
 def setWindowHeight():
-    if not request.json or not 'windowNo' in request.json or not 'height' in request.json:
+    if not request.json or not 'windowNo' in request.json or not 'height' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'set_window_height'
@@ -796,7 +832,7 @@ def setWindowHeight():
 
 @app.route('/api/setWindowWidth', methods=['POST'])
 def setWindowWidth():
-    if not request.json or not 'windowNo' in request.json or not 'width' in request.json:
+    if not request.json or not 'windowNo' in request.json or not 'width' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'set_window_width'
@@ -832,7 +868,7 @@ def getWindowWidth():
 
 @app.route('/api/stretchWindowDown', methods=['POST'])
 def stretchWindowDown():
-    if not request.json or not 'windowNo' in request.json or not 'distance' in request.json:
+    if not request.json or not 'windowNo' in request.json or not 'distance' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'stretch_window_down'
@@ -841,7 +877,7 @@ def stretchWindowDown():
 
 @app.route('/api/stretchWindowUp', methods=['POST'])
 def stretchWindowUp():
-    if not request.json or not 'windowNo' in request.json or not 'distance' in request.json:
+    if not request.json or not 'windowNo' in request.json or not 'distance' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'stretch_window_up'
@@ -850,7 +886,7 @@ def stretchWindowUp():
 
 @app.route('/api/stretchWindowLeft', methods=['POST'])
 def stretchWindowLeft():
-    if not request.json or not 'windowNo' in request.json or not 'distance' in request.json:
+    if not request.json or not 'windowNo' in request.json or not 'distance' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'stretch_window_left'
@@ -859,7 +895,7 @@ def stretchWindowLeft():
 
 @app.route('/api/stretchWindowRight', methods=['POST'])
 def stretchWindowRight():
-    if not request.json or not 'windowNo' in request.json or not 'distance' in request.json:
+    if not request.json or not 'windowNo' in request.json or not 'distance' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'stretch_window_right'
@@ -920,6 +956,15 @@ def setCircleLineColor():
     returnData = processor.processMessage(dict)
     return returnData
 
+@app.route('/api/setCircleLineWidth', methods=['POST'])
+def setCircleLineWidth():
+    if not request.json or not 'elementNo' in request.json or not 'width' in request.json:
+        abort(400)
+    dict = json.loads(request.json)
+    dict['call'] = 'set_circle_line_width'
+    returnData = processor.processMessage(dict)
+    return returnData
+
 @app.route('/api/setCircleFillColor', methods=['POST'])
 def setCircleFillColor():
     if not request.json or not 'elementNo' in request.json or not 'color' in request.json:
@@ -938,6 +983,15 @@ def getCircleLineColor():
     returnData = processor.processMessage(dict)
     return returnData
 
+@app.route('/api/getCircleLineWidth', methods=['GET'])
+def getCircleLineWidth():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    dict = json.loads(request.json)
+    dict['call'] = 'get_circle_line_width'
+    returnData = processor.processMessage(dict)
+    return returnData
+
 @app.route('/api/getCircleFillColor', methods=['GET'])
 def getCircleFillColor():
     if not request.json or not 'elementNo' in request.json:
@@ -949,7 +1003,7 @@ def getCircleFillColor():
 
 @app.route('/api/setCircleRadius', methods=['POST'])
 def setCircleRadius():
-    if not request.json or not 'elementNo' in request.json or not 'radius' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'radius' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'set_circle_radius'
@@ -1003,7 +1057,7 @@ def getLineEnd():
 
 @app.route('/api/setLineStart', methods=['POST'])
 def setLineStart():
-    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'relocate_line_start'
@@ -1012,7 +1066,7 @@ def setLineStart():
 
 @app.route('/api/setLineEnd', methods=['POST'])
 def setLineEnd():
-    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'relocate_line_end'
@@ -1057,7 +1111,7 @@ def getLineWidth():
 
 @app.route('/api/addLineStripPoint', methods=['POST'])
 def addLineStripPoint():
-    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'add_line_strip_point'
@@ -1066,7 +1120,7 @@ def addLineStripPoint():
 
 @app.route('/api/addLineStripPointAt', methods=['POST'])
 def addLineStripPointAt():
-    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'index' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'index' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'add_line_strip_point_at'
@@ -1084,7 +1138,7 @@ def getLineStripPoint():
 
 @app.route('/api/moveLineStripPoint', methods=['POST'])
 def moveLineStripPoint():
-    if not request.json or not 'elementNo' in request.json or not 'index' in request.json or not 'x' in request.json or not 'y' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'index' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'relocate_line_strip_point'
@@ -1147,7 +1201,7 @@ def setLineStripContent():
 
 @app.route('/api/addPolygonPoint', methods=['POST'])
 def addPolygonPoint():
-    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'add_polygon_point'
@@ -1165,7 +1219,7 @@ def getPolygonPoint():
 
 @app.route('/api/movePolygonPoint', methods=['POST'])
 def movePolygonPoint():
-    if not request.json or not 'elementNo' in request.json or not 'index' in request.json or not 'x' in request.json or not 'y' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'index' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'relocate_polygon_point'
@@ -1208,6 +1262,24 @@ def getPolygonLineColor():
     returnData = processor.processMessage(dict)
     return returnData
 
+@app.route('/api/setPolygonLineWidth', methods=['POST'])
+def setPolygonLineWidth():
+    if not request.json or not 'elementNo' in request.json or not 'width' in request.json:
+        abort(400)
+    dict = json.loads(request.json)
+    dict['call'] = 'set_polygon_line_width'
+    returnData = processor.processMessage(dict)
+    return returnData
+
+@app.route('/api/getPolygonLineWidth', methods=['GET'])
+def getPolygonLineWidth():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    dict = json.loads(request.json)
+    dict['call'] = 'get_polygon_line_width'
+    returnData = processor.processMessage(dict)
+    return returnData
+
 @app.route('/api/getPolygonPointCount', methods=['GET'])
 def getPolygonPointCount():
     if not request.json or not 'elementNo' in request.json:
@@ -1219,7 +1291,7 @@ def getPolygonPointCount():
 
 @app.route('/api/setRectangleTopLeft', methods=['POST'])
 def setRectangleTopLeft():
-    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'set_rectangle_top_left'
@@ -1264,7 +1336,7 @@ def getRectangleBottomLeft():
 
 @app.route('/api/setRectangleWidth', methods=['POST'])
 def setRectangleWidth():
-    if not request.json or not 'elementNo' in request.json or not 'width' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'width' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'set_rectangle_width'
@@ -1282,7 +1354,7 @@ def getRectangleWidth():
 
 @app.route('/api/setRectangleHeight', methods=['POST'])
 def setRectangleHeight():
-    if not request.json or not 'elementNo' in request.json or not 'height' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'height' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'set_rectangle_height'
@@ -1334,9 +1406,27 @@ def getRectangleLineColor():
     returnData = processor.processMessage(dict)
     return returnData
 
+@app.route('/api/setRectangleLineWidth', methods=['POST'])
+def setRectangleLineWidth():
+    if not request.json or not 'elementNo' in request.json or not 'width' in request.json:
+        abort(400)
+    dict = json.loads(request.json)
+    dict['call'] = 'set_rectangle_line_width'
+    returnData = processor.processMessage(dict)
+    return returnData
+
+@app.route('/api/getRectangleLineWidth', methods=['GET'])
+def getRectangleLineWidth():
+    if not request.json or not 'elementNo' in request.json:
+        abort(400)
+    dict = json.loads(request.json)
+    dict['call'] = 'get_rectangle_line_width'
+    returnData = processor.processMessage(dict)
+    return returnData
+
 @app.route('/api/setTexRectangleTopLeft', methods=['POST'])
 def setTexRectangleTopLeft():
-    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'set_texrectangle_top_left'
@@ -1405,7 +1495,7 @@ def getTexRectangleTexture():
 
 @app.route('/api/setTexRectangleWidth', methods=['POST'])
 def setTexRectangleWidth():
-    if not request.json or not 'elementNo' in request.json or not 'width' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'width' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'set_textrectangle_width'
@@ -1423,7 +1513,7 @@ def getTexRectangleWidth():
 
 @app.route('/api/setTexRectangleHeight', methods=['POST'])
 def setTexRectangleHeight():
-    if not request.json or not 'elementNo' in request.json or not 'height' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'height' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'set_texrectangle_height'
@@ -1459,7 +1549,7 @@ def getText():
 
 @app.route('/api/setTextPosition', methods=['POST'])
 def setTextPosition():
-    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'windowNo' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'windowNo' in request.json:
         abort(400)
     dict = json.loads(request.json)
     dict['call'] = 'relocate_text'
