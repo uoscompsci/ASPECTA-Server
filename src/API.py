@@ -49,6 +49,7 @@ class apiMessageParser:
     elementBuffer = {}
     textureBuffer = {}
     looping = True
+    windowTextures = {}
     
     fonts = {"Times New Roman" : "FreeSerif",
          "Free Serif" : "FreeSerif",
@@ -1287,6 +1288,38 @@ class apiMessageParser:
         self.resize((self.winWidth, self.winHeight))#glViewport(0,0,self.winWidth,self.winHeight)
         return (rendertarget,fbo)
     
+    def createWindowTexture(self,windowNo, GUI):
+        width = GUI.getWindowWidth(windowNo)
+        height = GUI.getWindowHeight(windowNo)
+        glMatrixMode(GL_PROJECTION)
+        glLoadIdentity()
+        gluOrtho2D(0,width,0,height)
+        glMatrixMode(GL_MODELVIEW)
+        rendertarget = glGenTextures(1)
+        glBindTexture(GL_TEXTURE_2D, rendertarget);
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE)
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
+                     GL_UNSIGNED_INT, None)
+        fbo = c_uint(1)
+        glGenFramebuffers(1)
+        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo)
+        glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,
+                                  GL_TEXTURE_2D, rendertarget, 0)
+        glPushAttrib(GL_VIEWPORT_BIT)
+        glViewport(0, 0, width, height)
+        
+        self.renderWindowContents(windowNo, GUI)
+        
+        glPopAttrib()
+        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0)
+        glEnable(GL_TEXTURE_2D)
+        #self.resize((self.winWidth, self.winHeight))#glViewport(0,0,self.winWidth,self.winHeight)
+        return (rendertarget,fbo)
+    
     def renderSurfaceTex(self, surfaceNo):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         windows = self.GUI.getWindows(surfaceNo) #Gathers the list of windows on the surface
@@ -1297,7 +1330,27 @@ class apiMessageParser:
         glEnable(GL_LINE_SMOOTH)
         glEnable(GL_POINT_SMOOTH)
         for x in range(0,len(windows)):
-            self.renderWindowContents(windows[x], self.GUI)
+            loc = self.GUI.getWindowPos(windows[x])
+            #self.renderWindowContents(windows[x], self.GUI)
+            (rendertarget,fbo) = self.windowTextures[x]
+            glEnable(GL_TEXTURE_2D)
+            glBindTexture(GL_TEXTURE_2D, rendertarget)
+            width = self.GUI.getWindowWidth(windows[x])
+            height = self.GUI.getWindowHeight(windows[x])
+            glBegin(GL_QUADS)
+            glTexCoord2f(0,1)
+            glVertex2f(loc[0],loc[1])
+            glTexCoord2f(0,0)
+            glVertex2f(loc[0],loc[1]-height)
+            glTexCoord2f(1,0)
+            glVertex2f(loc[0]+width,loc[1]-height)
+            glTexCoord2f(1,1)
+            glVertex2f(loc[0]+width,loc[1])
+            glEnd()
+            glDisable(GL_TEXTURE_2D)
+            
+            glDeleteTextures(rendertarget)
+            glDeleteFramebuffers(1, fbo)
         cursors = self.GUI.getCursors(surfaceNo) #Gathers the list of cursors on the setup surface
         '''test = self.GUI.testForConnection(surfaceNo,"left")
         if (test[1] != "None"):
@@ -1332,6 +1385,12 @@ class apiMessageParser:
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         
         glPushMatrix()
+        
+        #insert window texture creation
+        windows = self.GUI.getWindows(surfaceNo) #Gathers the list of windows on the surface
+        self.windowTextures = {}
+        for x in range(0,len(windows)):
+            self.windowTextures[x] = self.createWindowTexture(windows[x], self.GUI)
         
         (rendertarget,fbo) = self.createTexture(width,height,surfaceNo)
         
