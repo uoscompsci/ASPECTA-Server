@@ -1348,36 +1348,17 @@ class apiMessageParser:
             glVertex2f(loc[0]+width,loc[1])
             glEnd()
             glDisable(GL_TEXTURE_2D)
-            
-            glDeleteTextures(rendertarget)
-            glDeleteFramebuffers(1, fbo)
         cursors = self.GUI.getCursors(surfaceNo) #Gathers the list of cursors on the setup surface
-        '''test = self.GUI.testForConnection(surfaceNo,"left")
-        if (test[1] != "None"):
-            self.drawPartialCursors(test[0],test[1],surfaceNo,"left")
-        test = self.GUI.testForConnection(surfaceNo,"right")
-        if (test[1] != "None"):
-            self.drawPartialCursors(test[0],test[1],surfaceNo,"right")
-        test = self.GUI.testForConnection(surfaceNo,"top")
-        if (test[1] != "None"):
-            self.drawPartialCursors(test[0],test[1],surfaceNo,"top")
-        test = self.GUI.testForConnection(surfaceNo,"bottom")
-        if (test[1] != "None"):
-            self.drawPartialCursors(test[0],test[1],surfaceNo,"bottom")'''
         
-        #Loops through all the cursors on the setup surface
+        #Loops through all the cursors on the surface
         for z in range(0,len(cursors)):
             if(self.GUI.isCursorVisible(cursors[z])):
                 position = self.GUI.getCursorPos(cursors[z]) #Gets the position of the current cursor
                 rotation = self.GUI.getCursorRotation(cursors[z]) #Gets the rotation of the current cursor
                 self.drawCursor(position[0],position[1],rotation,False,"default") #Draws the cursor at the correct position with the correct rotation
-            
-    '''def drawPartialCursors(self, fromSurf, inSide, toSurf, outSide):
-        cursors = self.GUI.getCursors(fromSurf)
-        for z in range(0,len(cursors)):
-            position = self.GUI.getCursorPos(cursors[z])
-            rotation = self.GUI.getCursorRotation(cursors[z])
-            self.drawCursor(position[0],position[1],rotation,False)'''
+        for x in range(0,len(windows)):
+            glDeleteTextures(rendertarget)
+            glDeleteFramebuffers(1, fbo)
         
     def drawMesh(self, surfaceNo, rotation, mirrored, width, height):
         glDisable(GL_LIGHTING)
@@ -1478,7 +1459,6 @@ class apiMessageParser:
         glPushMatrix()
         
         glColor4f(float(color[0]), float(color[1]), float(color[2]), float(color[3]))
-        #glLineWidth(5.0)
         
         self.elementBuffer[elementNo][0].bind_vertexes(2,GL_FLOAT)
         glEnableClientState(GL_VERTEX_ARRAY)
