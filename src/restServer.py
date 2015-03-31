@@ -44,7 +44,8 @@ def newSurface():
 def newSurfaceWithID():
     if not request.json or not 'ID' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'new_surface_with_ID'
     returnData = processor.processMessage(dict)
     return returnData
@@ -53,7 +54,8 @@ def newSurfaceWithID():
 def newCursor():
     if not request.json or not 'surfaceNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'new_cursor'
     returnData = processor.processMessage(dict)
     return returnData
@@ -62,7 +64,8 @@ def newCursor():
 def newCursorWithID():
     if not request.json or not 'ID' in request.json or not 'surfaceNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'new_cursor_with_ID'
     returnData = processor.processMessage(dict)
     return returnData
@@ -71,16 +74,19 @@ def newCursorWithID():
 def newWindow():
     if not request.json or not 'surfaceNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'name' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'new_window'
     returnData = processor.processMessage(dict)
+    print str(returnData)
     return returnData
 
 @app.route('/api/newWindowWithID', methods=['POST'])
 def newWindowWithID():
     if not request.json or not 'ID' in request.json or not 'surfaceNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'name' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'new_window_with_ID'
     returnData = processor.processMessage(dict)
     return returnData
@@ -89,7 +95,8 @@ def newWindowWithID():
 def newCircle():
     if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'radius' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json or not 'sides' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'new_circle'
     returnData = processor.processMessage(dict)
     return returnData
@@ -98,7 +105,8 @@ def newCircle():
 def newCircleWithID():
     if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'radius' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json or not 'sides' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'new_circle_with_ID'
     returnData = processor.processMessage(dict)
     return returnData
@@ -107,7 +115,8 @@ def newCircleWithID():
 def newLine():
     if not request.json or not 'windowNo' in request.json or not 'xStart' in request.json or not 'yStart' in request.json or not 'xEnd' in request.json or not 'yEnd' in request.json or not 'coorSys' in request.json or not 'color' in request.json or not 'width' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'new_line'
     returnData = processor.processMessage(dict)
     return returnData
@@ -116,7 +125,8 @@ def newLine():
 def newLineWithID():
     if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'xStart' in request.json or not 'yStart' in request.json or not 'xEnd' in request.json or not 'yEnd' in request.json or not 'coorSys' in request.json or not 'color' in request.json or not 'width' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'new_line_with_ID'
     returnData = processor.processMessage(dict)
     return returnData
@@ -125,7 +135,8 @@ def newLineWithID():
 def newLineStrip():
     if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'color' in request.json or not 'width' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'new_line_strip'
     returnData = processor.processMessage(dict)
     return returnData
@@ -134,7 +145,8 @@ def newLineStrip():
 def newLineStripWithID():
     if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'color' in request.json or not 'width' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'new_line_strip_with_ID'
     returnData = processor.processMessage(dict)
     return returnData
@@ -143,7 +155,8 @@ def newLineStripWithID():
 def newPolygon():
     if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'new_polygon'
     returnData = processor.processMessage(dict)
     return returnData
@@ -152,7 +165,8 @@ def newPolygon():
 def newPolygonWithID():
     if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'new_polygon_with_ID'
     returnData = processor.processMessage(dict)
     return returnData
@@ -161,7 +175,8 @@ def newPolygonWithID():
 def newRectangle():
     if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'new_rectangle'
     returnData = processor.processMessage(dict)
     return returnData
@@ -170,7 +185,8 @@ def newRectangle():
 def newRectangleWithID():
     if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'new_rectangle_with_ID'
     returnData = processor.processMessage(dict)
     return returnData
@@ -184,7 +200,8 @@ def newTexRectangle():
     g = open("images/" + str(counter) + "-rest." + str(request.json['extension']), "w")
     g.write(base64.decodestring(str(request.json['textureData'])))
     g.close()
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'new_texrectangle'
     dict['imageID'] = counter
     returnData = processor.processMessage(dict)
@@ -199,7 +216,8 @@ def newTexRectangleWithID():
     g = open("images/" + str(counter) + "." + str(request.json['extension']), "w")
     g.write(base64.decodestring(str(request.json['textureData'])))
     g.close()
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'new_line_with_ID'
     dict['imageID'] = counter
     returnData = processor.processMessage(dict)
@@ -210,7 +228,8 @@ def newTexRectangleWithID():
 def newText():
     if not request.json or not 'windowNo' in request.json or not 'text' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'ptSize' in request.json or not 'font' in request.json or not 'color' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'new_text'
     returnData = processor.processMessage(dict)
     return returnData
@@ -219,7 +238,8 @@ def newText():
 def newTextWithID():
     if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'text' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'ptSize' in request.json or not 'font' in request.json or not 'color' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'new_text_with_ID'
     returnData = processor.processMessage(dict)
     return returnData
@@ -228,7 +248,8 @@ def newTextWithID():
 def getSurfaceID():
     if not request.json or not 'surfaceNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_surface_ID'
     returnData = processor.processMessage(dict)
     return returnData
@@ -237,7 +258,8 @@ def getSurfaceID():
 def setSurfaceID():
     if not request.json or not 'surfaceNo' in request.json or not 'ID' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_surface_ID'
     returnData = processor.processMessage(dict)
     return returnData
@@ -246,7 +268,8 @@ def setSurfaceID():
 def getSurfaceOwner():
     if not request.json or not 'surfaceNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_surface_owner'
     returnData = processor.processMessage(dict)
     return returnData
@@ -255,7 +278,8 @@ def getSurfaceOwner():
 def getSurfaceAppDetails():
     if not request.json or not 'surfaceNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_surface_app_details'
     returnData = processor.processMessage(dict)
     return returnData
@@ -264,7 +288,8 @@ def getSurfaceAppDetails():
 def getSurfacesByID():
     if not request.json or not 'ID' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_surfaces_by_ID'
     returnData = processor.processMessage(dict)
     return returnData
@@ -273,7 +298,8 @@ def getSurfacesByID():
 def getSurfacesByOwner():
     if not request.json or not 'owner' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_surfaces_by_owner'
     returnData = processor.processMessage(dict)
     return returnData
@@ -282,7 +308,8 @@ def getSurfacesByOwner():
 def getSurfacesByAppName():
     if not request.json or not 'name' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_surfaces_by_app_name'
     returnData = processor.processMessage(dict)
     return returnData
@@ -291,7 +318,8 @@ def getSurfacesByAppName():
 def getSurfacesByAppDetails():
     if not request.json or not 'name' in request.json or not 'number' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_surfaces_by_app_details'
     returnData = processor.processMessage(dict)
     return returnData
@@ -300,7 +328,8 @@ def getSurfacesByAppDetails():
 def setSurfaceEdges():
     if not request.json or not 'surfaceNo' in request.json or not 'topString' in request.json or not 'bottomString' in request.json or not 'leftString' in request.json or not 'rightString' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_surface_edges'
     returnData = processor.processMessage(dict)
     return returnData
@@ -309,7 +338,8 @@ def setSurfaceEdges():
 def undefineSurface():
     if not request.json or not 'surfaceNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'undefine_surface'
     returnData = processor.processMessage(dict)
     return returnData
@@ -318,7 +348,8 @@ def undefineSurface():
 def saveDefinedSurfaces():
     if not request.json or not 'fileName' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'save_defined_surfaces'
     returnData = processor.processMessage(dict)
     return returnData
@@ -327,7 +358,8 @@ def saveDefinedSurfaces():
 def loadDefinedSurfaces():
     if not request.json or not 'fileName' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'load_defined_surfaces'
     returnData = processor.processMessage(dict)
     return returnData
@@ -348,7 +380,8 @@ def getSavedImages():
 def setUploadName():
     if not request.json or not 'fileName' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_upload_name'
     returnData = processor.processMessage(dict)
     return returnData
@@ -357,7 +390,8 @@ def setUploadName():
 def getSurfacePixelWidth():
     if not request.json or not 'surfaceNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_surface_pixel_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -366,7 +400,8 @@ def getSurfacePixelWidth():
 def getSurfacePixelHeight():
     if not request.json or not 'surfaceNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_surface_pixel_height'
     returnData = processor.processMessage(dict)
     return returnData
@@ -375,7 +410,8 @@ def getSurfacePixelHeight():
 def setSurfacePixelWidth():
     if not request.json or not 'surfaceNo' in request.json or not 'width' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_surface_pixel_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -384,7 +420,8 @@ def setSurfacePixelWidth():
 def setSurfacePixelHeight():
     if not request.json or not 'surfaceNo' in request.json or not 'height' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_surface_pixel_height'
     returnData = processor.processMessage(dict)
     return returnData
@@ -393,7 +430,8 @@ def setSurfacePixelHeight():
 def getSurfaceRealWidth():
     if not request.json or not 'surfaceNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_surface_real_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -402,7 +440,8 @@ def getSurfaceRealWidth():
 def getSurfaceRealHeight():
     if not request.json or not 'surfaceNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_surface_real_height'
     returnData = processor.processMessage(dict)
     return returnData
@@ -411,7 +450,8 @@ def getSurfaceRealHeight():
 def setSurfaceRealWidth():
     if not request.json or not 'surfaceNo' in request.json or not 'width' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_surface_real_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -420,7 +460,8 @@ def setSurfaceRealWidth():
 def setSurfaceRealHeight():
     if not request.json or not 'surfaceNo' in request.json or not 'height' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_surface_real_height'
     returnData = processor.processMessage(dict)
     return returnData
@@ -429,7 +470,8 @@ def setSurfaceRealHeight():
 def clearSurface():
     if not request.json or not 'surfaceNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'clear_surface'
     returnData = processor.processMessage(dict)
     return returnData
@@ -438,7 +480,8 @@ def clearSurface():
 def deleteLayout():
     if not request.json or not 'name' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'delete_layout'
     returnData = processor.processMessage(dict)
     return returnData
@@ -447,7 +490,8 @@ def deleteLayout():
 def deleteImage():
     if not request.json or not 'filename' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'delete_image'
     returnData = processor.processMessage(dict)
     return returnData
@@ -456,7 +500,8 @@ def deleteImage():
 def rotateSurfaceTo0():
     if not request.json or not 'surfaceNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'rotate_surface_to_0'
     returnData = processor.processMessage(dict)
     return returnData
@@ -465,7 +510,8 @@ def rotateSurfaceTo0():
 def rotateSurfaceTo90():
     if not request.json or not 'surfaceNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'rotate_surface_to_90'
     returnData = processor.processMessage(dict)
     return returnData
@@ -474,7 +520,8 @@ def rotateSurfaceTo90():
 def rotateSurfaceTo180():
     if not request.json or not 'surfaceNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'rotate_surface_to_180'
     returnData = processor.processMessage(dict)
     return returnData
@@ -483,7 +530,8 @@ def rotateSurfaceTo180():
 def rotateSurfaceTo270():
     if not request.json or not 'surfaceNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'rotate_surface_to_270'
     returnData = processor.processMessage(dict)
     return returnData
@@ -492,7 +540,8 @@ def rotateSurfaceTo270():
 def mirrorSurface():
     if not request.json or not 'surfaceNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'mirror_surface'
     returnData = processor.processMessage(dict)
     return returnData
@@ -501,7 +550,8 @@ def mirrorSurface():
 def connectSurfaces():
     if not request.json or not 'surfaceNo1' in request.json or not 'side1' in request.json or not 'surfaceNo2' in request.json or not 'side2' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'connect_surfaces'
     returnData = processor.processMessage(dict)
     return returnData
@@ -510,7 +560,8 @@ def connectSurfaces():
 def disconnectSurfaces():
     if not request.json or not 'surfaceNo1' in request.json or not 'side1' in request.json or not 'surfaceNo2' in request.json or not 'side2' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'disconnect_surfaces'
     returnData = processor.processMessage(dict)
     return returnData
@@ -519,7 +570,8 @@ def disconnectSurfaces():
 def getWindowID():
     if not request.json or not 'windowNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_window_ID'
     returnData = processor.processMessage(dict)
     return returnData
@@ -528,7 +580,8 @@ def getWindowID():
 def setWindowID():
     if not request.json or not 'windowNo' in request.json or not 'ID' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_window_ID'
     returnData = processor.processMessage(dict)
     return returnData
@@ -537,7 +590,8 @@ def setWindowID():
 def getWindowOwner():
     if not request.json or not 'windowNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_window_owner'
     returnData = processor.processMessage(dict)
     return returnData
@@ -546,7 +600,8 @@ def getWindowOwner():
 def getWindowAppDetails():
     if not request.json or not 'windowNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_window_app_details'
     returnData = processor.processMessage(dict)
     return returnData
@@ -555,7 +610,8 @@ def getWindowAppDetails():
 def getWindowsByID():
     if not request.json or not 'ID' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_windows_by_ID'
     returnData = processor.processMessage(dict)
     return returnData
@@ -564,7 +620,8 @@ def getWindowsByID():
 def getWindowsByOwner():
     if not request.json or not 'owner' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_windows_by_owner'
     returnData = processor.processMessage(dict)
     return returnData
@@ -573,7 +630,8 @@ def getWindowsByOwner():
 def getWindowsByAppName():
     if not request.json or not 'name' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_windows_by_app_name'
     returnData = processor.processMessage(dict)
     return returnData
@@ -582,7 +640,8 @@ def getWindowsByAppName():
 def getWindowsByAppDetails():
     if not request.json or not 'name' in request.json or not 'number' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_windows_by_app_details'
     returnData = processor.processMessage(dict)
     return returnData
@@ -591,7 +650,8 @@ def getWindowsByAppDetails():
 def getElementID():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_element_ID'
     returnData = processor.processMessage(dict)
     return returnData
@@ -600,7 +660,8 @@ def getElementID():
 def setElementID():
     if not request.json or not 'elementNo' in request.json or not 'ID' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_element_ID'
     returnData = processor.processMessage(dict)
     return returnData
@@ -609,7 +670,8 @@ def setElementID():
 def getElementOwner():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_element_owner'
     returnData = processor.processMessage(dict)
     return returnData
@@ -618,7 +680,8 @@ def getElementOwner():
 def getElementAppDetails():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_element_app_details'
     returnData = processor.processMessage(dict)
     return returnData
@@ -627,7 +690,8 @@ def getElementAppDetails():
 def getElementsByID():
     if not request.json or not 'ID' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_elements_by_ID'
     returnData = processor.processMessage(dict)
     return returnData
@@ -636,7 +700,8 @@ def getElementsByID():
 def getElementsByOwner():
     if not request.json or not 'owner' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_elements_by_owner'
     returnData = processor.processMessage(dict)
     return returnData
@@ -645,7 +710,8 @@ def getElementsByOwner():
 def getElementsByAppName():
     if not request.json or not 'name' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_elements_by_app_name'
     returnData = processor.processMessage(dict)
     return returnData
@@ -654,7 +720,8 @@ def getElementsByAppName():
 def getElementsByAppDetails():
     if not request.json or not 'name' in request.json or not 'number' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_elements_by_app_details'
     returnData = processor.processMessage(dict)
     return returnData
@@ -663,7 +730,8 @@ def getElementsByAppDetails():
 def getElementsOnWindow():
     if not request.json or not 'windowNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_elements_on_window'
     returnData = processor.processMessage(dict)
     return returnData
@@ -672,7 +740,8 @@ def getElementsOnWindow():
 def moveCursor():
     if not request.json or not 'cursorNo' in request.json or not 'xDist' in request.json or not 'yDist' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'move_cursor'
     returnData = processor.processMessage(dict)
     return returnData
@@ -681,7 +750,8 @@ def moveCursor():
 def testMoveCursor():
     if not request.json or not 'cursorNo' in request.json or not 'xDist' in request.json or not 'yDist' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'test_move_cursor'
     returnData = processor.processMessage(dict)
     return returnData
@@ -690,7 +760,8 @@ def testMoveCursor():
 def relocateCursor():
     if not request.json or not 'cursorNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'surfaceNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'relocate_cursor'
     returnData = processor.processMessage(dict)
     return returnData
@@ -699,7 +770,8 @@ def relocateCursor():
 def getCursorPosition():
     if not request.json or not 'cursorNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_cursor_pos'
     returnData = processor.processMessage(dict)
     return returnData
@@ -708,7 +780,8 @@ def getCursorPosition():
 def rotateCursorClockwise():
     if not request.json or not 'cursorNo' in request.json or not 'degrees' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'rotate_cursor_clockwise'
     returnData = processor.processMessage(dict)
     return returnData
@@ -717,7 +790,8 @@ def rotateCursorClockwise():
 def rotateCursorAnticlockwise():
     if not request.json or not 'cursorNo' in request.json or not 'degrees' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'rotate_cursor_anticlockwise'
     returnData = processor.processMessage(dict)
     return returnData
@@ -726,7 +800,8 @@ def rotateCursorAnticlockwise():
 def getCursorRotation():
     if not request.json or not 'cursorNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_cursor_rotation'
     returnData = processor.processMessage(dict)
     return returnData
@@ -735,7 +810,8 @@ def getCursorRotation():
 def getCursorMode():
     if not request.json or not 'cursorNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_cursor_mode'
     returnData = processor.processMessage(dict)
     return returnData
@@ -744,7 +820,8 @@ def getCursorMode():
 def setCursorDefaultMode():
     if not request.json or not 'cursorNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_cursor_default_mode'
     returnData = processor.processMessage(dict)
     return returnData
@@ -753,7 +830,8 @@ def setCursorDefaultMode():
 def setCursorWallMode():
     if not request.json or not 'cursorNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_cursor_wall_mode'
     returnData = processor.processMessage(dict)
     return returnData
@@ -762,7 +840,8 @@ def setCursorWallMode():
 def setCursorBlockMode():
     if not request.json or not 'cursorNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_cursor_block_mode'
     returnData = processor.processMessage(dict)
     return returnData
@@ -771,7 +850,8 @@ def setCursorBlockMode():
 def setCursorScreenMode():
     if not request.json or not 'cursorNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_cursor_screen_mode'
     returnData = processor.processMessage(dict)
     return returnData
@@ -780,7 +860,8 @@ def setCursorScreenMode():
 def showCursor():
     if not request.json or not 'cursorNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'show_cursor'
     returnData = processor.processMessage(dict)
     return returnData
@@ -789,7 +870,8 @@ def showCursor():
 def hideCursor():
     if not request.json or not 'cursorNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'hide_cursor'
     returnData = processor.processMessage(dict)
     return returnData
@@ -798,7 +880,8 @@ def hideCursor():
 def isCursorVisible():
     if not request.json or not 'cursorNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'is_cursor_visible'
     returnData = processor.processMessage(dict)
     return returnData
@@ -807,7 +890,8 @@ def isCursorVisible():
 def moveWindow():
     if not request.json or not 'windowNo' in request.json or not 'xDist' in request.json or not 'yDist' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'move_window'
     returnData = processor.processMessage(dict)
     return returnData
@@ -816,7 +900,8 @@ def moveWindow():
 def relocateWindow():
     if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'surfaceNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'relocate_window'
     returnData = processor.processMessage(dict)
     return returnData
@@ -825,7 +910,8 @@ def relocateWindow():
 def setWindowHeight():
     if not request.json or not 'windowNo' in request.json or not 'height' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_window_height'
     returnData = processor.processMessage(dict)
     return returnData
@@ -834,7 +920,8 @@ def setWindowHeight():
 def setWindowWidth():
     if not request.json or not 'windowNo' in request.json or not 'width' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_window_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -843,7 +930,8 @@ def setWindowWidth():
 def getWindowPosition():
     if not request.json or not 'windowNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_window_pos'
     returnData = processor.processMessage(dict)
     return returnData
@@ -852,7 +940,8 @@ def getWindowPosition():
 def getWindowHeight():
     if not request.json or not 'windowNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_window_height'
     returnData = processor.processMessage(dict)
     return returnData
@@ -861,7 +950,8 @@ def getWindowHeight():
 def getWindowWidth():
     if not request.json or not 'windowNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_window_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -870,7 +960,8 @@ def getWindowWidth():
 def stretchWindowDown():
     if not request.json or not 'windowNo' in request.json or not 'distance' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'stretch_window_down'
     returnData = processor.processMessage(dict)
     return returnData
@@ -879,7 +970,8 @@ def stretchWindowDown():
 def stretchWindowUp():
     if not request.json or not 'windowNo' in request.json or not 'distance' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'stretch_window_up'
     returnData = processor.processMessage(dict)
     return returnData
@@ -888,7 +980,8 @@ def stretchWindowUp():
 def stretchWindowLeft():
     if not request.json or not 'windowNo' in request.json or not 'distance' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'stretch_window_left'
     returnData = processor.processMessage(dict)
     return returnData
@@ -897,7 +990,8 @@ def stretchWindowLeft():
 def stretchWindowRight():
     if not request.json or not 'windowNo' in request.json or not 'distance' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'stretch_window_right'
     returnData = processor.processMessage(dict)
     return returnData
@@ -906,7 +1000,8 @@ def stretchWindowRight():
 def setWindowName():
     if not request.json or not 'windowNo' in request.json or not 'name' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_window_name'
     returnData = processor.processMessage(dict)
     return returnData
@@ -915,7 +1010,8 @@ def setWindowName():
 def getWindowName():
     if not request.json or not 'windowNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_window_name'
     returnData = processor.processMessage(dict)
     return returnData
@@ -924,7 +1020,8 @@ def getWindowName():
 def relocateCircle():
     if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'relocate_circle'
     returnData = processor.processMessage(dict)
     return returnData
@@ -933,7 +1030,8 @@ def relocateCircle():
 def getCirclePosition():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_circle_pos'
     returnData = processor.processMessage(dict)
     return returnData
@@ -942,7 +1040,8 @@ def getCirclePosition():
 def getElementType():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_element_type'
     returnData = processor.processMessage(dict)
     return returnData
@@ -951,7 +1050,8 @@ def getElementType():
 def setCircleLineColor():
     if not request.json or not 'elementNo' in request.json or not 'color' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_circle_line_color'
     returnData = processor.processMessage(dict)
     return returnData
@@ -960,7 +1060,8 @@ def setCircleLineColor():
 def setCircleLineWidth():
     if not request.json or not 'elementNo' in request.json or not 'width' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_circle_line_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -969,7 +1070,8 @@ def setCircleLineWidth():
 def setCircleFillColor():
     if not request.json or not 'elementNo' in request.json or not 'color' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_circle_fill_color'
     returnData = processor.processMessage(dict)
     return returnData
@@ -978,7 +1080,8 @@ def setCircleFillColor():
 def getCircleLineColor():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_circle_line_color'
     returnData = processor.processMessage(dict)
     return returnData
@@ -987,7 +1090,8 @@ def getCircleLineColor():
 def getCircleLineWidth():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_circle_line_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -996,7 +1100,8 @@ def getCircleLineWidth():
 def getCircleFillColor():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_circle_fill_color'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1005,7 +1110,8 @@ def getCircleFillColor():
 def setCircleRadius():
     if not request.json or not 'elementNo' in request.json or not 'radius' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_circle_radius'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1014,7 +1120,8 @@ def setCircleRadius():
 def getCircleRadius():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_circle_radius'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1023,7 +1130,8 @@ def getCircleRadius():
 def setCircleSides():
     if not request.json or not 'elementNo' in request.json or not 'sides' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_circle_sides'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1032,7 +1140,8 @@ def setCircleSides():
 def getCircleSides():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_circle_sides'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1041,7 +1150,8 @@ def getCircleSides():
 def getLineStart():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_line_start'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1050,7 +1160,8 @@ def getLineStart():
 def getLineEnd():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_line_end'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1059,7 +1170,8 @@ def getLineEnd():
 def setLineStart():
     if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'relocate_line_start'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1068,7 +1180,8 @@ def setLineStart():
 def setLineEnd():
     if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'relocate_line_end'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1077,7 +1190,8 @@ def setLineEnd():
 def setLineColor():
     if not request.json or not 'elementNo' in request.json or not 'color' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set line_color'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1086,7 +1200,8 @@ def setLineColor():
 def getLineColor():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_line_color'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1095,7 +1210,8 @@ def getLineColor():
 def setLineWidth():
     if not request.json or not 'elementNo' in request.json or not 'width' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_line_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1104,7 +1220,8 @@ def setLineWidth():
 def getLineWidth():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_line_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1113,7 +1230,8 @@ def getLineWidth():
 def addLineStripPoint():
     if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'add_line_strip_point'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1122,7 +1240,8 @@ def addLineStripPoint():
 def addLineStripPointAt():
     if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'index' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'add_line_strip_point_at'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1131,7 +1250,8 @@ def addLineStripPointAt():
 def getLineStripPoint():
     if not request.json or not 'elementNo' in request.json or not 'index' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_line_strip_point'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1140,7 +1260,8 @@ def getLineStripPoint():
 def moveLineStripPoint():
     if not request.json or not 'elementNo' in request.json or not 'index' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'relocate_line_strip_point'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1149,7 +1270,8 @@ def moveLineStripPoint():
 def setLineStripColor():
     if not request.json or not 'elementNo' in request.json or not 'color' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_line_strip_color'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1158,7 +1280,8 @@ def setLineStripColor():
 def getLineStripColor():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_line_strip_color'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1167,7 +1290,8 @@ def getLineStripColor():
 def setLineStripWidth():
     if not request.json or not 'elementNo' in request.json or not 'width' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_line_strip_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1176,7 +1300,8 @@ def setLineStripWidth():
 def getLineStripWidth():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_line_strip_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1185,7 +1310,8 @@ def getLineStripWidth():
 def getLineStripPointCount():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_line_strip_point_count'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1194,7 +1320,8 @@ def getLineStripPointCount():
 def setLineStripContent():
     if not request.json or not 'elementNo' in request.json or not 'content' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_line_strip_content'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1203,7 +1330,8 @@ def setLineStripContent():
 def addPolygonPoint():
     if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'add_polygon_point'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1212,7 +1340,8 @@ def addPolygonPoint():
 def getPolygonPoint():
     if not request.json or not 'elementNo' in request.json or not 'index' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_polygon_point'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1221,7 +1350,8 @@ def getPolygonPoint():
 def movePolygonPoint():
     if not request.json or not 'elementNo' in request.json or not 'index' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'relocate_polygon_point'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1230,7 +1360,8 @@ def movePolygonPoint():
 def setPolygonFillColor():
     if not request.json or not 'elementNo' in request.json or not 'color' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_polygon_fill_color'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1239,7 +1370,8 @@ def setPolygonFillColor():
 def getPolygonFillColor():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_polygon_fill_color'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1248,7 +1380,8 @@ def getPolygonFillColor():
 def setPolygonLineColor():
     if not request.json or not 'elementNo' in request.json or not 'color' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_polygon_line_color'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1257,7 +1390,8 @@ def setPolygonLineColor():
 def getPolygonLineColor():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_polygon_line_color'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1266,7 +1400,8 @@ def getPolygonLineColor():
 def setPolygonLineWidth():
     if not request.json or not 'elementNo' in request.json or not 'width' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_polygon_line_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1275,7 +1410,8 @@ def setPolygonLineWidth():
 def getPolygonLineWidth():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_polygon_line_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1284,7 +1420,8 @@ def getPolygonLineWidth():
 def getPolygonPointCount():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_polygon_point_count'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1293,7 +1430,8 @@ def getPolygonPointCount():
 def setRectangleTopLeft():
     if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_rectangle_top_left'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1302,7 +1440,8 @@ def setRectangleTopLeft():
 def getRectangleTopLeft():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_rectangle_top_left'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1311,7 +1450,8 @@ def getRectangleTopLeft():
 def getRectangleTopRight():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_rectangle_top_right'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1320,7 +1460,8 @@ def getRectangleTopRight():
 def getRectangleBottomRight():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_rectangle_bottom_right'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1329,7 +1470,8 @@ def getRectangleBottomRight():
 def getRectangleBottomLeft():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_rectangle_bottom_left'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1338,7 +1480,8 @@ def getRectangleBottomLeft():
 def setRectangleWidth():
     if not request.json or not 'elementNo' in request.json or not 'width' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_rectangle_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1347,7 +1490,8 @@ def setRectangleWidth():
 def getRectangleWidth():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_rectangle_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1356,7 +1500,8 @@ def getRectangleWidth():
 def setRectangleHeight():
     if not request.json or not 'elementNo' in request.json or not 'height' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_rectangle_height'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1365,7 +1510,8 @@ def setRectangleHeight():
 def getRectangleHeight():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_rectangle_height'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1374,7 +1520,8 @@ def getRectangleHeight():
 def setRectangleFillColor():
     if not request.json or not 'elementNo' in request.json or not 'color' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_rectangle_fill_color'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1383,7 +1530,8 @@ def setRectangleFillColor():
 def getRectangleFillColor():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_rectangle_fill_color'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1392,7 +1540,8 @@ def getRectangleFillColor():
 def setRectangleLineColor():
     if not request.json or not 'elementNo' in request.json or not 'color' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_rectangle_line_color'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1401,7 +1550,8 @@ def setRectangleLineColor():
 def getRectangleLineColor():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_rectangle_line_color'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1410,7 +1560,8 @@ def getRectangleLineColor():
 def setRectangleLineWidth():
     if not request.json or not 'elementNo' in request.json or not 'width' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_rectangle_line_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1419,7 +1570,8 @@ def setRectangleLineWidth():
 def getRectangleLineWidth():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_rectangle_line_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1428,7 +1580,8 @@ def getRectangleLineWidth():
 def setTexRectangleTopLeft():
     if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_texrectangle_top_left'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1437,7 +1590,8 @@ def setTexRectangleTopLeft():
 def getTexRectangleTopLeft():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_texrectangle_top_left'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1446,7 +1600,8 @@ def getTexRectangleTopLeft():
 def getTexRectangleTopRight():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_texrectangle_top_right'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1455,7 +1610,8 @@ def getTexRectangleTopRight():
 def getTexRectangleBottomRight():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_texrectangle_bottom_right'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1464,7 +1620,8 @@ def getTexRectangleBottomRight():
 def getTexRectangleBottomLeft():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_texrectangle_bottom_left'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1477,7 +1634,8 @@ def setTexRectangleTexture():
     g = open("images/" + str(counter) + "." + str(request.json['extension']), "w")
     g.write(base64.decodestring(str(request.json['textureData'])))
     g.close()
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_rectangle_texture'
     dict['imageID'] = counter
     returnData = processor.processMessage(dict)
@@ -1488,7 +1646,8 @@ def setTexRectangleTexture():
 def getTexRectangleTexture():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_texrectangle_texture'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1497,7 +1656,8 @@ def getTexRectangleTexture():
 def setTexRectangleWidth():
     if not request.json or not 'elementNo' in request.json or not 'width' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_textrectangle_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1506,7 +1666,8 @@ def setTexRectangleWidth():
 def getTexRectangleWidth():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_texrectangle_width'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1515,7 +1676,8 @@ def getTexRectangleWidth():
 def setTexRectangleHeight():
     if not request.json or not 'elementNo' in request.json or not 'height' in request.json or not 'coorSys' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_texrectangle_height'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1524,7 +1686,8 @@ def setTexRectangleHeight():
 def getTexRectangleHeight():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_texrectangle_height'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1533,7 +1696,8 @@ def getTexRectangleHeight():
 def setText():
     if not request.json or not 'elementNo' in request.json or not 'text' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_text'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1542,7 +1706,8 @@ def setText():
 def getText():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_text'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1551,7 +1716,8 @@ def getText():
 def setTextPosition():
     if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'windowNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'relocate_text'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1560,7 +1726,8 @@ def setTextPosition():
 def getTextPosition():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_text_position'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1569,7 +1736,8 @@ def getTextPosition():
 def setTextPointSize():
     if not request.json or not 'elementNo' in request.json or not 'pt' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_text_point_size'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1578,7 +1746,8 @@ def setTextPointSize():
 def getTextPointSize():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_text_point_size'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1587,7 +1756,8 @@ def getTextPointSize():
 def setTextFont():
     if not request.json or not 'elementNo' in request.json or not 'font' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_text_font'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1596,7 +1766,8 @@ def setTextFont():
 def getTextFont():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_text_font'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1605,7 +1776,8 @@ def getTextFont():
 def setTextColor():
     if not request.json or not 'elementNo' in request.json or not 'color' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'set_text_color'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1614,7 +1786,8 @@ def setTextColor():
 def getTextColor():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_text_color'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1623,7 +1796,8 @@ def getTextColor():
 def showElement():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'show_element'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1632,7 +1806,8 @@ def showElement():
 def hideElement():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'hide_element'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1641,28 +1816,32 @@ def hideElement():
 def checkElementVisibility():
     if not request.json or not 'elementNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'check_element_visibility'
     returnData = processor.processMessage(dict)
     return returnData
 
 @app.route('/api/hideSetupSurface', methods=['POST'])
 def hideSetupSurface():
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'hide_setup_surface'
     returnData = processor.processMessage(dict)
     return returnData
 
 @app.route('/api/showSetupSurface', methods=['POST'])
 def showSetupSurface():
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'show_setup_surface'
     returnData = processor.processMessage(dict)
     return returnData
 
 @app.route('/api/getSetupSurfaceVisibility', methods=['GET'])
 def getSetupSurfaceVisibility():
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'get_setup_surface_visibility'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1671,7 +1850,8 @@ def getSetupSurfaceVisibility():
 def removeElement():
     if not request.json or not 'elementNo' in request.json or not 'windowNo' in request.json:
         abort(400)
-    dict = json.loads(request.json)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
     dict['call'] = 'remove_element'
     returnData = processor.processMessage(dict)
     return returnData
@@ -1679,8 +1859,8 @@ def removeElement():
 if __name__ == '__main__':
     if os.environ.get('WERKZEUG_RUN_MAIN') == 'true': #Only run on the child server to prevent two windows and port blocking
         messageParser = apiMessageParser()
-        messageParser.processMessage("login,webusr")
-        messageParser.processMessage("appName,REST")
+        messageParser.processMessage({"call" : "login", "user" : "webusr"})
+        messageParser.processMessage({"call" : "appName", "name" : "REST"})
         counter = 0
         files = glob.glob('images/*')
         for f in files:
