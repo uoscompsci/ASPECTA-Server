@@ -1603,7 +1603,7 @@ class apiMessageParser:
                     
                     if(self.fonts.has_key(font)):
                         font = self.fonts[font]
-                    print font
+                    #print font
                     self.elementBuffer[elements[z]] = FTGL.PolygonFont("fonts/" + font + ".ttf")
                     self.elementBuffer[elements[z]].FaceSize(size)
                     self.elementBuffer[elements[z]].UseDisplayList(True)

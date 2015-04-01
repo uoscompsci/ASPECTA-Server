@@ -18,10 +18,10 @@ loop = True
 
 #Constantly monitors the queue for received messages
 def message_queue_monitor():
-	time.sleep(0.0/30)
 	counter = 0
 	while(loop):
-		if(len(queue)!=0):
+		time.sleep(0.001)
+		while(len(queue)!=0):
 			qitem = queue.pop()
 			appsplit = sock2app[qitem[0]].split(',')
 			temp = qitem[1]
@@ -76,6 +76,7 @@ if __name__ == "__main__":
 	
 	#Loop until the looping flag changes
 	while(loop):
+		time.sleep(0.001)
 		try:
 			read_sockets = select.select(CONNECTION_LIST,[],[])[0] #Wait until ready for IO
 		except:
