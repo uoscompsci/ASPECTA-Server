@@ -736,8 +736,8 @@ def getElementsOnWindow():
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/moveCursor', methods=['POST'])
-def moveCursor():
+@app.route('/api/shiftCursor', methods=['POST'])
+def shiftCursor():
     if not request.json or not 'cursorNo' in request.json or not 'xDist' in request.json or not 'yDist' in request.json:
         abort(400)
     dict = json.dumps(request.json)
@@ -746,8 +746,8 @@ def moveCursor():
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/testMoveCursor', methods=['GET'])
-def testMoveCursor():
+@app.route('/api/testShiftCursor', methods=['GET'])
+def testShiftCursor():
     if not request.json or not 'cursorNo' in request.json or not 'xDist' in request.json or not 'yDist' in request.json:
         abort(400)
     dict = json.dumps(request.json)
@@ -886,8 +886,8 @@ def isCursorVisible():
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/moveWindow', methods=['POST'])
-def moveWindow():
+@app.route('/api/shiftWindow', methods=['POST'])
+def shiftWindow():
     if not request.json or not 'windowNo' in request.json or not 'xDist' in request.json or not 'yDist' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.dumps(request.json)
@@ -1146,6 +1146,26 @@ def getCircleSides():
     returnData = processor.processMessage(dict)
     return returnData
 
+@app.route('/api/shiftLine', methods=['GET'])
+def shiftLine():
+    if not request.json or not 'elementNo' in request.json or not 'xDist' in request.json or not 'yDist' in request.json or not 'coorSys' in request.json:
+        abort(400)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
+    dict['call'] = 'shift_line'
+    returnData = processor.processMessage(dict)
+    return returnData
+
+@app.route('/api/relocateLine', methods=['GET'])
+def relocateLine():
+    if not request.json or not 'elementNo' in request.json or not 'refPoint' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'windowNo' in request.json:
+        abort(400)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
+    dict['call'] = 'relocate_line'
+    returnData = processor.processMessage(dict)
+    return returnData
+
 @app.route('/api/getLineStart', methods=['GET'])
 def getLineStart():
     if not request.json or not 'elementNo' in request.json:
@@ -1223,6 +1243,26 @@ def getLineWidth():
     dict = json.dumps(request.json)
     dict = json.loads(dict)
     dict['call'] = 'get_line_width'
+    returnData = processor.processMessage(dict)
+    return returnData
+
+@app.route('/api/shiftLineStrip', methods=['GET'])
+def shiftLineStrip():
+    if not request.json or not 'elementNo' in request.json or not 'xDist' in request.json or not 'yDist' in request.json or not 'coorSys' in request.json:
+        abort(400)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
+    dict['call'] = 'shift_line_strip'
+    returnData = processor.processMessage(dict)
+    return returnData
+
+@app.route('/api/relocateLineStrip', methods=['GET'])
+def relocateLineStrip():
+    if not request.json or not 'elementNo' in request.json or not 'refPoint' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'windowNo' in request.json:
+        abort(400)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
+    dict['call'] = 'relocate_line_strip'
     returnData = processor.processMessage(dict)
     return returnData
 
@@ -1326,6 +1366,26 @@ def setLineStripContent():
     returnData = processor.processMessage(dict)
     return returnData
 
+@app.route('/api/shiftPolygon', methods=['GET'])
+def shiftPolygon():
+    if not request.json or not 'elementNo' in request.json or not 'xDist' in request.json or not 'yDist' in request.json or not 'coorSys' in request.json:
+        abort(400)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
+    dict['call'] = 'shift_polygon'
+    returnData = processor.processMessage(dict)
+    return returnData
+
+@app.route('/api/relocatePolygon', methods=['GET'])
+def relocatePolygon():
+    if not request.json or not 'elementNo' in request.json or not 'refPoint' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'windowNo' in request.json:
+        abort(400)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
+    dict['call'] = 'relocate_polygon'
+    returnData = processor.processMessage(dict)
+    return returnData
+
 @app.route('/api/addPolygonPoint', methods=['POST'])
 def addPolygonPoint():
     if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
@@ -1426,9 +1486,19 @@ def getPolygonPointCount():
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/setRectangleTopLeft', methods=['POST'])
-def setRectangleTopLeft():
-    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
+@app.route('/api/shiftRectangle', methods=['GET'])
+def shiftRectangle():
+    if not request.json or not 'elementNo' in request.json or not 'xDist' in request.json or not 'yDist' in request.json or not 'coorSys' in request.json:
+        abort(400)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
+    dict['call'] = 'shift_rectangle'
+    returnData = processor.processMessage(dict)
+    return returnData
+
+@app.route('/api/relocateRectangle', methods=['POST'])
+def relocateRectangle():
+    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'windowNo' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -1576,9 +1646,19 @@ def getRectangleLineWidth():
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/setTexRectangleTopLeft', methods=['POST'])
-def setTexRectangleTopLeft():
-    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json:
+@app.route('/api/shiftTexRectangle', methods=['GET'])
+def shiftTexRectangle():
+    if not request.json or not 'elementNo' in request.json or not 'xDist' in request.json or not 'yDist' in request.json or not 'coorSys' in request.json:
+        abort(400)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
+    dict['call'] = 'shift_texrectangle'
+    returnData = processor.processMessage(dict)
+    return returnData
+
+@app.route('/api/relocateTexRectangle', methods=['POST'])
+def relocateTexRectangle():
+    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'windowNo' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -1712,8 +1792,18 @@ def getText():
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/setTextPosition', methods=['POST'])
-def setTextPosition():
+@app.route('/api/shiftText', methods=['GET'])
+def shiftText():
+    if not request.json or not 'elementNo' in request.json or not 'xDist' in request.json or not 'yDist' in request.json or not 'coorSys' in request.json:
+        abort(400)
+    dict = json.dumps(request.json)
+    dict = json.loads(dict)
+    dict['call'] = 'shift_text'
+    returnData = processor.processMessage(dict)
+    return returnData
+
+@app.route('/api/relocateText', methods=['POST'])
+def relocateText():
     if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'windowNo' in request.json:
         abort(400)
     dict = json.dumps(request.json)

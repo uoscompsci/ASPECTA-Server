@@ -862,6 +862,39 @@ class GUI:
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
+	def shiftLine(self, elementNo, xDist, yDist, coorSys):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			xDist = int(self.winWidPropToPix(windowNo, xDist))
+			yDist = int(self.winHeiPropToPix(windowNo, yDist))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			xDist = self.surfWidMetToPix(surfaceNo, xDist)
+			yDist = self.surfHeiMetToPix(surfaceNo, yDist)
+		start = self.getLineStart(elementNo)
+		end = self.getLineEnd(elementNo)
+		self.elements[str(elementNo)].setStart(start[0]+xDist,start[1]+yDist)
+		self.elements[str(elementNo)].setEnd(end[0]+xDist,end[1]+yDist)
+		
+	def relocateLine(self, elementNo, refPoint, x, y, coorSys, windowNo):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			x = int(self.winWidPropToPix(windowNo, x))
+			y = int(self.winHeiPropToPix(windowNo, y))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			x = self.surfWidMetToPix(surfaceNo, x)
+			y = self.surfHeiMetToPix(surfaceNo, y)
+		orig = (0,0)
+		if(refPoint==0):
+			orig = self.getLineStart(elementNo)
+		elif(refPoint==1):
+			orig = self.getLineEnd(elementNo)
+		differences = (x-orig[0],y-orig[1])
+		self.shiftLine(elementNo, differences[0], differences[1], "pix")
+	
 	def setLineStart(self,elementNo,x,y,coorSys):
 		if(coorSys=="prop"):
 			windowNo = self.findElement(elementNo)
@@ -928,6 +961,35 @@ class GUI:
 		elementNo = self.newLineStrip(owner, app, appno, windowNo, x, y, coorSys, color, width)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
+	
+	def shiftLineStrip(self, elementNo, xDist, yDist, coorSys):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			xDist = int(self.winWidPropToPix(windowNo, xDist))
+			yDist = int(self.winHeiPropToPix(windowNo, yDist))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			xDist = self.surfWidMetToPix(surfaceNo, xDist)
+			yDist = self.surfHeiMetToPix(surfaceNo, yDist)
+		count = self.getLineStripPointsCount(elementNo)
+		for x in range(0,count):
+			orig = self.getLineStripPoint(elementNo, x)
+			self.moveLineStripPoint(elementNo, x, orig[0]+xDist, orig[1]+yDist, "pix")
+		
+	def relocateLineStrip(self, elementNo, refPoint, x, y, coorSys, windowNo):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			x = int(self.winWidPropToPix(windowNo, x))
+			y = int(self.winHeiPropToPix(windowNo, y))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			x = self.surfWidMetToPix(surfaceNo, x)
+			y = self.surfHeiMetToPix(surfaceNo, y)
+		orig = self.getLineStripPoint(elementNo, refPoint)
+		differences = (x-orig[0],y-orig[1])
+		self.shiftLineStrip(elementNo, differences[0], differences[1], "pix")
 	
 	def addLineStripPoint(self, elementNo, x, y, coorSys):
 		if(coorSys=="prop"):
@@ -1010,6 +1072,35 @@ class GUI:
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
+	def shiftPolygon(self, elementNo, xDist, yDist, coorSys):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			xDist = int(self.winWidPropToPix(windowNo, xDist))
+			yDist = int(self.winHeiPropToPix(windowNo, yDist))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			xDist = self.surfWidMetToPix(surfaceNo, xDist)
+			yDist = self.surfHeiMetToPix(surfaceNo, yDist)
+		count = self.getPolygonPointsCount(elementNo)
+		for x in range(0,count):
+			orig = self.getPolygonPoint(elementNo, x)
+			self.movePolygonPoint(elementNo, x, orig[0]+xDist, orig[1]+yDist, "pix")
+		
+	def relocatePolygon(self, elementNo, refPoint, x, y, coorSys, windowNo):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			x = int(self.winWidPropToPix(windowNo, x))
+			y = int(self.winHeiPropToPix(windowNo, y))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			x = self.surfWidMetToPix(surfaceNo, x)
+			y = self.surfHeiMetToPix(surfaceNo, y)
+		orig = self.getPolygonPoint(elementNo, refPoint)
+		differences = (x-orig[0],y-orig[1])
+		self.shiftPolygon(elementNo, differences[0], differences[1], "pix")
+	
 	def addPolygonPoint(self, elementNo, x, y, coorSys):
 		if(coorSys=="prop"):
 			windowNo = self.findElement(elementNo)
@@ -1087,7 +1178,7 @@ class GUI:
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
-	def setRectangleTopLeft(self, elementNo, x, y, coorSys):
+	def setRectangleTopLeft(self, elementNo, x, y, coorSys, windowNo):
 		if(coorSys=="prop"):
 			windowNo = self.findElement(elementNo)
 			x = int(self.winWidPropToPix(windowNo, x))
@@ -1098,6 +1189,23 @@ class GUI:
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].setTopLeft(x,y)
+		origWin = self.findElement(elementNo)
+		if(origWin != windowNo):
+			self.windows[str(origWin)].removeElement(elementNo)
+			self.windows[str(windowNo)].addElement(elementNo)
+			
+	def shiftRectangle(self, elementNo, xDist, yDist, coorSys):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			xDist = int(self.winWidPropToPix(windowNo, xDist))
+			yDist = int(self.winHeiPropToPix(windowNo, yDist))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			xDist = self.surfWidMetToPix(surfaceNo, xDist)
+			yDist = self.surfHeiMetToPix(surfaceNo, yDist)
+		orig = self.getRectangleTopLeft(elementNo)
+		self.elements[str(elementNo)].setTopLeft(orig[0]+xDist,orig[1]+yDist)
 		
 	def getRectangleTopLeft(self, elementNo):
 		xloc = self.elements[str(elementNo)].getTopLeftX()
@@ -1196,7 +1304,7 @@ class GUI:
 	def getTexRectangleTexture(self, elementNo):
 		return self.elements[str(elementNo)].getTexture()
 	
-	def setTexRectangleTopLeft(self, elementNo, x, y, coorSys):
+	def setTexRectangleTopLeft(self, elementNo, x, y, coorSys, windowNo):
 		if(coorSys=="prop"):
 			windowNo = self.findElement(elementNo)
 			x = int(self.winWidPropToPix(windowNo, x))
@@ -1207,6 +1315,23 @@ class GUI:
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].setTopLeft(x,y)
+		origWin = self.findElement(elementNo)
+		if(origWin != windowNo):
+			self.windows[str(origWin)].removeElement(elementNo)
+			self.windows[str(windowNo)].addElement(elementNo)
+			
+	def shiftTexRectangle(self, elementNo, xDist, yDist, coorSys):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			xDist = int(self.winWidPropToPix(windowNo, xDist))
+			yDist = int(self.winHeiPropToPix(windowNo, yDist))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			xDist = self.surfWidMetToPix(surfaceNo, xDist)
+			yDist = self.surfHeiMetToPix(surfaceNo, yDist)
+		orig = self.getTexRectangleTopLeft(elementNo)
+		self.elements[str(elementNo)].setTopLeft(orig[0]+xDist,orig[1]+yDist)
 		
 	def getTexRectangleTopLeft(self, elementNo):
 		xloc = self.elements[str(elementNo)].getTopLeftX()
@@ -1295,6 +1420,19 @@ class GUI:
 		if(origWin != window):
 			self.windows[str(origWin)].removeElement(elementNo)
 			self.windows[str(window)].addElement(elementNo)
+			
+	def shiftText(self, elementNo, xDist, yDist, coorSys):
+		if(coorSys=="prop"):
+			windowNo = self.findElement(elementNo)
+			xDist = int(self.winWidPropToPix(windowNo, xDist))
+			yDist = int(self.winHeiPropToPix(windowNo, yDist))
+		elif(coorSys=="real"):
+			windowNo = self.findElement(elementNo)
+			surfaceNo = self.findWindow(windowNo)
+			xDist = self.surfWidMetToPix(surfaceNo, xDist)
+			yDist = self.surfHeiMetToPix(surfaceNo, yDist)
+		orig = self.getTextPos(elementNo)
+		self.elements[str(elementNo)].setLocation(orig[0]+xDist,orig[1]+yDist)
 			
 	def removeElement(self, elementNo, window):
 		self.elements[str(elementNo)].hide()
