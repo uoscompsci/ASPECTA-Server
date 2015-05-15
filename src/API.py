@@ -600,7 +600,7 @@ class apiMessageParser:
         return {"name" : name}
         
     def relocateCircle(self, pieces):
-        name = self.GUI.setCirclePos(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'])
+        name = self.GUI.setCirclePos(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['windowNo'])
         return {}
         
     def getCirclePosition(self, pieces):
@@ -1083,7 +1083,7 @@ class apiMessageParser:
             'stretch_window_right' : (stretchWindowRight, 2),  # [1]=WindowNo  [2]=Distance  [3]=coorSys
             'set_window_name' : (setWindowName, 2),  # [1]=WindowNo  [2]=Name
             'get_window_name' : (getWindowName, 1),  # [1]=WindowNo
-            'relocate_circle' : (relocateCircle, 4),  # [1]=ElementNo  [2]=x  [3]=y [4]=coorSys
+            'relocate_circle' : (relocateCircle, 5),  # [1]=ElementNo  [2]=x  [3]=y [4]=coorSys [5]=windowNo
             'get_circle_pos' : (getCirclePosition, 1),  # [1]=ElementNo
             'get_element_type' : (getElementType, 1),  # [1]=ElementNo
             'set_circle_line_color' : (setCircleLineColor, 2),  # [1]=ElementNo  [2]=Color

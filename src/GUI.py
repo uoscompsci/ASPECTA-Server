@@ -775,7 +775,7 @@ class GUI:
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 		
-	def setCirclePos(self, elementNo, xLoc, yLoc, coorSys):
+	def setCirclePos(self, elementNo, xLoc, yLoc, coorSys, windowNo):
 		if(coorSys=="prop"):
 			windowNo = self.findElement(elementNo)
 			xLoc = self.winWidPropToPix(windowNo, xLoc)
@@ -787,6 +787,9 @@ class GUI:
 			yLoc = self.surfHeiMetToPix(surfaceNo, yLoc)
 		self.elements[str(elementNo)].setCenter(xLoc,yLoc)
 		origWin = self.findElement(elementNo)
+		if(origWin != windowNo):
+			self.windows[str(origWin)].removeElement(elementNo)
+			self.windows[str(windowNo)].addElement(elementNo)
 		
 	def setCircleRad(self, elementNo, radius, coorSys):
 		if(coorSys=="prop"):
