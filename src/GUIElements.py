@@ -903,7 +903,8 @@ class rectangle(element):
         return self.topLeft.getY()
     
     def setTopLeft(self,x,y):
-        return self.topLeft.reposition(float(x),float(y))
+        self.topLeft.reposition(float(x),float(y))
+        self.upToDate = False
     
     def getTopRightX(self):
         return self.topLeft.getX()+int(self.width)
@@ -990,7 +991,8 @@ class texRectangle(element):
         return self.topLeft.getY()
     
     def setTopLeft(self,x,y):
-        return self.topLeft.reposition(x,y)
+        self.topLeft.reposition(x,y)
+        self.upToDate = False
     
     def getTopRightX(self):
         return self.topLeft.getX()+int(self.width)
