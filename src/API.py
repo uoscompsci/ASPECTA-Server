@@ -1562,7 +1562,6 @@ class apiMessageParser:
                         sine = float(rad) * sin(i*2*pi/sides)
                         points.append([cosine+float(cirPos[0]),sine+float(cirPos[1])])
                     numpy_verts = numpy.array(points, dtype=numpy.float32)
-                    print str(numpy_verts)
                     self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
                 self.drawPolygon(elements[z], (colors[0],colors[1],colors[2],colors[3]), (linecolors[0],linecolors[1],linecolors[2],linecolors[3]), lineWidth, sides)
             elif(type=="lineStrip"): #Runs if the current element is a line strip
