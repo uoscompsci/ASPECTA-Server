@@ -1,6 +1,5 @@
-/API.pyc
-/bezier.pyc
-/buffers.pyc
-/GUI.pyc
-/GUIElements.pyc
-/straightcoons.pyc
+*.pyc
+images/*.jpg
+images/*.png
+images/*.bmp
+images/*.gif
