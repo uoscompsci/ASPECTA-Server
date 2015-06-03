@@ -2,7 +2,7 @@
 The ASPECTA server side program for running on the projector-connected Ubuntu PC.
 
 ###Dependencies
-Make sure to install python-dev and pip first as later ones depend on it for installation
+Install in the order listed so as to avoid problems.
 * python-dev (```sudo apt-get install python-dev```)
 * pip (```sudo apt-get install python-pip```)
 * python-opengl (```sudo apt-get install python-opengl```)
@@ -12,7 +12,6 @@ Make sure to install python-dev and pip first as later ones depend on it for ins
 * FreeType (http://www.freetype.org See instructions for installing the contents of the tar.gz package below)
 * boost::python (```sudo apt-get install libboost-python-dev```)
 * PYFTGL (https://code.google.com/p/pyftgl/downloads/list with the changes mentioned below)
-* tkinter (```sudo apt-get install python-tk```)
 
 ###Recommended
 
