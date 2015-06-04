@@ -8,7 +8,7 @@ Install in the order listed so as to avoid problems.
 * python-opengl (```sudo apt-get install python-opengl```)
 * python-pygame (```sudo apt-get install python-pygame```)
 * ujson (```sudo pip install ujson```)
-* FTGL (```sudo apt-get install ftgl-dev```)
+* FTGL (```sudo apt-get install ftgl-dev``` If there are libcheese dependency issues see below)
 * FreeType (http://www.freetype.org See instructions for installing the contents of the tar.gz package below)
 * boost::python (```sudo apt-get install libboost-python-dev```)
 * PYFTGL (https://code.google.com/p/pyftgl/downloads/list with the changes mentioned below)
@@ -18,6 +18,13 @@ Install in the order listed so as to avoid problems.
 These have been used for development and testing, so are recommended but not required.
 * Eclipse (https://www.eclipse.org/downloads/ See eclipse notes below if eclipse won't run due to Java Runtime Environment issues)
 * PyDev for Eclipse (see instructions below on how to download and install)
+
+###FTGL LibCheese Depencency Issues
+There has been one report of failure when trying to install ftgl-dev due to issues fulfilling the depencency for libcheese. In this case the following commands resolved the issue:
+```
+sudo apt-get install xserver-xorg-dev-lts-utopic mesa-common-dev-lts-utopic
+sudo apt-get install ftgl-dev
+```
 
 ###FreeType Installation
 
