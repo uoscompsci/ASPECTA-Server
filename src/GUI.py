@@ -12,7 +12,7 @@ class GUI:
 				'top' : {0 : 'top', 1 : 'right', 2 : 'bottom', 3 : "left"}
 				}
 	
-	def __init__(self):
+	def __init__(self, width, height):
 		parser = SafeConfigParser()
 		parser.read("config.ini")
 		self.winWidth = parser.getint('surfaces', 'windowWidth')
@@ -32,6 +32,8 @@ class GUI:
 		self.elements = {}
 		self.connections = []
 		self.surfaces["0"] = surface("server", "server", "0", "setup")
+		self.setSurfacePixelWidth(0, width)
+		self.setSurfacePixelHeight(0, height)
 		self.setup_surface_visible = False
 		
 	def winWidPropToPix(self, win, prop):

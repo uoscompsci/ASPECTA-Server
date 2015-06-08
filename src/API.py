@@ -2076,6 +2076,6 @@ class apiMessageParser:
         self.pps = parser.getint('surfaces','curveResolution')
         self.winWidth = parser.getint('surfaces', 'windowWidth')
         self.winHeight = parser.getint('surfaces', 'windowHeight')
-        self.GUI = GUI() #Creates the GUI
+        self.GUI = GUI(self.winWidth, self.winHeight) #Creates the GUI
         thread = Thread(target=self.display, args=()) #Creates the display thread
         thread.start() #Starts the display thread
