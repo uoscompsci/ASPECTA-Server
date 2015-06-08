@@ -921,6 +921,13 @@ class apiMessageParser:
         text.FaceSize(int(pieces['pt']))
         width = text.Advance(pieces['text'].encode('utf8'))
         return {"width" : width}
+    
+    def getTextLineHeight(self, pieces):
+        font = self.fonts[pieces['font']]
+        text = FTGL.PolygonFont("fonts/" + font + ".ttf")
+        text.FaceSize(int(pieces['pt']))
+        height = text.line_height
+        return {"height" : height}
         
     def setPointSize(self, pieces):
         self.GUI.setPtSize(pieces['elementNo'], pieces['pt'])
@@ -1171,6 +1178,7 @@ class apiMessageParser:
             'relocate_text' : (setTextPos, 5),  # [1]=ElementNo  [2]=x  [3]=y  [4]=coorSys  [5]=WindowNo
             'get_text_pos' : (getTextPos, 1),  # [1]=ElementNo
             'get_text_width' : (getTextWidth, 3),   #[1]=text  [2]=font  [3]=pt
+            'get_text_line_height' : (getTextLineHeight, 3),   #[1]=text  [2]=font  [3]=pt
             'set_text_point_size' : (setPointSize, 2),  # [1]=ElementNo  [2]=pt
             'get_text_point_size' : (getPointSize, 1),  # [1]=ElementNo
             'get_text_font' : (getTextFont, 1),  # [1]=ElementNo
