@@ -927,7 +927,6 @@ class apiMessageParser:
         text = FTGL.PolygonFont("fonts/" + font + ".ttf")
         text.FaceSize(int(pieces['pt']))
         box = text.BBox(pieces['text'].encode('utf8'))
-        print str(box)
         height = box[4]-box[1]
         return {"height" : height}
     
