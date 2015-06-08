@@ -907,22 +907,22 @@ class rectangle(element):
         self.upToDate = False
     
     def getTopRightX(self):
-        return self.topLeft.getX()+int(self.width)
+        return self.topLeft.getX()+int(float(self.width))
     
     def getTopRightY(self):
         return self.topLeft.getY()
     
     def getBottomRightX(self):
-        return self.topLeft.getX()+int(self.width)
+        return self.topLeft.getX()+int(float(self.width))
     
     def getBottomRightY(self):
-        return self.topLeft.getY()-int(self.height)
+        return self.topLeft.getY()-int(float(self.height))
     
     def getBottomLeftX(self):
         return self.topLeft.getX()
     
     def getBottomLeftY(self):
-        return self.topLeft.getY()-int(self.height)
+        return self.topLeft.getY()-int(float(self.height))
     
     def setWidth(self, width):
         self.width = float(width)
@@ -995,22 +995,22 @@ class texRectangle(element):
         self.upToDate = False
     
     def getTopRightX(self):
-        return self.topLeft.getX()+int(self.width)
+        return self.topLeft.getX()+int(float(self.width))
     
     def getTopRightY(self):
         return self.topLeft.getY()
     
     def getBottomRightX(self):
-        return self.topLeft.getX()+int(self.width)
+        return self.topLeft.getX()+int(float(self.width))
     
     def getBottomRightY(self):
-        return self.topLeft.getY()-int(self.height)
+        return self.topLeft.getY()-int(float(self.height))
     
     def getBottomLeftX(self):
         return self.topLeft.getX()
     
     def getBottomLeftY(self):
-        return self.topLeft.getY()-int(self.height)
+        return self.topLeft.getY()-int(float(self.height))
     
     def setWidth(self, width):
         self.width = width
