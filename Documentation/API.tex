@@ -434,8 +434,12 @@ This call shifts the text with the given element number by the given distances o
 This call returns the position of the text with the given element number as an (x,y) tuple.
 \subsubsection{getTextWidth(text, font, pointSize)}
 This call returns the width in pixels of a suggested string in advance.
+\subsubsection{getTextHeight(text, font, pointSize)}
+This call returns the height in pixels of a suggested string in advance. (Not including the descender height which can be retrieved with getTextDescenderHeight(font, pointSize))
 \subsubsection{getTextLineHeight(font, pointSize)}
 This call returns the line height of the text in advance. The line height is the height of the letters plus padding that would go between the lines in multi-line text.
+\subsubsection{getTextDescenderHeight(font, pointSize)}
+This call returns the descender height of the text in advance. This can be added to the text height to get the full height.
 \subsubsection{setPointSize(elementNo, pointSize)}
 This call sets the point size of the text with the given element number.
 \subsubsection{getPointSize(elementNo, pointSize)}
