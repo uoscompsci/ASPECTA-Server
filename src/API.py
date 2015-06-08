@@ -922,12 +922,28 @@ class apiMessageParser:
         width = text.Advance(pieces['text'].encode('utf8'))
         return {"width" : width}
     
+    def getTextHeight(self, pieces):
+        font = self.fonts[pieces['font']]
+        text = FTGL.PolygonFont("fonts/" + font + ".ttf")
+        text.FaceSize(int(pieces['pt']))
+        box = text.BBox(pieces['text'].encode('utf8'))
+        print str(box)
+        height = box[4]-box[1]
+        return {"height" : height}
+    
     def getTextLineHeight(self, pieces):
         font = self.fonts[pieces['font']]
         text = FTGL.PolygonFont("fonts/" + font + ".ttf")
         text.FaceSize(int(pieces['pt']))
         height = text.line_height
         return {"height" : height}
+    
+    def getTextDescenderHeight(self, pieces):
+        font = self.fonts[pieces['font']]
+        text = FTGL.PolygonFont("fonts/" + font + ".ttf")
+        text.FaceSize(int(pieces['pt']))
+        height = text.descender
+        return {"height" : -height}
         
     def setPointSize(self, pieces):
         self.GUI.setPtSize(pieces['elementNo'], pieces['pt'])
@@ -1178,7 +1194,9 @@ class apiMessageParser:
             'relocate_text' : (setTextPos, 5),  # [1]=ElementNo  [2]=x  [3]=y  [4]=coorSys  [5]=WindowNo
             'get_text_pos' : (getTextPos, 1),  # [1]=ElementNo
             'get_text_width' : (getTextWidth, 3),   #[1]=text  [2]=font  [3]=pt
-            'get_text_line_height' : (getTextLineHeight, 2),   #[2]=font  [3]=pt
+            'get_text_height' : (getTextHeight, 3),   #[1]=text  [2]=font  [3]=pt
+            'get_text_line_height' : (getTextLineHeight, 2),   #[1]=font  [2]=pt
+            'get_text_descender_height' : (getTextDescenderHeight, 2),   #[1]=font  [2]=pt
             'set_text_point_size' : (setPointSize, 2),  # [1]=ElementNo  [2]=pt
             'get_text_point_size' : (getPointSize, 1),  # [1]=ElementNo
             'get_text_font' : (getTextFont, 1),  # [1]=ElementNo
