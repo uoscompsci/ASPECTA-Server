@@ -15,8 +15,8 @@ class GUI:
 	def __init__(self, width, height):
 		parser = SafeConfigParser()
 		parser.read("config.ini")
-		self.winWidth = parser.getint('surfaces', 'windowWidth')
-		self.winHeight = parser.getint('surfaces', 'windowHeight')
+		self.winWidth = parser.getint('display', 'HorizontalRes')
+		self.winHeight = parser.getint('display', 'VerticalRes')
 		self.lastcur = 0
 		self.lastsur = 0
 		self.lastwin = 0

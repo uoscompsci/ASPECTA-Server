@@ -2022,8 +2022,11 @@ class apiMessageParser:
     
     #Starts the pygame window and runs the rendering loop
     def display(self):
-        video_flags = OPENGL | DOUBLEBUF
-		
+        video_flags = None
+        if(self.fullscreen==0):
+            video_flags = OPENGL | DOUBLEBUF
+        else:
+            video_flags = OPENGL | DOUBLEBUF | FULLSCREEN
         pygame.init()
         pygame.display.set_icon(pygame.image.load("icons/icon.png"))
         pygame.display.set_mode((self.winWidth, self.winHeight), video_flags)
@@ -2041,9 +2044,13 @@ class apiMessageParser:
             
             #If a quit event has been received the program is closed
             if event.type == QUIT:
-                pygame.quit ()
+                pygame.quit()
                 #self.fts.quitRequest()
                 break
+            elif event.type == pygame.KEYDOWN:
+                if event.key==pygame.K_ESCAPE:
+                    pygame.quit()
+                    break
             
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             glLoadIdentity()
@@ -2091,8 +2098,9 @@ class apiMessageParser:
         parser = SafeConfigParser()
         parser.read("config.ini")
         self.pps = parser.getint('surfaces','curveResolution')
-        self.winWidth = parser.getint('surfaces', 'windowWidth')
-        self.winHeight = parser.getint('surfaces', 'windowHeight')
+        self.winWidth = parser.getint('display', 'HorizontalRes')
+        self.winHeight = parser.getint('display', 'VerticalRes')
+        self.fullscreen = parser.getint('display', 'fullscreen')
         self.GUI = GUI(self.winWidth, self.winHeight) #Creates the GUI
         thread = Thread(target=self.display, args=()) #Creates the display thread
         thread.start() #Starts the display thread
