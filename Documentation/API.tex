@@ -124,7 +124,7 @@ Creates a connection between a side of one surface and a side of another surface
 Removes the connection between two surface sides. Sides should be given as one of the strings "top", "bottom", "left" or "right".
 
 \subsection{Window Management}
-Windows are placed on surfaces, so that users can attach elements to them. Windows can be moved and all the elements they contain will be moved too.
+Windows are placed on surfaces, so that users can attach elements to them. When windows are moved all the elements they contain will be moved too, this can be used to implement grouping behaviour.
 \subsubsection{newWindow(surfaceNo, x, y, width, height, coorSys, name)}
 This call creates a new window object and returns its window number (windowNo) to be used as an identifier by future calls. The user must supply the number of the surface the window is being applied to, the x and y coordinates on the surface it should be positioned at, and its width and height. The coordinate system that the user wants to use should also be stated as either "pix" for pixels, "prop" for the proportion of the height/width of the surface (between 0 and 1) or "real" for centimetres.
 \subsubsection{newWindowWithID(ID, surfaceNo, x, y, width, height, coorSys, name)}
@@ -495,7 +495,7 @@ sender.newText(win, "Hello World",
 If the server is run using "restServer.py" instead of "server.py" it will take take http messages instead of standard API calls. These are formatted as "/api/<CALL NAME>". Ones which add or change information are "POST" requests while those which just request information are "GET" requests. Parameters should be passed into these REST calls as JSON structures. Returned information is returned as a JSON structure.\\
 Logging in takes place automatically when using the REST server, so there is no need to call login() or setApp()
 \section{Sending Images with REST API}
-To display images to the rest API, a different method is used than the usual one that exists outside REST. Images are sent in the same calls that ask for them to be displayed. So, instead of a reference to the texture being included in the JSON for a call to /api/newTexRectangle, /api/newTexRectangleWithID, or /api/setTexRectangleTexture, the calls take the image data itself (converted to base64) and the file extension. These JSON parameters should be called "textureData" and "extension" respectively. I have created a python library called "jsonImageSender.py" which contains the class jsonImageSender which allows for easy sending of images. Here are the calls that this class provides.\\\\
+To display images with the rest API, a different method is used than the usual one that exists outside REST. Images are sent in the same calls that ask for them to be displayed. So, instead of a reference to the texture being included in the JSON for a call to /api/newTexRectangle, /api/newTexRectangleWithID, or /api/setTexRectangleTexture, the calls take the image data itself (converted to base64) and the file extension. These JSON parameters should be called "textureData" and "extension" respectively. I have created a python library called "jsonImageSender.py" which contains the class jsonImageSender which allows for easy sending of images. Here are the calls that this class provides.\\\\
 \subsubsection{Constructor - jsonImageSender(host,port)}
 Creates an instance of the class and tells it the host name and port number for the rest server for use in the provided call functions.
 \subsubsection{newTexRectangle(windowNo, filename, x, y, width, height)}
