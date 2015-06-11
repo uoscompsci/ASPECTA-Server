@@ -1409,24 +1409,27 @@ class apiMessageParser:
         glEnable(GL_LINE_SMOOTH)
         glEnable(GL_POINT_SMOOTH)
         for x in range(0,len(windows)):
-            loc = self.GUI.getWindowPos(windows[x])
-            #self.renderWindowContents(windows[x], self.GUI)
-            (rendertarget,fbo) = self.windowTextures[x]
-            glEnable(GL_TEXTURE_2D)
-            glBindTexture(GL_TEXTURE_2D, rendertarget)
-            width = self.GUI.getWindowWidth(windows[x])
-            height = self.GUI.getWindowHeight(windows[x])
-            glBegin(GL_QUADS)
-            glTexCoord2f(0,1)
-            glVertex2f(loc[0],loc[1])
-            glTexCoord2f(0,0)
-            glVertex2f(loc[0],loc[1]-height)
-            glTexCoord2f(1,0)
-            glVertex2f(loc[0]+width,loc[1]-height)
-            glTexCoord2f(1,1)
-            glVertex2f(loc[0]+width,loc[1])
-            glEnd()
-            glDisable(GL_TEXTURE_2D)
+            try:
+                loc = self.GUI.getWindowPos(windows[x])
+                #self.renderWindowContents(windows[x], self.GUI)
+                (rendertarget,fbo) = self.windowTextures[x]
+                glEnable(GL_TEXTURE_2D)
+                glBindTexture(GL_TEXTURE_2D, rendertarget)
+                width = self.GUI.getWindowWidth(windows[x])
+                height = self.GUI.getWindowHeight(windows[x])
+                glBegin(GL_QUADS)
+                glTexCoord2f(0,1)
+                glVertex2f(loc[0],loc[1])
+                glTexCoord2f(0,0)
+                glVertex2f(loc[0],loc[1]-height)
+                glTexCoord2f(1,0)
+                glVertex2f(loc[0]+width,loc[1]-height)
+                glTexCoord2f(1,1)
+                glVertex2f(loc[0]+width,loc[1])
+                glEnd()
+                glDisable(GL_TEXTURE_2D)
+            except:
+                pass
         cursors = self.GUI.getCursors(surfaceNo) #Gathers the list of cursors on the setup surface
         
         #Loops through all the cursors on the surface
