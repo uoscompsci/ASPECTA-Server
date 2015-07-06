@@ -70,30 +70,30 @@ def newCursorWithID():
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/newWindow', methods=['POST'])
-def newWindow():
+@app.route('/api/newCanvas', methods=['POST'])
+def newCanvas():
     if not request.json or not 'surfaceNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'name' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'new_window'
+    dict['call'] = 'new_canvas'
     returnData = processor.processMessage(dict)
     print str(returnData)
     return returnData
 
-@app.route('/api/newWindowWithID', methods=['POST'])
-def newWindowWithID():
+@app.route('/api/newCanvasWithID', methods=['POST'])
+def newCanvasWithID():
     if not request.json or not 'ID' in request.json or not 'surfaceNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'name' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'new_window_with_ID'
+    dict['call'] = 'new_canvas_with_ID'
     returnData = processor.processMessage(dict)
     return returnData
 
 @app.route('/api/newCircle', methods=['POST'])
 def newCircle():
-    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'radius' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json or not 'sides' in request.json:
+    if not request.json or not 'canvasNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'radius' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json or not 'sides' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -103,7 +103,7 @@ def newCircle():
 
 @app.route('/api/newCircleWithID', methods=['POST'])
 def newCircleWithID():
-    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'radius' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json or not 'sides' in request.json:
+    if not request.json or not 'ID' in request.json or not 'canvasNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'radius' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json or not 'sides' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -113,7 +113,7 @@ def newCircleWithID():
 
 @app.route('/api/newLine', methods=['POST'])
 def newLine():
-    if not request.json or not 'windowNo' in request.json or not 'xStart' in request.json or not 'yStart' in request.json or not 'xEnd' in request.json or not 'yEnd' in request.json or not 'coorSys' in request.json or not 'color' in request.json or not 'width' in request.json:
+    if not request.json or not 'canvasNo' in request.json or not 'xStart' in request.json or not 'yStart' in request.json or not 'xEnd' in request.json or not 'yEnd' in request.json or not 'coorSys' in request.json or not 'color' in request.json or not 'width' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -123,7 +123,7 @@ def newLine():
 
 @app.route('/api/newLineWithID', methods=['POST'])
 def newLineWithID():
-    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'xStart' in request.json or not 'yStart' in request.json or not 'xEnd' in request.json or not 'yEnd' in request.json or not 'coorSys' in request.json or not 'color' in request.json or not 'width' in request.json:
+    if not request.json or not 'ID' in request.json or not 'canvasNo' in request.json or not 'xStart' in request.json or not 'yStart' in request.json or not 'xEnd' in request.json or not 'yEnd' in request.json or not 'coorSys' in request.json or not 'color' in request.json or not 'width' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -133,7 +133,7 @@ def newLineWithID():
 
 @app.route('/api/newLineStrip', methods=['POST'])
 def newLineStrip():
-    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'color' in request.json or not 'width' in request.json:
+    if not request.json or not 'canvasNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'color' in request.json or not 'width' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -143,7 +143,7 @@ def newLineStrip():
 
 @app.route('/api/newLineStripWithID', methods=['POST'])
 def newLineStripWithID():
-    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'color' in request.json or not 'width' in request.json:
+    if not request.json or not 'ID' in request.json or not 'canvasNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'color' in request.json or not 'width' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -153,7 +153,7 @@ def newLineStripWithID():
 
 @app.route('/api/newPolygon', methods=['POST'])
 def newPolygon():
-    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json:
+    if not request.json or not 'canvasNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -163,7 +163,7 @@ def newPolygon():
 
 @app.route('/api/newPolygonWithID', methods=['POST'])
 def newPolygonWithID():
-    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json:
+    if not request.json or not 'ID' in request.json or not 'canvasNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -173,7 +173,7 @@ def newPolygonWithID():
 
 @app.route('/api/newRectangle', methods=['POST'])
 def newRectangle():
-    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json:
+    if not request.json or not 'canvasNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -183,7 +183,7 @@ def newRectangle():
 
 @app.route('/api/newRectangleWithID', methods=['POST'])
 def newRectangleWithID():
-    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json:
+    if not request.json or not 'ID' in request.json or not 'canvasNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'lineColor' in request.json or not 'lineWidth' in request.json or not 'fillColor' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -194,7 +194,7 @@ def newRectangleWithID():
 @app.route('/api/newTexRectangle', methods=['POST'])
 def newTexRectangle():
     global counter
-    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'textureData' in request.json or not 'extension' in request.json:
+    if not request.json or not 'canvasNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'textureData' in request.json or not 'extension' in request.json:
         print str(request.json)
         abort(400)
     g = open("images/" + str(counter) + "-rest." + str(request.json['extension']), "w")
@@ -211,7 +211,7 @@ def newTexRectangle():
 @app.route('/api/newTexRectangleWithID', methods=['POST'])
 def newTexRectangleWithID():
     global counter
-    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'textureData' in request.json or not 'extension' in request.json:
+    if not request.json or not 'ID' in request.json or not 'canvasNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'width' in request.json or not 'height' in request.json or not 'coorSys' in request.json or not 'textureData' in request.json or not 'extension' in request.json:
         abort(400)
     g = open("images/" + str(counter) + "." + str(request.json['extension']), "w")
     g.write(base64.decodestring(str(request.json['textureData'])))
@@ -226,7 +226,7 @@ def newTexRectangleWithID():
 
 @app.route('/api/newText', methods=['POST'])
 def newText():
-    if not request.json or not 'windowNo' in request.json or not 'text' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'ptSize' in request.json or not 'font' in request.json or not 'color' in request.json:
+    if not request.json or not 'canvasNo' in request.json or not 'text' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'ptSize' in request.json or not 'font' in request.json or not 'color' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -236,7 +236,7 @@ def newText():
 
 @app.route('/api/newTextWithID', methods=['POST'])
 def newTextWithID():
-    if not request.json or not 'ID' in request.json or not 'windowNo' in request.json or not 'text' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'ptSize' in request.json or not 'font' in request.json or not 'color' in request.json:
+    if not request.json or not 'ID' in request.json or not 'canvasNo' in request.json or not 'text' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'ptSize' in request.json or not 'font' in request.json or not 'color' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -566,83 +566,83 @@ def disconnectSurfaces():
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/getWindowID', methods=['GET'])
-def getWindowID():
-    if not request.json or not 'windowNo' in request.json:
+@app.route('/api/getCanvasID', methods=['GET'])
+def getCanvasID():
+    if not request.json or not 'canvasNo' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'get_window_ID'
+    dict['call'] = 'get_canvas_ID'
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/setWindowID', methods=['POST'])
-def setWindowID():
-    if not request.json or not 'windowNo' in request.json or not 'ID' in request.json:
+@app.route('/api/setCanvasID', methods=['POST'])
+def setCanvasID():
+    if not request.json or not 'canvasNo' in request.json or not 'ID' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'set_window_ID'
+    dict['call'] = 'set_canvas_ID'
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/getWindowOwner', methods=['GET'])
-def getWindowOwner():
-    if not request.json or not 'windowNo' in request.json:
+@app.route('/api/getCanvasOwner', methods=['GET'])
+def getCanvasOwner():
+    if not request.json or not 'canvasNo' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'get_window_owner'
+    dict['call'] = 'get_canvas_owner'
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/getWindowAppDetails', methods=['GET'])
-def getWindowAppDetails():
-    if not request.json or not 'windowNo' in request.json:
+@app.route('/api/getCanvasAppDetails', methods=['GET'])
+def getCanvasAppDetails():
+    if not request.json or not 'canvasNo' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'get_window_app_details'
+    dict['call'] = 'get_canvas_app_details'
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/getWindowsByID', methods=['GET'])
-def getWindowsByID():
+@app.route('/api/getCanvasesByID', methods=['GET'])
+def getCanvasesByID():
     if not request.json or not 'ID' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'get_windows_by_ID'
+    dict['call'] = 'get_canvases_by_ID'
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/getWindowsByOwner', methods=['GET'])
-def getWindowsByOwner():
+@app.route('/api/getCanvasesByOwner', methods=['GET'])
+def getCanvasesByOwner():
     if not request.json or not 'owner' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'get_windows_by_owner'
+    dict['call'] = 'get_canvases_by_owner'
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/getWindowsByAppName', methods=['GET'])
-def getWindowsByAppName():
+@app.route('/api/getCanvasesByAppName', methods=['GET'])
+def getCanvasesByAppName():
     if not request.json or not 'name' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'get_windows_by_app_name'
+    dict['call'] = 'get_canvases_by_app_name'
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/getWindowsByAppDetails', methods=['GET'])
-def getWindowsByAppDetails():
+@app.route('/api/getCanvasesByAppDetails', methods=['GET'])
+def getCanvasesByAppDetails():
     if not request.json or not 'name' in request.json or not 'number' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'get_windows_by_app_details'
+    dict['call'] = 'get_canvases_by_app_details'
     returnData = processor.processMessage(dict)
     return returnData
 
@@ -726,13 +726,13 @@ def getElementsByAppDetails():
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/getElementsOnWindow', methods=['GET'])
-def getElementsOnWindow():
-    if not request.json or not 'windowNo' in request.json:
+@app.route('/api/getElementsOnCanvas', methods=['GET'])
+def getElementsOnCanvas():
+    if not request.json or not 'canvasNo' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'get_elements_on_window'
+    dict['call'] = 'get_elements_on_canvas'
     returnData = processor.processMessage(dict)
     return returnData
 
@@ -886,133 +886,133 @@ def isCursorVisible():
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/shiftWindow', methods=['POST'])
-def shiftWindow():
-    if not request.json or not 'windowNo' in request.json or not 'xDist' in request.json or not 'yDist' in request.json or not 'coorSys' in request.json:
+@app.route('/api/shiftCanvas', methods=['POST'])
+def shiftCanvas():
+    if not request.json or not 'canvasNo' in request.json or not 'xDist' in request.json or not 'yDist' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'move_window'
+    dict['call'] = 'move_canvas'
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/relocateWindow', methods=['POST'])
-def relocateWindow():
-    if not request.json or not 'windowNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'surfaceNo' in request.json:
+@app.route('/api/relocateCanvas', methods=['POST'])
+def relocateCanvas():
+    if not request.json or not 'canvasNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'surfaceNo' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'relocate_window'
+    dict['call'] = 'relocate_canvas'
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/setWindowHeight', methods=['POST'])
-def setWindowHeight():
-    if not request.json or not 'windowNo' in request.json or not 'height' in request.json or not 'coorSys' in request.json:
+@app.route('/api/setCanvasHeight', methods=['POST'])
+def setCanvasHeight():
+    if not request.json or not 'canvasNo' in request.json or not 'height' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'set_window_height'
+    dict['call'] = 'set_canvas_height'
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/setWindowWidth', methods=['POST'])
-def setWindowWidth():
-    if not request.json or not 'windowNo' in request.json or not 'width' in request.json or not 'coorSys' in request.json:
+@app.route('/api/setCanvasWidth', methods=['POST'])
+def setCanvasWidth():
+    if not request.json or not 'canvasNo' in request.json or not 'width' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'set_window_width'
+    dict['call'] = 'set_canvas_width'
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/getWindowPosition', methods=['GET'])
-def getWindowPosition():
-    if not request.json or not 'windowNo' in request.json:
+@app.route('/api/getCanvasPosition', methods=['GET'])
+def getCanvasPosition():
+    if not request.json or not 'canvasNo' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'get_window_pos'
+    dict['call'] = 'get_canvas_pos'
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/getWindowHeight', methods=['GET'])
-def getWindowHeight():
-    if not request.json or not 'windowNo' in request.json:
+@app.route('/api/getCanvasHeight', methods=['GET'])
+def getCanvasHeight():
+    if not request.json or not 'canvasNo' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'get_window_height'
+    dict['call'] = 'get_canvas_height'
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/getWindowWidth', methods=['GET'])
-def getWindowWidth():
-    if not request.json or not 'windowNo' in request.json:
+@app.route('/api/getCanvasWidth', methods=['GET'])
+def getCanvasWidth():
+    if not request.json or not 'canvasNo' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'get_window_width'
+    dict['call'] = 'get_canvas_width'
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/stretchWindowDown', methods=['POST'])
-def stretchWindowDown():
-    if not request.json or not 'windowNo' in request.json or not 'distance' in request.json or not 'coorSys' in request.json:
+@app.route('/api/stretchCanvasDown', methods=['POST'])
+def stretchCanvasDown():
+    if not request.json or not 'canvasNo' in request.json or not 'distance' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'stretch_window_down'
+    dict['call'] = 'stretch_canvas_down'
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/stretchWindowUp', methods=['POST'])
-def stretchWindowUp():
-    if not request.json or not 'windowNo' in request.json or not 'distance' in request.json or not 'coorSys' in request.json:
+@app.route('/api/stretchCanvasUp', methods=['POST'])
+def stretchCanvasUp():
+    if not request.json or not 'canvasNo' in request.json or not 'distance' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'stretch_window_up'
+    dict['call'] = 'stretch_canvas_up'
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/stretchWindowLeft', methods=['POST'])
-def stretchWindowLeft():
-    if not request.json or not 'windowNo' in request.json or not 'distance' in request.json or not 'coorSys' in request.json:
+@app.route('/api/stretchCanvasLeft', methods=['POST'])
+def stretchCanvasLeft():
+    if not request.json or not 'canvasNo' in request.json or not 'distance' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'stretch_window_left'
+    dict['call'] = 'stretch_canvas_left'
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/stretchWindowRight', methods=['POST'])
-def stretchWindowRight():
-    if not request.json or not 'windowNo' in request.json or not 'distance' in request.json or not 'coorSys' in request.json:
+@app.route('/api/stretchCanvasRight', methods=['POST'])
+def stretchCanvasRight():
+    if not request.json or not 'canvasNo' in request.json or not 'distance' in request.json or not 'coorSys' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'stretch_window_right'
+    dict['call'] = 'stretch_canvas_right'
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/setWindowName', methods=['POST'])
-def setWindowName():
-    if not request.json or not 'windowNo' in request.json or not 'name' in request.json:
+@app.route('/api/setCanvasName', methods=['POST'])
+def setCanvasName():
+    if not request.json or not 'canvasNo' in request.json or not 'name' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'set_window_name'
+    dict['call'] = 'set_canvas_name'
     returnData = processor.processMessage(dict)
     return returnData
 
-@app.route('/api/getWindowName', methods=['GET'])
-def getWindowName():
-    if not request.json or not 'windowNo' in request.json:
+@app.route('/api/getCanvasName', methods=['GET'])
+def getCanvasName():
+    if not request.json or not 'canvasNo' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
-    dict['call'] = 'get_window_name'
+    dict['call'] = 'get_canvas_name'
     returnData = processor.processMessage(dict)
     return returnData
 
@@ -1158,7 +1158,7 @@ def shiftLine():
 
 @app.route('/api/relocateLine', methods=['GET'])
 def relocateLine():
-    if not request.json or not 'elementNo' in request.json or not 'refPoint' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'windowNo' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'refPoint' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'canvasNo' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -1258,7 +1258,7 @@ def shiftLineStrip():
 
 @app.route('/api/relocateLineStrip', methods=['GET'])
 def relocateLineStrip():
-    if not request.json or not 'elementNo' in request.json or not 'refPoint' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'windowNo' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'refPoint' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'canvasNo' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -1378,7 +1378,7 @@ def shiftPolygon():
 
 @app.route('/api/relocatePolygon', methods=['GET'])
 def relocatePolygon():
-    if not request.json or not 'elementNo' in request.json or not 'refPoint' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'windowNo' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'refPoint' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'canvasNo' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -1498,7 +1498,7 @@ def shiftRectangle():
 
 @app.route('/api/relocateRectangle', methods=['POST'])
 def relocateRectangle():
-    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'windowNo' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'canvasNo' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -1658,7 +1658,7 @@ def shiftTexRectangle():
 
 @app.route('/api/relocateTexRectangle', methods=['POST'])
 def relocateTexRectangle():
-    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'windowNo' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'canvasNo' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -1804,7 +1804,7 @@ def shiftText():
 
 @app.route('/api/relocateText', methods=['POST'])
 def relocateText():
-    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'windowNo' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'x' in request.json or not 'y' in request.json or not 'coorSys' in request.json or not 'canvasNo' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -1938,7 +1938,7 @@ def getSetupSurfaceVisibility():
 
 @app.route('/api/removeElement', methods=['POST'])
 def removeElement():
-    if not request.json or not 'elementNo' in request.json or not 'windowNo' in request.json:
+    if not request.json or not 'elementNo' in request.json or not 'canvasNo' in request.json:
         abort(400)
     dict = json.dumps(request.json)
     dict = json.loads(dict)
@@ -1947,7 +1947,7 @@ def removeElement():
     return returnData
 
 if __name__ == '__main__':
-    if os.environ.get('WERKZEUG_RUN_MAIN') == 'true': #Only run on the child server to prevent two windows and port blocking
+    if os.environ.get('WERKZEUG_RUN_MAIN') == 'true': #Only run on the child server to prevent two canvases and port blocking
         messageParser = apiMessageParser()
         messageParser.processMessage({"call" : "login", "user" : "webusr"})
         messageParser.processMessage({"call" : "appName", "name" : "REST"})

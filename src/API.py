@@ -49,7 +49,7 @@ class apiMessageParser:
     elementBuffer = {}
     textureBuffer = {}
     looping = True
-    windowTextures = {}
+    canvasTextures = {}
     
     fonts = {"Times New Roman" : "FreeSerif",
          "Free Serif" : "FreeSerif",
@@ -79,84 +79,84 @@ class apiMessageParser:
         cursorNo = self.GUI.newCursorWithID(pieces['ID'], pieces['surfaceNo'], pieces['x'], pieces['y'], pieces['coorSys'])
         return {"cursorNo" : cursorNo}
         
-    #Creates a new window on the desired surface as requested by the API call
-    def newWindow(self, pieces):
-        windowNo = self.GUI.newWindow(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['surfaceNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['coorSys'], pieces['name'])
-        return {"windowNo" : windowNo}
+    #Creates a new canvas on the desired surface as requested by the API call
+    def newCanvas(self, pieces):
+        canvasNo = self.GUI.newCanvas(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['surfaceNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['coorSys'], pieces['name'])
+        return {"canvasNo" : canvasNo}
     
-    #Creates a new window with an ID on the desired surface as requested by the API call
-    def newWindowWithID(self, pieces):
-        windowNo = self.GUI.newWindowWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['surfaceNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['coorSys'], pieces['name'])
-        return {"windowNo" : windowNo}
+    #Creates a new canvas with an ID on the desired surface as requested by the API call
+    def newCanvasWithID(self, pieces):
+        canvasNo = self.GUI.newCanvasWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['surfaceNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['coorSys'], pieces['name'])
+        return {"canvasNo" : canvasNo}
         
-    #Creates a new circle on the desired window as requested by the API call
+    #Creates a new circle on the desired canvas as requested by the API call
     def newCircle(self, pieces):
-        elementNo = self.GUI.newCircle(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['radius'], pieces['coorSys'], pieces['lineColor'], pieces['lineWidth'], pieces['fillColor'], pieces['sides'])
+        elementNo = self.GUI.newCircle(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['canvasNo'], pieces['x'], pieces['y'], pieces['radius'], pieces['coorSys'], pieces['lineColor'], pieces['lineWidth'], pieces['fillColor'], pieces['sides'])
         return {"elementNo" : elementNo}
     
-    #Creates a new circle with an ID on the desired window as requested by the API call
+    #Creates a new circle with an ID on the desired canvas as requested by the API call
     def newCircleWithID(self, pieces):
-        elementNo = self.GUI.newCircleWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['radius'], pieces['coorSys'], pieces['lineColor'], pieces['lineWidth'], pieces['fillColor'], pieces['sides'])
+        elementNo = self.GUI.newCircleWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['canvasNo'], pieces['x'], pieces['y'], pieces['radius'], pieces['coorSys'], pieces['lineColor'], pieces['lineWidth'], pieces['fillColor'], pieces['sides'])
         return {"elementNo" : elementNo}
         
-    #Creates a new line on the desired window as requested by the API call
+    #Creates a new line on the desired canvas as requested by the API call
     def newLine(self, pieces):
-        elementNo = self.GUI.newLine(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['xStart'], pieces['yStart'], pieces['xEnd'], pieces['yEnd'], pieces['coorSys'], pieces['color'], pieces['width'])
+        elementNo = self.GUI.newLine(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['canvasNo'], pieces['xStart'], pieces['yStart'], pieces['xEnd'], pieces['yEnd'], pieces['coorSys'], pieces['color'], pieces['width'])
         return {"elementNo" : elementNo}
     
-    #Creates a new line with an ID in the desired window as requested by the API call
+    #Creates a new line with an ID in the desired canvas as requested by the API call
     def newLineWithID(self, pieces):
-        elementNo = self.GUI.newLineWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['xStart'], pieces['yStart'], pieces['xEnd'], pieces['yEnd'], pieces['coorSys'], pieces['color'], pieces['width'])
+        elementNo = self.GUI.newLineWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['canvasNo'], pieces['xStart'], pieces['yStart'], pieces['xEnd'], pieces['yEnd'], pieces['coorSys'], pieces['color'], pieces['width'])
         return {"elementNo" : elementNo}
         
-    #Creates the starting point of a new line strip on the desired window as requested by the API call
+    #Creates the starting point of a new line strip on the desired canvas as requested by the API call
     def newLineStrip(self, pieces):
-        elementNo = self.GUI.newLineStrip(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['color'], pieces['width'])
+        elementNo = self.GUI.newLineStrip(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['canvasNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['color'], pieces['width'])
         return {"elementNo" : elementNo}
     
-    #Creates the starting point of a new line strip with an ID on the desired window as requested by the API call
+    #Creates the starting point of a new line strip with an ID on the desired canvas as requested by the API call
     def newLineStripWithID(self, pieces):
-        elementNo = self.GUI.newLineStripWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['color'], pieces['width'])
+        elementNo = self.GUI.newLineStripWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['canvasNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['color'], pieces['width'])
         return {"elementNo" : elementNo}
         
-    #Creates the starting point of a new polygon on the desired window as requested by the API call
+    #Creates the starting point of a new polygon on the desired canvas as requested by the API call
     def newPolygon(self, pieces):
-        elementNo = self.GUI.newPolygon(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['lineColor'], pieces['lineWidth'], pieces['fillColor'])
+        elementNo = self.GUI.newPolygon(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['canvasNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['lineColor'], pieces['lineWidth'], pieces['fillColor'])
         return {"elementNo" : elementNo}
     
-    #Creates the starting point of a new polygon with an ID on the desired window as requested by the API call
+    #Creates the starting point of a new polygon with an ID on the desired canvas as requested by the API call
     def newPolygonWithID(self, pieces):
-        elementNo = self.GUI.newPolygonWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['lineColor'], pieces['lineWidth'], pieces['fillColor'])
+        elementNo = self.GUI.newPolygonWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['canvasNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['lineColor'], pieces['lineWidth'], pieces['fillColor'])
         return {"elementNo" : elementNo}
     
-    #Creates a new rectangle on the desired window as requested by the API call
+    #Creates a new rectangle on the desired canvas as requested by the API call
     def newRectangle(self,pieces):
-        elementNo = self.GUI.newRectangle(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['coorSys'], pieces['lineColor'], pieces['lineWidth'], pieces['fillColor'])
+        elementNo = self.GUI.newRectangle(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['canvasNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['coorSys'], pieces['lineColor'], pieces['lineWidth'], pieces['fillColor'])
         return {"elementNo" : elementNo}
     
-    #Creates a new rectangle with an ID on the desired window as requested by the API call
+    #Creates a new rectangle with an ID on the desired canvas as requested by the API call
     def newRectangleWithID(self,pieces):
-        elementNo = self.GUI.newRectangleWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['coorSys'], pieces['lineColor'], pieces['lineWidth'], pieces['fillColor'])
+        elementNo = self.GUI.newRectangleWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['canvasNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['coorSys'], pieces['lineColor'], pieces['lineWidth'], pieces['fillColor'])
         return {"elementNo" : elementNo}
     
-    #Creates a new textured rectangle on the desired window as requested by the API call
+    #Creates a new textured rectangle on the desired canvas as requested by the API call
     def newTexRectangle(self,pieces):
-        elementNo = self.GUI.newTexRectangle(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['coorSys'], pieces['imageID'])
+        elementNo = self.GUI.newTexRectangle(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['canvasNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['coorSys'], pieces['imageID'])
         return {"elementNo" : elementNo}
     
-    #Creates a new textured rectangle with an ID on the desired window as requested by the API call
+    #Creates a new textured rectangle with an ID on the desired canvas as requested by the API call
     def newTexRectangleWithID(self,pieces):
-        elementNo = self.GUI.newTexRectangleWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['coorSys'], pieces['imageID'])
+        elementNo = self.GUI.newTexRectangleWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['canvasNo'], pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['coorSys'], pieces['imageID'])
         return {"elementNo" : elementNo}
             
-    #Creates a new block of text on the desired window as requested by the API call
+    #Creates a new block of text on the desired canvas as requested by the API call
     def newText(self, pieces):
-        elementNo = self.GUI.newText(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['windowNo'], pieces['text'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['ptSize'], pieces['font'], pieces['color'])
+        elementNo = self.GUI.newText(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['canvasNo'], pieces['text'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['ptSize'], pieces['font'], pieces['color'])
         return {"elementNo" : elementNo}
     
-    #Creates a new block of text with an ID on the desired window as requested by the API call
+    #Creates a new block of text with an ID on the desired canvas as requested by the API call
     def newTextWithID(self, pieces):
-        elementNo = self.GUI.newTextWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['windowNo'], pieces['text'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['ptSize'], pieces['font'], pieces['color'])
+        elementNo = self.GUI.newTextWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'], pieces['canvasNo'], pieces['text'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['ptSize'], pieces['font'], pieces['color'])
         return {"elementNo" : elementNo}
     
     #Subscribes the current user to a surface
@@ -347,67 +347,67 @@ class apiMessageParser:
         self.GUI.disconnectSurfaces(pieces['surfaceNo1'], pieces['side1'], pieces['surfaceNo2'], pieces['side2'])
         return {}
 
-    def subscribeToWindow(self, pieces):
-        self.GUI.subscribeToWindow(pieces['IDapp'] + "," + pieces['IDinstance'], pieces['windowNo'])
+    def subscribeToCanvas(self, pieces):
+        self.GUI.subscribeToCanvas(pieces['IDapp'] + "," + pieces['IDinstance'], pieces['canvasNo'])
         return {}
     
-    def getWindowID(self, pieces):
-        ID = self.GUI.getWindowID(pieces['windowNo'])
+    def getCanvasID(self, pieces):
+        ID = self.GUI.getCanvasID(pieces['canvasNo'])
         return {"ID" : ID}
     
-    def setWindowID(self, pieces):
-        self.GUI.setWindowID(pieces['windowNo'],pieces['ID'])
+    def setCanvasID(self, pieces):
+        self.GUI.setCanvasID(pieces['canvasNo'],pieces['ID'])
         return {}
     
-    def getWindowOwner(self, pieces):
-        owner = self.GUI.getWindowOwner(pieces['windowNo'])
+    def getCanvasOwner(self, pieces):
+        owner = self.GUI.getCanvasOwner(pieces['canvasNo'])
         return {"owner" : owner}
     
-    def getWindowAppDetails(self, pieces):
-        app = self.GUI.getWindowAppDetails(pieces['windowNo'])
+    def getCanvasAppDetails(self, pieces):
+        app = self.GUI.getCanvasAppDetails(pieces['canvasNo'])
         return {"app" : app[0], "instance" : app[1]}
     
-    def getWindowsByID(self, pieces):
-        found = self.GUI.getWindowsByID(pieces['ID'])
+    def getCanvasesByID(self, pieces):
+        found = self.GUI.getCanvasesByID(pieces['ID'])
         dict = {}
         dict["count"] = len(found)
         for x in range(0,len(found)):
             dict[x] = found[x]
         return dict
     
-    def getWindowsByOwner(self, pieces):
-        found = self.GUI.getWindowsByOwner(pieces['owner'])
+    def getCanvasesByOwner(self, pieces):
+        found = self.GUI.getCanvasesByOwner(pieces['owner'])
         dict = {}
         dict["count"] = len(found)
         for x in range(0,len(found)):
             dict[x] = found[x]
         return dict
     
-    def getWindowsByAppName(self, pieces):
-        found = self.GUI.getWindowsByAppName(pieces['name'])
+    def getCanvasesByAppName(self, pieces):
+        found = self.GUI.getCanvasesByAppName(pieces['name'])
         dict = {}
         dict["count"] = len(found)
         for x in range(0,len(found)):
             dict[x] = found[x]
         return dict
     
-    def getWindowsByAppDetails(self, pieces):
-        found = self.GUI.getWindowsByAppDetails(pieces['name'], pieces['number'])
+    def getCanvasesByAppDetails(self, pieces):
+        found = self.GUI.getCanvasesByAppDetails(pieces['name'], pieces['number'])
         dict = {}
         dict["count"] = len(found)
         for x in range(0,len(found)):
             dict[x] = found[x]
         return dict
     
-    def becomeWindowAdmin(self, pieces):
-        test = self.GUI.becomeWindowAdmin(pieces['windowNo'], pieces['IDapp'], pieces['IDinstance'])
+    def becomeCanvasAdmin(self, pieces):
+        test = self.GUI.becomeCanvasAdmin(pieces['canvasNo'], pieces['IDapp'], pieces['IDinstance'])
         if(test==True):
             return {}
         else:
             return {"error" : 7}
         
-    def stopBeingWindowAdmin(self, pieces):
-        test = self.GUI.stopBeingWindowAdmin(pieces['windowNo'], pieces['IDapp'], pieces['IDinstance'])
+    def stopBeingCanvasAdmin(self, pieces):
+        test = self.GUI.stopBeingCanvasAdmin(pieces['canvasNo'], pieces['IDapp'], pieces['IDinstance'])
         if(test==True):
             return {}
         else:
@@ -465,8 +465,8 @@ class apiMessageParser:
             dict[x] = found[x]
         return dict
     
-    def getElementsOnWindow(self, pieces):
-        found = self.GUI.getElements(pieces['windowNo'])
+    def getElementsOnCanvas(self, pieces):
+        found = self.GUI.getElements(pieces['canvasNo'])
         dict = {}
         dict["count"] = len(found)
         for x in range(0,len(found)):
@@ -547,60 +547,60 @@ class apiMessageParser:
         visibility = self.GUI.isCursorVisible(pieces['cursorNo'])
         return {"visibility" : visibility}
         
-    def moveWindow(self, pieces):
-        self.GUI.moveWindow(pieces['windowNo'], pieces['xDist'], pieces['yDist'], pieces['coorSys'])
+    def moveCanvas(self, pieces):
+        self.GUI.moveCanvas(pieces['canvasNo'], pieces['xDist'], pieces['yDist'], pieces['coorSys'])
         return {}
         
-    def relocateWindow(self, pieces):
-        self.GUI.setWindowPos(pieces['windowNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['surfaceNo'])
+    def relocateCanvas(self, pieces):
+        self.GUI.setCanvasPos(pieces['canvasNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['surfaceNo'])
         return {}
         
-    def setWindowWidth(self, pieces):
-        self.GUI.setWindowWidth(pieces['windowNo'], pieces['width'], pieces['coorSys'])
+    def setCanvasWidth(self, pieces):
+        self.GUI.setCanvasWidth(pieces['canvasNo'], pieces['width'], pieces['coorSys'])
         return {}
         
-    def setWindowHeight(self, pieces):
-        self.GUI.setWindowHeight(pieces['windowNo'], pieces['height'], pieces['coorSys'])
+    def setCanvasHeight(self, pieces):
+        self.GUI.setCanvasHeight(pieces['canvasNo'], pieces['height'], pieces['coorSys'])
         return {}
         
-    def getWindowPosition(self, pieces):
-        loc = self.GUI.getWindowPos(pieces['windowNo'])
+    def getCanvasPosition(self, pieces):
+        loc = self.GUI.getCanvasPos(pieces['canvasNo'])
         return {"x" : loc[0], "y" : loc[1]}
         
-    def getWindowWidth(self, pieces):
-        width = self.GUI.getWindowWidth(pieces['windowNo'])
+    def getCanvasWidth(self, pieces):
+        width = self.GUI.getCanvasWidth(pieces['canvasNo'])
         return {"width" : width}
         
-    def getWindowHeight(self, pieces):
-        height = self.GUI.getWindowHeight(pieces['windowNo'])
+    def getCanvasHeight(self, pieces):
+        height = self.GUI.getCanvasHeight(pieces['canvasNo'])
         return {"height" : height}
         
-    def stretchWindowDown(self, pieces):
-        self.GUI.stretchWindowDown(pieces['windowNo'], pieces['distance'], pieces['coorSys'])
+    def stretchCanvasDown(self, pieces):
+        self.GUI.stretchCanvasDown(pieces['canvasNo'], pieces['distance'], pieces['coorSys'])
         return {}
         
-    def stretchWindowUp(self, pieces):
-        self.GUI.stretchWindowUp(pieces['windowNo'], pieces['distance'], pieces['coorSys'])
+    def stretchCanvasUp(self, pieces):
+        self.GUI.stretchCanvasUp(pieces['canvasNo'], pieces['distance'], pieces['coorSys'])
         return {}
         
-    def stretchWindowLeft(self, pieces):    
-        self.GUI.stretchWindowLeft(pieces['windowNo'], pieces['distance'], pieces['coorSys'])
+    def stretchCanvasLeft(self, pieces):    
+        self.GUI.stretchCanvasLeft(pieces['canvasNo'], pieces['distance'], pieces['coorSys'])
         return {}
         
-    def stretchWindowRight(self, pieces):
-        self.GUI.stretchWindowRight(pieces['windowNo'], pieces['distance'], pieces['coorSys'])
+    def stretchCanvasRight(self, pieces):
+        self.GUI.stretchCanvasRight(pieces['canvasNo'], pieces['distance'], pieces['coorSys'])
         return {}
         
-    def setWindowName(self, pieces):
-        self.GUI.setWindowName(pieces['windowNo'], pieces['name'])
+    def setCanvasName(self, pieces):
+        self.GUI.setCanvasName(pieces['canvasNo'], pieces['name'])
         return {}
         
-    def getWindowName(self, pieces):
-        name = self.GUI.getWindowName(pieces['windowNo'])
+    def getCanvasName(self, pieces):
+        name = self.GUI.getCanvasName(pieces['canvasNo'])
         return {"name" : name}
         
     def relocateCircle(self, pieces):
-        name = self.GUI.setCirclePos(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['windowNo'])
+        name = self.GUI.setCirclePos(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['canvasNo'])
         return {}
         
     def getCirclePosition(self, pieces):
@@ -656,7 +656,7 @@ class apiMessageParser:
         return {}
         
     def relocateLine(self, pieces):
-        self.GUI.relocateLine(pieces['elementNo'], pieces['refPoint'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['windowNo'])
+        self.GUI.relocateLine(pieces['elementNo'], pieces['refPoint'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['canvasNo'])
         return {}
         
     def getLineStart(self, pieces):
@@ -695,7 +695,7 @@ class apiMessageParser:
         return {}
         
     def relocateLineStrip(self, pieces):
-        self.GUI.relocateLineStrip(pieces['elementNo'], pieces['refPoint'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['windowNo'])
+        self.GUI.relocateLineStrip(pieces['elementNo'], pieces['refPoint'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['canvasNo'])
         return {}
         
     def addLineStripPoint(self, pieces):
@@ -742,7 +742,7 @@ class apiMessageParser:
         return {}
         
     def relocatePolygon(self, pieces):
-        self.GUI.relocatePolygon(pieces['elementNo'], pieces['refPoint'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['windowNo'])
+        self.GUI.relocatePolygon(pieces['elementNo'], pieces['refPoint'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['canvasNo'])
         return {}
         
     def addPolygonPoint(self, pieces):
@@ -790,7 +790,7 @@ class apiMessageParser:
         return {}
     
     def setRectangleTopLeft(self, pieces):
-        count = self.GUI.setRectangleTopLeft(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['windowNo'])
+        count = self.GUI.setRectangleTopLeft(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['canvasNo'])
         return {}
     
     def getRectangleTopLeft(self, pieces):
@@ -853,7 +853,7 @@ class apiMessageParser:
         return {}
     
     def setTexRectangleTopLeft(self, pieces):
-        count = self.GUI.setTexRectangleTopLeft(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['windowNo'])
+        count = self.GUI.setTexRectangleTopLeft(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['canvasNo'])
         return {}
     
     def getTexRectangleTopLeft(self, pieces):
@@ -908,7 +908,7 @@ class apiMessageParser:
         return {}
         
     def setTextPos(self, pieces):
-        self.GUI.setTextPos(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['windowNo'])
+        self.GUI.setTextPos(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['canvasNo'])
         return {}
         
     def getTextPos(self, pieces):
@@ -1001,7 +1001,7 @@ class apiMessageParser:
         return dict
     
     def removeElement(self, pieces):
-        self.GUI.removeElement(pieces['elementNo'], pieces['windowNo'])
+        self.GUI.removeElement(pieces['elementNo'], pieces['canvasNo'])
         return {}
     
     #A dict used so that the program can check which function to call for each API command, and to tell the program how many arguments should be expected
@@ -1009,21 +1009,21 @@ class apiMessageParser:
             'new_surface_with_ID' : (newSurfaceWithID, 1),
             'new_cursor' : (newCursor, 4),  # [1]=SurfaceNo  [2]=x  [3]=y
             'new_cursor_with_ID' : (newCursorWithID, 5), # [1]=ID [2]=SurfaceNo  [3]=x  [4]=y
-            'new_window' : (newWindow, 7),  # [1]=SurfaceNo  [2]=x  [3]=y  [4]=width  [5]=height  [6]=name
-            'new_window_with_ID' : (newWindowWithID, 8),
-            'new_circle' : (newCircle, 9),  # [1]=WindowNo  [2]=x  [3]=y  [4]=Radius  [5]=LineColor  [6]=FillColor
+            'new_canvas' : (newCanvas, 7),  # [1]=SurfaceNo  [2]=x  [3]=y  [4]=width  [5]=height  [6]=name
+            'new_canvas_with_ID' : (newCanvasWithID, 8),
+            'new_circle' : (newCircle, 9),  # [1]=CanvasNo  [2]=x  [3]=y  [4]=Radius  [5]=LineColor  [6]=FillColor
             'new_circle_with_ID' : (newCircleWithID, 10),
-            'new_line' : (newLine, 8),  # [1]=WindowNo  [2]=xStart  [3]=yStart  [4]=xEnd  [5]=yEnd  [6]=Color
+            'new_line' : (newLine, 8),  # [1]=CanvasNo  [2]=xStart  [3]=yStart  [4]=xEnd  [5]=yEnd  [6]=Color
             'new_line_with_ID' : (newLineWithID, 9),
-            'new_line_strip' : (newLineStrip, 6),  # [1]=WindowNo  [2]=x  [3]=y  [4]=Color
+            'new_line_strip' : (newLineStrip, 6),  # [1]=CanvasNo  [2]=x  [3]=y  [4]=Color
             'new_line_strip_with_ID' : (newLineStripWithID, 7),
-            'new_polygon' : (newPolygon, 7),  # [1]=WindowNo  [2]=x  [3]=y  [4]=LineColor  [5]=FillColor
+            'new_polygon' : (newPolygon, 7),  # [1]=CanvasNo  [2]=x  [3]=y  [4]=LineColor  [5]=FillColor
             'new_polygon_with_ID' : (newPolygonWithID, 8),
             'new_rectangle' : (newRectangle,9),
             'new_rectangle_with_ID' : (newRectangleWithID, 10),
             'new_texrectangle' : (newTexRectangle,9),
             'new_texrectangle_with_ID' : (newTexRectangleWithID, 10),
-            'new_text' : (newText, 8),  # [1]=WindowNo  [2]=text  [3]=x  [4]=y  [5]=PointSize  [6]=Font  [7]=Color
+            'new_text' : (newText, 8),  # [1]=CanvasNo  [2]=text  [3]=x  [4]=y  [5]=PointSize  [6]=Font  [7]=Color
             'new_text_with_ID' : (newTextWithID, 9),
             'subscribe_to_surface' : (subscribeToSurface, 1),
             'get_surface_ID' : (getSurfaceID, 1),
@@ -1061,17 +1061,17 @@ class apiMessageParser:
             'mirror_surface' : (mirrorSurface, 1),
             'connect_surfaces' : (connectSurfaces, 4),
             'disconnect_surfaces' : (disconnectSurfaces, 4),
-            'subscribe_to_window' : (subscribeToWindow, 1),
-            'get_window_ID' : (getWindowID, 1),
-            'set_window_ID' : (setWindowID, 2),
-            'get_window_owner' : (getWindowOwner, 1),
-            'get_window_app_details' : (getWindowAppDetails, 1),
-            'get_windows_by_ID' : (getWindowsByID, 1),
-            'get_windows_by_owner' : (getWindowsByOwner, 1),
-            'get_windows_by_app_name' : (getWindowsByAppName, 1),
-            'get_windows_by_app_details' : (getWindowsByAppDetails, 2),
-            'become_window_admin' : (becomeWindowAdmin, 1),
-            'stop_being_window_admin' : (stopBeingWindowAdmin, 1),
+            'subscribe_to_canvas' : (subscribeToCanvas, 1),
+            'get_canvas_ID' : (getCanvasID, 1),
+            'set_canvas_ID' : (setCanvasID, 2),
+            'get_canvas_owner' : (getCanvasOwner, 1),
+            'get_canvas_app_details' : (getCanvasAppDetails, 1),
+            'get_canvases_by_ID' : (getCanvasesByID, 1),
+            'get_canvases_by_owner' : (getCanvasesByOwner, 1),
+            'get_canvases_by_app_name' : (getCanvasesByAppName, 1),
+            'get_canvases_by_app_details' : (getCanvasesByAppDetails, 2),
+            'become_canvas_admin' : (becomeCanvasAdmin, 1),
+            'stop_being_canvas_admin' : (stopBeingCanvasAdmin, 1),
             'subscribe_to_element' : (subscribeToElement, 1),
             'get_element_ID' : (getElementID, 1),
             'set_element_ID' : (setElementID, 2),
@@ -1081,7 +1081,7 @@ class apiMessageParser:
             'get_elements_by_owner' : (getElementsByOwner, 1),
             'get_elements_by_app_name' : (getElementsByAppName, 1),
             'get_elements_by_app_details' : (getElementsByAppDetails, 2),
-            'get_elements_on_window' : (getElementsOnWindow, 1),
+            'get_elements_on_canvas' : (getElementsOnCanvas, 1),
             'become_element_admin' : (becomeElementAdmin, 1),
             'stop_being_element_admin' : (stopBeingElementAdmin, 1),
             'move_cursor' : (moveCursor, 3),  # [1]=CursorNo  [2]=xDistance  [3]=yDistance
@@ -1099,20 +1099,20 @@ class apiMessageParser:
             'show_cursor' : (showCursor,1),
             'hide_cursor' : (hideCursor,1),
             'is_cursor_visible' : (isCursorVisible,1),
-            'move_window' : (moveWindow, 4),  # [1]=WindowNo  [2]=xDistance  [3]=yDistance  [4]=coorSys
-            'relocate_window' : (relocateWindow, 5),  # [1]=WindowNo  [2]=x  [3]=y  [4]=coorSys  [5]=Surface
-            'set_window_width' : (setWindowWidth, 3),  # [1]=WindowNo  [2]=Width  [3]=coorSys
-            'set_window_height' : (setWindowHeight, 3),  # [1]=WindowNo  [2]=Height  [3]=coorSys
-            'get_window_pos' : (getWindowPosition, 1),  # [1]=WindowNo
-            'get_window_width' : (getWindowWidth, 1),  # [1]=WindowNo
-            'get_window_height' : (getWindowHeight, 1),  # [1]=WindowNo
-            'stretch_window_down' : (stretchWindowDown, 3),  # [1]=WindowNo  [2]=Distance  [3]=coorSys
-            'stretch_window_up' : (stretchWindowUp, 3),  # [1]=WindowNo  [2]=Distance  [3]=coorSys
-            'stretch_window_left' : (stretchWindowLeft, 2),  # [1]=WindowNo  [2]=Distance  [3]=coorSys
-            'stretch_window_right' : (stretchWindowRight, 2),  # [1]=WindowNo  [2]=Distance  [3]=coorSys
-            'set_window_name' : (setWindowName, 2),  # [1]=WindowNo  [2]=Name
-            'get_window_name' : (getWindowName, 1),  # [1]=WindowNo
-            'relocate_circle' : (relocateCircle, 5),  # [1]=ElementNo  [2]=x  [3]=y [4]=coorSys [5]=windowNo
+            'move_canvas' : (moveCanvas, 4),  # [1]=CanvasNo  [2]=xDistance  [3]=yDistance  [4]=coorSys
+            'relocate_canvas' : (relocateCanvas, 5),  # [1]=CanvasNo  [2]=x  [3]=y  [4]=coorSys  [5]=Surface
+            'set_canvas_width' : (setCanvasWidth, 3),  # [1]=CanvasNo  [2]=Width  [3]=coorSys
+            'set_canvas_height' : (setCanvasHeight, 3),  # [1]=CanvasNo  [2]=Height  [3]=coorSys
+            'get_canvas_pos' : (getCanvasPosition, 1),  # [1]=CanvasNo
+            'get_canvas_width' : (getCanvasWidth, 1),  # [1]=CanvasNo
+            'get_canvas_height' : (getCanvasHeight, 1),  # [1]=CanvasNo
+            'stretch_canvas_down' : (stretchCanvasDown, 3),  # [1]=CanvasNo  [2]=Distance  [3]=coorSys
+            'stretch_canvas_up' : (stretchCanvasUp, 3),  # [1]=CanvasNo  [2]=Distance  [3]=coorSys
+            'stretch_canvas_left' : (stretchCanvasLeft, 2),  # [1]=CanvasNo  [2]=Distance  [3]=coorSys
+            'stretch_canvas_right' : (stretchCanvasRight, 2),  # [1]=CanvasNo  [2]=Distance  [3]=coorSys
+            'set_canvas_name' : (setCanvasName, 2),  # [1]=CanvasNo  [2]=Name
+            'get_canvas_name' : (getCanvasName, 1),  # [1]=CanvasNo
+            'relocate_circle' : (relocateCircle, 5),  # [1]=ElementNo  [2]=x  [3]=y [4]=coorSys [5]=canvasNo
             'get_circle_pos' : (getCirclePosition, 1),  # [1]=ElementNo
             'get_element_type' : (getElementType, 1),  # [1]=ElementNo
             'set_circle_line_color' : (setCircleLineColor, 2),  # [1]=ElementNo  [2]=Color
@@ -1190,7 +1190,7 @@ class apiMessageParser:
             'set_text' : (setText, 2),  # [1]=ElementNo  [2]=String
             'get_text' : (getText, 1),  # [1]=ElementNo
             'shift_text' : (shiftText,4),
-            'relocate_text' : (setTextPos, 5),  # [1]=ElementNo  [2]=x  [3]=y  [4]=coorSys  [5]=WindowNo
+            'relocate_text' : (setTextPos, 5),  # [1]=ElementNo  [2]=x  [3]=y  [4]=coorSys  [5]=CanvasNo
             'get_text_pos' : (getTextPos, 1),  # [1]=ElementNo
             'get_text_width' : (getTextWidth, 3),   #[1]=text  [2]=font  [3]=pt
             'get_text_height' : (getTextHeight, 3),   #[1]=text  [2]=font  [3]=pt
@@ -1366,9 +1366,9 @@ class apiMessageParser:
         self.resize((self.winWidth, self.winHeight))#glViewport(0,0,self.winWidth,self.winHeight)
         return (rendertarget,fbo)
     
-    def createWindowTexture(self,windowNo, GUI):
-        width = GUI.getWindowWidth(windowNo)
-        height = GUI.getWindowHeight(windowNo)
+    def createCanvasTexture(self,canvasNo, GUI):
+        width = GUI.getCanvasWidth(canvasNo)
+        height = GUI.getCanvasHeight(canvasNo)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
         gluOrtho2D(0,width,0,height)
@@ -1391,7 +1391,7 @@ class apiMessageParser:
         glViewport(0, 0, width, height)
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        self.renderWindowContents(windowNo, GUI)
+        self.renderCanvasContents(canvasNo, GUI)
         
         glPopAttrib()
         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0)
@@ -1401,22 +1401,22 @@ class apiMessageParser:
     
     def renderSurfaceTex(self, surfaceNo):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        windows = self.GUI.getWindows(surfaceNo) #Gathers the list of windows on the surface
+        canvases = self.GUI.getCanvases(surfaceNo) #Gathers the list of canvases on the surface
         glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST)
         glHint(GL_LINE_SMOOTH_HINT, GL_NICEST)
         glHint(GL_POINT_SMOOTH_HINT, GL_NICEST)
         glEnable(GL_POLYGON_SMOOTH)
         glEnable(GL_LINE_SMOOTH)
         glEnable(GL_POINT_SMOOTH)
-        for x in range(0,len(windows)):
+        for x in range(0,len(canvases)):
             try:
-                loc = self.GUI.getWindowPos(windows[x])
-                #self.renderWindowContents(windows[x], self.GUI)
-                (rendertarget,fbo) = self.windowTextures[x]
+                loc = self.GUI.getCanvasPos(canvases[x])
+                #self.renderCanvasContents(canvases[x], self.GUI)
+                (rendertarget,fbo) = self.canvasTextures[x]
                 glEnable(GL_TEXTURE_2D)
                 glBindTexture(GL_TEXTURE_2D, rendertarget)
-                width = self.GUI.getWindowWidth(windows[x])
-                height = self.GUI.getWindowHeight(windows[x])
+                width = self.GUI.getCanvasWidth(canvases[x])
+                height = self.GUI.getCanvasHeight(canvases[x])
                 glBegin(GL_QUADS)
                 glTexCoord2f(0,1)
                 glVertex2f(loc[0],loc[1])
@@ -1438,7 +1438,7 @@ class apiMessageParser:
                 position = self.GUI.getCursorPos(cursors[z]) #Gets the position of the current cursor
                 rotation = self.GUI.getCursorRotation(cursors[z]) #Gets the rotation of the current cursor
                 self.drawCursor(position[0],position[1],rotation,False,"default") #Draws the cursor at the correct position with the correct rotation
-        for x in range(0,len(windows)):
+        for x in range(0,len(canvases)):
             glDeleteTextures(rendertarget)
             glDeleteFramebuffers(1, fbo)
         
@@ -1449,11 +1449,11 @@ class apiMessageParser:
         
         glPushMatrix()
         
-        #insert window texture creation
-        windows = self.GUI.getWindows(surfaceNo) #Gathers the list of windows on the surface
-        self.windowTextures = {}
-        for x in range(0,len(windows)):
-            self.windowTextures[x] = self.createWindowTexture(windows[x], self.GUI)
+        #insert canvas texture creation
+        canvases = self.GUI.getCanvases(surfaceNo) #Gathers the list of canvases on the surface
+        self.canvasTextures = {}
+        for x in range(0,len(canvases)):
+            self.canvasTextures[x] = self.createCanvasTexture(canvases[x], self.GUI)
         
         (rendertarget,fbo) = self.createTexture(width,height,surfaceNo)
         
@@ -1575,9 +1575,9 @@ class apiMessageParser:
         
         glPopMatrix()
         
-    def renderWindowContents(self, windowNo, GUIRead):
-        elements = GUIRead.getVisibleElements(int(windowNo)) #Gathers the list of elements in the window
-        #Loops through the elements in the window
+    def renderCanvasContents(self, canvasNo, GUIRead):
+        elements = GUIRead.getVisibleElements(int(canvasNo)) #Gathers the list of elements in the canvas
+        #Loops through the elements in the canvas
         for z in range(0,len(elements)):
             type = GUIRead.getEleType(elements[z]) #Gets the type of the current element
             
@@ -1613,7 +1613,7 @@ class apiMessageParser:
                         #Loops through the points in the line strip
                         for point in range(0,noPoints):
                             pos = GUIRead.getLineStripPoint(elements[z],point) #Gets the position of the current point
-                            drawPos = [pos[0], pos[1]] #Converts the position of the point based on the window location
+                            drawPos = [pos[0], pos[1]] #Converts the position of the point based on the canvas location
                             strip.append(drawPos) #Adds the calculated position to the point list
                         numpy_verts = numpy.array(strip, dtype=numpy.float32)
                         self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
@@ -1716,14 +1716,14 @@ class apiMessageParser:
                 self.drawTexturedPolygon(elements[z], 4)
         glColor4f(1,1,1,1)
         
-    #Processes the GUI data for the desired window and calls functions to draw the elements contained within it
-    def displayWindow(self, windowNo, GUIRead):
-        winPos = GUIRead.getWindowPos(windowNo) #Fetches the position of the upper left corner of the window
-        width = GUIRead.getWindowWidth(windowNo) #Fetches the width of the window
-        height = GUIRead.getWindowHeight(windowNo) #Fetches the height of the window
-        elements = GUIRead.getVisibleElements(int(windowNo)) #Gathers the list of elements in the window
+    #Processes the GUI data for the desired canvas and calls functions to draw the elements contained within it
+    def displayCanvas(self, canvasNo, GUIRead):
+        winPos = GUIRead.getCanvasPos(canvasNo) #Fetches the position of the upper left corner of the canvas
+        width = GUIRead.getCanvasWidth(canvasNo) #Fetches the width of the canvas
+        height = GUIRead.getCanvasHeight(canvasNo) #Fetches the height of the canvas
+        elements = GUIRead.getVisibleElements(int(canvasNo)) #Gathers the list of elements in the canvas
         
-        #Loops through the elements in the window
+        #Loops through the elements in the canvas
         for z in range(0,len(elements)):
             type = GUIRead.getEleType(elements[z]) #Gets the type of the current element
             
@@ -1759,7 +1759,7 @@ class apiMessageParser:
                         #Loops through the points in the line strip
                         for point in range(0,noPoints):
                             pos = GUIRead.getLineStripPoint(elements[z],point) #Gets the position of the current point
-                            drawPos = [winPos[0] + pos[0], winPos[1] - height + pos[1]] #Converts the position of the point based on the window location
+                            drawPos = [winPos[0] + pos[0], winPos[1] - height + pos[1]] #Converts the position of the point based on the canvas location
                             strip.append(drawPos)
                         numpy_verts = numpy.array(strip, dtype=numpy.float32)
                         self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(self.numpy_tex_0, GL_STATIC_DRAW))
@@ -1861,15 +1861,15 @@ class apiMessageParser:
                     self.elementBuffer[elements[z]] = (VertexBuffer(numpy_verts, GL_STATIC_DRAW),VertexBuffer(numpy_tex, GL_STATIC_DRAW))
                 self.drawTexturedPolygon(elements[z], 4)
                 
-    #Checks the setup GUI and displays any required windows and cursors on it by calling the relevant functions
+    #Checks the setup GUI and displays any required canvases and cursors on it by calling the relevant functions
     def checkSetupGUI(self):
         GUIRead = self.GUI # Makes a copy of the GUI so that changes during rendering don't cause problems
 
-        windows = GUIRead.getWindows(0) #Gathers the list of windows on the setup surface
+        canvases = GUIRead.getCanvases(0) #Gathers the list of canvases on the setup surface
         
-        #Loops through all the windows on the setup surface
-        for z in range(0,len(windows)):
-            self.displayWindow(windows[z],GUIRead) #Renders the current window in the list
+        #Loops through all the canvases on the setup surface
+        for z in range(0,len(canvases)):
+            self.displayCanvas(canvases[z],GUIRead) #Renders the current canvas in the list
         
         cursors = GUIRead.getCursors(0) #Gathers the list of cursors on the setup surface
         
@@ -1881,7 +1881,7 @@ class apiMessageParser:
                 mode = GUIRead.getCursorMode(cursors[z])
                 self.drawCursor(position[0],position[1],rotation,True,mode) #Draws the cursor at the correct position with the correct rotation
 	
-    #Resizes the window to the desired width and height
+    #Resizes the canvas to the desired width and height
     def resize(self, (width, height)):
         if height == 0:
             height = 1
@@ -2023,7 +2023,7 @@ class apiMessageParser:
         tex = list(reversed(tex))
         self.numpy_tex_180_m = numpy.array(tex, dtype=numpy.float32)
     
-    #Starts the pygame window and runs the rendering loop
+    #Starts the pygame canvas and runs the rendering loop
     def display(self):
         video_flags = None
         if(self.fullscreen==0):
@@ -2034,7 +2034,7 @@ class apiMessageParser:
         pygame.display.set_icon(pygame.image.load("icons/icon.png"))
         pygame.display.set_mode((self.winWidth, self.winHeight), video_flags)
 		
-        pygame.display.set_caption("Display") #Sets the window name
+        pygame.display.set_caption("Display") #Sets the canvas name
 		
         self.resize((self.winWidth, self.winHeight)) #Resizes winding
         self.init() #Initialises OpenGL

@@ -4,7 +4,7 @@ from math import *
 import time
 
 class GUI:
-	__slots__ = ['surfaces', 'surfaces_lock', 'displays', 'displays_lock', 'cursors', 'cursors_lock', 'lastcur', 'lastsur', 'lastwin', 'lastele' 'windows', 'windows_lock', 'elements', 'elements_lock', 'setup_surface_visible']
+	__slots__ = ['surfaces', 'surfaces_lock', 'displays', 'displays_lock', 'cursors', 'cursors_lock', 'lastcur', 'lastsur', 'lastwin', 'lastele' 'canvases', 'canvases_lock', 'elements', 'elements_lock', 'setup_surface_visible']
 	
 	correctDirect = {'right' : {0 : 'right', 1 : 'bottom', 2 : 'left', 3 : "top"},
 				'bottom' : {0 : 'bottom', 1 : 'left', 2 : 'top', 3 : "right"},
@@ -24,11 +24,11 @@ class GUI:
 		self.surfaces_lock = threading.Lock()
 		self.displays_lock = threading.Lock()
 		self.cursors_lock = threading.Lock()
-		self.windows_lock = threading.Lock()
+		self.canvases_lock = threading.Lock()
 		self.elements_lock = threading.Lock()
 		self.cursors = {}
 		self.surfaces = {}
-		self.windows = {}
+		self.canvases = {}
 		self.elements = {}
 		self.connections = []
 		self.surfaces["0"] = surface("server", "server", "0", "setup")
@@ -37,11 +37,11 @@ class GUI:
 		self.setup_surface_visible = False
 		
 	def winWidPropToPix(self, win, prop):
-		width = self.getWindowWidth(win)
+		width = self.getCanvasWidth(win)
 		return float(prop)*width
 		
 	def winHeiPropToPix(self, win, prop):
-		height = self.getWindowHeight(win)
+		height = self.getCanvasHeight(win)
 		return float(prop)*height
 		
 	def surfWidPropToPix(self, surf, prop):
@@ -153,21 +153,21 @@ class GUI:
 		self.surfaces[str(surfaceNo)].setRealHeight(height)
 		
 	def clearSurface(self, surfaceNo):
-		windows = self.getWindows(surfaceNo)
+		canvases = self.getCanvases(surfaceNo)
 		cursors = self.getCursors(surfaceNo)
-		for x in range(0,len(windows)):
-			elements = self.getElements(windows[x])
+		for x in range(0,len(canvases)):
+			elements = self.getElements(canvases[x])
 			for y in range(0,len(elements)):
-				self.removeElement(elements[y], windows[x])
+				self.removeElement(elements[y], canvases[x])
 		for x in range(0,len(cursors)):
 			self.removeCursor(cursors[x])
-		windowRemovalThread = threading.Thread(target=self.delayedWindowRemoval, args=[windows]) #Creates the display thread
-		windowRemovalThread.start()
+		canvasRemovalThread = threading.Thread(target=self.delayedCanvasRemoval, args=[canvases]) #Creates the display thread
+		canvasRemovalThread.start()
 		
-	def delayedWindowRemoval(self,windows):
+	def delayedCanvasRemoval(self,canvases):
 		time.sleep(3)
-		for x in range(0,len(windows)):
-			self.removeWindow(windows[x])
+		for x in range(0,len(canvases)):
+			self.removeCanvas(canvases[x])
 	
 	def saveDefinedSurfaces(self, filename):
 		file = open("layouts/" + filename + ".lyt", 'w')
@@ -548,7 +548,7 @@ class GUI:
 		yloc = self.cursors[str(cursorNo)].getY()
 		return (xloc,yloc)
 	
-	def newWindow(self, owner, app, appno, surface, x, y, xWid, yWid, coorSys, name):
+	def newCanvas(self, owner, app, appno, surface, x, y, xWid, yWid, coorSys, name):
 		if(coorSys=="prop"):
 			x = self.surfWidPropToPix(surface, x)
 			y = self.surfHeiPropToPix(surface, y)
@@ -559,192 +559,192 @@ class GUI:
 			y = self.surfHeiMetToPix(surface, y)
 			xWid = self.surfWidMetToPix(surface, xWid)
 			yWid = self.surfHeiMetToPix(surface, yWid)
-		newWin = window(owner,app,appno,x,y,xWid,yWid,name)
-		windowNo = 0
-		with self.windows_lock:
-			if (len(self.windows)==0):
-				self.windows[str(1)] = newWin
-				windowNo = 1
+		newWin = canvas(owner,app,appno,x,y,xWid,yWid,name)
+		canvasNo = 0
+		with self.canvases_lock:
+			if (len(self.canvases)==0):
+				self.canvases[str(1)] = newWin
+				canvasNo = 1
 				self.lastwin = 1
 			else:
 				self.lastwin=self.lastwin+1
-				self.windows[str(self.lastwin)] = newWin
-				windowNo = self.lastwin
-		self.surfaces[str(surface)].addWindow(windowNo)
-		return windowNo
+				self.canvases[str(self.lastwin)] = newWin
+				canvasNo = self.lastwin
+		self.surfaces[str(surface)].addCanvas(canvasNo)
+		return canvasNo
 	
-	def newWindowWithID(self, owner, app, appno, ID, surface, x, y, xWid, yWid, coorSys, name):
-		windowNo = self.newWindow(owner, app, appno, surface, x, y, xWid, yWid, coorSys, name)
-		self.windows[set(windowNo)].setID(ID)
-		return windowNo
+	def newCanvasWithID(self, owner, app, appno, ID, surface, x, y, xWid, yWid, coorSys, name):
+		canvasNo = self.newCanvas(owner, app, appno, surface, x, y, xWid, yWid, coorSys, name)
+		self.canvases[set(canvasNo)].setID(ID)
+		return canvasNo
 	
-	def subscribeToWindow(self, app, windowNo):
-		self.windows[str(windowNo)].subscribe(app)
+	def subscribeToCanvas(self, app, canvasNo):
+		self.canvases[str(canvasNo)].subscribe(app)
 	
-	def getWindowID(self, windowNo):
-		return self.windows[str(windowNo)].getID()
+	def getCanvasID(self, canvasNo):
+		return self.canvases[str(canvasNo)].getID()
 	
-	def setWindowID(self, windowNo, ID):
-		self.windows[str(windowNo)].setID(ID)
+	def setCanvasID(self, canvasNo, ID):
+		self.canvases[str(canvasNo)].setID(ID)
 		
-	def getWindowOwner(self, windowNo):
-		return self.windows[str(windowNo)].getOwner()
+	def getCanvasOwner(self, canvasNo):
+		return self.canvases[str(canvasNo)].getOwner()
 	
-	def getWindowAppDetails(self, windowNo):
-		return self.windows[str(windowNo)].getAppDetails()
+	def getCanvasAppDetails(self, canvasNo):
+		return self.canvases[str(canvasNo)].getAppDetails()
 	
-	def getWindowsByID(self, ID):
+	def getCanvasesByID(self, ID):
 		found = []
-		for x in range(0,len(self.windows)):
-			if(self.windows[str(x)].getID()==ID):
+		for x in range(0,len(self.canvases)):
+			if(self.canvases[str(x)].getID()==ID):
 				found.append(x)
 		return found
 	
-	def getWindowsByOwner(self, owner):
+	def getCanvasesByOwner(self, owner):
 		found = []
-		for x in range(0,len(self.windows)):
-			if(self.windows[str(x)].getOwner()==owner):
+		for x in range(0,len(self.canvases)):
+			if(self.canvases[str(x)].getOwner()==owner):
 				found.append(x)
 		return found
 	
-	def getWindowsByAppName(self, app):
+	def getCanvasesByAppName(self, app):
 		found = []
-		for x in range(0,len(self.windows)):
-			if(self.windows[str(x)].getAppDetails()[0]==app):
+		for x in range(0,len(self.canvases)):
+			if(self.canvases[str(x)].getAppDetails()[0]==app):
 				found.append(x)
 		return found
 	
-	def getWindowsByAppDetails(self, app, appno):
+	def getCanvasesByAppDetails(self, app, appno):
 		found = []
-		for x in range(0,len(self.windows)):
-			details = self.windows[str(x)].getAppDetails()
+		for x in range(0,len(self.canvases)):
+			details = self.canvases[str(x)].getAppDetails()
 			if(details[0]==app and details[1]==appno):
 				found.append(x)
 		return found
 	
-	def findWindow(self, windowNo):
+	def findCanvas(self, canvasNo):
 		location = 0
 		for key in self.surfaces:
-			if(self.surfaces[key].containsWin(windowNo)==True):
+			if(self.surfaces[key].containsWin(canvasNo)==True):
 				location = int(key)
 		return location
 	
-	def moveWindow(self, windowNo, xDist, yDist, coorSys):
+	def moveCanvas(self, canvasNo, xDist, yDist, coorSys):
 		if(coorSys=="prop"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			xDist = self.surfWidPropToPix(surfaceNo, xDist)
 			yDist = self.surfHeiPropToPix(surfaceNo, yDist)
 		elif(coorSys=="real"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			xDist = self.surfWidMetToPix(surfaceNo, xDist)
 			yDist = self.surfHeiMetToPix(surfaceNo, yDist)
-		self.windows[str(windowNo)].drag(xDist,yDist) #TODO Handle when moves to different screen
+		self.canvases[str(canvasNo)].drag(xDist,yDist) #TODO Handle when moves to different screen
 		
-	def setWindowPos(self, windowNo, xLoc, yLoc, coorSys, surface):
+	def setCanvasPos(self, canvasNo, xLoc, yLoc, coorSys, surface):
 		if(coorSys=="prop"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			xLoc = self.surfWidPropToPix(surfaceNo, xLoc)
 			yLoc = self.surfHeiPropToPix(surfaceNo, yLoc)
 		elif(coorSys=="real"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			xLoc = self.surfWidMetToPix(surfaceNo, xLoc)
 			yLoc = self.surfHeiMetToPix(surfaceNo, yLoc)
-		self.windows[str(windowNo)].setLoc(xLoc,yLoc)
-		origSur = self.findWindow(windowNo)
+		self.canvases[str(canvasNo)].setLoc(xLoc,yLoc)
+		origSur = self.findCanvas(canvasNo)
 		if(origSur != surface):
-			self.surfaces[str(origSur)].removeWindow(windowNo)
-			self.surfaces[str(surface)].addWindow(windowNo)
+			self.surfaces[str(origSur)].removeCanvas(canvasNo)
+			self.surfaces[str(surface)].addCanvas(canvasNo)
 			
-	def removeWindow(self,windowNo):
-		surNo = self.findWindow(windowNo)
-		self.surfaces[str(surNo)].removeWindow(windowNo)
-		self.windows.pop(str(windowNo),None)
+	def removeCanvas(self,canvasNo):
+		surNo = self.findCanvas(canvasNo)
+		self.surfaces[str(surNo)].removeCanvas(canvasNo)
+		self.canvases.pop(str(canvasNo),None)
 
-	def setWindowHeight(self,windowNo,height,coorSys):
+	def setCanvasHeight(self,canvasNo,height,coorSys):
 		if(coorSys=="prop"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			height = self.surfHeiPropToPix(surfaceNo, height)
 		elif(coorSys=="real"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			height = self.surfHeiMetToPix(surfaceNo, height)
-		self.windows[str(windowNo)].setHeight(height)
+		self.canvases[str(canvasNo)].setHeight(height)
 		
-	def setWindowWidth(self,windowNo,width,coorSys):
+	def setCanvasWidth(self,canvasNo,width,coorSys):
 		if(coorSys=="prop"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			width = self.surfWidPropToPix(surfaceNo, width)
 		elif(coorSys=="real"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			width = self.surfWidMetToPix(surfaceNo, width)
-		self.windows[str(windowNo)].setWidth(width)
+		self.canvases[str(canvasNo)].setWidth(width)
 		
-	def getWindowHeight(self,windowNo):
-		return self.windows[str(windowNo)].getHeight()
+	def getCanvasHeight(self,canvasNo):
+		return self.canvases[str(canvasNo)].getHeight()
 	
-	def getWindowWidth(self,windowNo):
-		return self.windows[str(windowNo)].getWidth()
+	def getCanvasWidth(self,canvasNo):
+		return self.canvases[str(canvasNo)].getWidth()
 	
-	def stretchWindowRight(self,windowNo,dist):
+	def stretchCanvasRight(self,canvasNo,dist):
 		if(coorSys=="prop"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			dist = self.surfWidPropToPix(surfaceNo, dist)
 		elif(coorSys=="real"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			dist = self.surfWidMetToPix(surfaceNo, dist)
-		self.windows[str(windowNo)].stretchRight(dist)
+		self.canvases[str(canvasNo)].stretchRight(dist)
 		
-	def stretchWindowLeft(self,windowNo,dist):
+	def stretchCanvasLeft(self,canvasNo,dist):
 		if(coorSys=="prop"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			dist = self.surfWidPropToPix(surfaceNo, dist)
 		elif(coorSys=="real"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			dist = self.surfWidMetToPix(surfaceNo, dist)
-		self.windows[str(windowNo)].stretchLeft(dist)
+		self.canvases[str(canvasNo)].stretchLeft(dist)
 		
-	def stretchWindowUp(self,windowNo,dist):
+	def stretchCanvasUp(self,canvasNo,dist):
 		if(coorSys=="prop"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			dist = self.surfHeiPropToPix(surfaceNo, dist)
 		elif(coorSys=="real"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			dist = self.surfHeiMetToPix(surfaceNo, dist)
-		self.windows[str(windowNo)].stretchUp(dist)
+		self.canvases[str(canvasNo)].stretchUp(dist)
 		
-	def stretchWindowDown(self,windowNo,dist):
+	def stretchCanvasDown(self,canvasNo,dist):
 		if(coorSys=="prop"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			dist = self.surfHeiPropToPix(surfaceNo, dist)
 		elif(coorSys=="real"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			dist = self.surfHeiMetToPix(surfaceNo, dist)
-		self.windows[str(windowNo)].stretchDown(dist)
+		self.canvases[str(canvasNo)].stretchDown(dist)
 		
-	def setWindowName(self,windowNo,name):
-		self.windows[str(windowNo)].setName(name)
+	def setCanvasName(self,canvasNo,name):
+		self.canvases[str(canvasNo)].setName(name)
 		
-	def getWindowName(self,windowNo):
-		return self.windows[str(windowNo)].getName()
+	def getCanvasName(self,canvasNo):
+		return self.canvases[str(canvasNo)].getName()
 	
-	def getWindowPos(self, windowNo):
-		xloc = self.windows[str(windowNo)].getX()
-		yloc = self.windows[str(windowNo)].getY()
+	def getCanvasPos(self, canvasNo):
+		xloc = self.canvases[str(canvasNo)].getX()
+		yloc = self.canvases[str(canvasNo)].getY()
 		return (xloc,yloc)
 	
-	def becomeWindowAdmin(self, windowNo, app, appno):
-		return self.windows[str(windowNo)].becomeAdmin(app, appno)
+	def becomeCanvasAdmin(self, canvasNo, app, appno):
+		return self.canvases[str(canvasNo)].becomeAdmin(app, appno)
 		
-	def stopBeingWindowAdmin(self, windowNo, app, appno):
-		return self.windows[str(windowNo)].stopBeingAdmin(app, appno)
+	def stopBeingCanvasAdmin(self, canvasNo, app, appno):
+		return self.canvases[str(canvasNo)].stopBeingAdmin(app, appno)
 	
 	def findElement(self, elementNo):
 		location = 0
-		for key in self.windows:
-			if(self.windows[key].containsEle(elementNo)==True):
+		for key in self.canvases:
+			if(self.canvases[key].containsEle(elementNo)==True):
 				location = int(key)
 		return location
 	
-	def newElement(self,element, windowNo):
+	def newElement(self,element, canvasNo):
 		elementNo = 0
 		with self.elements_lock:
 			if (len(self.elements)==0):
@@ -755,51 +755,51 @@ class GUI:
 				self.lastele=self.lastele+1
 				self.elements[str(self.lastele)] = element
 				elementNo = self.lastele
-		self.windows[str(windowNo)].addElement(elementNo)
+		self.canvases[str(canvasNo)].addElement(elementNo)
 		return elementNo
 	
-	def newCircle(self, owner, app, appno, windowNo, x, y, radius, coorSys, lineColor, lineWidth, fillColor, sides):
+	def newCircle(self, owner, app, appno, canvasNo, x, y, radius, coorSys, lineColor, lineWidth, fillColor, sides):
 		if(coorSys=="prop"):
-			x = int(self.winWidPropToPix(windowNo, x))
-			y = int(self.winHeiPropToPix(windowNo, y))
-			radius = self.winWidPropToPix(windowNo, radius)
+			x = int(self.winWidPropToPix(canvasNo, x))
+			y = int(self.winHeiPropToPix(canvasNo, y))
+			radius = self.winWidPropToPix(canvasNo, radius)
 		elif(coorSys=="real"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 			radius = self.surfWidMetToPix(surfaceNo, radius)
 		newCir = circle(owner, app, appno, x, y, radius, lineColor, lineWidth, fillColor, sides)
-		elementNo = self.newElement(newCir, windowNo)
+		elementNo = self.newElement(newCir, canvasNo)
 		return elementNo
 	
-	def newCircleWithID(self, owner, app, appno, ID, windowNo, x, y, radius, coorSys, lineColor, lineWidth, fillColor, sides):
-		elementNo = self.newCircle(owner, app, appno, windowNo, x, y, radius, coorSys, lineColor, lineWidth, fillColor, sides)
+	def newCircleWithID(self, owner, app, appno, ID, canvasNo, x, y, radius, coorSys, lineColor, lineWidth, fillColor, sides):
+		elementNo = self.newCircle(owner, app, appno, canvasNo, x, y, radius, coorSys, lineColor, lineWidth, fillColor, sides)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 		
-	def setCirclePos(self, elementNo, xLoc, yLoc, coorSys, windowNo):
+	def setCirclePos(self, elementNo, xLoc, yLoc, coorSys, canvasNo):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			xLoc = self.winWidPropToPix(windowNo, xLoc)
-			yLoc = self.winHeiPropToPix(windowNo, yLoc)
+			canvasNo = self.findElement(elementNo)
+			xLoc = self.winWidPropToPix(canvasNo, xLoc)
+			yLoc = self.winHeiPropToPix(canvasNo, yLoc)
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			xLoc = self.surfWidMetToPix(surfaceNo, xLoc)
 			yLoc = self.surfHeiMetToPix(surfaceNo, yLoc)
 		self.elements[str(elementNo)].setCenter(xLoc,yLoc)
 		origWin = self.findElement(elementNo)
-		if(origWin != windowNo):
-			self.windows[str(origWin)].removeElement(elementNo)
-			self.windows[str(windowNo)].addElement(elementNo)
+		if(origWin != canvasNo):
+			self.canvases[str(origWin)].removeElement(elementNo)
+			self.canvases[str(canvasNo)].addElement(elementNo)
 		
 	def setCircleRad(self, elementNo, radius, coorSys):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			radius = self.winWidPropToPix(windowNo, radius)
+			canvasNo = self.findElement(elementNo)
+			radius = self.winWidPropToPix(canvasNo, radius)
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			radius = self.surfWidMetToPix(surfaceNo, radius)
 		self.elements[str(elementNo)].setRadius(radius)
 		
@@ -846,35 +846,35 @@ class GUI:
 	def borderTest(self, elementNo):
 		return self.elements[str(elementNo)].borderTest()
 	
-	def newLine(self, owner, app, appno, windowNo, x1, y1, x2, y2, coorSys, color, width):
+	def newLine(self, owner, app, appno, canvasNo, x1, y1, x2, y2, coorSys, color, width):
 		if(coorSys=="prop"):
-			x1 = self.winWidPropToPix(windowNo, x1)
-			y1 = self.winHeiPropToPix(windowNo, y1)
-			x2 = self.winWidPropToPix(windowNo, x2)
-			y2 = self.winHeiPropToPix(windowNo, y2)
+			x1 = self.winWidPropToPix(canvasNo, x1)
+			y1 = self.winHeiPropToPix(canvasNo, y1)
+			x2 = self.winWidPropToPix(canvasNo, x2)
+			y2 = self.winHeiPropToPix(canvasNo, y2)
 		elif(coorSys=="real"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			x1 = self.surfWidMetToPix(surfaceNo, x1)
 			y1 = self.surfHeiMetToPix(surfaceNo, y1)
 			x2 = self.surfWidMetToPix(surfaceNo, x2)
 			y2 = self.surfHeiMetToPix(surfaceNo, y2)
 		newLine = line(owner, app, appno, x1, y1, x2, y2, color, width)
-		elementNo = self.newElement(newLine, windowNo)
+		elementNo = self.newElement(newLine, canvasNo)
 		return elementNo
 	
-	def newLineWithID(self, owner, app, appno, ID, windowNo, x1, y1, x2, y2, coorSys, color, width):
-		elementNo = self.newLine(owner, app, appno, windowNo, x1, y1, x2, y2, coorSys, color, width)
+	def newLineWithID(self, owner, app, appno, ID, canvasNo, x1, y1, x2, y2, coorSys, color, width):
+		elementNo = self.newLine(owner, app, appno, canvasNo, x1, y1, x2, y2, coorSys, color, width)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
 	def shiftLine(self, elementNo, xDist, yDist, coorSys):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			xDist = int(self.winWidPropToPix(windowNo, xDist))
-			yDist = int(self.winHeiPropToPix(windowNo, yDist))
+			canvasNo = self.findElement(elementNo)
+			xDist = int(self.winWidPropToPix(canvasNo, xDist))
+			yDist = int(self.winHeiPropToPix(canvasNo, yDist))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			xDist = self.surfWidMetToPix(surfaceNo, xDist)
 			yDist = self.surfHeiMetToPix(surfaceNo, yDist)
 		start = self.getLineStart(elementNo)
@@ -882,14 +882,14 @@ class GUI:
 		self.elements[str(elementNo)].setStart(start[0]+xDist,start[1]+yDist)
 		self.elements[str(elementNo)].setEnd(end[0]+xDist,end[1]+yDist)
 		
-	def relocateLine(self, elementNo, refPoint, x, y, coorSys, windowNo):
+	def relocateLine(self, elementNo, refPoint, x, y, coorSys, canvasNo):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			x = int(self.winWidPropToPix(windowNo, x))
-			y = int(self.winHeiPropToPix(windowNo, y))
+			canvasNo = self.findElement(elementNo)
+			x = int(self.winWidPropToPix(canvasNo, x))
+			y = int(self.winHeiPropToPix(canvasNo, y))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 		orig = (0,0)
@@ -902,24 +902,24 @@ class GUI:
 	
 	def setLineStart(self,elementNo,x,y,coorSys):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			x = int(self.winWidPropToPix(windowNo, x))
-			y = int(self.winHeiPropToPix(windowNo, y))
+			canvasNo = self.findElement(elementNo)
+			x = int(self.winWidPropToPix(canvasNo, x))
+			y = int(self.winHeiPropToPix(canvasNo, y))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].setStart(x,y)
 		
 	def setLineEnd(self,elementNo,x,y,coorSys):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			x = int(self.winWidPropToPix(windowNo, x))
-			y = int(self.winHeiPropToPix(windowNo, y))
+			canvasNo = self.findElement(elementNo)
+			x = int(self.winWidPropToPix(canvasNo, x))
+			y = int(self.winHeiPropToPix(canvasNo, y))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].setEnd(x,y)
@@ -950,31 +950,31 @@ class GUI:
 	def upToDateLine(self,elementNo):
 		return self.elements[str(elementNo)].update()
 	
-	def newLineStrip(self, owner, app, appno, windowNo, x, y, coorSys, color, width):
+	def newLineStrip(self, owner, app, appno, canvasNo, x, y, coorSys, color, width):
 		if(coorSys=="prop"):
-			x = self.winWidPropToPix(windowNo, x)
-			y = self.winHeiPropToPix(windowNo, y)
+			x = self.winWidPropToPix(canvasNo, x)
+			y = self.winHeiPropToPix(canvasNo, y)
 		elif(coorSys=="real"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 		newLineStrip = lineStrip(owner, app, appno, x, y, color, width)
-		elementNo = self.newElement(newLineStrip, windowNo)
+		elementNo = self.newElement(newLineStrip, canvasNo)
 		return elementNo
 	
-	def newLineStripWithID(self, owner, app, appno, ID, windowNo, x, y, coorSys, color, width):
-		elementNo = self.newLineStrip(owner, app, appno, windowNo, x, y, coorSys, color, width)
+	def newLineStripWithID(self, owner, app, appno, ID, canvasNo, x, y, coorSys, color, width):
+		elementNo = self.newLineStrip(owner, app, appno, canvasNo, x, y, coorSys, color, width)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
 	def shiftLineStrip(self, elementNo, xDist, yDist, coorSys):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			xDist = int(self.winWidPropToPix(windowNo, xDist))
-			yDist = int(self.winHeiPropToPix(windowNo, yDist))
+			canvasNo = self.findElement(elementNo)
+			xDist = int(self.winWidPropToPix(canvasNo, xDist))
+			yDist = int(self.winHeiPropToPix(canvasNo, yDist))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			xDist = self.surfWidMetToPix(surfaceNo, xDist)
 			yDist = self.surfHeiMetToPix(surfaceNo, yDist)
 		count = self.getLineStripPointsCount(elementNo)
@@ -982,14 +982,14 @@ class GUI:
 			orig = self.getLineStripPoint(elementNo, x)
 			self.moveLineStripPoint(elementNo, x, orig[0]+xDist, orig[1]+yDist, "pix")
 		
-	def relocateLineStrip(self, elementNo, refPoint, x, y, coorSys, windowNo):
+	def relocateLineStrip(self, elementNo, refPoint, x, y, coorSys, canvasNo):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			x = int(self.winWidPropToPix(windowNo, x))
-			y = int(self.winHeiPropToPix(windowNo, y))
+			canvasNo = self.findElement(elementNo)
+			x = int(self.winWidPropToPix(canvasNo, x))
+			y = int(self.winHeiPropToPix(canvasNo, y))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 		orig = self.getLineStripPoint(elementNo, refPoint)
@@ -998,24 +998,24 @@ class GUI:
 	
 	def addLineStripPoint(self, elementNo, x, y, coorSys):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			x = self.winWidPropToPix(windowNo, x)
-			y = self.winHeiPropToPix(windowNo, y)
+			canvasNo = self.findElement(elementNo)
+			x = self.winWidPropToPix(canvasNo, x)
+			y = self.winHeiPropToPix(canvasNo, y)
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].addPoint(x,y)
 		
 	def addLineStripPointAt(self, elementNo, x, y, coorSys, index):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			x = self.winWidPropToPix(windowNo, x)
-			y = self.winHeiPropToPix(windowNo, y)
+			canvasNo = self.findElement(elementNo)
+			x = self.winWidPropToPix(canvasNo, x)
+			y = self.winHeiPropToPix(canvasNo, y)
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].addPointAt(int(x),int(y),int(index))
@@ -1027,12 +1027,12 @@ class GUI:
 	
 	def moveLineStripPoint(self, elementNo, pointNo, x, y, coorSys):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			x = self.winWidPropToPix(windowNo, x)
-			y = self.winHeiPropToPix(windowNo, y)
+			canvasNo = self.findElement(elementNo)
+			x = self.winWidPropToPix(canvasNo, x)
+			y = self.winHeiPropToPix(canvasNo, y)
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].setPoint(pointNo, x, y)
@@ -1060,31 +1060,31 @@ class GUI:
 	def upToDateLineStrip(self,elementNo):
 		return self.elements[str(elementNo)].update()
 	
-	def newPolygon(self, owner, app, appno, windowNo, x, y, coorSys, lineColor, lineWidth, fillColor):
+	def newPolygon(self, owner, app, appno, canvasNo, x, y, coorSys, lineColor, lineWidth, fillColor):
 		if(coorSys=="prop"):
-			x = self.winWidPropToPix(windowNo, x)
-			y = self.winHeiPropToPix(windowNo, y)
+			x = self.winWidPropToPix(canvasNo, x)
+			y = self.winHeiPropToPix(canvasNo, y)
 		elif(coorSys=="real"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 		newPoly = polygon(owner, app, appno, x, y, lineColor, lineWidth, fillColor)
-		elementNo = self.newElement(newPoly, windowNo)
+		elementNo = self.newElement(newPoly, canvasNo)
 		return elementNo
 	
-	def newPolygonWithID(self, owner, app, appno, ID, windowNo, x, y, coorSys, lineColor, lineWidth, fillColor):
-		elementNo = self.newPolygon(owner, app, appno, windowNo, x, y, coorSys, lineColor, lineWidth, fillColor)
+	def newPolygonWithID(self, owner, app, appno, ID, canvasNo, x, y, coorSys, lineColor, lineWidth, fillColor):
+		elementNo = self.newPolygon(owner, app, appno, canvasNo, x, y, coorSys, lineColor, lineWidth, fillColor)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
 	def shiftPolygon(self, elementNo, xDist, yDist, coorSys):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			xDist = int(self.winWidPropToPix(windowNo, xDist))
-			yDist = int(self.winHeiPropToPix(windowNo, yDist))
+			canvasNo = self.findElement(elementNo)
+			xDist = int(self.winWidPropToPix(canvasNo, xDist))
+			yDist = int(self.winHeiPropToPix(canvasNo, yDist))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			xDist = self.surfWidMetToPix(surfaceNo, xDist)
 			yDist = self.surfHeiMetToPix(surfaceNo, yDist)
 		count = self.getPolygonPointsCount(elementNo)
@@ -1092,14 +1092,14 @@ class GUI:
 			orig = self.getPolygonPoint(elementNo, x)
 			self.movePolygonPoint(elementNo, x, orig[0]+xDist, orig[1]+yDist, "pix")
 		
-	def relocatePolygon(self, elementNo, refPoint, x, y, coorSys, windowNo):
+	def relocatePolygon(self, elementNo, refPoint, x, y, coorSys, canvasNo):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			x = int(self.winWidPropToPix(windowNo, x))
-			y = int(self.winHeiPropToPix(windowNo, y))
+			canvasNo = self.findElement(elementNo)
+			x = int(self.winWidPropToPix(canvasNo, x))
+			y = int(self.winHeiPropToPix(canvasNo, y))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 		orig = self.getPolygonPoint(elementNo, refPoint)
@@ -1108,12 +1108,12 @@ class GUI:
 	
 	def addPolygonPoint(self, elementNo, x, y, coorSys):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			x = int(self.winWidPropToPix(windowNo, x))
-			y = int(self.winHeiPropToPix(windowNo, y))
+			canvasNo = self.findElement(elementNo)
+			x = int(self.winWidPropToPix(canvasNo, x))
+			y = int(self.winHeiPropToPix(canvasNo, y))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].addPoint(x,y)
@@ -1125,12 +1125,12 @@ class GUI:
 	
 	def movePolygonPoint(self, elementNo, pointNo, x, y, coorSys):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			x = int(self.winWidPropToPix(windowNo, x))
-			y = int(self.winHeiPropToPix(windowNo, y))
+			canvasNo = self.findElement(elementNo)
+			x = int(self.winWidPropToPix(canvasNo, x))
+			y = int(self.winHeiPropToPix(canvasNo, y))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].setPoint(pointNo, x, y)
@@ -1162,51 +1162,51 @@ class GUI:
 	def upToDatePolygon(self,elementNo):
 		return self.elements[str(elementNo)].update()
 	
-	def newRectangle(self, owner, app, appno, windowNo, x, y, width, height, coorSys, lineColor, lineWidth, fillColor):
+	def newRectangle(self, owner, app, appno, canvasNo, x, y, width, height, coorSys, lineColor, lineWidth, fillColor):
 		if(coorSys=="prop"):
-			x = self.winWidPropToPix(windowNo, x)
-			y = self.winHeiPropToPix(windowNo, y)
-			width = self.winWidPropToPix(windowNo, width)
-			height = self.winHeiPropToPix(windowNo, height)
+			x = self.winWidPropToPix(canvasNo, x)
+			y = self.winHeiPropToPix(canvasNo, y)
+			width = self.winWidPropToPix(canvasNo, width)
+			height = self.winHeiPropToPix(canvasNo, height)
 		elif(coorSys=="real"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 			width = self.surfWidMetToPix(surfaceNo, width)
 			height = self.surfHeiMetToPix(surfaceNo, height)
 		newRect = rectangle(owner, app, appno, x, y, width, height, lineColor, lineWidth, fillColor)
-		elementNo = self.newElement(newRect, windowNo)
+		elementNo = self.newElement(newRect, canvasNo)
 		return elementNo
 	
-	def newRectangleWithID(self, owner, app, appno, ID, windowNo, x, y, width, height, coorSys, lineColor, lineWidth, fillColor):
-		elementNo = self.newRectangle(owner, app, appno, windowNo, x, y, width, height, coorSys, lineColor, lineWidth, fillColor)
+	def newRectangleWithID(self, owner, app, appno, ID, canvasNo, x, y, width, height, coorSys, lineColor, lineWidth, fillColor):
+		elementNo = self.newRectangle(owner, app, appno, canvasNo, x, y, width, height, coorSys, lineColor, lineWidth, fillColor)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
-	def setRectangleTopLeft(self, elementNo, x, y, coorSys, windowNo):
+	def setRectangleTopLeft(self, elementNo, x, y, coorSys, canvasNo):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			x = int(self.winWidPropToPix(windowNo, x))
-			y = int(self.winHeiPropToPix(windowNo, y))
+			canvasNo = self.findElement(elementNo)
+			x = int(self.winWidPropToPix(canvasNo, x))
+			y = int(self.winHeiPropToPix(canvasNo, y))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].setTopLeft(x,y)
 		origWin = self.findElement(elementNo)
-		if(origWin != windowNo):
-			self.windows[str(origWin)].removeElement(elementNo)
-			self.windows[str(windowNo)].addElement(elementNo)
+		if(origWin != canvasNo):
+			self.canvases[str(origWin)].removeElement(elementNo)
+			self.canvases[str(canvasNo)].addElement(elementNo)
 			
 	def shiftRectangle(self, elementNo, xDist, yDist, coorSys):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			xDist = int(self.winWidPropToPix(windowNo, xDist))
-			yDist = int(self.winHeiPropToPix(windowNo, yDist))
+			canvasNo = self.findElement(elementNo)
+			xDist = int(self.winWidPropToPix(canvasNo, xDist))
+			yDist = int(self.winHeiPropToPix(canvasNo, yDist))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			xDist = self.surfWidMetToPix(surfaceNo, xDist)
 			yDist = self.surfHeiMetToPix(surfaceNo, yDist)
 		orig = self.getRectangleTopLeft(elementNo)
@@ -1234,11 +1234,11 @@ class GUI:
 	
 	def setRectangleWidth(self, elementNo, width, coorSys):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			width = int(self.winWidPropToPix(windowNo, width))
+			canvasNo = self.findElement(elementNo)
+			width = int(self.winWidPropToPix(canvasNo, width))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			width = self.surfWidMetToPix(surfaceNo, width)
 		self.elements[str(elementNo)].setWidth(width)
 		
@@ -1247,11 +1247,11 @@ class GUI:
 		
 	def setRectangleHeight(self, elementNo, height, coorSys):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			height = int(self.winHeiPropToPix(windowNo, height))
+			canvasNo = self.findElement(elementNo)
+			height = int(self.winHeiPropToPix(canvasNo, height))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			height = self.surfHeiMetToPix(surfaceNo, height)
 		self.elements[str(elementNo)].setHeight(height)
 		
@@ -1282,24 +1282,24 @@ class GUI:
 	def upToDateRectangle(self,elementNo):
 		return self.elements[str(elementNo)].update()
 	
-	def newTexRectangle(self, owner, app, appno, windowNo, x, y, width, height, coorSys, texture):
+	def newTexRectangle(self, owner, app, appno, canvasNo, x, y, width, height, coorSys, texture):
 		if(coorSys=="prop"):
-			x = self.winWidPropToPix(windowNo, x)
-			y = self.winHeiPropToPix(windowNo, y)
-			width = self.winWidPropToPix(windowNo, width)
-			height = self.winHeiPropToPix(windowNo, height)
+			x = self.winWidPropToPix(canvasNo, x)
+			y = self.winHeiPropToPix(canvasNo, y)
+			width = self.winWidPropToPix(canvasNo, width)
+			height = self.winHeiPropToPix(canvasNo, height)
 		elif(coorSys=="real"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 			width = self.surfWidMetToPix(surfaceNo, width)
 			height = self.surfHeiMetToPix(surfaceNo, height)
 		newRect = texRectangle(owner, app, appno, x, y, width, height, texture)
-		elementNo = self.newElement(newRect, windowNo)
+		elementNo = self.newElement(newRect, canvasNo)
 		return elementNo
 	
-	def newTexRectangleWithID(self, owner, app, appno, ID, windowNo, x, y, width, height, coorSys, texture):
-		elementNo = self.newTexRectangle(owner, app, appno, windowNo, x, y, width, height, coorSys, texture)
+	def newTexRectangleWithID(self, owner, app, appno, ID, canvasNo, x, y, width, height, coorSys, texture):
+		elementNo = self.newTexRectangle(owner, app, appno, canvasNo, x, y, width, height, coorSys, texture)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
@@ -1309,30 +1309,30 @@ class GUI:
 	def getTexRectangleTexture(self, elementNo):
 		return self.elements[str(elementNo)].getTexture()
 	
-	def setTexRectangleTopLeft(self, elementNo, x, y, coorSys, windowNo):
+	def setTexRectangleTopLeft(self, elementNo, x, y, coorSys, canvasNo):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			x = int(self.winWidPropToPix(windowNo, x))
-			y = int(self.winHeiPropToPix(windowNo, y))
+			canvasNo = self.findElement(elementNo)
+			x = int(self.winWidPropToPix(canvasNo, x))
+			y = int(self.winHeiPropToPix(canvasNo, y))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 		self.elements[str(elementNo)].setTopLeft(x,y)
 		origWin = self.findElement(elementNo)
-		if(origWin != windowNo):
-			self.windows[str(origWin)].removeElement(elementNo)
-			self.windows[str(windowNo)].addElement(elementNo)
+		if(origWin != canvasNo):
+			self.canvases[str(origWin)].removeElement(elementNo)
+			self.canvases[str(canvasNo)].addElement(elementNo)
 			
 	def shiftTexRectangle(self, elementNo, xDist, yDist, coorSys):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			xDist = int(self.winWidPropToPix(windowNo, xDist))
-			yDist = int(self.winHeiPropToPix(windowNo, yDist))
+			canvasNo = self.findElement(elementNo)
+			xDist = int(self.winWidPropToPix(canvasNo, xDist))
+			yDist = int(self.winHeiPropToPix(canvasNo, yDist))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			xDist = self.surfWidMetToPix(surfaceNo, xDist)
 			yDist = self.surfHeiMetToPix(surfaceNo, yDist)
 		orig = self.getTexRectangleTopLeft(elementNo)
@@ -1360,11 +1360,11 @@ class GUI:
 	
 	def setTexRectangleWidth(self, elementNo, width, coorSys):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			width = int(self.winWidPropToPix(windowNo, width))
+			canvasNo = self.findElement(elementNo)
+			width = int(self.winWidPropToPix(canvasNo, width))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			width = self.surfWidMetToPix(surfaceNo, width)
 		self.elements[str(elementNo)].setWidth(width)
 		
@@ -1373,11 +1373,11 @@ class GUI:
 		
 	def setTexRectangleHeight(self, elementNo, height, coorSys):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			height = int(self.winHeiPropToPix(windowNo, height))
+			canvasNo = self.findElement(elementNo)
+			height = int(self.winHeiPropToPix(canvasNo, height))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			height = self.surfHeiMetToPix(surfaceNo, height)
 		self.elements[str(elementNo)].setHeight(height)
 		
@@ -1387,20 +1387,20 @@ class GUI:
 	def upToDateTexRectangle(self,elementNo):
 		return self.elements[str(elementNo)].update()
 	
-	def newText(self, owner, app, appno, windowNo, text, x, y, coorSys, pt, font, color):
+	def newText(self, owner, app, appno, canvasNo, text, x, y, coorSys, pt, font, color):
 		if(coorSys=="prop"):
-			x = self.winWidPropToPix(windowNo, x)
-			y = self.winHeiPropToPix(windowNo, y)
+			x = self.winWidPropToPix(canvasNo, x)
+			y = self.winHeiPropToPix(canvasNo, y)
 		elif(coorSys=="real"):
-			surfaceNo = self.findWindow(windowNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			x = self.surfWidMetToPix(surfaceNo, x)
 			y = self.surfHeiMetToPix(surfaceNo, y)
 		newText = textBox(owner, app, appno, text, x, y, pt, font, color)
-		elementNo = self.newElement(newText, windowNo)
+		elementNo = self.newElement(newText, canvasNo)
 		return elementNo
 	
-	def newTextWithID(self, owner, app, appno, ID, windowNo, text, x, y, coorSys, pt, font, color):
-		elementNo = self.newText(owner, app, appno, windowNo, text, x, y, coorSys, pt, font, color)
+	def newTextWithID(self, owner, app, appno, ID, canvasNo, text, x, y, coorSys, pt, font, color):
+		elementNo = self.newText(owner, app, appno, canvasNo, text, x, y, coorSys, pt, font, color)
 		self.elements[set(elementNo)].setID(ID)
 		return elementNo
 	
@@ -1410,44 +1410,44 @@ class GUI:
 	def getText(self, elementNo):
 		return self.elements[str(elementNo)].getText()
 	
-	def setTextPos(self, elementNo, xLoc, yLoc, coorSys, window):
+	def setTextPos(self, elementNo, xLoc, yLoc, coorSys, canvas):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			xLoc = int(self.winWidPropToPix(windowNo, xLoc))
-			yLoc = int(self.winHeiPropToPix(windowNo, yLoc))
+			canvasNo = self.findElement(elementNo)
+			xLoc = int(self.winWidPropToPix(canvasNo, xLoc))
+			yLoc = int(self.winHeiPropToPix(canvasNo, yLoc))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			xLoc = self.surfWidMetToPix(surfaceNo, xLoc)
 			yLoc = self.surfHeiMetToPix(surfaceNo, yLoc)
 		self.elements[str(elementNo)].setLocation(xLoc,yLoc)
 		origWin = self.findElement(elementNo)
-		if(origWin != window):
-			self.windows[str(origWin)].removeElement(elementNo)
-			self.windows[str(window)].addElement(elementNo)
+		if(origWin != canvas):
+			self.canvases[str(origWin)].removeElement(elementNo)
+			self.canvases[str(canvas)].addElement(elementNo)
 			
 	def shiftText(self, elementNo, xDist, yDist, coorSys):
 		if(coorSys=="prop"):
-			windowNo = self.findElement(elementNo)
-			xDist = int(self.winWidPropToPix(windowNo, xDist))
-			yDist = int(self.winHeiPropToPix(windowNo, yDist))
+			canvasNo = self.findElement(elementNo)
+			xDist = int(self.winWidPropToPix(canvasNo, xDist))
+			yDist = int(self.winHeiPropToPix(canvasNo, yDist))
 		elif(coorSys=="real"):
-			windowNo = self.findElement(elementNo)
-			surfaceNo = self.findWindow(windowNo)
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
 			xDist = self.surfWidMetToPix(surfaceNo, xDist)
 			yDist = self.surfHeiMetToPix(surfaceNo, yDist)
 		orig = self.getTextPos(elementNo)
 		self.elements[str(elementNo)].setLocation(orig[0]+xDist,orig[1]+yDist)
 			
-	def removeElement(self, elementNo, window):
+	def removeElement(self, elementNo, canvas):
 		self.elements[str(elementNo)].hide()
-		window = str(window)
-		removalThread = threading.Thread(target=self.delayedRemove, args=[window,elementNo]) #Creates the display thread
+		canvas = str(canvas)
+		removalThread = threading.Thread(target=self.delayedRemove, args=[canvas,elementNo]) #Creates the display thread
 		removalThread.start()
 		
-	def delayedRemove(self, window, elementNo):
+	def delayedRemove(self, canvas, elementNo):
 		time.sleep(2)
-		self.windows[window].removeElement(elementNo)
+		self.canvases[canvas].removeElement(elementNo)
 			
 	def getTextPos(self, elementNo):
 		xloc = self.elements[str(elementNo)].getLocationX()
@@ -1537,15 +1537,15 @@ class GUI:
 	def getCursors(self,surfaceNo):
 		return self.surfaces[str(surfaceNo)].getCursors()
 	
-	def getWindows(self, surfaceNo):
-		return self.surfaces[str(surfaceNo)].getWindows()
+	def getCanvases(self, surfaceNo):
+		return self.surfaces[str(surfaceNo)].getCanvases()
 	
-	def getElements(self, windowNo):
-		return self.windows[str(windowNo)].getElements()
+	def getElements(self, canvasNo):
+		return self.canvases[str(canvasNo)].getElements()
 	
-	def getVisibleElements(self, windowNo):
+	def getVisibleElements(self, canvasNo):
 		found = []
-		orig = self.windows[str(windowNo)].getElements()
+		orig = self.canvases[str(canvasNo)].getElements()
 		for x in range(0, len(orig)):
 			try:
 				if(self.elements[orig[x]].isVisible()):
@@ -1555,10 +1555,10 @@ class GUI:
 		return found
 	
 	def getClickedElements(self, surfaceNo, x, y):
-		windows = self.getWindows(surfaceNo)
+		canvases = self.getCanvases(surfaceNo)
 		hits = []
-		for windowNo in windows:
-			elements = self.getElements(windowNo)
+		for canvasNo in canvases:
+			elements = self.getElements(canvasNo)
 			for elementNo in elements:
 				if(self.getEleType(elementNo) == "circle"):
 					pos = self.getCirclePos(elementNo)

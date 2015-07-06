@@ -206,8 +206,8 @@ class cursor:
     def isVisible(self):
         return self.visible
 
-class window:
-    __slots__ = ['elements', 'loc', 'xsize', 'ysize', 'subwindows', 'name', 'windowID', 'owner', 'app', 'appno', 'subscribers', 'adminMode']
+class canvas:
+    __slots__ = ['elements', 'loc', 'xsize', 'ysize', 'subcanvases', 'name', 'canvasID', 'owner', 'app', 'appno', 'subscribers', 'adminMode']
 
     def __init__(self, owner, app, appno, xloc, yloc, xsize, ysize, name):
         self.loc = point2D(xloc,yloc)
@@ -226,10 +226,10 @@ class window:
             self.subscribers.append(app)
         
     def getID(self):
-        return self.windowID
+        return self.canvasID
     
     def setID(self, ID):
-        self.windowID = ID
+        self.canvasID = ID
         
     def getOwner(self):
         return self.owner
@@ -267,7 +267,7 @@ class window:
     def setYLoc(self, yloc):
         self.loc.setY(yloc)
 
-    #location of a window is the coordinate of its top-left point on its parent window/surface
+    #location of a canvas is the coordinate of its top-left point on its parent canvas/surface
     def setLoc(self, xloc, yloc):
         self.setXLoc(xloc)
         self.setYLoc(yloc)
@@ -338,11 +338,11 @@ class window:
             return False
 
 class surface():
-    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'windows', 'surfaceID', 'owner', 'app', 'appno', 'subscribers', 'adminMode', 'curveResolution', 'meshPoints', 'defined', 'renderUpdate' 'topPoints', 'bottomPoints', 'leftPoints', 'rightPoints','pixelwidth','pixelheight']
+    __slots__ = ['toLeft', 'toRight', 'above', 'below', 'cursors', 'canvases', 'surfaceID', 'owner', 'app', 'appno', 'subscribers', 'adminMode', 'curveResolution', 'meshPoints', 'defined', 'renderUpdate' 'topPoints', 'bottomPoints', 'leftPoints', 'rightPoints','pixelwidth','pixelheight']
 
     def __init__(self, owner, app, appno, type):
         self.cursors = []
-        self.windows = []
+        self.canvases = []
         self.owner = owner
         self.app = app
         self.appno = appno
@@ -484,26 +484,26 @@ class surface():
                 found = True
         return found
     
-    def addWindow(self, windowNo):
-        self.windows.append(windowNo)
+    def addCanvas(self, canvasNo):
+        self.canvases.append(canvasNo)
         
-    def removeWindow(self, windowNo):
-        for x in range(0, len(self.windows)):
-            if(self.windows[x]==windowNo):
-                self.windows.pop(x)
+    def removeCanvas(self, canvasNo):
+        for x in range(0, len(self.canvases)):
+            if(self.canvases[x]==canvasNo):
+                self.canvases.pop(x)
     
-    def containsWin(self, windowNo):
+    def containsWin(self, canvasNo):
         found = False
-        for x in range(0, len(self.windows)):
-            if(int(self.windows[x])==int(windowNo)):
+        for x in range(0, len(self.canvases)):
+            if(int(self.canvases[x])==int(canvasNo)):
                 found = True
         return found
     
     def getCursors(self):
         return self.cursors
     
-    def getWindows(self):
-        return self.windows
+    def getCanvases(self):
+        return self.canvases
     
     def becomeAdmin(self, app, appno):
         if(app==self.app and str(appno)==str(self.appno)):
