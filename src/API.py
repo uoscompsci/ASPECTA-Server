@@ -496,7 +496,7 @@ class apiMessageParser:
         return {'x' : loc[0], 'y' : loc[1]}
         
     def relocateCursor(self, pieces):
-        self.GUI.setCursorPos(pieces['cursorNo'], pieces['x'], pieces['y'], pieces['surfaceNo'])
+        self.GUI.setCursorPos(pieces['cursorNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['surfaceNo'])
         return {}
         
     def getCursorPosition(self, pieces):
@@ -1086,7 +1086,7 @@ class apiMessageParser:
             'stop_being_element_admin' : (stopBeingElementAdmin, 1),
             'move_cursor' : (moveCursor, 3),  # [1]=CursorNo  [2]=xDistance  [3]=yDistance
             'test_move_cursor' : (testMoveCursor, 3),  # [1]=CursorNo  [2]=xDistance  [3]=yDistance
-            'relocate_cursor' : (relocateCursor, 4),  # [1]=CursorNo  [2]=x  [3]=y  [4]=Surface
+            'relocate_cursor' : (relocateCursor, 5),  # [1]=CursorNo  [2]=x  [3]=y  [4]=Surface
             'get_cursor_pos' : (getCursorPosition, 1),  # [1]=CursorNo
             'rotate_cursor_clockwise' : (rotateCursorClockwise,2), #[1]=CursorNo [2]=Degrees
             'rotate_cursor_anticlockwise' : (rotateCursorAnticlockwise,2), #[1]=CursorNo [2]=Degrees

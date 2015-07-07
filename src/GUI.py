@@ -524,7 +524,13 @@ class GUI:
 	def isCursorVisible(self, cursorNo):
 		return self.cursors[str(cursorNo)].isVisible()
 		
-	def setCursorPos(self, cursorNo, xLoc, yLoc, surface):
+	def setCursorPos(self, cursorNo, xLoc, yLoc, coorSys, surface):
+		if(coorSys=="prop"):
+			xLoc = self.surfWidPropToPix(surface, xLoc)
+			yLoc = self.surfHeiPropToPix(surface, yLoc)
+		elif(coorSys=="real"):
+			xLoc = self.surfWidMetToPix(surface, xLoc)
+			yLoc = self.surfHeiMetToPix(surface, yLoc)
 		cursorNo = int(cursorNo)
 		self.cursors[str(cursorNo)].setLoc(xLoc,yLoc)
 		origSur = self.findCursor(cursorNo)
@@ -741,6 +747,13 @@ class GUI:
 		location = 0
 		for key in self.canvases:
 			if(self.canvases[key].containsEle(elementNo)==True):
+				location = int(key)
+		return location
+	
+	def findCursor(self, cursorNo):
+		location = -1
+		for key in self.surfaces:
+			if(self.surfaces[key].containsCur(cursorNo)==True):
 				location = int(key)
 		return location
 	
