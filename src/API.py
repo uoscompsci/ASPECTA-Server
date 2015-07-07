@@ -920,7 +920,7 @@ class apiMessageParser:
         text = FTGL.PolygonFont("fonts/" + font + ".ttf")
         text.FaceSize(int(pieces['pt']))
         width = text.Advance(pieces['text'].encode('utf8'))
-        return {"width" : width}
+        return {"width" : int(width)}
     
     def getTextHeight(self, pieces):
         font = self.fonts[pieces['font']]
@@ -928,21 +928,21 @@ class apiMessageParser:
         text.FaceSize(int(pieces['pt']))
         box = text.BBox(pieces['text'].encode('utf8'))
         height = box[4]-box[1]
-        return {"height" : height}
+        return {"height" : int(height)}
     
     def getTextLineHeight(self, pieces):
         font = self.fonts[pieces['font']]
         text = FTGL.PolygonFont("fonts/" + font + ".ttf")
         text.FaceSize(int(pieces['pt']))
         height = text.line_height
-        return {"height" : height}
+        return {"height" : int(height)}
     
     def getTextDescenderHeight(self, pieces):
         font = self.fonts[pieces['font']]
         text = FTGL.PolygonFont("fonts/" + font + ".ttf")
         text.FaceSize(int(pieces['pt']))
         height = text.descender
-        return {"height" : -height}
+        return {"height" : int(-height)}
         
     def setPointSize(self, pieces):
         self.GUI.setPtSize(pieces['elementNo'], pieces['pt'])
