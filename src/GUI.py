@@ -462,9 +462,9 @@ class GUI:
 			else:
 				finalLoc[1] = testLoc[1]
 		if(switchSurface):
-			self.setCursorPos(cursorNo, finalLoc[0], finalLoc[1], surface)
+			self.setCursorPos(cursorNo, finalLoc[0], finalLoc[1], "pos", surface)
 		else:
-			self.setCursorPos(cursorNo, finalLoc[0], finalLoc[1], self.findCursor(cursorNo))
+			self.setCursorPos(cursorNo, finalLoc[0], finalLoc[1], "pos", self.findCursor(cursorNo))
 		
 	def testForConnection(self, surfaceNo, side):
 		found=False
