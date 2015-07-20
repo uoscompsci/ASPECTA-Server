@@ -1,9 +1,15 @@
 from ConfigParser import SafeConfigParser
+from kivy.core.window import Window
 from GUI import *
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.config import Config
 from kivy.graphics import Rectangle, Color, Ellipse, Line
+from kivy.core.image import Image
+from kivy.properties import ObjectProperty
+from kivy.base import EventLoop
+from kivy.event import EventDispatcher
+from kivy.clock import Clock
 from random import random
 import socket
 from collections import deque
@@ -18,11 +24,7 @@ import FTGL
 
 
 class renderSurface(Widget):
-    def __init__(self, **kwargs):
-        super(renderSurface, self).__init__(**kwargs)
-
-# A class which is used to parse API messages and call the relevant actions
-class renderWindow(App):
+    server_started=False
     queue = deque([])
     sock2usr = {}
     app2sock = {}
@@ -43,6 +45,17 @@ class renderWindow(App):
              "Arial": "FreeSans",
              "Free Sans": "FreeSans"
              }
+
+    def __init__(self, **kwargs):
+        super(renderSurface, self).__init__(**kwargs)
+        self.server_init()
+        parser = SafeConfigParser()
+        parser.read("config.ini")
+        self.pps = parser.getint('surfaces', 'curveResolution')
+        self.winWidth = parser.getint('display', 'HorizontalRes')
+        self.winHeight = parser.getint('display', 'VerticalRes')
+        self.fullscreen = parser.getint('display', 'fullscreen')
+        self.GUI = GUI(self.winWidth, self.winHeight)  # Creates the GUI
 
     # Creates a new surface for projection as requested by the API call
     def newSurface(self, pieces):
@@ -87,7 +100,7 @@ class renderWindow(App):
         x,y,radius = int(float(pieces['x'])), int(float(pieces['y'])), int(float(pieces['radius']))
         colors = pieces['fillColor'].split(":")
         r,g,b,a = float(colors[0]), float(colors[1]), float(colors[2]), float(colors[3])
-        with self.r_surf.canvas:
+        with self.canvas:
             Color(r, g, b, a)
             self.elements[str(elementNo)] = Ellipse(pos=(x-radius,y-radius), size=(radius*2,radius*2))
         return {"elementNo": elementNo}
@@ -106,7 +119,7 @@ class renderWindow(App):
                                      pieces['xStart'], pieces['yStart'], pieces['xEnd'], pieces['yEnd'],
                                      pieces['coorSys'], pieces['color'], pieces['width'])
         xstart,ystart,xend,yend,width = int(long(pieces['xstart'])),int(long(pieces['ystart'])),int(long(pieces['xend'])),int(long(pieces['yend'])),int(long(pieces['width']))
-        with self.r_surf.canvas:
+        with self.canvas:
             line = Line(points=[xstart,ystart,xend,yend],width=width)
         return {"elementNo": elementNo}
 
@@ -153,7 +166,7 @@ class renderWindow(App):
         x,y,width,height = int(float(pieces['x'])), int(float(pieces['y'])), int(float(pieces['width'])), int(float(pieces['height']))
         colors = pieces['fillColor'].split(":")
         r,g,b,a = float(colors[0]), float(colors[1]), float(colors[2]), float(colors[3])
-        with self.r_surf.canvas:
+        with self.canvas:
             Color(r, g, b, a)
             rect = Rectangle(pos=(x,y-height),size=(width,height))
         return {"elementNo": elementNo}
@@ -171,6 +184,11 @@ class renderWindow(App):
         elementNo = self.GUI.newTexRectangle(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'],
                                              pieces['canvasNo'], pieces['x'], pieces['y'], pieces['width'],
                                              pieces['height'], pieces['coorSys'], pieces['imageID'])
+        x,y,width,height = int(float(pieces['x'])), int(float(pieces['y'])), int(float(pieces['width'])), int(float(pieces['height']))
+        texturefile = glob.glob('images/' + str(pieces['imageID']) + "*")
+        with self.canvas:
+            self.tex = Image.load(texturefile[0]).texture
+            rect = Rectangle(pos=(x,y-height),size=(width,height),texture=self.tex)
         return {"elementNo": elementNo}
 
     # Creates a new textured rectangle with an ID on the desired canvas as requested by the API call
@@ -1271,44 +1289,6 @@ class renderWindow(App):
             data = {"error": 1}
         return data
 
-    def build(self):
-        server = Thread(target=self.server_init)
-        server.start()
-        parser = SafeConfigParser()
-        parser.read("config.ini")
-        self.pps = parser.getint('surfaces', 'curveResolution')
-        self.winWidth = parser.getint('display', 'HorizontalRes')
-        self.winHeight = parser.getint('display', 'VerticalRes')
-        self.fullscreen = parser.getint('display', 'fullscreen')
-        Config.set('graphics', 'width', str(self.winWidth))
-        Config.set('graphics', 'height', str(self.winHeight))
-        self.GUI = GUI(self.winWidth, self.winHeight)  # Creates the GUI
-        parent = Widget()
-        self.r_surf = renderSurface()
-        parent.add_widget(self.r_surf)
-        return parent
-
-    # Constantly monitors the queue for received messages
-    def message_queue_monitor(self):
-        counter = 0
-        while(self.loop):
-            time.sleep(0.001)
-            while(len(self.queue)!=0):
-                qitem = self.queue.pop()
-                appsplit = self.sock2app[qitem[0]].split(',')
-                temp = qitem[1]
-                temp['IDuser'] = self.sock2usr[qitem[0]]
-                temp['IDapp'] = appsplit[0]
-                temp['IDinstance'] = appsplit[1]
-                if(temp['call'] == "set_rectangle_texture" or temp['call'] == "new_texrectangle" or temp['call'] == "new_texrectangle_with_ID"):
-                    g = open("images/" + str(counter) + "." + str(temp['extension']), "w")
-                    g.write(base64.decodestring(str(temp['textureData'])))
-                    g.close()
-                    temp['imageID'] = counter
-                    counter += 1
-                #qitem = (qitem[0], json.dumps(temp))
-                self.reply(qitem[0], self.processMessage(temp))
-
     # Sends a reply to the client that the last message was received from
     def reply (self, sock, message):
         for socket in self.CONNECTION_LIST:
@@ -1323,91 +1303,133 @@ class renderWindow(App):
     def server_init(self):
         parser = SafeConfigParser()
         parser.read("config.ini")
-        RECV_BUFFER = parser.getint('connection','RecieveBuffer')
+        self.RECV_BUFFER = parser.getint('connection','RecieveBuffer')
         PORT = parser.getint('connection','port')
         HOST = parser.get('connection','host')
 
         self.CONNECTION_LIST = []
 
-        server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # why is this not working?
-        server_socket.bind((HOST, PORT))
-        server_socket.listen(10)
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # why is this not working?
+        self.server_socket.bind((HOST, PORT))
+        self.server_socket.listen(10)
 
-        self.CONNECTION_LIST.append(server_socket)
+        self.CONNECTION_LIST.append(self.server_socket)
 
         print "API server started on port " + str(PORT)
 
-        # Create and start a thread which will monitor the queue of received API messages
-        queueMonitor = Thread(target = self.message_queue_monitor)
-        queueMonitor.start()
-
         loop = True
 
-        # Loop until the looping flag changes
-        while(loop):
-            time.sleep(0.001)
+        self.server_started = True
+        thread = Thread(target = self.server)
+        thread.start()
+        self.counter = 0
+
+    def update(self, dt):
+        while(len(self.queue)!=0):
+            qitem = self.queue.pop()
+            appsplit = self.sock2app[qitem[0]].split(',')
+            temp = qitem[1]
+            temp['IDuser'] = self.sock2usr[qitem[0]]
+            temp['IDapp'] = appsplit[0]
+            temp['IDinstance'] = appsplit[1]
+            if(temp['call'] == "set_rectangle_texture" or temp['call'] == "new_texrectangle" or temp['call'] == "new_texrectangle_with_ID"):
+                g = open("images/" + str(self.counter) + "." + str(temp['extension']), "w")
+                g.write(base64.decodestring(str(temp['textureData'])))
+                g.close()
+                temp['imageID'] = self.counter
+                self.counter += 1
+            #qitem = (qitem[0], json.dumps(temp))
+            self.reply(qitem[0], self.processMessage(temp))
+
+    def server(self):
+        while(True):
             try:
                 read_sockets = select.select(self.CONNECTION_LIST,[],[])[0] #Wait until ready for IO
-            except:
-                continue #Start loop again
-
-            # Loop through all the read sockets
-            for sock in read_sockets:
-                if sock == server_socket: #If a new client is connecting add it to the connection list
-                    sockfd, addr = server_socket.accept()
-                    self.CONNECTION_LIST.append(sockfd)
-                    print "Client (%s, %s) connected" % addr
-                else:
-                    try: #Try to receive data and process it
-                        recieved = int(sock.recv(10))
-                        data = ""
-                        while (recieved>0):
-                            temp = sock.recv(RECV_BUFFER)
-                            data += temp
-                            recieved -= len(temp)
-                        dataJSON = json.loads(data)
-                        if data:
-                            if(dataJSON['call'] == 'quit'): #If the received data is a quit command close the socket and exit
-                                print '\033[1;31mShutting down server\033[1;m'
-                                self.processMessage(data)
-                                loop=False
-                            elif(dataJSON['call'] == 'login'):
-                                if(self.sock2usr.has_key(sock)==False):
-                                    self.sock2usr[sock] = dataJSON['username']
-                                    self.reply(sock,str({}))
-                                else:
-                                    self.reply(sock,str({'error' : 4}))
-                            elif(dataJSON['call'] == 'setapp'):
-                                if(self.sock2app.has_key(sock)):
-                                    self.reply(sock,str({'error' : 5}))
-                                else:
-                                    count = 0
-                                    added = False
-                                    while(added==False):
-                                        if(self.app2sock.has_key(dataJSON['appname'] + "," + str(count))==False):
-                                            self.app2sock[dataJSON['appname'] + "," + str(count)] = sock
-                                            self.sock2app[sock] = dataJSON['appname'] + "," + str(count)
-                                            self.reply(sock,str({}))
-                                            added = True
-                                        else:
-                                            count += 1
-                            else: #If the message isn't a quit command puts the received API message onto the queue to be processed
-                                if(self.sock2usr.has_key(sock) and self.sock2app.has_key(sock)):
-                                    self.queue.appendleft((sock,dataJSON))
-                                else:
+                # Loop through all the read sockets
+                for sock in read_sockets:
+                    if sock == self.server_socket: #If a new client is connecting add it to the connection list
+                        sockfd, addr = self.server_socket.accept()
+                        self.CONNECTION_LIST.append(sockfd)
+                        print "Client (%s, %s) connected" % addr
+                    else:
+                        try: #Try to receive data and process it
+                            recieved = int(sock.recv(10))
+                            data = ""
+                            while (recieved>0):
+                                temp = sock.recv(self.RECV_BUFFER)
+                                data += temp
+                                recieved -= len(temp)
+                            dataJSON = json.loads(data)
+                            if data:
+                                if(dataJSON['call'] == 'quit'): #If the received data is a quit command close the socket and exit
+                                    print '\033[1;31mShutting down server\033[1;m'
+                                    self.processMessage(data)
+                                    loop=False
+                                elif(dataJSON['call'] == 'login'):
                                     if(self.sock2usr.has_key(sock)==False):
-                                        self.reply(sock,str({'error' : 3}))
+                                        self.sock2usr[sock] = dataJSON['username']
+                                        self.reply(sock,str({}))
                                     else:
-                                        self.reply(sock,str({'error' : 6}))
-                    except:
-                        print "Client (%s, %s) is offline" % addr
-                        sock.close()
-                        self.CONNECTION_LIST.remove(sock)
-                        continue
-        server_socket.close()
-        time.sleep(0.2)
-        sys.exit(0)
+                                        self.reply(sock,str({'error' : 4}))
+                                elif(dataJSON['call'] == 'setapp'):
+                                    if(self.sock2app.has_key(sock)):
+                                        self.reply(sock,str({'error' : 5}))
+                                    else:
+                                        count = 0
+                                        added = False
+                                        while(added==False):
+                                            if(self.app2sock.has_key(dataJSON['appname'] + "," + str(count))==False):
+                                                self.app2sock[dataJSON['appname'] + "," + str(count)] = sock
+                                                self.sock2app[sock] = dataJSON['appname'] + "," + str(count)
+                                                self.reply(sock,str({}))
+                                                added = True
+                                            else:
+                                                count += 1
+                                else: #If the message isn't a quit command puts the received API message onto the queue to be processed
+                                    if(self.sock2usr.has_key(sock) and self.sock2app.has_key(sock)):
+                                        self.queue.appendleft((sock,dataJSON))
+                                    else:
+                                        if(self.sock2usr.has_key(sock)==False):
+                                            self.reply(sock,str({'error' : 3}))
+                                        else:
+                                            self.reply(sock,str({'error' : 6}))
+                        except:
+                            print "Client (%s, %s) is offline" % addr
+                            sock.close()
+                            self.CONNECTION_LIST.remove(sock)
+                            continue
+            except:
+                pass
+
+class eventDispatcher(EventDispatcher):
+    def __init__(self, **kwargs):
+        self.register_event_type('on_texture')
+        super(eventDispatcher, self).__init__(**kwargs)
+
+    def on_texture(self, surface, filename, x, y, width, height):
+        print "texturing"
+        with surface.canvas:
+            self.tex = Image.load(filename).texture
+            rect = Rectangle(pos=(x,y-height),size=(width,height),texture=self.tex)
+
+
+# A class which is used to parse API messages and call the relevant actions
+class renderWindow(App):
+    def build(self):
+        parent = Widget()
+        EventLoop.ensure_window()
+        self.dispatcher = eventDispatcher()
+        self.r_surf = renderSurface()
+        Clock.schedule_interval(self.r_surf.update,1.0/5000.0)
+        parent.add_widget(self.r_surf)
+        return parent
 
 if __name__ == "__main__":
+    test = 'images/*'
+    r = glob.glob(test)
+    for i in r:
+        os.remove(i)
+    Config.set('graphics', 'width', '1024')
+    Config.set('graphics', 'height', '768')
     renderWindow().run()
