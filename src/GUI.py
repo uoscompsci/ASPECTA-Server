@@ -805,6 +805,19 @@ class GUI:
 		if(origWin != canvasNo):
 			self.canvases[str(origWin)].removeElement(elementNo)
 			self.canvases[str(canvasNo)].addElement(elementNo)
+
+	def shiftCircle(self, elementNo, xDist, yDist, coorSys):
+		if(coorSys=="prop"):
+			canvasNo = self.findElement(elementNo)
+			xDist = int(self.winWidPropToPix(canvasNo, xDist))
+			yDist = int(self.winHeiPropToPix(canvasNo, yDist))
+		elif(coorSys=="real"):
+			canvasNo = self.findElement(elementNo)
+			surfaceNo = self.findCanvas(canvasNo)
+			xDist = self.surfWidMetToPix(surfaceNo, xDist)
+			yDist = self.surfHeiMetToPix(surfaceNo, yDist)
+		orig = self.getCirclePos(elementNo)
+		self.elements[str(elementNo)].setCenter(float(orig[0])+float(xDist),float(orig[1])+float(yDist))
 		
 	def setCircleRad(self, elementNo, radius, coorSys):
 		if(coorSys=="prop"):
@@ -1223,7 +1236,7 @@ class GUI:
 			xDist = self.surfWidMetToPix(surfaceNo, xDist)
 			yDist = self.surfHeiMetToPix(surfaceNo, yDist)
 		orig = self.getRectangleTopLeft(elementNo)
-		self.elements[str(elementNo)].setTopLeft(orig[0]+xDist,orig[1]+yDist)
+		self.elements[str(elementNo)].setTopLeft(orig[0]+float(xDist),orig[1]+float(yDist))
 		
 	def getRectangleTopLeft(self, elementNo):
 		xloc = self.elements[str(elementNo)].getTopLeftX()

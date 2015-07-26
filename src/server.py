@@ -5,7 +5,6 @@ import time
 import ujson as json
 import base64
 from threading import Thread
-from Queue import Queue
 from API import apiMessageParser
 from collections import deque
 from ConfigParser import SafeConfigParser
