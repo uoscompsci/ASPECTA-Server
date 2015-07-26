@@ -3,13 +3,16 @@ from kivy.core.window import Window
 from GUI import *
 from kivy.app import App
 from kivy.uix.widget import Widget
+from kivy.uix.floatlayout import FloatLayout
 from kivy.config import Config
-from kivy.graphics import Rectangle, Color, Ellipse, Line
+from kivy.graphics import Rectangle, Color, Ellipse, Line, Fbo
 from kivy.core.image import Image
 from kivy.properties import ObjectProperty
 from kivy.base import EventLoop
 from kivy.event import EventDispatcher
 from kivy.clock import Clock
+from kivy.properties import NumericProperty, ObjectProperty, ListProperty, StringProperty, Property
+from kivy.vector import Vector
 from random import random
 import socket
 from collections import deque
@@ -17,13 +20,46 @@ import select
 import ujson as json
 import base64
 from threading import Thread
+from time import sleep
 import sys
 import glob
 import os
 import FTGL
 
+class CircleWidget(Widget):
+    r = NumericProperty(0)
+    g = NumericProperty(0)
+    b = NumericProperty(0)
+    a = NumericProperty(0)
+    def __init__(self, **kwargs):
+        super(CircleWidget, self).__init__(**kwargs)
 
-class renderSurface(Widget):
+
+class TexRectangleWidget(Widget):
+    texture = ObjectProperty(None, allownone=True)
+    def __init__(self, **kwargs):
+        super(TexRectangleWidget, self).__init__(**kwargs)
+
+class RectangleWidget(Widget):
+    r = NumericProperty(0)
+    g = NumericProperty(0)
+    b = NumericProperty(0)
+    a = NumericProperty(0)
+    def __init__(self, **kwargs):
+        super(RectangleWidget, self).__init__(**kwargs)
+
+class LineWidget(Widget):
+    pos1 = ListProperty(0)
+    pos2 = ListProperty(0)
+    r = NumericProperty(0)
+    g = NumericProperty(0)
+    b = NumericProperty(0)
+    a = NumericProperty(0)
+    def __init__(self, **kwargs):
+        super(LineWidget, self).__init__(**kwargs)
+
+
+class renderSurface(FloatLayout):
     server_started=False
     queue = deque([])
     sock2usr = {}
@@ -38,6 +74,7 @@ class renderSurface(Widget):
     winHeight = None
     canvases = {}
     elements = {}
+    cursors = {}
     fonts = {"Times New Roman": "FreeSerif",
              "Free Serif": "FreeSerif",
              "Free Mono": "FreeMono",
@@ -70,6 +107,11 @@ class renderSurface(Widget):
     # Creates a new cursor on the desired surface as requested by the API call
     def newCursor(self, pieces):
         cursorNo = self.GUI.newCursor(pieces['surfaceNo'], pieces['x'], pieces['y'], pieces['coorSys'])
+        x,y = int(float(pieces['x'])), int(float(pieces['y']))
+        with self.canvas:
+            Color(1, 1, 1, 1)
+            self.tex = Image.load("icons/dcursor.png").texture
+            self.cursors[cursorNo] = Rectangle(pos=(x,y-94/2),size=(59/2,94/2),texture=self.tex)
         return {"cursorNo": cursorNo}
 
     # Creates a new cursor with an ID on the desired surface as requested by the API call
@@ -83,6 +125,7 @@ class renderSurface(Widget):
         canvasNo = self.GUI.newCanvas(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['surfaceNo'],
                                       pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['coorSys'],
                                       pieces['name'])
+        width, height = int(pieces['width']), int(pieces['height'])
         return {"canvasNo": canvasNo}
 
     # Creates a new canvas with an ID on the desired surface as requested by the API call
@@ -100,9 +143,9 @@ class renderSurface(Widget):
         x,y,radius = int(float(pieces['x'])), int(float(pieces['y'])), int(float(pieces['radius']))
         colors = pieces['fillColor'].split(":")
         r,g,b,a = float(colors[0]), float(colors[1]), float(colors[2]), float(colors[3])
-        with self.canvas:
-            Color(r, g, b, a)
-            self.elements[str(elementNo)] = Ellipse(pos=(x-radius,y-radius), size=(radius*2,radius*2))
+        circ = CircleWidget(pos=(x,y),size=(radius,radius), r=r, g=g, b=b, a=a)
+        self.add_widget(circ)
+        self.elements[elementNo] = circ
         return {"elementNo": elementNo}
 
     # Creates a new circle with an ID on the desired canvas as requested by the API call
@@ -118,9 +161,12 @@ class renderSurface(Widget):
         elementNo = self.GUI.newLine(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['canvasNo'],
                                      pieces['xStart'], pieces['yStart'], pieces['xEnd'], pieces['yEnd'],
                                      pieces['coorSys'], pieces['color'], pieces['width'])
-        xstart,ystart,xend,yend,width = int(long(pieces['xstart'])),int(long(pieces['ystart'])),int(long(pieces['xend'])),int(long(pieces['yend'])),int(long(pieces['width']))
-        with self.canvas:
-            line = Line(points=[xstart,ystart,xend,yend],width=width)
+        xstart,ystart,xend,yend,width = int(long(pieces['xStart'])),int(long(pieces['yStart'])),int(long(pieces['xEnd'])),int(long(pieces['yEnd'])),int(long(pieces['width']))
+        colors = pieces['color'].split(":")
+        r,g,b,a = float(colors[0]), float(colors[1]), float(colors[2]), float(colors[3])
+        line = LineWidget(pos1=(xstart,ystart), pos2=(xend,yend), width=width, r=r, g=g, b=b, a=a)
+        self.add_widget(line)
+        self.elements[elementNo] = line
         return {"elementNo": elementNo}
 
     # Creates a new line with an ID in the desired canvas as requested by the API call
@@ -166,9 +212,9 @@ class renderSurface(Widget):
         x,y,width,height = int(float(pieces['x'])), int(float(pieces['y'])), int(float(pieces['width'])), int(float(pieces['height']))
         colors = pieces['fillColor'].split(":")
         r,g,b,a = float(colors[0]), float(colors[1]), float(colors[2]), float(colors[3])
-        with self.canvas:
-            Color(r, g, b, a)
-            rect = Rectangle(pos=(x,y-height),size=(width,height))
+        rect = RectangleWidget(pos=(x,y),size=(width,height), r=r, g=g, b=b, a=a)
+        self.add_widget(rect)
+        self.elements[elementNo] = rect
         return {"elementNo": elementNo}
 
     # Creates a new rectangle with an ID on the desired canvas as requested by the API call
@@ -186,9 +232,9 @@ class renderSurface(Widget):
                                              pieces['height'], pieces['coorSys'], pieces['imageID'])
         x,y,width,height = int(float(pieces['x'])), int(float(pieces['y'])), int(float(pieces['width'])), int(float(pieces['height']))
         texturefile = glob.glob('images/' + str(pieces['imageID']) + "*")
-        with self.canvas:
-            self.tex = Image.load(texturefile[0]).texture
-            rect = Rectangle(pos=(x,y-height),size=(width,height),texture=self.tex)
+        texrect = TexRectangleWidget(pos=(x,y),size=(width,height), texture=Image.load(texturefile[0]).texture)
+        self.add_widget(texrect)
+        self.elements[elementNo] = texrect
         return {"elementNo": elementNo}
 
     # Creates a new textured rectangle with an ID on the desired canvas as requested by the API call
@@ -657,6 +703,9 @@ class renderSurface(Widget):
     def relocateCircle(self, pieces):
         name = self.GUI.setCirclePos(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'],
                                      pieces['canvasNo'])
+        x,y = int(pieces['x']), int(pieces['y'])
+        print str(self.elements[pieces['elementNo']].pos)
+        self.elements[pieces['elementNo']].pos = (x,y)
         return {}
 
     def getCirclePosition(self, pieces):
@@ -910,7 +959,12 @@ class renderSurface(Widget):
         self.GUI.setRectangleLineWidth(pieces['elementNo'], pieces['width'])
 
     def shiftTexRectangle(self, pieces):
+        print "HIYA!"
         self.GUI.shiftTexRectangle(pieces['elementNo'], pieces['xDist'], pieces['yDist'], pieces['coorSys'])
+        xdist,ydist = int(pieces['xDist']), int(pieces['yDist'])
+        print str(self.elements[pieces['elementNo']].pos)
+        orig = self.elements[pieces['elementNo']].pos
+        self.elements[pieces['elementNo']].pos = (orig[0]+xdist,orig[1]+ydist)
         return {}
 
     def setTexRectangleTopLeft(self, pieces):
@@ -1344,6 +1398,7 @@ class renderSurface(Widget):
 
     def server(self):
         while(True):
+            sleep(0.001)
             try:
                 read_sockets = select.select(self.CONNECTION_LIST,[],[])[0] #Wait until ready for IO
                 # Loop through all the read sockets
@@ -1415,13 +1470,13 @@ class eventDispatcher(EventDispatcher):
 
 
 # A class which is used to parse API messages and call the relevant actions
-class renderWindow(App):
+class renderApp(App):
     def build(self):
         parent = Widget()
         EventLoop.ensure_window()
         self.dispatcher = eventDispatcher()
         self.r_surf = renderSurface()
-        Clock.schedule_interval(self.r_surf.update,1.0/5000.0)
+        Clock.schedule_interval(self.r_surf.update,1.0/120.0)
         parent.add_widget(self.r_surf)
         return parent
 
@@ -1432,4 +1487,4 @@ if __name__ == "__main__":
         os.remove(i)
     Config.set('graphics', 'width', '1024')
     Config.set('graphics', 'height', '768')
-    renderWindow().run()
+    renderApp().run()

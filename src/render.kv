@@ -1,0 +1,32 @@
+<CircleWidget>
+    canvas:
+        Color:
+            rgba: (self.r, self.g, self.b, self.a)
+        Ellipse:
+            pos: (self.pos[0]-self.size[0], self.pos[1]-self.size[1])
+            size: (self.size[0]*2, self.size[1]*2)
+
+<RectangleWidget>
+    canvas:
+        Color:
+            rgba: (self.r, self.g, self.b, self.a)
+        Rectangle:
+            pos: (self.pos[0],self.pos[1]-self.size[1])
+            size: (self.size[0],self.size[1])
+
+<LineWidget>
+    canvas:
+        Color:
+            rgba: (self.r, self.g, self.b, self.a)
+        Line:
+            points: [self.pos1[0],self.pos1[1],self.pos2[0],self.pos2[1]]
+            width: self.width
+
+<TexRectangleWidget>
+    canvas:
+        Color:
+            rgba: (1,1,1,1)
+        Rectangle:
+            pos: (self.pos[0],self.pos[1]-self.size[1])
+            size: (self.size[0],self.size[1])
+            texture: self.texture
