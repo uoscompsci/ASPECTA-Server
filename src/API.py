@@ -602,6 +602,10 @@ class apiMessageParser:
     def relocateCircle(self, pieces):
         name = self.GUI.setCirclePos(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['canvasNo'])
         return {}
+
+    def shiftCircle(self, pieces):
+        name = self.GUI.shiftCircle(pieces['elementNo'], pieces['xDist'], pieces['yDist'], pieces['coorSys'])
+        return {}
         
     def getCirclePosition(self, pieces):
         loc = self.GUI.getCirclePos(pieces['elementNo'])
@@ -1113,6 +1117,7 @@ class apiMessageParser:
             'set_canvas_name' : (setCanvasName, 2),  # [1]=CanvasNo  [2]=Name
             'get_canvas_name' : (getCanvasName, 1),  # [1]=CanvasNo
             'relocate_circle' : (relocateCircle, 5),  # [1]=ElementNo  [2]=x  [3]=y [4]=coorSys [5]=canvasNo
+            'shift_circle' : (shiftCircle, 4),
             'get_circle_pos' : (getCirclePosition, 1),  # [1]=ElementNo
             'get_element_type' : (getElementType, 1),  # [1]=ElementNo
             'set_circle_line_color' : (setCircleLineColor, 2),  # [1]=ElementNo  [2]=Color
@@ -1217,13 +1222,13 @@ class apiMessageParser:
         if(msg=="quit"):
             self.looping = False
         data = None #Creates an empty variable to hold the message reply
-        try:
-            if(len(msg) - 4 == self.messages[msg['call']][1]):
-                data = self.messages[str(msg['call'])][0](self, msg)
-            else:
-                data = {"error" : 2, "1" : str(len(msg) - 1), "2" : str(self.messages[msg['call']][1])}
-        except KeyError, e:
-            data = {"error" : 1}
+        #try:
+        if(len(msg) - 4 == self.messages[msg['call']][1]):
+            data = self.messages[str(msg['call'])][0](self, msg)
+        else:
+            data = {"error" : 2, "1" : str(len(msg) - 1), "2" : str(self.messages[msg['call']][1])}
+        #except KeyError, e:
+        #    data = {"error" : 1}
         return data
     
     #Draws a cursor at the requested location and rotated as required
