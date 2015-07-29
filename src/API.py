@@ -2098,6 +2098,10 @@ class apiMessageParser:
 	
     #Creates a GUI object and starts a thread to display its contents
     def __init__(self):
+        test = 'images/*'
+        r = glob.glob(test)
+        for i in r:
+            os.remove(i)
         parser = SafeConfigParser()
         parser.read("config.ini")
         self.pps = parser.getint('surfaces','curveResolution')

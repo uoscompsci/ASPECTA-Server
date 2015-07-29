@@ -75,6 +75,10 @@ class renderSurface(FloatLayout):
     canvases = {}
     elements = {}
     cursors = {}
+    surfaces = {}
+    surfaceFBOs = {}
+    canvases = {}
+    canvasFBOs = {}
     fonts = {"Times New Roman": "FreeSerif",
              "Free Serif": "FreeSerif",
              "Free Mono": "FreeMono",
@@ -93,15 +97,21 @@ class renderSurface(FloatLayout):
         self.winHeight = parser.getint('display', 'VerticalRes')
         self.fullscreen = parser.getint('display', 'fullscreen')
         self.GUI = GUI(self.winWidth, self.winHeight)  # Creates the GUI
+        self.surfaceFBOs[0] = Fbo(1024,768)
+        with self.canvas:
+            self.surfaces[0] = Rectangle(pos=(0,0),size=(1024,768),texture=self.surfaceFBOs[0].texture)
+
 
     # Creates a new surface for projection as requested by the API call
     def newSurface(self, pieces):
         surfaceNo = self.GUI.newSurface(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'])
+        self.surfaceFBOs[int(surfaceNo)] = Fbo(512,512)
         return {'surfaceNo': surfaceNo}
 
     # Creates a new surface for projection with an ID as requested by the API Call
     def newSurfaceWithID(self, pieces):
         surfaceNo = self.GUI.newSurfaceWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'])
+        self.surfaceFBOs[int(surfaceNo)] = Fbo(512,512)
         return {'surfaceNo': surfaceNo}
 
     # Creates a new cursor on the desired surface as requested by the API call
@@ -125,7 +135,10 @@ class renderSurface(FloatLayout):
         canvasNo = self.GUI.newCanvas(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['surfaceNo'],
                                       pieces['x'], pieces['y'], pieces['width'], pieces['height'], pieces['coorSys'],
                                       pieces['name'])
-        width, height = int(pieces['width']), int(pieces['height'])
+        width, height, surfaceNo, x, y = int(pieces['width']), int(pieces['height']), int(pieces['surfaceNo']), int(pieces['x']), int(pieces['y'])
+        self.canvasFBOs[int(canvasNo)] = Fbo(width, height)
+        with self.surfaceFBOs[surfaceNo]:
+            self.canvases[int(canvasNo)] = Rectangle(pos=(x,y-height), size=(width,height), texture=self.canvasFBOs[int(canvasNo)].texture)
         return {"canvasNo": canvasNo}
 
     # Creates a new canvas with an ID on the desired surface as requested by the API call
@@ -133,6 +146,10 @@ class renderSurface(FloatLayout):
         canvasNo = self.GUI.newCanvasWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'],
                                             pieces['surfaceNo'], pieces['x'], pieces['y'], pieces['width'],
                                             pieces['height'], pieces['coorSys'], pieces['name'])
+        width, height, surfaceNo, x, y = int(pieces['width']), int(pieces['height']), int(pieces['surfaceNo']), int(pieces['x']), int(pieces['y'])
+        self.canvasFBOs[int(canvasNo)] = Fbo(width, height)
+        with self.surfaceFBOs[surfaceNo]:
+            self.canvases[int(canvasNo)] = Rectangle(pos=(x,y-height), size=(width,height), texture=self.canvasFBOs[int(canvasNo)].texture)
         return {"canvasNo": canvasNo}
 
     # Creates a new circle on the desired canvas as requested by the API call
@@ -143,6 +160,7 @@ class renderSurface(FloatLayout):
         x,y,radius = int(float(pieces['x'])), int(float(pieces['y'])), int(float(pieces['radius']))
         colors = pieces['fillColor'].split(":")
         r,g,b,a = float(colors[0]), float(colors[1]), float(colors[2]), float(colors[3])
+        canvasNo = int(pieces['canvasNo'])
         circ = CircleWidget(pos=(x,y),size=(radius,radius), r=r, g=g, b=b, a=a)
         self.add_widget(circ)
         self.elements[elementNo] = circ
@@ -704,8 +722,11 @@ class renderSurface(FloatLayout):
         name = self.GUI.setCirclePos(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'],
                                      pieces['canvasNo'])
         x,y = int(pieces['x']), int(pieces['y'])
-        print str(self.elements[pieces['elementNo']].pos)
         self.elements[pieces['elementNo']].pos = (x,y)
+        return {}
+
+    def shiftCircle(self, pieces):
+        name = self.GUI.shiftCircle(pieces['elementNo'], pieces['xDist'], pieces['yDist'], pieces['coorSys'])
         return {}
 
     def getCirclePosition(self, pieces):
@@ -1228,6 +1249,7 @@ class renderSurface(FloatLayout):
                 'set_canvas_name': (setCanvasName, 2),  # [1]=CanvasNo  [2]=Name
                 'get_canvas_name': (getCanvasName, 1),  # [1]=CanvasNo
                 'relocate_circle': (relocateCircle, 5),  # [1]=ElementNo  [2]=x  [3]=y [4]=coorSys [5]=canvasNo
+                'shift_circle' : (shiftCircle, 4),
                 'get_circle_pos': (getCirclePosition, 1),  # [1]=ElementNo
                 'get_element_type': (getElementType, 1),  # [1]=ElementNo
                 'set_circle_line_color': (setCircleLineColor, 2),  # [1]=ElementNo  [2]=Color
@@ -1334,13 +1356,13 @@ class renderSurface(FloatLayout):
         if (msg == "quit"):
             self.looping = False
         data = None  # Creates an empty variable to hold the message reply
-        try:
-            if (len(msg) - 4 == self.messages[msg['call']][1]):
-                data = self.messages[str(msg['call'])][0](self, msg)
-            else:
-                data = {"error": 2, "1": str(len(msg) - 1), "2": str(self.messages[msg['call']][1])}
-        except KeyError, e:
-            data = {"error": 1}
+        #try:
+        if (len(msg) - 4 == self.messages[msg['call']][1]):
+            data = self.messages[str(msg['call'])][0](self, msg)
+        else:
+            data = {"error": 2, "1": str(len(msg) - 1), "2": str(self.messages[msg['call']][1])}
+        #except KeyError, e:
+        #    data = {"error": 1}
         return data
 
     # Sends a reply to the client that the last message was received from
