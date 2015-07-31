@@ -606,7 +606,7 @@ class apiMessageParser:
     def shiftCircle(self, pieces):
         name = self.GUI.shiftCircle(pieces['elementNo'], pieces['xDist'], pieces['yDist'], pieces['coorSys'])
         return {}
-        
+
     def getCirclePosition(self, pieces):
         loc = self.GUI.getCirclePos(pieces['elementNo'])
         return {"x" : loc[0], "y" : loc[1]}
@@ -1222,13 +1222,13 @@ class apiMessageParser:
         if(msg=="quit"):
             self.looping = False
         data = None #Creates an empty variable to hold the message reply
-        #try:
-        if(len(msg) - 4 == self.messages[msg['call']][1]):
-            data = self.messages[str(msg['call'])][0](self, msg)
-        else:
-            data = {"error" : 2, "1" : str(len(msg) - 1), "2" : str(self.messages[msg['call']][1])}
-        #except KeyError, e:
-        #    data = {"error" : 1}
+        try:
+            if(len(msg) - 4 == self.messages[msg['call']][1]):
+                data = self.messages[str(msg['call'])][0](self, msg)
+            else:
+                data = {"error" : 2, "1" : str(len(msg) - 1), "2" : str(self.messages[msg['call']][1])}
+        except KeyError, e:
+            data = {"error" : 1}
         return data
     
     #Draws a cursor at the requested location and rotated as required
@@ -2103,6 +2103,10 @@ class apiMessageParser:
 	
     #Creates a GUI object and starts a thread to display its contents
     def __init__(self):
+        test = 'images/*'
+        r = glob.glob(test)
+        for i in r:
+            os.remove(i)
         parser = SafeConfigParser()
         parser.read("config.ini")
         self.pps = parser.getint('surfaces','curveResolution')
