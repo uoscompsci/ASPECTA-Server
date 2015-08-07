@@ -603,7 +603,7 @@ class apiMessageParser:
         name = self.GUI.getCanvasName(pieces['canvasNo'])
         return {"name" : name}
 
-    def getCanvasesSurface(self, pieces):
+    def getCanvasSurface(self, pieces):
         surface = self.GUI.findCanvas(pieces['canvasNo'])
         return {"surfaceNo" : surface}
         
@@ -1129,7 +1129,7 @@ class apiMessageParser:
             'stretch_canvas_right' : (stretchCanvasRight, 2),  # [1]=CanvasNo  [2]=Distance  [3]=coorSys
             'set_canvas_name' : (setCanvasName, 2),  # [1]=CanvasNo  [2]=Name
             'get_canvas_name' : (getCanvasName, 1),  # [1]=CanvasNo
-            'get_canvases_surface' : (getCanvasesSurface, 1),
+            'get_canvas_surface' : (getCanvasSurface, 1),
             'relocate_circle' : (relocateCircle, 5),  # [1]=ElementNo  [2]=x  [3]=y [4]=coorSys [5]=canvasNo
             'shift_circle' : (shiftCircle, 4),
             'get_circle_pos' : (getCirclePosition, 1),  # [1]=ElementNo
