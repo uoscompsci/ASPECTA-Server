@@ -65,7 +65,7 @@ class apiMessageParser:
         return {'surfaceNo' : surfaceNo}
     
     #Creates a new surface for projection with an ID as requested by the API Call
-    def newSurfaceWithID(self, peices):
+    def newSurfaceWithID(self, pieces):
         surfaceNo = self.GUI.newSurfaceWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'])
         return {'surfaceNo' : surfaceNo}
         
