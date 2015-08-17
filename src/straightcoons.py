@@ -53,10 +53,7 @@ class coonsCalc:
         self.calc = bezierCalc()
         
     def findThird(self, point1, point2):
-        point10 = point1[0]
-        point11 = point1[1]
-        point20 = point2[0]
-        point21 = point2[1]
+        point10, point11, point20, point21 = point1[0], point1[1], point2[0], point2[1]
         code = """
             #include <math.h>
             float xdiff = point20 - point10;
@@ -108,22 +105,8 @@ class coonsCalc:
         Q1 = self.getQCurve1Pt(v*(len(self.Q1pts)-1))
         P0 = self.getPCurve0Pt(u*(len(self.P0pts)-1))
         P1 = self.getPCurve1Pt(u*(len(self.P1pts)-1))
-        Q00 = Q0[0]
-        Q01 = Q0[1]
-        Q10 = Q1[0]
-        Q11 = Q1[1]
-        P00 = P0[0]
-        P01 = P0[1]
-        P10 = P1[0]
-        P11 = P1[1]
-        tl0 = self.tl[0]
-        tl1 = self.tl[1]
-        tr0 = self.tr[0]
-        tr1 = self.tr[1]
-        bl0 = self.bl[0]
-        bl1 = self.bl[1]
-        br0 = self.br[0]
-        br1 = self.br[1]
+        Q00, Q01, Q10, Q11, P00, P01, P10, P11 = Q0[0], Q0[1], Q1[0], Q1[1], P0[0], P0[1], P1[0], P1[1]
+        tl0, tl1, tr0, tr1, bl0, bl1, br0, br1 = self.tl[0], self.tl[1], self.tr[0], self.tr[1], self.bl[0], self.bl[1], self.br[0], self.br[1]
         code = """
             float x = (1-u)*Q00 + u*Q10 + (1-v)*P00 + v*P10 - ((1-u)*(1-v)*tl0 + u*(1-v)*tr0 + (1-u)*v*bl0 + u*v*br0);
             float y = (1-u)*Q01 + u*Q11 + (1-v)*P01 + v*P11 - ((1-u)*(1-v)*tl1 + u*(1-v)*tr1 + (1-u)*v*bl1 + u*v*br1);

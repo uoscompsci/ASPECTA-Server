@@ -44,14 +44,8 @@ class bezierCalc:
         ret.append(py);
         return_val = ret;
         """
-        p10 = p1[0]
-        p1direct0 = p1_direct[0]
-        p11 = p1[1]
-        p1direct1 = p1_direct[1]
-        p20 = p2[0]
-        p2direct0 = p2_direct[0]
-        p21 = p2[1]
-        p2direct1 = p2_direct[1]
+        p10, p11, p20, p21 = p1[0], p1[1], p2[0], p2[1]
+        p1direct0, p1direct1, p2direct0, p2direct1 = p1_direct[0], p1_direct[1], p2_direct[0], p2_direct[1]
         ret = inline(code, ['t', 'p10', 'p11', 'p1direct0', 'p1direct1', 'p2direct0', 'p2direct1', 'p20', 'p21'])
         return ret
 
