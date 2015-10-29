@@ -1243,6 +1243,7 @@ class apiMessageParser:
             else:
                 data = {"error" : 2, "1" : str(len(msg) - 1), "2" : str(self.messages[msg['call']][1])}
         except KeyError, e:
+            print msg
             data = {"error" : 1}
         return data
     
