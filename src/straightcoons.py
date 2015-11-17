@@ -53,15 +53,24 @@ class coonsCalc:
         self.calc = bezierCalc()
         
     def findThird(self, point1, point2):
-        xdiff = float(point2[0] - point1[0])
-        ydiff = float(point2[1] - point1[1])
-        csq = pow(xdiff,2) + pow(ydiff,2)
-        c = math.sqrt(csq)
-        xdiff = xdiff/c
-        ydiff = ydiff/c
-        xdiff = xdiff * (c/3*2)
-        ydiff = ydiff * (c/3*2)
-        return(point1[0]+xdiff,point1[1]+ydiff)
+        point10, point11, point20, point21 = point1[0], point1[1], point2[0], point2[1]
+        code = """
+            #include <math.h>
+            float xdiff = point20 - point10;
+            float ydiff = point21 - point11;
+            float csq = pow(xdiff,2) + pow(ydiff,2);
+            float c = sqrt(csq);
+            xdiff = xdiff/c;
+            ydiff = ydiff/c;
+            xdiff = xdiff * (c/3*2);
+            ydiff = ydiff * (c/3*2);
+            py::list ret;
+            ret.append(point10+xdiff);
+            ret.append(point11+ydiff);
+            return_val = ret;
+        """
+        ret = inline(code, ['point10', 'point11', 'point20', 'point21'])
+        return ret
         
     def getMidPoints(self, point1, point2):
         return ((float(point1[0])+float(point2[0]))/float(2), (float(point1[1])+float(point2[1]))/float(2))
@@ -96,6 +105,15 @@ class coonsCalc:
         Q1 = self.getQCurve1Pt(v*(len(self.Q1pts)-1))
         P0 = self.getPCurve0Pt(u*(len(self.P0pts)-1))
         P1 = self.getPCurve1Pt(u*(len(self.P1pts)-1))
-        x = (1-u)*Q0[0] + u*Q1[0] + (1-v)*P0[0] + v*P1[0] - ((1-u)*(1-v)*self.tl[0] + u*(1-v)*self.tr[0] + (1-u)*v*self.bl[0] + u*v*self.br[0])
-        y = (1-u)*Q0[1] + u*Q1[1] + (1-v)*P0[1] + v*P1[1] - ((1-u)*(1-v)*self.tl[1] + u*(1-v)*self.tr[1] + (1-u)*v*self.bl[1] + u*v*self.br[1])
-        return(x,y)
+        Q00, Q01, Q10, Q11, P00, P01, P10, P11 = Q0[0], Q0[1], Q1[0], Q1[1], P0[0], P0[1], P1[0], P1[1]
+        tl0, tl1, tr0, tr1, bl0, bl1, br0, br1 = self.tl[0], self.tl[1], self.tr[0], self.tr[1], self.bl[0], self.bl[1], self.br[0], self.br[1]
+        code = """
+            float x = (1-u)*Q00 + u*Q10 + (1-v)*P00 + v*P10 - ((1-u)*(1-v)*tl0 + u*(1-v)*tr0 + (1-u)*v*bl0 + u*v*br0);
+            float y = (1-u)*Q01 + u*Q11 + (1-v)*P01 + v*P11 - ((1-u)*(1-v)*tl1 + u*(1-v)*tr1 + (1-u)*v*bl1 + u*v*br1);
+            py::list ret;
+            ret.append(x);
+            ret.append(y);
+            return_val = ret;
+        """
+        ret = inline(code, ['u', 'v', 'Q00', 'Q10', 'P00', 'P10', 'tl0', 'tr0', 'bl0', 'br0', 'Q01', 'Q11', 'P01', 'P11', 'tl1', 'tr1', 'bl1', 'br1'])
+        return ret

@@ -65,7 +65,7 @@ class apiMessageParser:
         return {'surfaceNo' : surfaceNo}
     
     #Creates a new surface for projection with an ID as requested by the API Call
-    def newSurfaceWithID(self, peices):
+    def newSurfaceWithID(self, pieces):
         surfaceNo = self.GUI.newSurfaceWithID(pieces['IDuser'], pieces['IDapp'], pieces['IDinstance'], pieces['ID'])
         return {'surfaceNo' : surfaceNo}
         
@@ -542,6 +542,10 @@ class apiMessageParser:
     def hideCursor(self, pieces):
         self.GUI.hideCursor(pieces['cursorNo'])
         return {}
+
+    def getCursorsSurface(self, pieces):
+        surface = self.GUI.findCursor(pieces['cursorNo'])
+        return {"surfaceNo" : surface}
     
     def isCursorVisible(self, pieces):
         visibility = self.GUI.isCursorVisible(pieces['cursorNo'])
@@ -598,6 +602,10 @@ class apiMessageParser:
     def getCanvasName(self, pieces):
         name = self.GUI.getCanvasName(pieces['canvasNo'])
         return {"name" : name}
+
+    def getCanvasSurface(self, pieces):
+        surface = self.GUI.findCanvas(pieces['canvasNo'])
+        return {"surfaceNo" : surface}
         
     def relocateCircle(self, pieces):
         name = self.GUI.setCirclePos(pieces['elementNo'], pieces['x'], pieces['y'], pieces['coorSys'], pieces['canvasNo'])
@@ -614,6 +622,10 @@ class apiMessageParser:
     def getElementType(self, pieces):
         type = self.GUI.getEleType(pieces['elementNo'])
         return {"type" : type}
+
+    def getElementsCanvas(self, pieces):
+        canvas = self.GUI.findElement(pieces['elementNo'])
+        return {"canvasNo" : canvas}
         
     def setCircleLineColor(self, pieces):
         self.GUI.setCircleLine(pieces['elementNo'], pieces['color'])
@@ -1102,6 +1114,7 @@ class apiMessageParser:
             'set_cursor_screen_mode' : (setCursorScreenMode,1),
             'show_cursor' : (showCursor,1),
             'hide_cursor' : (hideCursor,1),
+            'get_cursors_surface' : (getCursorsSurface,1),
             'is_cursor_visible' : (isCursorVisible,1),
             'move_canvas' : (moveCanvas, 4),  # [1]=CanvasNo  [2]=xDistance  [3]=yDistance  [4]=coorSys
             'relocate_canvas' : (relocateCanvas, 5),  # [1]=CanvasNo  [2]=x  [3]=y  [4]=coorSys  [5]=Surface
@@ -1116,10 +1129,12 @@ class apiMessageParser:
             'stretch_canvas_right' : (stretchCanvasRight, 2),  # [1]=CanvasNo  [2]=Distance  [3]=coorSys
             'set_canvas_name' : (setCanvasName, 2),  # [1]=CanvasNo  [2]=Name
             'get_canvas_name' : (getCanvasName, 1),  # [1]=CanvasNo
+            'get_canvas_surface' : (getCanvasSurface, 1),
             'relocate_circle' : (relocateCircle, 5),  # [1]=ElementNo  [2]=x  [3]=y [4]=coorSys [5]=canvasNo
             'shift_circle' : (shiftCircle, 4),
             'get_circle_pos' : (getCirclePosition, 1),  # [1]=ElementNo
             'get_element_type' : (getElementType, 1),  # [1]=ElementNo
+            'get_elements_canvas' : (getElementsCanvas, 1),
             'set_circle_line_color' : (setCircleLineColor, 2),  # [1]=ElementNo  [2]=Color
             'set_circle_line_width' : (setCircleLineWidth, 2),  # [1]=ElementNo  [2]=Width
             'set_circle_fill_color' : (setCircleFillColor, 2),  # [1]=ElementNo  [2]=Color

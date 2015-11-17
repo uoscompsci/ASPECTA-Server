@@ -690,7 +690,7 @@ class GUI:
 	def getCanvasWidth(self,canvasNo):
 		return self.canvases[str(canvasNo)].getWidth()
 	
-	def stretchCanvasRight(self,canvasNo,dist):
+	def stretchCanvasRight(self,canvasNo,dist, coorSys):
 		if(coorSys=="prop"):
 			surfaceNo = self.findCanvas(canvasNo)
 			dist = self.surfWidPropToPix(surfaceNo, dist)
@@ -699,7 +699,7 @@ class GUI:
 			dist = self.surfWidMetToPix(surfaceNo, dist)
 		self.canvases[str(canvasNo)].stretchRight(dist)
 		
-	def stretchCanvasLeft(self,canvasNo,dist):
+	def stretchCanvasLeft(self,canvasNo,dist, coorSys):
 		if(coorSys=="prop"):
 			surfaceNo = self.findCanvas(canvasNo)
 			dist = self.surfWidPropToPix(surfaceNo, dist)
@@ -708,7 +708,7 @@ class GUI:
 			dist = self.surfWidMetToPix(surfaceNo, dist)
 		self.canvases[str(canvasNo)].stretchLeft(dist)
 		
-	def stretchCanvasUp(self,canvasNo,dist):
+	def stretchCanvasUp(self,canvasNo,dist, coorSys):
 		if(coorSys=="prop"):
 			surfaceNo = self.findCanvas(canvasNo)
 			dist = self.surfHeiPropToPix(surfaceNo, dist)
@@ -717,7 +717,7 @@ class GUI:
 			dist = self.surfHeiMetToPix(surfaceNo, dist)
 		self.canvases[str(canvasNo)].stretchUp(dist)
 		
-	def stretchCanvasDown(self,canvasNo,dist):
+	def stretchCanvasDown(self,canvasNo,dist, coorSys):
 		if(coorSys=="prop"):
 			surfaceNo = self.findCanvas(canvasNo)
 			dist = self.surfHeiPropToPix(surfaceNo, dist)
