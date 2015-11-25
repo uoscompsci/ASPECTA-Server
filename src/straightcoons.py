@@ -1,5 +1,6 @@
 import math
 from bezier import *
+from scipy.weave import inline
 
 class coonsCalc:
     tl = None
