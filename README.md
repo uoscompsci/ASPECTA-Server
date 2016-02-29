@@ -11,7 +11,7 @@ Install in the order listed so as to avoid problems.
 * FTGL (```sudo apt-get install ftgl-dev``` If there are libcheese dependency issues see below)
 * FreeType (http://www.freetype.org See instructions for installing the contents of the tar.gz package below)
 * boost::python (```sudo apt-get install libboost-python-dev```)
-* PYFTGL (https://code.google.com/p/pyftgl/downloads/list with the changes mentioned below)
+* PYFTGL (https://bitbucket.org/jp438/pyftglforaspecta/ See installation instructions below)
 
 ###Recommended
 
@@ -37,12 +37,7 @@ sudo make install
 
 ###PYFTGL Modifications
 
-After downloading extract the ```pyftgl``` folder and open ```ftgl.cpp```. To prevent a serious memory leak add the following to this file on the line after after ```public:```:
-```
-~FontWrapper()
-{  delete m_font; }
-```
-After you have made this change, in the same folder run the following commands:
+Once you have downloaded and extracted the version of pyFTGL linked to above you can install it using the following commands:
 ```
 sudo python setup.py build
 sudo python setup.py install
