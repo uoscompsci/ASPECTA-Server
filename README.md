@@ -35,7 +35,7 @@ make
 sudo make install
 ```
 
-###PYFTGL Modifications
+###PYFTGL Installation
 
 Once you have downloaded and extracted the version of pyFTGL linked to above you can install it using the following commands:
 ```
