@@ -1362,7 +1362,7 @@ class apiMessageParser:
         gluOrtho2D(0,width,0,height)
         glMatrixMode(GL_MODELVIEW)
         rendertarget = glGenTextures(1)
-        glBindTexture(GL_TEXTURE_2D, rendertarget);
+        glBindTexture(GL_TEXTURE_2D, rendertarget)
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
@@ -1394,7 +1394,7 @@ class apiMessageParser:
         gluOrtho2D(0,width,0,height)
         glMatrixMode(GL_MODELVIEW)
         rendertarget = glGenTextures(1)
-        glBindTexture(GL_TEXTURE_2D, rendertarget);
+        glBindTexture(GL_TEXTURE_2D, rendertarget)
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
@@ -1425,7 +1425,7 @@ class apiMessageParser:
         glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST)
         glHint(GL_LINE_SMOOTH_HINT, GL_NICEST)
         glHint(GL_POINT_SMOOTH_HINT, GL_NICEST)
-        glEnable(GL_POLYGON_SMOOTH)
+        #glEnable(GL_POLYGON_SMOOTH) # TODO figure out how to safely enable with NVIDIA
         glEnable(GL_LINE_SMOOTH)
         glEnable(GL_POINT_SMOOTH)
         for x in range(0,len(canvases)):
@@ -1451,7 +1451,7 @@ class apiMessageParser:
             except:
                 pass
         cursors = self.GUI.getCursors(surfaceNo) #Gathers the list of cursors on the setup surface
-        
+
         #Loops through all the cursors on the surface
         for z in range(0,len(cursors)):
             if(self.GUI.isCursorVisible(cursors[z])):
@@ -1461,22 +1461,22 @@ class apiMessageParser:
         for x in range(0,len(canvases)):
             glDeleteTextures(rendertarget)
             glDeleteFramebuffers(1, fbo)
-        
+
     def drawMesh(self, surfaceNo, rotation, mirrored, width, height):
         glDisable(GL_LIGHTING)
         glEnable(GL_TEXTURE_2D)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-        
+
         glPushMatrix()
-        
+
         #insert canvas texture creation
         canvases = self.GUI.getCanvases(surfaceNo) #Gathers the list of canvases on the surface
         self.canvasTextures = {}
         for x in range(0,len(canvases)):
             self.canvasTextures[x] = self.createCanvasTexture(canvases[x], self.GUI)
-        
+
         (rendertarget,fbo) = self.createTexture(width,height,surfaceNo)
-        
+
         glBindTexture(GL_TEXTURE_2D, rendertarget)
         self.meshBuffer[str(surfaceNo)][0].bind_vertexes(2, GL_FLOAT)
         
@@ -1916,7 +1916,7 @@ class apiMessageParser:
     #Prepares the opengl code 
     def init(self):
         # set some basic OpenGL settings and control variables
-        #glShadeModel(GL_SMOOTH)
+        glShadeModel(GL_SMOOTH)
         parser = SafeConfigParser()
         parser.read("config.ini")
         temp = parser.getint('surfaces','showMeshLines')
@@ -1933,7 +1933,7 @@ class apiMessageParser:
         glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST)
         glHint(GL_LINE_SMOOTH_HINT, GL_NICEST)
         glHint(GL_POINT_SMOOTH_HINT, GL_NICEST)
-        glEnable(GL_POLYGON_SMOOTH)
+        #glEnable(GL_POLYGON_SMOOTH) #TODO Figure out how to safely enable with NVIDIA
         glEnable(GL_LINE_SMOOTH)
         glEnable(GL_POINT_SMOOTH)
         glEnable(GL_BLEND)
@@ -2052,8 +2052,9 @@ class apiMessageParser:
             video_flags = OPENGL | DOUBLEBUF | FULLSCREEN
         pygame.init()
         pygame.display.set_icon(pygame.image.load("icons/icon.png"))
+        pygame.display.gl_set_attribute(pygame.locals.GL_MULTISAMPLEBUFFERS, 1)
         pygame.display.set_mode((self.winWidth, self.winHeight), video_flags)
-		
+
         pygame.display.set_caption("Display") #Sets the canvas name
 		
         self.resize((self.winWidth, self.winHeight)) #Resizes winding
