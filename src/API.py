@@ -13,6 +13,7 @@ import glob
 import os
 from OpenGL.GL.ARB.framebuffer_object import *
 from OpenGL.GL.EXT.framebuffer_object import *
+from OpenGL.GL.framebufferobjects import *
 from buffers import *
 #from fileTransferServer import fts
 
@@ -2052,7 +2053,8 @@ class apiMessageParser:
             video_flags = OPENGL | DOUBLEBUF | FULLSCREEN
         pygame.init()
         pygame.display.set_icon(pygame.image.load("icons/icon.png"))
-        pygame.display.gl_set_attribute(pygame.locals.GL_MULTISAMPLEBUFFERS, 1)
+        pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLEBUFFERS, 1)
+        pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLESAMPLES, 8)
         pygame.display.set_mode((self.winWidth, self.winHeight), video_flags)
 
         pygame.display.set_caption("Display") #Sets the canvas name
