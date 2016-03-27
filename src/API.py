@@ -317,7 +317,7 @@ class apiMessageParser:
         return {}
         
     def deleteImage(self, pieces):
-        os.remove("images/" + pieces[1])
+        os.remove("images/" + str(os.getpid()) + "_" + pieces[1])
         return {}
     
     def rotateSurfaceTo0(self, pieces):
@@ -1715,7 +1715,7 @@ class apiMessageParser:
                 upToDate = GUIRead.upToDateTexRectangle(elements[z])
                 if(upToDate==False):
                     texture = GUIRead.getTexRectangleTexture(elements[z])
-                    texturefile = glob.glob('images/' + str(texture) + "*")
+                    texturefile = glob.glob('images/' + str(os.getpid()) + "_" + str(texture) + "*")
                     self.textureBuffer[elements[z]] = Texture(texturefile[0])
                     texCoors = [[0.0,1.0],[1.0,1.0],[1.0,0.0],[0.0,0.0]]
                     points = []
@@ -1861,7 +1861,7 @@ class apiMessageParser:
                 upToDate = GUIRead.upToDateTexRectangle(elements[z])
                 if(upToDate==False):
                     texture = GUIRead.getTexRectangleTexture(elements[z])
-                    texturefile = glob.glob('images/' + str(texture) + "-*")
+                    texturefile = glob.glob('images/' + str(os.getpid()) + "_" + str(texture) + "-*")
                     self.textureBuffer[elements[z]] = Texture(texturefile[0])
                     texCoors = [[0.0,1.0],[1.0,1.0],[1.0,0.0],[0.0,0.0]]
                     points = []
@@ -2053,7 +2053,7 @@ class apiMessageParser:
             video_flags = OPENGL | DOUBLEBUF | FULLSCREEN
         pygame.init()
         pygame.display.set_icon(pygame.image.load("icons/icon.png"))
-        pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLEBUFFERS, 1)
+        #pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLEBUFFERS, 1)
         pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLESAMPLES, 8)
         pygame.display.set_mode((self.winWidth, self.winHeight), video_flags)
 
