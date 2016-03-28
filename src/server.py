@@ -8,6 +8,7 @@ from threading import Thread
 from API import apiMessageParser
 from collections import deque
 from ConfigParser import SafeConfigParser
+import os
 
 queue = deque([])
 sock2usr = {}
@@ -30,7 +31,7 @@ def message_queue_monitor():
             temp['IDinstance'] = appsplit[1]
             if (temp['call'] == "set_rectangle_texture" or temp['call'] == "new_texrectangle" or temp[
                 'call'] == "new_texrectangle_with_ID"):
-                g = open("images/" + str(counter) + "." + str(temp['extension']), "w")
+                g = open("images/" + str(os.getpid()) + "_" + str(counter) + "." + str(temp['extension']), "w")
                 g.write(base64.decodestring(str(temp['textureData'])))
                 g.close()
                 temp['imageID'] = counter
