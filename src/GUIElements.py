@@ -300,15 +300,10 @@ class canvas:
         self.elements.append(str(elementNo))
         
     def removeElement(self, elementNo):
-        popped = False
-        for x in range(0, len(self.elements)):
-            if(popped==False):
-                try:
-                    if(self.elements[x]==elementNo):
-                        self.elements.pop(x)
-                        popped=True
-                except IndexError, e:
-                    pass
+        if elementNo in self.elements:
+            self.elements.remove(elementNo)
+        else:
+            print "Element " + elementNo + " doesn't exist to remove"
                     
     def containsEle(self, elementNo):
         found = False
@@ -473,9 +468,10 @@ class surface():
         self.cursors.append(cursorNo)
         
     def removeCursor(self, cursorNo):
-        for x in range(0, len(self.cursors)):
-            if(self.cursors[x]==cursorNo):
-                self.cursors.pop(x)
+        if cursorNo in self.cursors:
+            self.cursors.remove(cursorNo)
+        else:
+            print "Cursor " + cursorNo + " doesn't exist to remove"
     
     def containsCur(self, cursorNo):
         found = False
@@ -488,9 +484,10 @@ class surface():
         self.canvases.append(canvasNo)
         
     def removeCanvas(self, canvasNo):
-        for x in range(0, len(self.canvases)):
-            if(self.canvases[x]==canvasNo):
-                self.canvases.pop(x)
+        if canvasNo in self.canvases:
+            self.canvases.remove(canvasNo)
+        else:
+            print "Canvas " + canvasNo + " doesn't exist to remove"
     
     def containsWin(self, canvasNo):
         found = False
