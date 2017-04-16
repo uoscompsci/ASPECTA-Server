@@ -19,13 +19,6 @@ These have been used for development and testing, so are recommended but not req
 * Eclipse (https://www.eclipse.org/downloads/ See eclipse notes below if eclipse won't run due to Java Runtime Environment issues)
 * PyDev for Eclipse (see instructions below on how to download and install)
 
-### FTGL LibCheese Depencency Issues
-There has been one report of failure when trying to install ftgl-dev due to issues fulfilling the depencency for libcheese. In this case the following commands resolved the issue:
-```
-sudo apt-get install xserver-xorg-dev-lts-utopic mesa-common-dev-lts-utopic
-sudo apt-get install ftgl-dev
-```
-
 ### FreeType Installation
 
 After downloading extract the ```freetype-X.X.X``` folder and inside it run the following commands:
