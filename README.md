@@ -1,7 +1,7 @@
 # ASPECTA-Server
 The ASPECTA server side program for running on the projector-connected Ubuntu PC.
 
-###Dependencies
+### Dependencies
 Install in the order listed so as to avoid problems.
 * python-dev (```sudo apt-get install python-dev```)
 * pip (```sudo apt-get install python-pip```)
@@ -13,20 +13,20 @@ Install in the order listed so as to avoid problems.
 * boost::python (```sudo apt-get install libboost-python-dev```)
 * PyFTGL (https://bitbucket.org/jp438/pyftglforaspecta/ See installation instructions below)
 
-###Recommended
+### Recommended
 
 These have been used for development and testing, so are recommended but not required.
 * Eclipse (https://www.eclipse.org/downloads/ See eclipse notes below if eclipse won't run due to Java Runtime Environment issues)
 * PyDev for Eclipse (see instructions below on how to download and install)
 
-###FTGL LibCheese Depencency Issues
+### FTGL LibCheese Depencency Issues
 There has been one report of failure when trying to install ftgl-dev due to issues fulfilling the depencency for libcheese. In this case the following commands resolved the issue:
 ```
 sudo apt-get install xserver-xorg-dev-lts-utopic mesa-common-dev-lts-utopic
 sudo apt-get install ftgl-dev
 ```
 
-###FreeType Installation
+### FreeType Installation
 
 After downloading extract the ```freetype-X.X.X``` folder and inside it run the following commands:
 ```
@@ -35,7 +35,7 @@ make
 sudo make install
 ```
 
-###PyFTGL Installation
+### PyFTGL Installation
 
 Once you have downloaded and extracted the modified version of pyFTGL linked to above you can install it using the following commands:
 ```
@@ -43,7 +43,7 @@ sudo python setup.py build
 sudo python setup.py install
 ```
 
-###Eclipse Notes
+### Eclipse Notes
 
 If elipse won't run after extraction you may need to run the following in a terminal:
 ```
@@ -53,13 +53,13 @@ sudo apt-get install oracle-java7-installer
 sudo apt-get install oracle-java7-set-default
 ```
 If eclipse still doesn't start execute the following:
-#####32-Bit Systems
+##### 32-Bit Systems
 ```ln -s /usr/lib/jni/libswt-* ~/.swt/lib/linux/x86/```
-#####64-Bit Systems
+##### 64-Bit Systems
 ```ln -s /usr/lib/jni/libswt-* ~/.swt/lib/linux/x86_64/```
 
-###Installing PyDev
-#####Easy installation (For newer versions of Eclipse, attempt this first):
+### Installing PyDev
+##### Easy installation (For newer versions of Eclipse, attempt this first):
 
 In the Eclipse menu go to "Help" -> "Install New Software" and use the source:
 
