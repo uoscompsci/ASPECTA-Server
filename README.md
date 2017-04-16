@@ -9,15 +9,15 @@ Install in the order listed so as to avoid problems.
 * python-pygame (```sudo apt-get install python-pygame```)
 * ujson (```sudo pip install ujson```)
 * FTGL (```sudo apt-get install ftgl-dev``` If there are libcheese dependency issues see below)
+* scipy (```sudo apt-get install python-scipy```)
 * FreeType (http://www.freetype.org See instructions for installing the contents of the tar.gz package below)
 * boost::python (```sudo apt-get install libboost-python-dev```)
 * PyFTGL (https://bitbucket.org/jp438/pyftglforaspecta/ See installation instructions below)
 
 ### Recommended
 
-These have been used for development and testing, so are recommended but not required.
-* Eclipse (https://www.eclipse.org/downloads/ See eclipse notes below if eclipse won't run due to Java Runtime Environment issues)
-* PyDev for Eclipse (see instructions below on how to download and install)
+* Ubuntu or Ubuntu-based Linux distribution (Tested with regular Ubuntu and Ubuntu Mate)
+* Jetbrains PyCharm Community (https://www.jetbrains.com/pycharm/download/#section=linux)
 
 ### FreeType Installation
 
